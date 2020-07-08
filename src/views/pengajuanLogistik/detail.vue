@@ -344,8 +344,8 @@
                 <td>{{ item.unit.unit }}</td>
                 <td>{{ item.usage }}</td>
                 <td>{{ item.priority }}</td>
-                <td><v-btn small color="success" dark @click="dialogStock = true">{{ $t('label.check_stock') }}</v-btn></td>
-                <td>{{ item.realization_quantity }}</td>
+                <td><v-btn small color="success" dark @click="getStockItem(item.product.name)">{{ $t('label.check_stock') }}</v-btn></td>
+                <td>{{ item.realization_quantity || '-' }}</td>
                 <td>{{ item.realization_date || '-' }}</td>
                 <td>{{ item.statusLabel }}</td>
                 <td v-if="isVerified">
@@ -395,7 +395,7 @@
       </v-row>
     </v-card>
     <br>
-    <CheckStockDialog :dialog-show="dialogStock" />
+    <CheckStockDialog :dialog-show="dialogStock" :param="stockParam" />
   </div>
 </template>
 
@@ -432,8 +432,8 @@ export default {
       updateIndex: null,
       loaded: false,
       isStock: true,
-      stock: null,
-      dialogStock: false
+      dialogStock: false,
+      stockParam: null
     }
   },
   computed: {
@@ -481,6 +481,12 @@ export default {
       await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
       const temp = this.detailLogisticRequest.letter.letter.split('.')
       this.letterFileType = '.' + temp[temp.length - 1]
+    },
+    async getStock(value) {
+      const param = {
+        material_group: await value
+      }
+      await this.$store.dispatch('logistics/getStock', param)
     },
     async getListDetailNeeds() {
       this.loaded = false
@@ -531,6 +537,10 @@ export default {
       formData.append('approval_status', 'approved')
       await this.$store.dispatch('logistics/postApprovalStatus', formData)
       window.location.reload(true)
+    },
+    getStockItem(value) {
+      this.dialogStock = true
+      this.getStock(value)
     }
   }
 }

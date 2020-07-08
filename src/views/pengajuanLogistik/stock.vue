@@ -8,28 +8,16 @@
         <v-card-title
           primary-title
         >
-          Sisa Stock Barang
+          {{ $t('label.remaining_stock_item') }}
         </v-card-title>
 
         <v-card-text>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.location_stock').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.remaining_stock').toUpperCase() }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, index) in listStock" :key="index">
-                  <td>{{ item.matg_name }}</td>
-                  <td>{{ item.soh_location_name }}</td>
-                  <td>{{ item.stock_ok }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
+          <v-data-table
+            :headers="headers"
+            :items="listStock"
+            :hide-default-footer="true"
+            :no-data-text="$t('label.no_data')"
+          />
         </v-card-text>
 
         <v-divider />
@@ -40,7 +28,7 @@
               color="success"
               @click="closeDialogStock"
             >
-              Ok
+              {{ $t('label.ok') }}
             </v-btn>
           </div>
         </v-card-actions>
@@ -59,10 +47,24 @@ export default {
     dialogShow: {
       type: Boolean,
       default: false
+    },
+    param: {
+      type: String,
+      default: null
     }
   },
   data() {
     return {
+      headers: [
+        {
+          text: this.$t('label.apd_name_spec').toUpperCase(),
+          align: 'start',
+          sortable: false,
+          value: 'matg_name'
+        },
+        { text: this.$t('label.location_stock').toUpperCase(), value: 'soh_location_name' },
+        { text: this.$t('label.remaining_stock').toUpperCase(), value: 'stock_ok' }
+      ]
     }
   },
   computed: {
@@ -70,18 +72,9 @@ export default {
       'listStock'
     ])
   },
-  async created() {
-    this.getStock()
-  },
   methods: {
     closeDialogStock() {
       EventBus.$emit('closeDialogStock', false)
-    },
-    async getStock() {
-      const param = {
-        material_group: 'COVERALL'
-      }
-      await this.$store.dispatch('logistics/getStock', param)
     }
   }
 }
