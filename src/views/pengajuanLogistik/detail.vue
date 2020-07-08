@@ -344,7 +344,7 @@
                 <td>{{ item.unit.unit }}</td>
                 <td>{{ item.usage }}</td>
                 <td>{{ item.priority }}</td>
-                <td>{{ '-' }}</td>
+                <td><v-btn small color="success" dark @click="dialogStock = true">{{ $t('label.check_stock') }}</v-btn></td>
                 <td>{{ item.realization_quantity }}</td>
                 <td>{{ item.realization_date || '-' }}</td>
                 <td>{{ item.statusLabel }}</td>
@@ -395,12 +395,14 @@
       </v-row>
     </v-card>
     <br>
+    <CheckStockDialog :dialog-show="dialogStock" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
+import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
 import reasonDeniedLogisticNeeds from './reasonReject'
@@ -410,7 +412,8 @@ export default {
   components: {
     updateKebutuhanLogistik,
     rejectKebutuhanLogistik,
-    reasonDeniedLogisticNeeds
+    reasonDeniedLogisticNeeds,
+    CheckStockDialog
   },
   data() {
     return {
@@ -428,14 +431,17 @@ export default {
       showDialogReasonReject: false,
       updateIndex: null,
       loaded: false,
-      isStock: true
+      isStock: true,
+      stock: null,
+      dialogStock: false
     }
   },
   computed: {
     ...mapGetters('logistics', [
       'detailLogisticRequest',
       'listLogisticNeeds',
-      'totalLogisticNeeds'
+      'totalLogisticNeeds',
+      'listStock'
     ])
   },
   async created() {
@@ -450,6 +456,9 @@ export default {
     this.isStock = this.detailLogisticRequest.applicant.stock_checking_status === 'checked'
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
+    })
+    EventBus.$on('closeDialogStock', (value) => {
+      this.dialogStock = value
     })
     EventBus.$on('dialogHideReject', (value) => {
       this.showDialogReject = value

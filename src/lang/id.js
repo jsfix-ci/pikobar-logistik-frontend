@@ -48,6 +48,8 @@ export default {
     please_wait: 'Mohon tunggu',
     edit: 'Ubah',
     delete: 'Hapus',
+    check_stock: 'Cek Stock',
+    location_stock: 'Lokasi',
     add_choice: 'Tambah pilihan',
     sort_by: 'Urutkan Berdasarkan',
     target: 'Capaian / Target',
