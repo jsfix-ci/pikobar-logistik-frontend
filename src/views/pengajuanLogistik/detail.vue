@@ -319,8 +319,8 @@
             <thead>
               <tr>
                 <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.apd_name_specification').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.brand').toUpperCase() }}</th>
+                <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                <th class="text-left">{{ $t('label.description').toUpperCase() }}</th>
                 <th class="text-left">{{ $t('label.total').toUpperCase() }}</th>
                 <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
                 <th class="text-left">{{ $t('label.purpose').toUpperCase() }}</th>
@@ -344,7 +344,7 @@
                 <td>{{ item.unit.unit }}</td>
                 <td>{{ item.usage }}</td>
                 <td>{{ item.priority }}</td>
-                <td>{{ '-' }}</td>
+                <td><v-btn small color="success" dark @click="getStockItem(item.product.name)">{{ $t('label.check_stock') }}</v-btn></td>
                 <td>{{ item.realization_quantity || '-' }}</td>
                 <td>{{ item.realization_date || '-' }}</td>
                 <td>{{ item.statusLabel }}</td>
@@ -395,12 +395,14 @@
       </v-row>
     </v-card>
     <br>
+    <CheckStockDialog :dialog-show="dialogStock" :param="stockParam" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
+import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
 import reasonDeniedLogisticNeeds from './reasonReject'
@@ -410,7 +412,8 @@ export default {
   components: {
     updateKebutuhanLogistik,
     rejectKebutuhanLogistik,
-    reasonDeniedLogisticNeeds
+    reasonDeniedLogisticNeeds,
+    CheckStockDialog
   },
   data() {
     return {
@@ -428,14 +431,17 @@ export default {
       showDialogReasonReject: false,
       updateIndex: null,
       loaded: false,
-      isStock: true
+      isStock: true,
+      dialogStock: false,
+      stockParam: null
     }
   },
   computed: {
     ...mapGetters('logistics', [
       'detailLogisticRequest',
       'listLogisticNeeds',
-      'totalLogisticNeeds'
+      'totalLogisticNeeds',
+      'listStock'
     ])
   },
   async created() {
@@ -450,6 +456,9 @@ export default {
     this.isStock = this.detailLogisticRequest.applicant.stock_checking_status === 'checked'
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
+    })
+    EventBus.$on('closeDialogStock', (value) => {
+      this.dialogStock = value
     })
     EventBus.$on('dialogHideReject', (value) => {
       this.showDialogReject = value
@@ -472,6 +481,12 @@ export default {
       await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
       const temp = this.detailLogisticRequest.letter.letter.split('.')
       this.letterFileType = '.' + temp[temp.length - 1]
+    },
+    async getStock(value) {
+      const param = {
+        material_group: await value
+      }
+      await this.$store.dispatch('logistics/getStock', param)
     },
     async getListDetailNeeds() {
       this.loaded = false
@@ -522,6 +537,10 @@ export default {
       formData.append('approval_status', 'approved')
       await this.$store.dispatch('logistics/postApprovalStatus', formData)
       window.location.reload(true)
+    },
+    getStockItem(value) {
+      this.dialogStock = true
+      this.getStock(value)
     }
   }
 }

@@ -37,5 +37,8 @@ export default {
   },
   SET_CITY_TOTAL_REQUEST: (state, data) => {
     state.dataCityTotalRequest = data
+  },
+  SET_STOCK: (state, data) => {
+    state.listStock = data
   }
 }
