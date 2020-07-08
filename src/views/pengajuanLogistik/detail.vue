@@ -395,7 +395,7 @@
       </v-row>
     </v-card>
     <br>
-    <CheckStockDialog :dialog-show="dialogStock" :param="stockParam" />
+    <CheckStockDialog :dialog-show="dialogStock" />
   </div>
 </template>
 
@@ -432,8 +432,7 @@ export default {
       updateIndex: null,
       loaded: false,
       isStock: true,
-      dialogStock: false,
-      stockParam: null
+      dialogStock: false
     }
   },
   computed: {

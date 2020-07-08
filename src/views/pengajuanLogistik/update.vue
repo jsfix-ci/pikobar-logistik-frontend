@@ -9,7 +9,7 @@
         <v-col>
           <span class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</span>
         </v-col>
-        <v-col v-if="updateName === false">
+        <v-col v-if="updateName === false" class="mb-30">
           <span class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
           <v-btn class="ma-2" small outlined color="success" height="35px" absolute right @click="updateName = true">
             <v-icon left>mdi-pencil</v-icon>{{ $t('label.edit') }}
@@ -36,23 +36,50 @@
             />
           </ValidationProvider>
         </v-col>
-        <v-col v-if="updateName === false" class="margin-top-min-10-update-logistic-needs">
+        <v-col class="margin-top-min-30-update-logistic-needs">
           <span class="sub-title-update-logistic-needs">{{ $t('label.total_needs') }}</span>
           <br>
           <span class="value-sub-title-update-logistic-needs">{{ item.quantity }}</span>
         </v-col>
         <v-col class="margin-top-min-10-update-logistic-needs">
-          <span class="sub-title-update-logistic-needs">{{ $t('label.realization_amount') }}</span>
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="requiredRealizationAmount|numericRealizationAmount"
-          >
-            <v-text-field
-              v-model="data.realization_quantity"
-              outlined
-              :error-messages="errors"
-            />
-          </ValidationProvider>
+          <v-row>
+            <v-col cols="5">
+              <span class="sub-title-update-logistic-needs">{{ $t('label.realization_amount') }}</span>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="requiredRealizationAmount|numericRealizationAmount"
+              >
+                <v-text-field
+                  v-model="data.realization_quantity"
+                  outlined
+                  :error-messages="errors"
+                />
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="4">
+              <span class="sub-title-update-logistic-needs">{{ $t('label.unit') }}</span>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="requiredUnit"
+              >
+                <v-select
+                  v-model="data.unitId"
+                  :items="data.unitList"
+                  outlined
+                  solo-inverted
+                  :error-messages="errors"
+                  item-value="unit_id"
+                  item-text="unit"
+                  @change="setUnitName(data)"
+                />
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="3">
+              <div class="mt-30" style="margin-top: 30px">
+                <v-btn small color="success" height="45px" dark @click="getStockItem()">{{ $t('label.check_stock') }}</v-btn>
+              </div>
+            </v-col>
+          </v-row>
         </v-col>
         <v-col class="margin-top-min-30-update-logistic-needs">
           <span class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
@@ -82,11 +109,13 @@
         </v-col>
       </ValidationObserver>
     </v-card>
+    <CheckStockDialog :dialog-show="dialogStock" />
   </v-dialog>
 </template>
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
 import { mapGetters } from 'vuex'
 
@@ -94,7 +123,8 @@ export default {
   name: 'UpdateKebutuhanLogistik',
   components: {
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
+    CheckStockDialog
   },
   props: {
     show: {
@@ -108,6 +138,7 @@ export default {
   },
   data() {
     return {
+      dialogStock: false,
       updateName: false,
       dialog: false,
       date: null,
@@ -140,8 +171,21 @@ export default {
   },
   async created() {
     await this.getListAPD()
+    EventBus.$on('closeDialogStock', (value) => {
+      this.dialogStock = value
+    })
   },
   methods: {
+    getStockItem() {
+      this.dialogStock = true
+      this.getStock(this.item.product.name)
+    },
+    async getStock(value) {
+      const param = {
+        material_group: await value
+      }
+      await this.$store.dispatch('logistics/getStock', param)
+    },
     async getListAPD() {
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
