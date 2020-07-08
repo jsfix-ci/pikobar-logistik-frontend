@@ -116,6 +116,15 @@ export default {
       return e
     }
   },
+  async getStock({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/stock', 'GET', params)
+      commit('SET_STOCK', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getFaskesTypeTotalRequest({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/faskes-type-total-request', 'GET', params)
