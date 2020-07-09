@@ -75,6 +75,7 @@ export default {
     distributed_stock: 'Jumlah Terdistribusi',
     rdt_used_in_location_title: 'Jumlah RDT Terpakai di Lokasi Tes',
     add_distribution: 'Tambah Distribusi',
+    add_distribution_other: 'Tambah Realisasi Distribusi Lainnya',
     add_data: 'Tambah Data',
     sort: 'Urutkan',
     distribution_destination: 'Tujuan Distribusi',

@@ -258,11 +258,11 @@
                   </v-col>
                   <v-col>
                     <span class="text-title-green">
-                      {{ $t('label.contact_person') }}
+                      {{ $t('label.capital_email') }}
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant.applicant_name }}
+                      {{ detailLogisticRequest.applicant.email }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -396,15 +396,40 @@
                 </tbody>
               </template>
             </v-simple-table>
+            <br>
+            <v-pagination
+              v-model="listQuery.page"
+              :length="totalLogisticNeeds"
+              :total-visible="3"
+              @input="onNext"
+            />
           </v-card>
         </v-col>
       </v-row>
-      <v-pagination
-        v-model="listQuery.page"
-        :length="totalLogisticNeeds"
-        :total-visible="3"
-        @input="onNext"
-      />
+      <div>
+        <v-row>
+          <v-col>
+            <span class="text-data-green">
+              {{ $t('label.add_distribution_other') }}
+            </span>
+          </v-col>
+        </v-row>
+      </div>
+      <v-row>
+        <v-col>
+          <v-card
+            outlined
+            class="mx-auto"
+            style="height: 100px"
+          >
+            <div>
+              <v-btn small outlined color="success" width="130px" height="50px" absolute right style="margin-bottom: 30px" @click="updateName = true">
+                {{ $t('label.download') }}
+              </v-btn>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
     </div>
     <br>
     <CheckStockDialog :dialog-show="dialogStock" />
