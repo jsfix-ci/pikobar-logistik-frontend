@@ -15,7 +15,7 @@
             <v-icon left>mdi-pencil</v-icon>{{ $t('label.edit') }}
           </v-btn>
           <br>
-          <span class="value-sub-title-update-logistic-needs">{{ item.product.name }}</span>
+          <span class="value-sub-title-update-logistic-needs">{{ item.product.name || '-' }}</span>
         </v-col>
         <v-col v-else class="margin-top-min-10-update-logistic-needs">
           <ValidationProvider
@@ -32,7 +32,7 @@
               :error-messages="errors"
               outlined
               solo-inverted
-              @change="setUnit(data)"
+              @change="setUnit(data.apd)"
             />
           </ValidationProvider>
         </v-col>
@@ -62,15 +62,15 @@
                 v-slot="{ errors }"
                 rules="requiredUnit"
               >
-                <v-select
+                <v-autocomplete
                   v-model="data.unitId"
-                  :items="data.unitList"
+                  :items="unitList"
                   outlined
                   solo-inverted
+                  :no-data-text="$t('label.no_data')"
                   :error-messages="errors"
                   item-value="unit_id"
                   item-text="unit"
-                  @change="setUnitName(data)"
                 />
               </ValidationProvider>
             </v-col>
@@ -134,14 +134,22 @@ export default {
     item: {
       type: Object,
       default: null
+    },
+    isOpen: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
+      data: {},
       dialogStock: false,
       updateName: false,
+      unitList: [],
+      unitId: null,
       dialog: false,
       date: null,
+      labelDate: this.$t('label.input_date'),
       status: [
         {
           text: this.$t('label.approved'),
@@ -159,9 +167,7 @@ export default {
           text: this.$t('label.not_available'),
           value: 'not_avalivable'
         }
-      ],
-      data: {},
-      labelDate: this.$t('label.input_date')
+      ]
     }
   },
   computed: {
@@ -194,6 +200,15 @@ export default {
           name: element.name
         }
       })
+    },
+    setTotalAPD() {
+      this.totalLogistic = 0
+      this.logisticNeeds.forEach(element => {
+        this.totalLogistic = this.totalLogistic + parseInt(element.total)
+      })
+    },
+    async setUnit(value) {
+      this.unitList = await this.$store.dispatch('logistics/getListApdUnit', value)
     },
     async submitData() {
       const valid = await this.$refs.observer.validate()

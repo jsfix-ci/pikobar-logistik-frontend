@@ -349,14 +349,10 @@
                 <td>{{ item.realization_date || '-' }}</td>
                 <td>{{ item.statusLabel }}</td>
                 <td v-if="isVerified">
-                  <v-btn text small color="info" @click.stop="showForm = true" @click="updateIndex = index">
+                  <v-btn text small color="info" @click.stop="openForm(item.product)" @click="updateIndex = index">
                     {{ $t('label.update') }}
                   </v-btn>
                 </td>
-                <updateKebutuhanLogistik
-                  :show="showForm"
-                  :item="listLogisticNeeds[updateIndex]"
-                />
               </tr>
             </tbody>
           </template>
@@ -396,6 +392,11 @@
     </v-card>
     <br>
     <CheckStockDialog :dialog-show="dialogStock" />
+    <updateKebutuhanLogistik
+      ref="updateForm"
+      :show="showForm"
+      :item="listLogisticNeeds[updateIndex]"
+    />
   </div>
 </template>
 
@@ -475,6 +476,10 @@ export default {
   methods: {
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
+    },
+    openForm(value) {
+      this.showForm = true
+      this.$refs.updateForm.setUnit(value.id)
     },
     async getListDetail() {
       await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
