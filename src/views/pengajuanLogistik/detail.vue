@@ -231,7 +231,6 @@
       </v-row>
     </div>
     <div>
-      <br>
       <v-row>
         <v-col>
           <span class="text-data-green">
@@ -313,51 +312,93 @@
       </v-row>
     </div>
     <div>
-      <v-card outlined>
-        <v-simple-table>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.description').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.total').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.purpose').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.urgency_level').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
-                <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
-                <th v-if="isVerified" class="text-left">{{ $t('label.action') }}</th>
-              </tr>
-            </thead>
-            <tbody v-if="loaded">
-              <tr v-if="listLogisticNeeds.length === 0">
-                <td class="text-center" :colspan="7">{{ $t('label.no_data') }}</td>
-              </tr>
-              <tr v-for="(item, index) in listLogisticNeeds" v-else :key="item.index">
-                <td>{{ getTableRowNumbering(index) }}</td>
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.brand }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.unit.unit }}</td>
-                <td>{{ item.usage }}</td>
-                <td>{{ item.priority }}</td>
-                <td><v-btn small color="success" dark @click="getStockItem(item.product.name)">{{ $t('label.check_stock') }}</v-btn></td>
-                <td>{{ item.realization_quantity || '-' }}</td>
-                <td>{{ item.realization_date || '-' }}</td>
-                <td>{{ item.statusLabel }}</td>
-                <td v-if="isVerified">
-                  <v-btn text small color="info" @click.stop="openForm(item.product)" @click="updateIndex = index">
-                    {{ $t('label.update') }}
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </v-card>
+      <v-row>
+        <v-col>
+          <span class="text-data-green">
+            {{ $t('label.applicant_letter') }}
+          </span>
+        </v-col>
+      </v-row>
+    </div>
+    <v-row>
+      <v-col>
+        <v-card outlined>
+          <v-card-text>
+            <v-row class="ml-2">
+              <v-col cols="6" md="6">
+                <a :href="detailLogisticRequest.letter.letter" target="_blank" class="blue--text letter-class"><u>{{ $t('label.applicant_letter') }}</u></a>
+              </v-col>
+              <v-col cols="6" md="6">
+                <div class="margin-top-min-20">
+                  <a :href="detailLogisticRequest.letter.letter" target="_blank">
+                    <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="updateName = true">
+                      {{ $t('label.download') }}
+                    </v-btn>
+                  </a>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <div>
+      <v-row>
+        <v-col>
+          <span class="text-data-green">
+            {{ $t('label.list_logistic_need') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card outlined>
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.description').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.total').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.purpose').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.urgency_level').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
+                    <th v-if="isVerified" class="text-left">{{ $t('label.action') }}</th>
+                  </tr>
+                </thead>
+                <tbody v-if="loaded">
+                  <tr v-if="listLogisticNeeds.length === 0">
+                    <td class="text-center" :colspan="7">{{ $t('label.no_data') }}</td>
+                  </tr>
+                  <tr v-for="(item, index) in listLogisticNeeds" v-else :key="item.index">
+                    <td>{{ getTableRowNumbering(index) }}</td>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.brand }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.unit.unit }}</td>
+                    <td>{{ item.usage }}</td>
+                    <td>{{ item.priority }}</td>
+                    <td><v-btn small color="success" dark @click="getStockItem(item.product.name)">{{ $t('label.check_stock') }}</v-btn></td>
+                    <td>{{ item.realization_quantity || '-' }}</td>
+                    <td>{{ item.realization_date || '-' }}</td>
+                    <td>{{ item.statusLabel }}</td>
+                    <td v-if="isVerified">
+                      <v-btn text small color="info" @click.stop="openForm(item.product)" @click="updateIndex = index">
+                        {{ $t('label.update') }}
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-card>
+        </v-col>
+      </v-row>
       <v-pagination
         v-model="listQuery.page"
         :length="totalLogisticNeeds"
@@ -365,31 +406,6 @@
         @input="onNext"
       />
     </div>
-    <div class="text-title-green">{{ $t('label.step_title_4') }}</div>
-    <v-card outlined>
-      <v-row class="ml-2">
-        <v-col cols="1" md="1">
-          <span class="text-title-green">#</span>
-        </v-col>
-        <v-col cols="3" md="3">
-          <span class="text-title-green">{{ $t('label.letter_number') }}</span>
-        </v-col>
-      </v-row>
-      <v-row class="ml-2">
-        <v-col cols="1" md="1">
-          <span>1</span>
-        </v-col>
-        <v-col cols="3" md="3">
-          <span class="grey--text">{{ detailLogisticRequest.applicant.application_letter_number }}</span>
-        </v-col>
-        <v-col cols="4" md="4">
-          <a :href="detailLogisticRequest.letter.letter" target="_blank" class="blue--text"><u>{{ $t('label.applicant_letter') }}</u></a>
-        </v-col>
-        <v-col>
-          <a :href="detailLogisticRequest.letter.letter" target="_blank" class="green--text">{{ $t('label.download') }}</a>
-        </v-col>
-      </v-row>
-    </v-card>
     <br>
     <CheckStockDialog :dialog-show="dialogStock" />
     <updateKebutuhanLogistik
@@ -589,9 +605,6 @@ export default {
   line-height: 19px;
   color: #219653;
 }
-.margin-btn {
-  /* margin: -30%; */
-}
 .margin-left-min-30 {
   margin-left: -30px;
 }
@@ -600,6 +613,9 @@ export default {
 }
 .margin-top-min-15 {
   margin-top: -15px
+}
+.margin-top-min-20 {
+  margin-top: -30px
 }
 .d-none {
   display: none;
@@ -611,7 +627,6 @@ export default {
 .letter-class {
   color: #2D9CDB !important;
   font-family: "Product Sans";
-  font-style: italic;
   font-weight: normal;
   font-size: 16px;
   line-height: 19px;
