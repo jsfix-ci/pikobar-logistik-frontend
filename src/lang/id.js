@@ -222,6 +222,7 @@ export default {
     date_placeholder: 'Tanggal/Bulan/Tahun',
     date_dashboard_placeholder: 'Tanggal/Bulan/Tahun - Tanggal/Bulan/Tahun',
     list_request_logistic_medic: 'Daftar Pengajuan Logistik Medis',
+    detail_request_logistic_medic: 'Detail Pengajuan Logistik Medis',
     created_date: 'Tanggal Dibuat',
     search_data: 'Cari Data',
     verif_now: 'Verifikasi Sekarang',

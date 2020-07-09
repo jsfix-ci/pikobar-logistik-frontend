@@ -3,7 +3,7 @@
     <div>
       <v-row>
         <v-col cols="12" sm="12">
-          <span class="table-title">{{ $t('label.list_request_logistic_medic') }}</span>
+          <span class="table-title">{{ $t('label.detail_request_logistic_medic') }}</span>
         </v-col>
       </v-row>
       <v-row>
@@ -110,7 +110,7 @@
               {{ $t('route.rejected_title') }}
             </v-btn>
             <v-btn
-              v-if="isVerified && isStock && !isApproved"
+              v-if="isVerified && !isApproved"
               outlined
               color="#e62929"
               class="margin-btn"
@@ -432,7 +432,6 @@ export default {
       showDialogReasonReject: false,
       updateIndex: null,
       loaded: false,
-      isStock: true,
       dialogStock: false
     }
   },
@@ -453,7 +452,6 @@ export default {
     this.isVerified = this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi'
     this.isRejected = this.detailLogisticRequest.applicant.verification_status === 'Pengajuan Ditolak'
     this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
-    this.isStock = this.detailLogisticRequest.applicant.stock_checking_status === 'checked'
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
     })
