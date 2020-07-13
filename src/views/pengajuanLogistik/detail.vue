@@ -206,7 +206,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.village.kemendagri_desa_nama }}
+                      {{ detailLogisticRequest.village ? detailLogisticRequest.village.kemendagri_desa_nama : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
