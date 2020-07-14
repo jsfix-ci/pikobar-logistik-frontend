@@ -180,11 +180,11 @@ export default {
   methods: {
     getStockItem() {
       this.dialogStock = true
-      this.getStock(this.item.product.name)
+      this.getStock(this.data.apd || this.item.product.id)
     },
     async getStock(value) {
       const param = {
-        material_group: await value
+        id: await value
       }
       await this.$store.dispatch('logistics/getStock', param)
     },
@@ -212,8 +212,8 @@ export default {
         return
       }
       this.data.need_id = this.item.id
-      this.data.unit_id = this.item.unit.id
-      this.data.product_id = this.item.product_id
+      this.data.unit_id = this.data.unitId || this.item.unit.id
+      this.data.product_id = this.data.apd || this.item.product_id
       this.data.agency_id = this.item.agency_id
       await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
       window.location.reload()

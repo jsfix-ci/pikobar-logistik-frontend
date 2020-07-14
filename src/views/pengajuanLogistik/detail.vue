@@ -383,7 +383,7 @@
                     <td>{{ item.unit.unit || '-' }}</td>
                     <td>{{ item.usage || '-' }}</td>
                     <td>{{ item.priority || '-' }}</td>
-                    <td><v-btn small color="success" dark @click="getStockItem('item.product.name')">{{ $t('label.check_stock') }}</v-btn></td>
+                    <td><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
                     <td>{{ item.realization_quantity || '-' }}</td>
                     <td>{{ item.realization_date || '-' }}</td>
                     <td>{{ item.statusLabel || '-' }}</td>
@@ -527,7 +527,7 @@ export default {
     },
     async getStock(value) {
       const param = {
-        material_group: await value
+        id: await value
       }
       await this.$store.dispatch('logistics/getStock', param)
     },
@@ -547,6 +547,9 @@ export default {
             break
           case 'not_available':
             element.statusLabel = this.$t('label.not_available')
+            break
+          case 'replaced':
+            element.statusLabel = this.$t('label.replaced')
             break
           default:
             element.statusLabel = this.$t('label.not_approved')
