@@ -152,20 +152,16 @@ export default {
       labelDate: this.$t('label.input_date'),
       status: [
         {
-          text: this.$t('label.approved'),
+          text: this.$t('label.approved_item'),
           value: 'approved'
-        },
-        {
-          text: this.$t('label.not_delivered'),
-          value: 'not_delivered'
-        },
-        {
-          text: this.$t('label.delivered'),
-          value: 'delivered'
         },
         {
           text: this.$t('label.not_available'),
           value: 'not_avalivable'
+        },
+        {
+          text: this.$t('label.replaced'),
+          value: 'replaced'
         }
       ]
     }
