@@ -55,7 +55,7 @@
             v-if="isVerified && !isApproved"
             class="text-data-green"
           >
-            :  {{ detailLogisticRequest.applicant.verification_status }}
+            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}
           </span>
           <span
             v-else-if="isApproved"
@@ -67,7 +67,7 @@
             v-else
             class="text-data-red"
           >
-            :  {{ detailLogisticRequest.applicant.verification_status }}
+            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}
           </span>
         </v-col>
         <v-col cols="5" sm="5">
@@ -125,12 +125,12 @@
       <rejectKebutuhanLogistik
         :show="showDialogReject"
         :item="detailLogisticRequest"
-        :total="listLogisticNeeds[0].logistic_item_summary"
+        :total="listLogisticNeeds.length > 0 ? listLogisticNeeds[0].logistic_item_summary : null"
       />
       <reasonDeniedLogisticNeeds
         :show="showDialogReasonReject"
         :item="detailLogisticRequest"
-        :total="listLogisticNeeds[0].logistic_item_summary"
+        :total="listLogisticNeeds.length > 0 ? listLogisticNeeds[0].logistic_item_summary : null"
       />
     </div>
     <div>
@@ -157,7 +157,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.master_faskes_type.name }}
+                      {{ detailLogisticRequest.master_faskes_type ? detailLogisticRequest.master_faskes_type.name : '-' }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -166,7 +166,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.city.kemendagri_kabupaten_nama }}
+                      {{ detailLogisticRequest.city ? detailLogisticRequest.city.kemendagri_kabupaten_nama : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -186,7 +186,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.sub_district.kemendagri_kecamatan_nama }}
+                      {{ detailLogisticRequest.sub_district ? detailLogisticRequest.sub_district.kemendagri_kecamatan_nama : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -197,7 +197,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.phone_number }}
+                      {{ detailLogisticRequest.phone_number || '-' }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -253,7 +253,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant.applicant_name }}
+                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.applicant_name : '-' }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -262,7 +262,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant.email }}
+                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.email : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -273,7 +273,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant.applicants_office }}
+                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.applicants_office : '-' }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -282,7 +282,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant.primary_phone_number }}
+                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.primary_phone_number : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -293,7 +293,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant.secondary_phone_number }}
+                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.secondary_phone_number : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -301,9 +301,9 @@
               <v-col class="margin-20" cols="12" sm="4" md="4">
                 <v-row><span class="text-title-green">{{ $t('label.applicant_ktp') }}</span></v-row>
                 <v-row>
-                  <v-label v-if="detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant.file }}</v-label>
-                  <a v-else-if="detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant.file }}</a>
-                  <img v-else class="image-style" :src="detailLogisticRequest.applicant.file">
+                  <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
+                  <a v-else-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</a>
+                  <img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-'">
                 </v-row>
               </v-col>
             </v-row>
@@ -326,11 +326,11 @@
           <v-card-text>
             <v-row class="ml-2">
               <v-col cols="6" md="6">
-                <a :href="detailLogisticRequest.letter.letter" target="_blank" class="blue--text letter-class"><u>{{ $t('label.applicant_letter') }}</u></a>
+                <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ $t('label.applicant_letter') }}</u></a>
               </v-col>
               <v-col cols="6" md="6">
                 <div class="margin-top-min-20">
-                  <a :href="detailLogisticRequest.letter.letter" target="_blank">
+                  <a :href="detailLogisticRequest.letter ?detailLogisticRequest.letter.letter : '#'" target="_blank">
                     <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="updateName = true">
                       {{ $t('label.download') }}
                     </v-btn>
@@ -377,16 +377,16 @@
                   </tr>
                   <tr v-for="(item, index) in listLogisticNeeds" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
-                    <td>{{ item.product.name }}</td>
-                    <td>{{ item.brand }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.unit.unit }}</td>
-                    <td>{{ item.usage }}</td>
-                    <td>{{ item.priority }}</td>
-                    <td><v-btn small color="success" dark @click="getStockItem(item.product.name)">{{ $t('label.check_stock') }}</v-btn></td>
+                    <td>{{ item.product ? item.product.name : '-' }}</td>
+                    <td>{{ item.brand || '-' }}</td>
+                    <td>{{ item.quantity || '-' }}</td>
+                    <td>{{ item.unit.unit || '-' }}</td>
+                    <td>{{ item.usage || '-' }}</td>
+                    <td>{{ item.priority || '-' }}</td>
+                    <td><v-btn small color="success" dark @click="getStockItem('item.product.name')">{{ $t('label.check_stock') }}</v-btn></td>
                     <td>{{ item.realization_quantity || '-' }}</td>
                     <td>{{ item.realization_date || '-' }}</td>
-                    <td>{{ item.statusLabel }}</td>
+                    <td>{{ item.statusLabel || '-' }}</td>
                     <td v-if="isVerified">
                       <v-btn text small color="info" @click.stop="openForm(item.product)" @click="updateIndex = index">
                         {{ $t('label.update') }}

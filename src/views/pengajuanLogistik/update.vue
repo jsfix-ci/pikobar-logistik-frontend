@@ -15,7 +15,7 @@
             <v-icon left>mdi-pencil</v-icon>{{ $t('label.edit') }}
           </v-btn>
           <br>
-          <span class="value-sub-title-update-logistic-needs">{{ item.product.name || '-' }}</span>
+          <span class="value-sub-title-update-logistic-needs">{{ item ? item.product.name : '-' }}</span>
         </v-col>
         <v-col v-else class="margin-top-min-10-update-logistic-needs">
           <ValidationProvider
@@ -39,7 +39,7 @@
         <v-col class="margin-top-min-30-update-logistic-needs">
           <span class="sub-title-update-logistic-needs">{{ $t('label.total_needs') }}</span>
           <br>
-          <span class="value-sub-title-update-logistic-needs">{{ item.quantity }}</span>
+          <span class="value-sub-title-update-logistic-needs">{{ item ? item.quantity : '-' }}</span>
         </v-col>
         <v-col class="margin-top-min-10-update-logistic-needs">
           <v-row>
