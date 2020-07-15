@@ -107,6 +107,26 @@ export default {
       return e
     }
   },
+  async postUpdateLogisticNeedsAdmin({ commit }, params) {
+    try {
+      params.realization_quantity = parseInt(params.realization_quantity)
+      const response = await doPostUpdate('/api/v1/logistic-admin-realization', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getLogisticNeedsAdmin({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/logistic-admin-realization', 'GET', params)
+      commit('SET_LIST_REALIZATION', response.data.data)
+      commit('SET_TOTAL_LIST_REALIZATION', response.data.last_page)
+      commit('SET_TOTAL_DATA_REALIZATION', response.data.total)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getLogisticRequestSummary({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/logistic-request-summary', 'GET', params)

@@ -16,7 +16,10 @@ const state = {
   dataFaskesTypeTotalRequest: [],
   dataProductTotalRequest: [],
   dataCityTotalRequest: [],
-  listStock: []
+  listStock: [],
+  listRealization: [],
+  totalListRealization: 0,
+  totalDataRealization: 0
 }
 
 export default {

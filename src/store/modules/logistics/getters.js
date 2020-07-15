@@ -40,5 +40,14 @@ export default {
   },
   listStock: (state) => {
     return state.listStock
+  },
+  listRealization: (state) => {
+    return state.listRealization
+  },
+  totalListRealization: (state) => {
+    return state.totalListRealization
+  },
+  totalDataRealization: (state) => {
+    return state.totalDataRealization
   }
 }
