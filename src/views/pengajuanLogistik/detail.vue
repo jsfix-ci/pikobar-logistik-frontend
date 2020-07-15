@@ -388,7 +388,7 @@
                     <td>{{ item.realization_date || '-' }}</td>
                     <td>{{ item.statusLabel || '-' }}</td>
                     <td v-if="isVerified">
-                      <v-btn text small color="info" @click.stop="openForm(item.product)" @click="updateIndex = index">
+                      <v-btn text small color="info" @click.stop="openForm(false, item.product, index)">
                         {{ $t('label.update') }}
                       </v-btn>
                     </td>
@@ -417,16 +417,17 @@
       </div>
       <v-row>
         <v-col>
-          <v-card
-            outlined
-            class="mx-auto"
-            style="height: 100px"
-          >
-            <div>
-              <v-btn small outlined color="success" width="130px" height="50px" absolute right style="margin-bottom: 30px" @click="updateName = true">
-                {{ $t('label.download') }}
-              </v-btn>
-            </div>
+          <v-card outlined min-height="100">
+            <v-card-text>
+              <v-row>
+                <v-col>
+                  <v-btn outlined color="success" height="50px" absolute right @click.stop="openForm(true)">
+                    <v-icon dark>mdi-plus</v-icon>
+                    {{ $t('label.add_distribution_realization') }}
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -436,7 +437,6 @@
     <updateKebutuhanLogistik
       ref="updateForm"
       :show="showForm"
-      :item="listLogisticNeeds[updateIndex]"
     />
   </div>
 </template>
@@ -463,6 +463,7 @@ export default {
       isVerified: false,
       isRejected: false,
       isApproved: false,
+      isCreate: false,
       listQuery: {
         page: 1,
         limit: 3,
@@ -471,9 +472,9 @@ export default {
       showForm: false,
       showDialogReject: false,
       showDialogReasonReject: false,
-      updateIndex: null,
       loaded: false,
-      dialogStock: false
+      dialogStock: false,
+      logisticNeeds: []
     }
   },
   computed: {
@@ -516,9 +517,14 @@ export default {
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
     },
-    openForm(value) {
+    openForm(type, value, index) {
       this.showForm = true
-      this.$refs.updateForm.setUnit(value.id)
+      this.isCreate = type
+      if (type === true) {
+        this.$refs.updateForm.setDialog(type)
+      } else {
+        this.$refs.updateForm.setDialog(type, value.id, this.listLogisticNeeds[index])
+      }
     },
     async getListDetail() {
       await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)

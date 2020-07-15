@@ -7,7 +7,8 @@
     <v-card>
       <ValidationObserver ref="observer">
         <v-col>
-          <span class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</span>
+          <span v-if="isCreate" class="title-update-logistic-needs">{{ $t('label.add_distribution_realization') }}</span>
+          <span v-else class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</span>
         </v-col>
         <v-col v-if="updateName === false" class="mb-30">
           <span class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
@@ -15,9 +16,9 @@
             <v-icon left>mdi-pencil</v-icon>{{ $t('label.edit') }}
           </v-btn>
           <br>
-          <span class="value-sub-title-update-logistic-needs">{{ item ? item.product.name : '-' }}</span>
+          <span class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
         </v-col>
-        <v-col v-else class="margin-top-min-10-update-logistic-needs">
+        <v-col v-else>
           <ValidationProvider
             v-slot="{ errors }"
             rules="requiredAPDName"
@@ -36,12 +37,12 @@
             />
           </ValidationProvider>
         </v-col>
-        <v-col class="margin-top-min-30-update-logistic-needs">
+        <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
           <span class="sub-title-update-logistic-needs">{{ $t('label.total_needs') }}</span>
           <br>
           <span class="value-sub-title-update-logistic-needs">{{ item ? item.quantity : '-' }}</span>
         </v-col>
-        <v-col class="margin-top-min-10-update-logistic-needs">
+        <v-col class="margin-top-min-20-update-logistic-needs">
           <v-row>
             <v-col cols="5">
               <span class="sub-title-update-logistic-needs">{{ $t('label.realization_amount') }}</span>
@@ -58,7 +59,7 @@
             </v-col>
             <v-col cols="4">
               <span class="sub-title-update-logistic-needs">{{ $t('label.unit') }}</span>
-              <ValidationProvider
+              <!-- <ValidationProvider
                 v-slot="{ errors }"
                 rules="requiredUnit"
               >
@@ -72,7 +73,7 @@
                   item-value="unit_id"
                   item-text="unit"
                 />
-              </ValidationProvider>
+              </ValidationProvider> -->
             </v-col>
             <v-col cols="3">
               <div class="mt-30" style="margin-top: 30px">
@@ -130,21 +131,19 @@ export default {
     show: {
       type: Boolean,
       default: null
-    },
-    item: {
-      type: Object,
-      default: null
-    },
-    isOpen: {
-      type: Boolean,
-      default: false
     }
+    // item: {
+    //   type: Object,
+    //   default: null
+    // }
   },
   data() {
     return {
       data: {},
+      item: {},
       dialogStock: false,
       updateName: false,
+      isCreate: false,
       unitList: [],
       unitId: null,
       dialog: false,
@@ -192,8 +191,8 @@ export default {
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
         element.value = {
-          id: element.id,
-          name: element.name
+          id: element.id
+          // name: element.name
         }
       })
     },
@@ -203,7 +202,23 @@ export default {
         this.totalLogistic = this.totalLogistic + parseInt(element.total)
       })
     },
+    setDialog(type, value, data) {
+      console.log({ type, value, data })
+      this.isCreate = type
+      this.updateName = type
+      if (type === false) {
+        this.item = data
+        this.setUnit(value)
+      }
+    },
+    setCreate(type) {
+      console.log('terpanggil create')
+      this.isCreate = type
+      this.updateName = type
+    },
     async setUnit(value) {
+      this.isCreate = false
+      this.updateName = false
       this.unitList = await this.$store.dispatch('logistics/getListApdUnit', value)
     },
     async submitData() {
@@ -260,6 +275,9 @@ export default {
   }
   .margin-top-min-30-update-logistic-needs {
     margin-top: -30px;
+  }
+  .margin-top-min-20-update-logistic-needs {
+    margin-top: -25px;
   }
   .margin-btn-update-logistic-needs {
     margin: 5px;
