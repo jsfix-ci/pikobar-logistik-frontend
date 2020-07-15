@@ -18,7 +18,7 @@
           <br>
           <span class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
         </v-col>
-        <v-col v-else>
+        <v-col v-else-if="updateName === true">
           <ValidationProvider
             v-slot="{ errors }"
             rules="requiredAPDName"
@@ -106,7 +106,8 @@
         </v-col>
         <v-col class="margin-top-min-30-update-logistic-needs">
           <v-btn class="margin-btn-update-logistic-needs" outlined @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
-          <v-btn class="margin-btn-update-logistic-needs" color="success" @click="submitData">{{ $t('label.update') }}</v-btn>
+          <v-btn v-if="isCreate" class="margin-btn-update-logistic-needs" color="success" @click="submitData(true)">{{ $t('label.add') }}</v-btn>
+          <v-btn v-else class="margin-btn-update-logistic-needs" color="success" @click="submitData(false)">{{ $t('label.update') }}</v-btn>
         </v-col>
       </ValidationObserver>
     </v-card>
@@ -132,10 +133,6 @@ export default {
       type: Boolean,
       default: null
     }
-    // item: {
-    //   type: Object,
-    //   default: null
-    // }
   },
   data() {
     return {
@@ -148,6 +145,7 @@ export default {
       unitId: null,
       dialog: false,
       date: null,
+      agency_id: null,
       labelDate: this.$t('label.input_date'),
       status: [
         {
@@ -156,7 +154,7 @@ export default {
         },
         {
           text: this.$t('label.not_available'),
-          value: 'not_avalivable'
+          value: 'not_available'
         },
         {
           text: this.$t('label.replaced'),
@@ -202,36 +200,38 @@ export default {
         this.totalLogistic = this.totalLogistic + parseInt(element.total)
       })
     },
-    setDialog(type, value, data) {
-      console.log({ type, value, data })
+    setDialog(type, data, value) {
+      console.log(type, data, value)
       this.isCreate = type
       this.updateName = type
       if (type === false) {
         this.item = data
         this.setUnit(value)
+      } else {
+        this.agency_id = data
       }
     },
-    setCreate(type) {
-      console.log('terpanggil create')
-      this.isCreate = type
-      this.updateName = type
-    },
     async setUnit(value) {
-      this.isCreate = false
-      this.updateName = false
       this.unitList = await this.$store.dispatch('logistics/getListApdUnit', value)
     },
-    async submitData() {
+    async submitData(value) {
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
       }
-      this.data.need_id = this.item.id
-      this.data.unit_id = this.data.unitId || this.item.unit.id
-      this.data.product_id = this.data.apd || this.item.product_id
-      this.data.agency_id = this.item.agency_id
-      await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
-      window.location.reload()
+      if (value === true) {
+        this.data.agency_id = this.agency_id
+        this.data.product_id = this.data.apd
+        this.data.unit_id = 1
+        await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
+      } else {
+        this.data.need_id = this.item.id
+        this.data.unit_id = this.data.unitId || this.item.unit.id
+        this.data.product_id = this.data.apd || this.item.product_id
+        this.data.agency_id = this.item.agency_id
+        await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
+      }
+      // window.location.reload()
     },
     hideDialog() {
       EventBus.$emit('dialogHide', false)
