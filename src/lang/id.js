@@ -92,7 +92,7 @@ export default {
     export_button: 'Export Data',
     number: 'No',
     delivered_kit: 'Kit Terkirim',
-    action: 'Action',
+    action: 'Aksi',
     edit_2: 'Edit',
     kit_received: 'Kit Diterima',
     kit_available: 'Kit Tersedia',
