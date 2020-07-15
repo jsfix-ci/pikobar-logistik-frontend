@@ -47,10 +47,6 @@ export default {
     dialogShow: {
       type: Boolean,
       default: false
-    },
-    param: {
-      type: String,
-      default: null
     }
   },
   data() {

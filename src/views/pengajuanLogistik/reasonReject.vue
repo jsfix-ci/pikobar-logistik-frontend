@@ -11,7 +11,7 @@
         <v-col>
           <span class="sub-title-reject-reason">{{ $t('label.instance_type') }}</span>
           <br>
-          <span class="grey--text">{{ item.master_faskes_type.name }}</span>
+          <span class="grey--text">{{ item.master_faskes_type ? item.master_faskes_type.name : '-' }}</span>
         </v-col>
         <v-col>
           <span class="sub-title-reject-reason">{{ $t('label.instance_name') }}</span>
@@ -26,7 +26,7 @@
         <v-col>
           <span class="sub-title-reject-reason">{{ $t('label.reason_reject') }}</span>
           <br>
-          <span class="grey--text">{{ item.applicant.note }}</span>
+          <span class="grey--text">{{ item.applicant ? item.applicant.note : '-' }}</span>
         </v-col>
       </div>
 

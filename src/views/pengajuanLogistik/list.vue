@@ -131,9 +131,9 @@
         style="margin: 13px"
       >
         <v-list-item>
-          <v-list-item-conten>
+          <v-list-item-content>
             {{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}
-          </v-list-item-conten>
+          </v-list-item-content>
         </v-list-item>
       </v-card>
       <pagination
