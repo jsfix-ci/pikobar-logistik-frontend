@@ -368,7 +368,7 @@
                     <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
-                    <th v-if="isVerified" class="text-left">{{ $t('label.action') }}</th>
+                    <th v-if="isVerified" class="text-left">{{ $t('label.action').toUpperCase() }}</th>
                   </tr>
                 </thead>
                 <tbody v-if="loaded">
@@ -425,6 +425,85 @@
                     <v-icon dark>mdi-plus</v-icon>
                     {{ $t('label.add_distribution_realization') }}
                   </v-btn>
+                  <v-simple-table style="margin-top: 70px">
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
+                          <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                          <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
+                          <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
+                          <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
+                          <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
+                          <th v-if="isVerified" class="text-left">{{ $t('label.action').toUpperCase() }}</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="loaded">
+                        <tr v-if="listRealization.length === 0">
+                          <td class="text-center" :colspan="7">{{ $t('label.no_data') }}</td>
+                        </tr>
+                        <tr v-for="(item, index) in listRealization" v-else :key="item.index">
+                          <td>{{ getTableRowNumbering(index) }}</td>
+                          <td>{{ item.product ? item.product.name : '-' }}</td>
+                          <td>{{ item.realization_quantity || '-' }}</td>
+                          <td>{{ item.unit.unit || '-' }}</td>
+                          <td>{{ item.realization_date || '-' }}</td>
+                          <td>{{ item.statusLabel || '-' }}</td>
+                          <td v-if="isVerified">
+                            <v-card-actions>
+                              <v-menu
+                                :close-on-content-click="false"
+                                :nudge-width="0"
+                                :nudge-left="0"
+                                :nudge-top="0"
+                                offset-y
+                              >
+                                <template v-slot:activator="{ on }">
+                                  <v-btn
+                                    class="ma-1"
+                                    color="#828282"
+                                    style="text-transform: none;height: 30px;min-width: 50px;"
+                                    tile
+                                    outlined
+                                    v-on="on"
+                                  >
+                                    Pilih aksi<v-icon style="color: #009D57;font-size: 2rem;" right>mdi-menu-down</v-icon>
+                                  </v-btn>
+                                </template>
+                                <v-card>
+                                  <v-list-item>
+                                    Update
+                                  </v-list-item>
+                                  <v-list-item>
+                                    Hapus
+                                  </v-list-item>
+                                </v-card>
+                              </v-menu>
+                            </v-card-actions>
+                            <!-- <ul>
+                              <li>
+                                <v-btn text small color="info" @click.stop="openForm(false, item.product, index)">
+                                  {{ $t('label.update') }}
+                                </v-btn>
+                              </li>
+                              <li>
+                                <v-btn text small color="info" @click.stop="openForm(false, item.product, index)">
+                                  {{ $t('label.update') }}
+                                </v-btn>
+                              </li>
+                            </ul> -->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+                  <br>
+                  <v-pagination
+                    v-model="listQuery.page"
+                    :length="totalListRealization"
+                    :total-visible="3"
+                    @input="onNext"
+                  />
                 </v-col>
               </v-row>
             </v-card-text>
@@ -467,7 +546,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 3,
-        agency_id: ''
+        agency_id: null
       },
       showForm: false,
       showDialogReject: false,
@@ -482,6 +561,9 @@ export default {
       'detailLogisticRequest',
       'listLogisticNeeds',
       'totalLogisticNeeds',
+      'listRealization',
+      'totalListRealization',
+      'totalDataRealization',
       'listStock'
     ])
   },
@@ -489,6 +571,7 @@ export default {
     this.listQuery.agency_id = this.$route.params.id
     await this.getListDetail()
     await this.getListDetailNeeds()
+    await this.getListRealizationAdmin()
     const temp = this.detailLogisticRequest.letter.letter.split('.')
     this.letterFileType = temp[temp.length - 1]
     this.isVerified = this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi'
@@ -521,10 +604,36 @@ export default {
       this.showForm = true
       this.isCreate = type
       if (type === true) {
-        this.$refs.updateForm.setDialog(type)
+        this.$refs.updateForm.setDialog(type, this.listQuery.agency_id)
       } else {
-        this.$refs.updateForm.setDialog(type, value.id, this.listLogisticNeeds[index])
+        this.$refs.updateForm.setDialog(type, this.listLogisticNeeds[index], value.id)
       }
+    },
+    async getListRealizationAdmin() {
+      this.loaded = false
+      await this.$store.dispatch('logistics/getLogisticNeedsAdmin', this.listQuery)
+      this.listRealization.forEach(element => {
+        switch (element.status) {
+          case 'approved':
+            element.statusLabel = this.$t('label.approved')
+            break
+          case 'not_delivered':
+            element.statusLabel = this.$t('label.not_delivered')
+            break
+          case 'delivered':
+            element.statusLabel = this.$t('label.delivered')
+            break
+          case 'not_available':
+            element.statusLabel = this.$t('label.not_available')
+            break
+          case 'replaced':
+            element.statusLabel = this.$t('label.replaced')
+            break
+          default:
+            element.statusLabel = this.$t('label.not_approved')
+        }
+      })
+      this.loaded = true
     },
     async getListDetail() {
       await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
@@ -551,7 +660,7 @@ export default {
           case 'delivered':
             element.statusLabel = this.$t('label.delivered')
             break
-          case 'not_available':
+          case 'not_avalivable':
             element.statusLabel = this.$t('label.not_available')
             break
           case 'replaced':
