@@ -59,12 +59,12 @@
             </v-col>
             <v-col cols="4">
               <span class="sub-title-update-logistic-needs">{{ $t('label.unit') }}</span>
-              <!-- <ValidationProvider
+              <ValidationProvider
                 v-slot="{ errors }"
                 rules="requiredUnit"
               >
                 <v-autocomplete
-                  v-model="data.unitId"
+                  v-model="data.unit_id"
                   :items="unitList"
                   outlined
                   solo-inverted
@@ -73,9 +73,9 @@
                   item-value="unit_id"
                   item-text="unit"
                 />
-              </ValidationProvider> -->
+              </ValidationProvider>
             </v-col>
-            <v-col cols="3">
+            <v-col v-if="(isCreate && data.apd) || !isCreate " cols="3">
               <div class="mt-30" style="margin-top: 30px">
                 <v-btn small color="success" height="45px" dark @click="getStockItem()">{{ $t('label.check_stock') }}</v-btn>
               </div>
@@ -189,8 +189,8 @@ export default {
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
         element.value = {
-          id: element.id
-          // name: element.name
+          id: element.id,
+          name: element.name
         }
       })
     },
@@ -201,7 +201,6 @@ export default {
       })
     },
     setDialog(type, data, value) {
-      console.log(type, data, value)
       this.isCreate = type
       this.updateName = type
       if (type === false) {
@@ -222,16 +221,14 @@ export default {
       if (value === true) {
         this.data.agency_id = this.agency_id
         this.data.product_id = this.data.apd
-        this.data.unit_id = 1
         await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
       } else {
         this.data.need_id = this.item.id
-        this.data.unit_id = this.data.unitId || this.item.unit.id
         this.data.product_id = this.data.apd || this.item.product_id
         this.data.agency_id = this.item.agency_id
         await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
       }
-      // window.location.reload()
+      window.location.reload()
     },
     hideDialog() {
       EventBus.$emit('dialogHide', false)

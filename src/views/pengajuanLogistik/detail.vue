@@ -472,26 +472,18 @@
                                 </template>
                                 <v-card>
                                   <v-list-item>
-                                    Update
+                                    <v-btn text small color="info">
+                                      {{ $t('label.update') }}
+                                    </v-btn>
                                   </v-list-item>
                                   <v-list-item>
-                                    Hapus
+                                    <v-btn text small color="info">
+                                      {{ $t('label.delete') }}
+                                    </v-btn>
                                   </v-list-item>
                                 </v-card>
                               </v-menu>
                             </v-card-actions>
-                            <!-- <ul>
-                              <li>
-                                <v-btn text small color="info" @click.stop="openForm(false, item.product, index)">
-                                  {{ $t('label.update') }}
-                                </v-btn>
-                              </li>
-                              <li>
-                                <v-btn text small color="info" @click.stop="openForm(false, item.product, index)">
-                                  {{ $t('label.update') }}
-                                </v-btn>
-                              </li>
-                            </ul> -->
                           </td>
                         </tr>
                       </tbody>
@@ -660,7 +652,7 @@ export default {
           case 'delivered':
             element.statusLabel = this.$t('label.delivered')
             break
-          case 'not_avalivable':
+          case 'not_available':
             element.statusLabel = this.$t('label.not_available')
             break
           case 'replaced':
