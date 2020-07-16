@@ -1,4 +1,4 @@
-import { fetchList, doPostUpdate } from '@/api'
+import { fetchList, doPostUpdate, doDetailDelete } from '@/api'
 import request from '@/utils/request'
 
 export default {
@@ -114,6 +114,14 @@ export default {
       return response
     } catch (e) {
       return e
+    }
+  },
+  async deleteRealization({ commit }, id) {
+    try {
+      const response = await doDetailDelete(`/api/v1/logistic-admin-realization`, 'DELETE', id)
+      return response
+    } catch (error) {
+      return error.response
     }
   },
   async getLogisticNeedsAdmin({ commit }, params) {
