@@ -472,12 +472,12 @@
                                 </template>
                                 <v-card>
                                   <v-list-item>
-                                    <v-btn text small color="info">
+                                    <v-btn text small color="info" @click="openForm(null, index)">
                                       {{ $t('label.update') }}
                                     </v-btn>
                                   </v-list-item>
                                   <v-list-item>
-                                    <v-btn text small color="info">
+                                    <v-btn text small color="info" @click="deleteRealization(item)">
                                       {{ $t('label.delete') }}
                                     </v-btn>
                                   </v-list-item>
@@ -509,12 +509,20 @@
       ref="updateForm"
       :show="showForm"
     />
+    <DialogDelete
+      :dialog="dialogDelete"
+      :data-deleted="dataDelete"
+      :dialog-delete.sync="dialogDelete"
+      :delete-date.sync="dataDelete"
+      :store-path-delete="`logistics/deleteRealization`"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
+import DialogDelete from '@/components/DialogDelete'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
@@ -526,7 +534,8 @@ export default {
     updateKebutuhanLogistik,
     rejectKebutuhanLogistik,
     reasonDeniedLogisticNeeds,
-    CheckStockDialog
+    CheckStockDialog,
+    DialogDelete
   },
   data() {
     return {
@@ -545,6 +554,8 @@ export default {
       showDialogReasonReject: false,
       loaded: false,
       dialogStock: false,
+      dialogDelete: false,
+      dataDelete: null,
       logisticNeeds: []
     }
   },
@@ -597,9 +608,15 @@ export default {
       this.isCreate = type
       if (type === true) {
         this.$refs.updateForm.setDialog(type, this.listQuery.agency_id)
-      } else {
+      } else if (type === false) {
         this.$refs.updateForm.setDialog(type, this.listLogisticNeeds[index], value.id)
+      } else {
+        this.$refs.updateForm.setDialog(null, this.listRealization[value])
       }
+    },
+    async deleteRealization(item) {
+      this.dialogDelete = true
+      this.dataDelete = await item
     },
     async getListRealizationAdmin() {
       this.loaded = false
