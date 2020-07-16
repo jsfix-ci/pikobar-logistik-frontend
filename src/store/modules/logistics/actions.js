@@ -116,6 +116,16 @@ export default {
       return e
     }
   },
+  async updateLogisticNeedsAdmin({ commit }, params) {
+    const id = params.id
+    try {
+      params.realization_quantity = parseInt(params.realization_quantity)
+      const response = await doPostUpdate(`/api/v1/logistic-admin-realization/${id}`, 'PUT', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async deleteRealization({ commit }, id) {
     try {
       const response = await doDetailDelete(`/api/v1/logistic-admin-realization`, 'DELETE', id)
