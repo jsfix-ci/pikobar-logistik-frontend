@@ -472,7 +472,7 @@
                                 </template>
                                 <v-card>
                                   <v-list-item>
-                                    <v-btn text small color="info" @click="updateRealization(item)">
+                                    <v-btn text small color="info" @click="openForm(null, index)">
                                       {{ $t('label.update') }}
                                     </v-btn>
                                   </v-list-item>
@@ -603,18 +603,20 @@ export default {
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
     },
-    async deleteRealization(item) {
-      this.dialogDelete = true
-      this.dataDelete = await item
-    },
     openForm(type, value, index) {
       this.showForm = true
       this.isCreate = type
       if (type === true) {
         this.$refs.updateForm.setDialog(type, this.listQuery.agency_id)
-      } else {
+      } else if (type === false) {
         this.$refs.updateForm.setDialog(type, this.listLogisticNeeds[index], value.id)
+      } else {
+        this.$refs.updateForm.setDialog(null, this.listRealization[value])
       }
+    },
+    async deleteRealization(item) {
+      this.dialogDelete = true
+      this.dataDelete = await item
     },
     async getListRealizationAdmin() {
       this.loaded = false

@@ -7,7 +7,8 @@
     <v-card>
       <ValidationObserver ref="observer">
         <v-col>
-          <span v-if="isCreate" class="title-update-logistic-needs">{{ $t('label.add_distribution_realization') }}</span>
+          <span v-if="isUpdate" class="title-update-logistic-needs">{{ $t('label.update_distribution_realization') }}</span>
+          <span v-else-if="isCreate" class="title-update-logistic-needs">{{ $t('label.add_distribution_realization') }}</span>
           <span v-else class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</span>
         </v-col>
         <v-col v-if="updateName === false" class="mb-30">
@@ -25,7 +26,7 @@
           >
             <span class="sub-title-update-logistic-needs">{{ $t('label.apd_name_spec') }}</span>
             <v-autocomplete
-              v-model="data.apd"
+              v-model="data.product_id"
               :placeholder="$t('label.choose_apd')"
               :items="listAPD"
               item-text="name"
@@ -33,7 +34,7 @@
               :error-messages="errors"
               outlined
               solo-inverted
-              @change="setUnit(data.apd)"
+              @change="setUnit(data.product_id)"
             />
           </ValidationProvider>
         </v-col>
@@ -75,7 +76,7 @@
                 />
               </ValidationProvider>
             </v-col>
-            <v-col v-if="(isCreate && data.apd) || !isCreate " cols="3">
+            <v-col v-if="(isCreate && data.product_id) || !isCreate " cols="3">
               <div class="mt-30" style="margin-top: 30px">
                 <v-btn small color="success" height="45px" dark @click="getStockItem()">{{ $t('label.check_stock') }}</v-btn>
               </div>
@@ -85,7 +86,7 @@
         <v-col class="margin-top-min-30-update-logistic-needs">
           <span class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <date-picker-input
-            :value="date"
+            :value="data.realization_date"
             @selected="changeDate"
           />
         </v-col>
@@ -106,7 +107,8 @@
         </v-col>
         <v-col class="margin-top-min-30-update-logistic-needs">
           <v-btn class="margin-btn-update-logistic-needs" outlined @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
-          <v-btn v-if="isCreate" class="margin-btn-update-logistic-needs" color="success" @click="submitData(true)">{{ $t('label.add') }}</v-btn>
+          <v-btn v-if="isUpdate === true" class="margin-btn-update-logistic-needs" color="success" @click="submitData()">{{ $t('label.update') }}</v-btn>
+          <v-btn v-else-if="isCreate === true" class="margin-btn-update-logistic-needs" color="success" @click="submitData(true)">{{ $t('label.add') }}</v-btn>
           <v-btn v-else class="margin-btn-update-logistic-needs" color="success" @click="submitData(false)">{{ $t('label.update') }}</v-btn>
         </v-col>
       </ValidationObserver>
@@ -141,6 +143,7 @@ export default {
       dialogStock: false,
       updateName: false,
       isCreate: false,
+      isUpdate: false,
       unitList: [],
       unitId: null,
       dialog: false,
@@ -177,7 +180,7 @@ export default {
   methods: {
     getStockItem() {
       this.dialogStock = true
-      this.getStock(this.data.apd || this.item.product.id)
+      this.getStock(this.data.product_id || this.item.product.id)
     },
     async getStock(value) {
       const param = {
@@ -204,10 +207,17 @@ export default {
       this.isCreate = type
       this.updateName = type
       if (type === false) {
+        this.data = {}
         this.item = data
         this.setUnit(value)
-      } else {
+      } else if (type === true) {
         this.agency_id = data
+        this.data = {}
+      } else {
+        this.isCreate = true
+        this.updateName = true
+        this.isUpdate = true
+        this.data = data
       }
     },
     async setUnit(value) {
@@ -218,15 +228,18 @@ export default {
       if (!valid) {
         return
       }
-      if (value === true) {
-        this.data.agency_id = this.agency_id
-        this.data.product_id = this.data.apd
-        await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
+      if (this.isUpdate) {
+        await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
       } else {
-        this.data.need_id = this.item.id
-        this.data.product_id = this.data.apd || this.item.product_id
-        this.data.agency_id = this.item.agency_id
-        await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
+        if (value === true) {
+          this.data.agency_id = this.agency_id
+          await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
+        } else {
+          this.data.need_id = this.item.id
+          this.data.product_id = this.data.product_id || this.item.product_id
+          this.data.agency_id = this.item.agency_id
+          await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
+        }
       }
       window.location.reload()
     },
