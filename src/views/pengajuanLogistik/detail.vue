@@ -472,12 +472,12 @@
                                 </template>
                                 <v-card>
                                   <v-list-item>
-                                    <v-btn text small color="info">
+                                    <v-btn text small color="info" @click="updateRealization(item)">
                                       {{ $t('label.update') }}
                                     </v-btn>
                                   </v-list-item>
                                   <v-list-item>
-                                    <v-btn text small color="info">
+                                    <v-btn text small color="info" @click="deleteRealization(item)">
                                       {{ $t('label.delete') }}
                                     </v-btn>
                                   </v-list-item>
@@ -509,12 +509,20 @@
       ref="updateForm"
       :show="showForm"
     />
+    <DialogDelete
+      :dialog="dialogDelete"
+      :data-deleted="dataDelete"
+      :dialog-delete.sync="dialogDelete"
+      :delete-date.sync="dataDelete"
+      :store-path-delete="`logistics/deleteRealization`"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
+import DialogDelete from '@/components/DialogDelete'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
@@ -526,7 +534,8 @@ export default {
     updateKebutuhanLogistik,
     rejectKebutuhanLogistik,
     reasonDeniedLogisticNeeds,
-    CheckStockDialog
+    CheckStockDialog,
+    DialogDelete
   },
   data() {
     return {
@@ -545,6 +554,8 @@ export default {
       showDialogReasonReject: false,
       loaded: false,
       dialogStock: false,
+      dialogDelete: false,
+      dataDelete: null,
       logisticNeeds: []
     }
   },
@@ -591,6 +602,10 @@ export default {
   methods: {
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
+    },
+    async deleteRealization(item) {
+      this.dialogDelete = true
+      this.dataDelete = await item
     },
     openForm(type, value, index) {
       this.showForm = true
