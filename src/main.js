@@ -6,11 +6,12 @@ import VmBackTop from 'vue-multiple-back-top'
 import VueBreadcrumbs from 'vue2-breadcrumbs'
 import VueMoment from 'vue-moment'
 import * as VeeValidate from 'vee-validate'
-import moment from 'moment'
 import infiniteScroll from 'vue-infinite-scroll'
 import FlagIcon from 'vue-flag-icon'
 import VueCurrencyFilter from 'vue-currency-filter'
 
+const moment = require('moment-timezone')
+moment.utc().tz('Asia/Jakarta').format()
 moment.locale('id')
 
 import vuetify from './plugins/vuetify'
