@@ -330,11 +330,9 @@
               </v-col>
               <v-col cols="6" md="6">
                 <div class="margin-top-min-20">
-                  <a :href="detailLogisticRequest.letter ?detailLogisticRequest.letter.letter : '#'" target="_blank">
-                    <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="updateName = true">
-                      {{ $t('label.download') }}
-                    </v-btn>
-                  </a>
+                  <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
+                    {{ $t('label.download') }}
+                  </v-btn>
                 </div>
               </v-col>
             </v-row>
@@ -502,6 +500,13 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row class="mb-15">
+        <v-col>
+          <v-btn small color="success" width="114px" height="46px" absolute right @click="back()">
+            {{ $t('label.back') }}
+          </v-btn>
+        </v-col>
+      </v-row>
     </div>
     <br>
     <CheckStockDialog :dialog-show="dialogStock" />
@@ -521,6 +526,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import FileSaver from 'file-saver'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
 import CheckStockDialog from './stock'
@@ -602,6 +608,9 @@ export default {
   methods: {
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
+    },
+    downloadFile(value) {
+      FileSaver.saveAs(value, 'surat-permohonan.pdf')
     },
     openForm(type, value, index) {
       this.showForm = true
@@ -711,6 +720,9 @@ export default {
     getStockItem(value) {
       this.dialogStock = true
       this.getStock(value)
+    },
+    back() {
+      this.$router.go(-1)
     }
   }
 }
