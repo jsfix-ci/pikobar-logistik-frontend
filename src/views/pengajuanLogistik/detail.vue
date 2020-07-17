@@ -500,7 +500,7 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row class="mb-60">
+      <v-row class="mb-15">
         <v-col>
           <v-btn small color="success" width="114px" height="46px" absolute right @click="back()">
             {{ $t('label.back') }}
@@ -798,8 +798,5 @@ export default {
 }
 .sub-title-verified-card-detail-logistic-needs {
   font-size: 13px;
-}
-.mb-60 {
-  margin-bottom: 60px;
 }
 </style>
