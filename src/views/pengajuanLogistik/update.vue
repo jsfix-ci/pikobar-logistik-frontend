@@ -209,6 +209,7 @@ export default {
       if (type === false) {
         this.data = {}
         this.item = data
+        this.data = data
         this.setUnit(value)
       } else if (type === true) {
         this.agency_id = data
@@ -244,6 +245,7 @@ export default {
       window.location.reload()
     },
     hideDialog() {
+      this.$refs.observer.reset()
       EventBus.$emit('dialogHide', false)
     },
     handleSelectedDate(value) {
