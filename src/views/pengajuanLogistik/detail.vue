@@ -533,7 +533,7 @@ import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
 import reasonDeniedLogisticNeeds from './reasonReject'
 
-var moment = require('moment-timezone')
+const moment = require('moment-timezone')
 moment.utc().tz('Asia/Jakarta').format()
 
 export default {
