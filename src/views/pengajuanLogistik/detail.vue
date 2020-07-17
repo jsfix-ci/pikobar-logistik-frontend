@@ -43,7 +43,7 @@
         <v-col class="margin-left-min-30" cols="7" sm="8">
           <span
             class="text-data-green"
-          >:  {{ detailLogisticRequest.created_at === null ? $t('label.stripe') : $moment(detailLogisticRequest.created_at).format('LLL') }}</span>
+          >:  {{ detailLogisticRequest.created_at === null ? $t('label.stripe') : $moment.utc(detailLogisticRequest.created_at).tz('Asia/Jakarta').format('LLL') }}</span>
         </v-col>
       </v-row>
       <v-row>
@@ -329,7 +329,7 @@
                 <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ $t('label.applicant_letter') }}</u></a>
               </v-col>
               <v-col cols="6" md="6">
-                <div class="margin-top-min-20">
+                <div class="margin-top-min-15">
                   <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
                     {{ $t('label.download') }}
                   </v-btn>
@@ -533,6 +533,9 @@ import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
 import reasonDeniedLogisticNeeds from './reasonReject'
+
+var moment = require('moment-timezone')
+moment.utc().tz('Asia/Jakarta').format()
 
 export default {
   name: 'ListDetailPengajuanLogistik',
