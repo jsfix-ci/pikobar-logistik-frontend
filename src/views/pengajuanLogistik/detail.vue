@@ -533,9 +533,6 @@ import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
 import reasonDeniedLogisticNeeds from './reasonReject'
 
-const moment = require('moment-timezone')
-moment.utc().tz('Asia/Jakarta').format()
-
 export default {
   name: 'ListDetailPengajuanLogistik',
   components: {
@@ -800,5 +797,8 @@ export default {
 }
 .sub-title-verified-card-detail-logistic-needs {
   font-size: 13px;
+}
+.mb-15 {
+  margin-bottom: 60px;
 }
 </style>
