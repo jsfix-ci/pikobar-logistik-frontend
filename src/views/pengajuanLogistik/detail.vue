@@ -526,7 +526,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import FileSaver from 'file-saver'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
 import CheckStockDialog from './stock'
@@ -613,7 +612,7 @@ export default {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
     },
     downloadFile(value) {
-      FileSaver.saveAs(value, 'surat-permohonan.pdf')
+      window.open(value)
     },
     openForm(type, value, index) {
       this.showForm = true
