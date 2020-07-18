@@ -219,6 +219,7 @@ export default {
         this.updateName = true
         this.isUpdate = true
         this.data = data
+        this.setUnit(data.product_id)
       }
     },
     async setUnit(value) {
