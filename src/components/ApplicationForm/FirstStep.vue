@@ -235,9 +235,9 @@ export default {
   async created() {
     await this.getListCity()
     if (this.isAdmin) {
-      await this.$store.dispatch('faskesType/getListFaskesType')
-    } else {
       await this.$store.dispatch('faskesType/getListFaskesType', { non_public: 1 })
+    } else {
+      await this.$store.dispatch('faskesType/getListFaskesType')
     }
     await this.getListFaskes()
     EventBus.$on('dialogHide', (value) => {
