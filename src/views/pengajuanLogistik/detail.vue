@@ -492,7 +492,7 @@
                     v-model="listQuery.page"
                     :length="totalListRealization"
                     :total-visible="3"
-                    @input="onNext"
+                    @input="onNextRealization"
                   />
                 </v-col>
               </v-row>
@@ -691,6 +691,9 @@ export default {
     },
     async onNext() {
       await this.getListDetailNeeds()
+    },
+    async onNextRealization() {
+      await this.getListRealizationAdmin()
     },
     async postVerification() {
       const formData = new FormData()
