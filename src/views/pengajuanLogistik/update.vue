@@ -248,6 +248,7 @@ export default {
     },
     hideDialog() {
       this.$refs.observer.reset()
+      window.location.reload()
       EventBus.$emit('dialogHide', false)
     },
     handleSelectedDate(value) {
