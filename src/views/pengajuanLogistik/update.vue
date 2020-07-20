@@ -240,6 +240,7 @@ export default {
           this.data.need_id = this.item.id
           this.data.product_id = this.data.product_id || this.item.product_id
           this.data.agency_id = this.item.agency_id
+          delete this.data.id
           await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
         }
       }
