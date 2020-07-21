@@ -10,6 +10,7 @@ import region from './modules/region'
 import constants from './modules/constants'
 import general from './modules/general'
 import logistics from './modules/logistics'
+import letter from './modules/letter'
 import faskes from './modules/faskes'
 import faskesType from './modules/faskesType'
 import masterData from './modules/masterData'
@@ -29,7 +30,8 @@ const store = new Vuex.Store({
     logistics,
     faskes,
     faskesType,
-    masterData
+    masterData,
+    letter
   }
 })
 
