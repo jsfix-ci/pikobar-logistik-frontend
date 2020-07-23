@@ -13,7 +13,7 @@
               class="card-search"
             >
               <v-text-field
-                v-model="listQuery.agency_name"
+                v-model="listQuery.letter_number"
                 solo-inverted
                 flat
                 hide-details
@@ -37,7 +37,7 @@
       <hr v-if="showFilter" class="thin">
       <v-card-text v-if="showFilter">
         <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
-          <v-col cols="12" sm="1">
+          <v-col cols="12" sm="4">
             <v-label class="title">{{ $t('label.sort') }}</v-label>
             <v-select
               v-model="listQuery.sort"
@@ -45,46 +45,16 @@
               solo
               item-text="label"
               item-value="value"
-              clearable="true"
+              :clearable="true"
               :placeholder="$t('label.sort')"
               @change="handleSearch"
             />
           </v-col>
-          <v-col cols="12" sm="3">
-            <v-label class="title">{{ $t('label.request_date') }}</v-label>
+          <v-col cols="12" sm="6">
+            <v-label class="title">{{ $t('label.outgoing_mail_date') }}</v-label>
             <date-picker
-              :value="date"
+              :value="listQuery.letter_date"
               @selected="changeDate"
-            />
-          </v-col>
-          <v-col cols="12" sm="2">
-            <v-label class="title">{{ $t('label.city_district') }}</v-label>
-            <select-area-district-city :on-select-district-city="onSelectDistrictCity" />
-          </v-col>
-          <v-col cols="12" sm="3">
-            <v-label class="title">{{ $t('label.instance_type') }}</v-label>
-            <v-select
-              v-model="listQuery.faskes_type"
-              :items="faskesTypeList"
-              solo
-              item-text="name"
-              item-value="id"
-              clearable="true"
-              :placeholder="$t('label.select_instance_type')"
-              @change="handleSearch()"
-            />
-          </v-col>
-          <v-col cols="12" sm="3">
-            <v-label class="title">{{ $t('label.applicant_origin') }}</v-label>
-            <v-select
-              v-model="listQuery.source_data"
-              :items="applicantOrigin"
-              solo
-              item-text="text"
-              item-value="value"
-              clearable="true"
-              :placeholder="$t('label.select_applicant_origin')"
-              @change="handleSearch()"
             />
           </v-col>
         </v-row>
@@ -108,7 +78,7 @@
                   <td>{{ getTableRowNumbering(index) }}</td>
                   <td>{{ data.letter_number }}</td>
                   <td>{{ data.letter_date === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
-                  <td>{{ '-' }}</td>
+                  <td>{{ data.request_letter_total }}</td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
                 </tr>
                 <tr v-if="listOutgoingMail.length === 0">
@@ -149,10 +119,17 @@ export default {
     return {
       list: null,
       showFilter: false,
+      sortOption: [
+        { value: 'asc', label: 'A-Z' },
+        { value: 'desc', label: 'Z-A' }
+      ],
       listQuery: {
         limit: 10,
         page: 1,
-        total: null
+        total: null,
+        letter_number: null,
+        letter_date: null,
+        sort: null
       }
     }
   },
@@ -178,8 +155,12 @@ export default {
     async onNext() {
       await this.getList()
     },
-    handleSearch() {
-      console.log('search')
+    async handleSearch() {
+      await this.getList()
+    },
+    async changeDate(value) {
+      this.listQuery.letter_date = value
+      await this.getList()
     }
   }
 }

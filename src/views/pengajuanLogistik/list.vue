@@ -42,7 +42,7 @@
               solo
               item-text="label"
               item-value="value"
-              clearable="true"
+              :clearable="true"
               :placeholder="$t('label.sort')"
               @change="handleSearch"
             />
@@ -66,7 +66,7 @@
               solo
               item-text="name"
               item-value="id"
-              clearable="true"
+              :clearable="true"
               :placeholder="$t('label.select_instance_type')"
               @change="handleSearch()"
             />
@@ -79,7 +79,7 @@
               solo
               item-text="text"
               item-value="value"
-              clearable="true"
+              :clearable="true"
               :placeholder="$t('label.select_applicant_origin')"
               @change="handleSearch()"
             />
