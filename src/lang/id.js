@@ -28,7 +28,10 @@ export default {
     laporan_detail: 'Detail Laporan Kasus',
     laporan_edit: 'Ubah Laporan Kasus',
     change_password: 'Ubah Password',
-    help: 'Bantuan'
+    help: 'Bantuan',
+    letter_manage: 'Manajemen Surat',
+    outgoing_mail: 'Surat Keluar',
+    incoming_mail: 'Surat Masuk'
   },
   label: {
     username: 'Username',
@@ -228,7 +231,7 @@ export default {
     list_request_logistic_medic: 'Daftar Pengajuan Logistik',
     detail_request_logistic_medic: 'Detail Pengajuan Logistik',
     created_date: 'Tanggal Dibuat',
-    search_data: 'Cari Data',
+    search_data: 'Cari',
     verif_now: 'Verifikasi Sekarang',
     capital_email: 'Email',
     applicant_letter: 'Surat Permohonan',
@@ -311,7 +314,13 @@ export default {
     applicant_letter_number: 'Nomor Surat Permohonan',
     applicant_letter_number_placeholder: 'Masukkan Nomor Surat Permohonan',
     applicant_letter_number_upload: 'Upload Surat Permohonan',
-    download: 'Unduh'
+    download: 'Unduh',
+    outgoing_mail_data: 'Data Surat Keluar',
+    outgoing_mail_number: 'No. Surat Keluar',
+    outgoing_mail_date: 'Tanggal Cetak Surat',
+    outgoing_mail_total: 'Jumlah Pemohon',
+    outgoing_mail_upload: 'Upload Surat Keluar',
+    outgoing_mail_add: 'Tambah Surat Keluar'
   },
   success: {
     login_success: 'Login Berhasil',
