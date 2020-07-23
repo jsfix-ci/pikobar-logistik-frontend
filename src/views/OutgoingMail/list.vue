@@ -24,7 +24,7 @@
             </v-card>
           </v-col>
           <v-col cols="12" offset-sm="1" offset-md="1" sm="3" md="3">
-            <v-btn color="green" large text outlined><v-icon left>mdi-plus</v-icon> {{ $t('label.outgoing_mail_add') }}</v-btn>
+            <v-btn color="green" large text outlined @click="showForm = true"><v-icon left>mdi-plus</v-icon> {{ $t('label.outgoing_mail_add') }}</v-btn>
           </v-col>
           <v-col cols="12" sm="3" md="3">
             <v-btn color="green" large text outlined><v-icon left>mdi-upload</v-icon> {{ $t('label.outgoing_mail_upload') }}</v-btn>
@@ -109,16 +109,25 @@
         :on-next="onNext"
       />
     </v-row>
+    <CreateLetter
+      :show="showForm"
+    />
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import CreateLetter from './Create'
+import EventBus from '@/utils/eventBus'
 
 export default {
+  components: {
+    CreateLetter
+  },
   data() {
     return {
       list: null,
       showFilter: false,
+      showForm: false,
       sortOption: [
         { value: 'asc', label: 'A-Z' },
         { value: 'desc', label: 'Z-A' }
@@ -144,6 +153,9 @@ export default {
 
   async created() {
     this.getList()
+    EventBus.$on('dialogHide', (value) => {
+      this.showForm = value
+    })
   },
   methods: {
     async getList() {
