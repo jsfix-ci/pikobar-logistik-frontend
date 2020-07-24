@@ -309,6 +309,7 @@ export default {
     alert_verified_title_card_logistic_needs_2: 'Stock Barang di gudang.',
     alert_verified_title_card_logistic_needs_3: 'dengan mengklik',
     alert_verified_title_card_logistic_needs_4: 'tautan berikut.',
+    realization_item: 'Realisasi Barang',
     approve: 'Setujui Permohonan',
     letter_number: 'Nomor Surat',
     applicant_letter_number: 'Nomor Surat Permohonan',
