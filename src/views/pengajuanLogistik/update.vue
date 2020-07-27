@@ -19,7 +19,22 @@
           <br>
           <span class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
         </v-col>
-        <v-col class="margin-top-min-30-update-logistic-needs">
+        <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
+          <span class="sub-title-update-logistic-needs">{{ $t('label.status') }}</span>
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="requiredStatus"
+          >
+            <v-select
+              v-model="data.status"
+              solo
+              :placeholder="$t('label.select_status')"
+              :error-messages="errors"
+              :items="status"
+            />
+          </ValidationProvider>
+        </v-col>
+        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-30-update-logistic-needs">
           <ValidationProvider
             v-slot="{ errors }"
             rules="requiredAPDName"
@@ -35,21 +50,6 @@
               outlined
               solo-inverted
               @change="setUnit(data.product_id)"
-            />
-          </ValidationProvider>
-        </v-col>
-        <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
-          <span class="sub-title-update-logistic-needs">{{ $t('label.status') }}</span>
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="requiredStatus"
-          >
-            <v-select
-              v-model="data.status"
-              solo
-              :placeholder="$t('label.select_status')"
-              :error-messages="errors"
-              :items="status"
             />
           </ValidationProvider>
         </v-col>
