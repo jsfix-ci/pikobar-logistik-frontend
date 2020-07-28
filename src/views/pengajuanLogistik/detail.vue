@@ -375,7 +375,7 @@
                   </tr>
                   <tr v-for="(item, index) in listLogisticNeeds" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
-                    <td>{{ item.product ? item.product.name : '-' }}</td>
+                    <td>{{ item.realization_product_name ? item.realization_product_name : item.product.name || '-' }}</td>
                     <td>{{ item.brand || '-' }}</td>
                     <td>{{ item.quantity || '-' }}</td>
                     <td>{{ item.unit.unit || '-' }}</td>
@@ -442,9 +442,9 @@
                         </tr>
                         <tr v-for="(item, index) in listRealization" v-else :key="item.index">
                           <td>{{ getTableRowNumbering(index) }}</td>
-                          <td>{{ item.product ? item.product.name : '-' }}</td>
+                          <td>{{ item.product_name ? item.product_name : '-' }}</td>
                           <td>{{ item.realization_quantity || '-' }}</td>
-                          <td>{{ item.unit.unit || '-' }}</td>
+                          <td>{{ item.realization_unit || '-' }}</td>
                           <td>{{ item.realization_date || '-' }}</td>
                           <td>{{ item.statusLabel || '-' }}</td>
                           <td v-if="isVerified">

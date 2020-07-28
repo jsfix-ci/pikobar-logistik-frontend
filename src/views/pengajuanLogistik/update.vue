@@ -7,24 +7,36 @@
     <v-card>
       <ValidationObserver ref="observer">
         <v-col>
-          <span v-if="isUpdate" class="title-update-logistic-needs">{{ $t('label.update_distribution_realization') }}</span>
-          <span v-else-if="isCreate" class="title-update-logistic-needs">{{ $t('label.add_distribution_realization') }}</span>
-          <span v-else class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</span>
+          <div v-if="isUpdate" class="title-update-logistic-needs" style="padding-bottom: 30px">{{ $t('label.update_distribution_realization') }}</div>
+          <div v-else-if="isCreate" class="title-update-logistic-needs" style="padding-bottom: 30px">{{ $t('label.add_distribution_realization') }}</div>
+          <div v-else class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</div>
         </v-col>
         <v-col v-if="updateName === false" class="mb-30">
           <span class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
-          <v-btn class="ma-2" small outlined color="success" height="35px" absolute right @click="updateName = true">
-            <v-icon left>mdi-pencil</v-icon>{{ $t('label.edit') }}
-          </v-btn>
           <br>
           <span class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
         </v-col>
-        <v-col v-else-if="updateName === true">
+        <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
+          <span class="sub-title-update-logistic-needs">{{ $t('label.status') }}</span>
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="requiredStatus"
+          >
+            <v-select
+              v-model="data.status"
+              solo
+              :placeholder="$t('label.select_status')"
+              :error-messages="errors"
+              :items="status"
+            />
+          </ValidationProvider>
+        </v-col>
+        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-30-update-logistic-needs">
           <ValidationProvider
             v-slot="{ errors }"
             rules="requiredAPDName"
           >
-            <span class="sub-title-update-logistic-needs">{{ $t('label.apd_name_spec') }}</span>
+            <span class="sub-title-update-logistic-needs">{{ $t('label.realization_item') }}</span>
             <v-autocomplete
               v-model="data.product_id"
               :placeholder="$t('label.choose_apd')"
@@ -43,7 +55,7 @@
           <br>
           <span class="value-sub-title-update-logistic-needs">{{ item ? item.quantity : '-' }}</span>
         </v-col>
-        <v-col class="margin-top-min-20-update-logistic-needs">
+        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-20-update-logistic-needs">
           <v-row>
             <v-col cols="5">
               <span class="sub-title-update-logistic-needs">{{ $t('label.realization_amount') }}</span>
@@ -66,13 +78,13 @@
               >
                 <v-autocomplete
                   v-model="data.unit_id"
-                  :items="unitList"
+                  :items="listApdUnit"
                   outlined
                   solo-inverted
                   :no-data-text="$t('label.no_data')"
                   :error-messages="errors"
-                  item-value="unit_id"
-                  item-text="unit"
+                  item-value="id"
+                  item-text="name"
                 />
               </ValidationProvider>
             </v-col>
@@ -83,29 +95,14 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col class="margin-top-min-30-update-logistic-needs">
+        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-30-update-logistic-needs">
           <span class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <date-picker-input
             :value="data.realization_date"
             @selected="changeDate"
           />
         </v-col>
-        <v-col class="margin-top-min-30-update-logistic-needs">
-          <span class="sub-title-update-logistic-needs">{{ $t('label.status') }}</span>
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="requiredStatus"
-          >
-            <v-select
-              v-model="data.status"
-              solo
-              :placeholder="$t('label.select_status')"
-              :error-messages="errors"
-              :items="status"
-            />
-          </ValidationProvider>
-        </v-col>
-        <v-col class="margin-top-min-30-update-logistic-needs">
+        <v-col>
           <v-btn class="margin-btn-update-logistic-needs" outlined @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
           <v-btn v-if="isUpdate === true" class="margin-btn-update-logistic-needs" color="success" @click="submitData()">{{ $t('label.update') }}</v-btn>
           <v-btn v-else-if="isCreate === true" class="margin-btn-update-logistic-needs" color="success" @click="submitData(true)">{{ $t('label.add') }}</v-btn>
@@ -222,8 +219,14 @@ export default {
         this.setUnit(data.product_id)
       }
     },
-    async setUnit(value) {
-      this.unitList = await this.$store.dispatch('logistics/getListApdUnit', value)
+    async setUnit(id) {
+      await this.$store.dispatch('logistics/getListApdUnit', id)
+      this.listApdUnit.forEach(element => {
+        element.value = {
+          id: element.id,
+          name: element.name
+        }
+      })
     },
     async submitData(value) {
       const valid = await this.$refs.observer.validate()
@@ -231,9 +234,11 @@ export default {
         return
       }
       if (this.isUpdate) {
+        this.data.status = 'approved'
         await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
       } else {
         if (value === true) {
+          this.data.status = 'approved'
           this.data.agency_id = this.agency_id
           await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
         } else {

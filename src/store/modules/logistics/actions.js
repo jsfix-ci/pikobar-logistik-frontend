@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export default {
   async getListAPD({ commit }, params) {
     try {
-      const response = await fetchList('/api/v1/landing-page-registration/products', 'GET')
+      const response = await fetchList('/api/v1/logistic-realization/products', 'GET')
       commit('SET_LIST_APD', response.data)
       return response
     } catch (e) {
@@ -13,8 +13,8 @@ export default {
   },
   async getListApdUnit({ commit }, idAlkes) {
     try {
-      const response = await fetchList(`/api/v1/landing-page-registration/product-unit/${idAlkes}`, 'GET')
-      commit('SET_LIST_APD_UNIT', response)
+      const response = await fetchList(`/api/v1/logistic-realization/product-units/${idAlkes}`, 'GET')
+      commit('SET_LIST_APD_UNIT', response.data)
       return response
     } catch (e) {
       return e
