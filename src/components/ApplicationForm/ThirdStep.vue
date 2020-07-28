@@ -122,14 +122,14 @@
               rules="requiredUnit"
             >
               <v-label class="title"><b>{{ $t('label.unit') }}</b></v-label>
-              <v-select
+              <v-autocomplete
                 v-model="data.unitId"
-                :items="data.unitList"
+                :items="listApdUnit"
                 outlined
                 solo-inverted
                 :error-messages="errors"
-                item-value="unit_id"
-                item-text="unit"
+                item-value="id"
+                item-text="name"
                 @change="setUnitName(data)"
               />
             </ValidationProvider>
@@ -163,7 +163,7 @@
               rules="requiredUrgencyLevel"
             >
               <v-label class="title"><b>{{ $t('label.urgency_level') }}</b></v-label>
-              <v-select
+              <v-autocomplete
                 v-model="data.urgency"
                 :items="urgency"
                 :placeholder="$t('label.input_urgency_level')"
@@ -306,18 +306,16 @@ export default {
     async setUnit(value) {
       value.unitId = ''
       value.unitName = ''
-      value.unitList = await this.$store.dispatch('logistics/getListApdUnit', value.apd)
+      await this.$store.dispatch('logistics/getListApdUnit', value.apd)
+      this.listApdUnit.forEach(element => {
+        element.value = {
+          id: element.id,
+          name: element.name
+        }
+      })
       this.listAPD.forEach(element => {
         if (element.id === value.apd) {
           value.apdName = element.name
-          return
-        }
-      })
-    },
-    setUnitName(value) {
-      value.unitList.forEach(element => {
-        if (value.unitId === element.unit_id) {
-          value.unitName = element.unit
           return
         }
       })
