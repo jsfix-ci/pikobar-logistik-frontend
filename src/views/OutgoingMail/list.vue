@@ -77,7 +77,7 @@
                 <tr v-for="(data, index) in listOutgoingMail" :key="data.index">
                   <td>{{ getTableRowNumbering(index) }}</td>
                   <td>{{ data.letter_number }}</td>
-                  <td>{{ data.letter_date === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
+                  <td>{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
                   <td>{{ data.request_letter_total }}</td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
                 </tr>
