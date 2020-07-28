@@ -7,15 +7,12 @@
     <v-card>
       <ValidationObserver ref="observer">
         <v-col>
-          <span v-if="isUpdate" class="title-update-logistic-needs">{{ $t('label.update_distribution_realization') }}</span>
-          <span v-else-if="isCreate" class="title-update-logistic-needs">{{ $t('label.add_distribution_realization') }}</span>
-          <span v-else class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</span>
+          <div v-if="isUpdate" class="title-update-logistic-needs" style="padding-bottom: 30px">{{ $t('label.update_distribution_realization') }}</div>
+          <div v-else-if="isCreate" class="title-update-logistic-needs" style="padding-bottom: 30px">{{ $t('label.add_distribution_realization') }}</div>
+          <div v-else class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</div>
         </v-col>
         <v-col v-if="updateName === false" class="mb-30">
           <span class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
-          <!-- <v-btn class="ma-2" small outlined color="success" height="35px" absolute right @click="updateName = true">
-            <v-icon left>mdi-pencil</v-icon>{{ $t('label.edit') }}
-          </v-btn> -->
           <br>
           <span class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
         </v-col>
@@ -81,13 +78,13 @@
               >
                 <v-autocomplete
                   v-model="data.unit_id"
-                  :items="unitList"
+                  :items="listApdUnit"
                   outlined
                   solo-inverted
                   :no-data-text="$t('label.no_data')"
                   :error-messages="errors"
-                  item-value="unit_id"
-                  item-text="unit"
+                  item-value="id"
+                  item-text="name"
                 />
               </ValidationProvider>
             </v-col>
@@ -222,8 +219,14 @@ export default {
         this.setUnit(data.product_id)
       }
     },
-    async setUnit(value) {
-      this.unitList = await this.$store.dispatch('logistics/getListApdUnit', value)
+    async setUnit(id) {
+      await this.$store.dispatch('logistics/getListApdUnit', id)
+      this.listApdUnit.forEach(element => {
+        element.value = {
+          id: element.id,
+          name: element.name
+        }
+      })
     },
     async submitData(value) {
       const valid = await this.$refs.observer.validate()
@@ -246,7 +249,7 @@ export default {
           await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
         }
       }
-      // window.location.reload()
+      window.location.reload()
     },
     hideDialog() {
       this.$refs.observer.reset()
