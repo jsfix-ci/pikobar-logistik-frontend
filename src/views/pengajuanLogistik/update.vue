@@ -17,14 +17,15 @@
           <span class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
         </v-col>
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
-          <span class="sub-title-update-logistic-needs">{{ $t('label.status') }}</span>
           <ValidationProvider
             v-slot="{ errors }"
             rules="requiredStatus"
           >
-            <v-select
+            <span class="sub-title-update-logistic-needs">{{ $t('label.status') }}</span>
+            <v-autocomplete
               v-model="data.status"
-              solo
+              outlined
+              solo-inverted
               :placeholder="$t('label.select_status')"
               :error-messages="errors"
               :items="status"
@@ -41,11 +42,11 @@
               v-model="data.product_id"
               :placeholder="$t('label.choose_apd')"
               :items="listAPD"
-              item-text="name"
-              item-value="id"
               :error-messages="errors"
               outlined
               solo-inverted
+              item-text="name"
+              item-value="id"
               @change="setUnit(data.product_id)"
             />
           </ValidationProvider>
@@ -66,6 +67,7 @@
                 <v-text-field
                   v-model="data.realization_quantity"
                   outlined
+                  solo-inverted
                   :error-messages="errors"
                 />
               </ValidationProvider>
@@ -207,7 +209,9 @@ export default {
         this.data = {}
         this.item = data
         this.data = data
-        this.setUnit(value)
+        this.setUnit(data.realization_product_id)
+        this.data.product_id = data.realization_product_id
+        this.data.unit_id = '1'
       } else if (type === true) {
         this.agency_id = data
         this.data = {}
