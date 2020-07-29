@@ -124,13 +124,12 @@
               <v-label class="title"><b>{{ $t('label.unit') }}</b></v-label>
               <v-autocomplete
                 v-model="data.unitId"
-                :items="listApdUnit"
+                :items="data.unitList"
                 outlined
                 solo-inverted
                 :error-messages="errors"
-                item-value="id"
-                item-text="name"
-                @change="setUnitName(data)"
+                item-value="unit_id"
+                item-text="unit"
               />
             </ValidationProvider>
           </v-col>
@@ -306,17 +305,11 @@ export default {
     async setUnit(value) {
       value.unitId = ''
       value.unitName = ''
-      await this.$store.dispatch('logistics/getListApdUnit', value.apd)
-      this.listApdUnit.forEach(element => {
+      value.unitList = await this.$store.dispatch('logistics/getListApdUnitMaterialGroup', value.apd)
+      value.unitList.forEach(element => {
         element.value = {
-          id: element.id,
-          name: element.name
-        }
-      })
-      this.listAPD.forEach(element => {
-        if (element.id === value.apd) {
-          value.apdName = element.name
-          return
+          unit_id: element.unit_id,
+          unit: element.unit
         }
       })
     },
@@ -328,7 +321,7 @@ export default {
       }
     },
     async getListAPD() {
-      await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
+      await this.$store.dispatch('logistics/getListAPDMaterialGroup', this.listQueryAPD)
       this.listAPD.forEach(element => {
         element.value = {
           id: element.id,
