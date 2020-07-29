@@ -17,7 +17,8 @@
           v-model="dateFormatted"
           persistent-hint
           clearable
-          solo
+          outlined
+          solo-inverted
           :placeholder="$t('label.input_date')"
           append-icon="event"
           :error-messages="errors"

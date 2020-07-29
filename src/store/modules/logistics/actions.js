@@ -2,7 +2,7 @@ import { fetchList, doPostUpdate, doDetailDelete } from '@/api'
 import request from '@/utils/request'
 
 export default {
-  async getListAPD({ commit }, params) {
+  async getListAPDMaterialGroup({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/landing-page-registration/products', 'GET')
       commit('SET_LIST_APD', response.data)
@@ -11,10 +11,28 @@ export default {
       return e
     }
   },
-  async getListApdUnit({ commit }, idAlkes) {
+  async getListApdUnitMaterialGroup({ commit }, idAlkes) {
     try {
       const response = await fetchList(`/api/v1/landing-page-registration/product-unit/${idAlkes}`, 'GET')
-      commit('SET_LIST_APD_UNIT', response)
+      commit('SET_LIST_APD_UNIT', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getListAPD({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/logistic-realization/products', 'GET', params)
+      commit('SET_LIST_APD', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getListApdUnit({ commit }, idAlkes) {
+    try {
+      const response = await fetchList(`/api/v1/logistic-realization/product-units/${idAlkes}`, 'GET')
+      commit('SET_LIST_APD_UNIT', response.data)
       return response
     } catch (e) {
       return e
