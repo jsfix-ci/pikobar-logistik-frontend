@@ -29,6 +29,7 @@
               :placeholder="$t('label.select_status')"
               :error-messages="errors"
               :items="status"
+              @change="getListAPD"
             />
           </ValidationProvider>
         </v-col>
@@ -149,6 +150,10 @@ export default {
       date: null,
       agency_id: null,
       labelDate: this.$t('label.input_date'),
+      listQueryAPD: {
+        id: null,
+        status: null
+      },
       status: [
         {
           text: this.$t('label.approved_item'),
@@ -188,6 +193,13 @@ export default {
       await this.$store.dispatch('logistics/getStock', param)
     },
     async getListAPD() {
+      if (this.data.status === 'approved') {
+        this.listQueryAPD.status = 'approved'
+        this.listQueryAPD.id = this.item.product.id
+      } else {
+        this.listQueryAPD.status = null
+        this.listQueryAPD.id = null
+      }
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
         element.value = {
@@ -202,7 +214,7 @@ export default {
         this.totalLogistic = this.totalLogistic + parseInt(element.total)
       })
     },
-    setDialog(type, data, value) {
+    async setDialog(type, data, value) {
       this.isCreate = type
       this.updateName = type
       if (type === false) {
@@ -222,6 +234,7 @@ export default {
         this.data = data
         this.setUnit(data.product_id)
       }
+      await this.getListAPD()
     },
     async setUnit(id) {
       await this.$store.dispatch('logistics/getListApdUnit', id)
