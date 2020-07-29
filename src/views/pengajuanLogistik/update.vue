@@ -90,7 +90,7 @@
                 />
               </ValidationProvider>
             </v-col>
-            <v-col v-if="(isCreate && data.product_id) || !isCreate " cols="3">
+            <v-col v-if="(data.product_id)" cols="3">
               <div class="mt-30" style="margin-top: 30px">
                 <v-btn small color="success" height="45px" dark @click="getStockItem()">{{ $t('label.check_stock') }}</v-btn>
               </div>
@@ -179,11 +179,11 @@ export default {
   methods: {
     getStockItem() {
       this.dialogStock = true
-      this.getStock(this.data.product_id || this.item.product.id)
+      this.getStock(this.data.product_id)
     },
     async getStock(value) {
       const param = {
-        id: await value
+        poslog_id: await value
       }
       await this.$store.dispatch('logistics/getStock', param)
     },
