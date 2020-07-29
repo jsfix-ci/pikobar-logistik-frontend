@@ -17,17 +17,19 @@
           <span class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
         </v-col>
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
-          <span class="sub-title-update-logistic-needs">{{ $t('label.status') }}</span>
           <ValidationProvider
             v-slot="{ errors }"
             rules="requiredStatus"
           >
-            <v-select
+            <span class="sub-title-update-logistic-needs">{{ $t('label.status') }}</span>
+            <v-autocomplete
               v-model="data.status"
-              solo
+              outlined
+              solo-inverted
               :placeholder="$t('label.select_status')"
               :error-messages="errors"
               :items="status"
+              @change="getListAPD"
             />
           </ValidationProvider>
         </v-col>
@@ -41,11 +43,11 @@
               v-model="data.product_id"
               :placeholder="$t('label.choose_apd')"
               :items="listAPD"
-              item-text="name"
-              item-value="id"
               :error-messages="errors"
               outlined
               solo-inverted
+              item-text="name"
+              item-value="id"
               @change="setUnit(data.product_id)"
             />
           </ValidationProvider>
@@ -66,6 +68,7 @@
                 <v-text-field
                   v-model="data.realization_quantity"
                   outlined
+                  solo-inverted
                   :error-messages="errors"
                 />
               </ValidationProvider>
@@ -88,7 +91,7 @@
                 />
               </ValidationProvider>
             </v-col>
-            <v-col v-if="(isCreate && data.product_id) || !isCreate " cols="3">
+            <v-col v-if="(data.product_id)" cols="3">
               <div class="mt-30" style="margin-top: 30px">
                 <v-btn small color="success" height="45px" dark @click="getStockItem()">{{ $t('label.check_stock') }}</v-btn>
               </div>
@@ -147,6 +150,10 @@ export default {
       date: null,
       agency_id: null,
       labelDate: this.$t('label.input_date'),
+      listQueryAPD: {
+        id: null,
+        status: null
+      },
       status: [
         {
           text: this.$t('label.approved_item'),
@@ -177,15 +184,22 @@ export default {
   methods: {
     getStockItem() {
       this.dialogStock = true
-      this.getStock(this.data.product_id || this.item.product.id)
+      this.getStock(this.data.product_id)
     },
     async getStock(value) {
       const param = {
-        id: await value
+        poslog_id: await value
       }
       await this.$store.dispatch('logistics/getStock', param)
     },
     async getListAPD() {
+      if (this.data.status === 'approved') {
+        this.listQueryAPD.status = 'approved'
+        this.listQueryAPD.id = this.item.product.id
+      } else {
+        this.listQueryAPD.status = null
+        this.listQueryAPD.id = null
+      }
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
         element.value = {
@@ -200,14 +214,16 @@ export default {
         this.totalLogistic = this.totalLogistic + parseInt(element.total)
       })
     },
-    setDialog(type, data, value) {
+    async setDialog(type, data, value) {
       this.isCreate = type
       this.updateName = type
       if (type === false) {
         this.data = {}
         this.item = data
         this.data = data
-        this.setUnit(value)
+        this.setUnit(data.realization_product_id)
+        this.data.product_id = data.realization_product_id
+        this.data.unit_id = '1'
       } else if (type === true) {
         this.agency_id = data
         this.data = {}
@@ -218,6 +234,7 @@ export default {
         this.data = data
         this.setUnit(data.product_id)
       }
+      await this.getListAPD()
     },
     async setUnit(id) {
       await this.$store.dispatch('logistics/getListApdUnit', id)
