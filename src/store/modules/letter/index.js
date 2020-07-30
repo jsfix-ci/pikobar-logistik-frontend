@@ -5,7 +5,8 @@ import getters from './getters'
 const state = {
   listOutgoingMail: [],
   totalListOutgoingMail: 0,
-  totalDataOutgoingMail: 0
+  totalDataOutgoingMail: 0,
+  applicationLetter: []
 }
 
 export default {

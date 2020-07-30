@@ -318,10 +318,13 @@ export default {
     download: 'Unduh',
     outgoing_mail_data: 'Data Surat Keluar',
     outgoing_mail_number: 'No. Surat Keluar',
-    outgoing_mail_date: 'Tanggal Cetak Surat',
+    outgoing_mail_number_form: 'Nomor Surat Keluar',
+    outgoing_mail_date: 'Tanggal Cetak Surat Keluar',
     outgoing_mail_total: 'Jumlah Pemohon',
     outgoing_mail_upload: 'Upload Surat Keluar',
-    outgoing_mail_add: 'Tambah Surat Keluar'
+    outgoing_mail_add: 'Tambah Surat Keluar',
+    total_applicant: 'Total Permohonan',
+    outgoing_mail_print: 'Cetak Surat'
   },
   success: {
     login_success: 'Login Berhasil',
@@ -360,7 +363,7 @@ export default {
     field_must_be_filled_upper_name: 'Nama Atasan tidak boleh kosong',
     field_must_be_filled_faskes_location: 'Lokasi Faskes tidak boleh kosong',
     field_must_be_filled_realization_amount: 'Jumlah realisasi tidak boleh kosong',
-    field_must_be_filled_realization_date: 'Tanggal Realisasi tidak boleh kosong',
+    field_must_be_filled_realization_date: 'Tanggal tidak boleh kosong',
     field_must_be_filled_status: 'Status tidak boleh kosong',
     field_must_be_filled_reason_reject: 'Alasan Ditolak tidak boleh kosong',
     field_unauthorized_characters: 'Bidang mengandung karakter yang tidak diizinkan.',
@@ -378,6 +381,7 @@ export default {
       contact_person: 'Nama pemohon harus diisi',
       distribution_date: 'Tanggal distribusi harus diisi',
       select_sub_district: 'Kecamatan harus diisi',
+      letter_number: 'Nomor Surat harus diisi'
     }
   },
 }

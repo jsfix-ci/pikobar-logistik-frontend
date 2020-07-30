@@ -7,5 +7,8 @@ export default {
   },
   totalListOutgoingMail: (state) => {
     return state.totalListOutgoingMail
+  },
+  applicationLetter: (state) => {
+    return state.applicationLetter
   }
 }

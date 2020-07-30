@@ -7,5 +7,8 @@ export default {
   },
   SET_TOTAL_DATA_OUTGOING_MAIL: (state, data) => {
     state.totalDataOutgoingMail = data
+  },
+  SET_APPLICATION_LETTER: (state, data) => {
+    state.applicationLetter = data
   }
 }
