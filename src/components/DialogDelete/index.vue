@@ -15,7 +15,7 @@
             v-if="dataDeleted.id"
             class="font-weight-black"
           >
-            {{ dataDeleted.product.name.toUpperCase() +'?' }}
+            {{ dataDeleted.product_name.toUpperCase() +'?' }}
           </span>
         </v-card-text>
         <v-card-actions class="justify-center" style="padding: 2rem">
