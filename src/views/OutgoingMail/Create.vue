@@ -19,6 +19,7 @@
             <v-text-field
               v-model="data.letter_number"
               outlined
+              solo-inverted
               :error-messages="errors"
             />
           </ValidationProvider>
@@ -33,20 +34,23 @@
         <hr class="margin-top-min-10-update-logistic-needs">
         <v-col>
           <p class="sub-title-update-logistic-needs mb-10">{{ $t('label.applicant_letter') }}</p>
-          <div v-for="(applicant, index) in applicantLetter" :key="index" class="mt-n5">
+          <div v-for="(applicant, index) in letter_request" :key="index" class="mt-n5">
             <span class="value-sub-title-update-logistic-needs"><span class="pr-1">{{ index + 1 }}.</span> {{ $t('label.applicant_letter_number') }}</span>
             <v-row>
               <v-col cols="10" class="ml-5">
                 <ValidationProvider
                   v-slot="{ errors }"
-                  rules="requiredStatus"
+                  rules="requiredApplicantLetterNumber"
                 >
-                  <v-select
+                  <v-autocomplete
                     v-model="applicant.applicant_id"
-                    solo
+                    outlined
+                    solo-inverted
                     :placeholder="$t('label.applicant_letter_number')"
                     :error-messages="errors"
-                    :items="status"
+                    :item-value="'id'"
+                    item-text="application_letter_number"
+                    :items="applicationLetter"
                   />
                 </ValidationProvider>
               </v-col>
@@ -59,7 +63,7 @@
         <v-col class="margin-top-min-30-update-logistic-needs">
           <v-row class="margin-top-min-30-update-logistic-needs">
             <v-col class="total_applicant">
-              <p> {{ $t('label.total_applicant') }} <span class="pl-1"> <b> {{ applicantLetter.length }} {{ $t('route.applicant_medical_tools_title') }} </b></span></p>
+              <!-- <p> {{ $t('label.total_applicant') }} <span class="pl-1"> <b> {{ letter_request.length }} {{ $t('route.applicant_medical_tools_title') }} </b></span></p> -->
             </v-col>
             <v-col>
               <v-btn class="ma-2 add_more" width="130px" height="40px" small outlined color="success" @click="addApplicant">{{ $t('label.add_more') }}</v-btn>
@@ -73,7 +77,7 @@
               <v-btn outlined small width="150px" height="50px" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" color="success" @click="submitData(true)">{{ $t('label.outgoing_mail_print') }}</v-btn>
+              <v-btn outlined small width="150px" height="50px" color="success">{{ $t('label.outgoing_mail_print') }}</v-btn>
             </v-col>
             <v-col>
               <v-btn small width="150px" height="50px" color="success" @click="submitData(true)">{{ $t('label.add') }}</v-btn>
@@ -104,7 +108,13 @@ export default {
   },
   data() {
     return {
-      data: {},
+      data: {
+        letter_number: null,
+        letter_date: null
+      },
+      letter_request: [{
+        'applicant_id': null
+      }],
       item: {},
       updateName: false,
       isCreate: false,
@@ -112,80 +122,44 @@ export default {
       dialog: false,
       date: null,
       agency_id: null,
-      labelDate: this.$t('label.input_date'),
-      applicantLetter: [{
-        applicant_id: null
-      }],
-      status: [
-        {
-          text: this.$t('label.approved_item'),
-          value: 'approved'
-        },
-        {
-          text: this.$t('label.not_available'),
-          value: 'not_available'
-        },
-        {
-          text: this.$t('label.replaced'),
-          value: 'replaced'
-        }
-      ]
+      labelDate: this.$t('label.input_date')
     }
   },
   computed: {
-    ...mapGetters('logistics', [
-      'listAPD', 'listApdUnit'
+    ...mapGetters('letter', [
+      'applicationLetter'
     ])
   },
   async created() {
+    await this.getApplicationLetter()
   },
   methods: {
+    async getApplicationLetter() {
+      await this.$store.dispatch('letter/getApplicationLetter', this.listQuery)
+      this.letter_request.forEach(element => {
+        element.value = {
+          id: element.id,
+          application_letter_number: element.application_letter_number
+        }
+      })
+    },
     addApplicant() {
-      this.applicantLetter.push({
-        applicant_id: null
+      this.letter_request.push({
+        'applicant_id': null
       })
     },
     deleteApplicant(index) {
-      this.applicantLetter.splice(index, 1)
+      this.letter_request.splice(index, 1)
     },
     setDialog(type, data, value) {
-      this.isCreate = type
-      this.updateName = type
-      if (type === false) {
-        this.data = {}
-        this.item = data
-        this.data = data
-        this.setUnit(value)
-      } else if (type === true) {
-        this.agency_id = data
-        this.data = {}
-      } else {
-        this.isCreate = true
-        this.updateName = true
-        this.isUpdate = true
-        this.data = data
-        this.setUnit(data.product_id)
-      }
     },
     async submitData(value) {
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
       }
-      if (this.isUpdate) {
-        await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
-      } else {
-        if (value === true) {
-          this.data.agency_id = this.agency_id
-          await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
-        } else {
-          this.data.need_id = this.item.id
-          this.data.product_id = this.data.product_id || this.item.product_id
-          this.data.agency_id = this.item.agency_id
-          delete this.data.id
-          await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
-        }
-      }
+      this.data.letter_request = JSON.stringify(this.letter_request)
+      await this.$store.dispatch('letter/postOutgoingMail', this.data)
       window.location.reload()
     },
     hideDialog() {
@@ -197,7 +171,7 @@ export default {
       this.$emit('selected', value)
     },
     changeDate(value) {
-      this.data.realization_date = value
+      this.data.letter_date = value
     }
   }
 }

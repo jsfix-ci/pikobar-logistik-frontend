@@ -24,7 +24,7 @@
             </v-card>
           </v-col>
           <v-col cols="12" offset-sm="1" offset-md="1" sm="3" md="3">
-            <v-btn color="green" large text outlined style="float: right"><v-icon left>mdi-plus</v-icon> {{ $t('label.outgoing_mail_add') }}</v-btn>
+            <v-btn color="green" large text outlined style="float: right" @click="addLetter"><v-icon left>mdi-plus</v-icon> {{ $t('label.outgoing_mail_add') }}</v-btn>
           </v-col>
           <v-col cols="12" sm="2" md="2">
             <v-btn color="green" large text outlined style="margin: auto"><v-icon left>mdi-upload</v-icon> {{ $t('label.outgoing_mail_upload') }}</v-btn>
@@ -158,6 +158,9 @@ export default {
     })
   },
   methods: {
+    addLetter() {
+      this.showForm = true
+    },
     async getList() {
       await this.$store.dispatch('letter/getListOutgoingMail', this.listQuery)
     },
