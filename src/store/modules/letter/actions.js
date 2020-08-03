@@ -27,4 +27,24 @@ export default {
       return e
     }
   },
+  async getDetailLetter({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/outgoing-letter/' + params, 'GET')
+      commit('SET_DETAIL_LETTER', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getDetailLetterByOutgoing({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/application-letter', 'GET', params)
+      commit('SET_DETAIL_LETTER_APPLICATION', response.data)
+      commit('SET_TOTAL_LIST_OUTGOING_MAIL_APPLICATION', response.data.last_page)
+      commit('SET_TOTAL_DATA_OUTGOING_MAIL_APPLICATION', response.data.total)
+      return response
+    } catch (e) {
+      return e
+    }
+  }
 }

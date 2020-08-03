@@ -6,7 +6,11 @@ const state = {
   listOutgoingMail: [],
   totalListOutgoingMail: 0,
   totalDataOutgoingMail: 0,
-  applicationLetter: []
+  applicationLetter: [],
+  detailLetter: null,
+  detailLetterApplication: null,
+  totalListLetterApplication: 0,
+  totalDataLetterApplication: 0
 }
 
 export default {

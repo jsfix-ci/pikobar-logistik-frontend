@@ -158,6 +158,9 @@ export default {
     })
   },
   methods: {
+    toDetail(data) {
+      this.$router.push(`/letter/outgoing/detail/${data.id}`)
+    },
     addLetter() {
       this.showForm = true
     },
