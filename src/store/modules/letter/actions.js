@@ -26,5 +26,5 @@ export default {
     } catch (e) {
       return e
     }
-  },
+  }
 }
