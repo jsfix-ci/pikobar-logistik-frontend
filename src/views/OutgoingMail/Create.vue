@@ -38,7 +38,7 @@
           <div class="value-sub-title-update-logistic-needs"> {{ $t('label.outgoing_mail_number_form') }} </div>
           <div class="sub-title-update-logistic-needs letter_number"> {{ dataSource ? dataSource.letter_number : '-' }} </div>
         </v-col>
-        <v-col>
+        <v-col v-if="type !== 'update'">
           <p class="sub-title-update-logistic-needs mb-10">{{ $t('label.applicant_letter') }}</p>
           <div v-for="(applicant, index) in letter_request" :key="index" class="mt-n5">
             <span class="value-sub-title-update-logistic-needs"><span class="pr-1">{{ index + 1 }}.</span> {{ $t('label.applicant_letter_number') }}</span>
@@ -66,6 +66,34 @@
             </v-row>
           </div>
         </v-col>
+        <!-- <v-col>
+          <p class="sub-title-update-logistic-needs mb-10">{{ $t('label.applicant_letter') }}</p>
+          <div v-for="(applicant, index) in letter_request" :key="index" class="mt-n5">
+            <span class="value-sub-title-update-logistic-needs"><span class="pr-1">{{ index + 1 }}.</span> {{ $t('label.applicant_letter_number') }}</span>
+            <v-row>
+              <v-col cols="10" class="ml-5">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  rules="requiredApplicantLetterNumber"
+                >
+                  <v-autocomplete
+                    v-model="applicant.applicant_id"
+                    outlined
+                    solo-inverted
+                    :placeholder="$t('label.applicant_letter_number')"
+                    :error-messages="errors"
+                    :item-value="'id'"
+                    item-text="application_letter_number"
+                    :items="applicationLetter"
+                  />
+                </ValidationProvider>
+              </v-col>
+              <v-col v-if="letter_request.length > 1" cols="1">
+                <center><v-icon class="padding-10-third-step" color="red" size="25" @click="deleteApplicant(index)">mdi-delete</v-icon></center>
+              </v-col>
+            </v-row>
+          </div>
+        </v-col> -->
         <v-col class="margin-top-min-30-update-logistic-needs">
           <v-row class="margin-top-min-30-update-logistic-needs">
             <v-col class="total_applicant">
@@ -180,9 +208,7 @@ export default {
       this.letter_request.splice(index, 1)
     },
     async setDialog(value) {
-      this.letter_request[0] = value
-      console.log(this.letter_request)
-      await this.getApplicationLetter()
+      // this.letter_request[0] = value )
     },
     async submitData() {
       const valid = await this.$refs.observer.validate()
