@@ -12,10 +12,10 @@
         <v-card-text v-if="dataDeleted" class="dialog-delete-title font-weight-bold">
           {{ $t('label.delete_dialog') }} <br>
           <span
-            v-if="dataDeleted.id_case"
+            v-if="dataDeleted.id"
             class="font-weight-black"
           >
-            {{ dataDeleted.id_case.toUpperCase() +'?' }}
+            {{ dataDeleted.product_name.toUpperCase() +'?' }}
           </span>
         </v-card-text>
         <v-card-actions class="justify-center" style="padding: 2rem">
@@ -25,7 +25,7 @@
             style="height: 40px;min-width: 120px;"
             @click="dialogDelete = false"
           >
-            Batal
+            {{ $t('label.cancel') }}
           </v-btn>
           <v-btn
             color="red"
@@ -33,7 +33,7 @@
             style="height: 40px;min-width: 120px;"
             @click="deleteData"
           >
-            Hapus
+            {{ $t('label.delete') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -53,19 +53,7 @@ export default {
       type: String,
       default: null
     },
-    storePathResetList: {
-      type: String,
-      default: null
-    },
-    storePathGetList: {
-      type: String,
-      default: null
-    },
     dataDeleted: {
-      type: Object,
-      default: null
-    },
-    listQuery: {
       type: Object,
       default: null
     }
@@ -82,14 +70,11 @@ export default {
   },
   methods: {
     async deleteData() {
-      await this.$store.dispatch(this.storePathDelete, this.dataDeleted._id)
+      await this.$store.dispatch(this.storePathDelete, this.dataDeleted.id)
       await this.$emit('update:dialogDelete', false)
       await this.$emit('update:deletedData', {})
       await this.$store.dispatch('toast/successToast', this.$t('success.data_success_delete'))
-      if (this.storePathResetList) {
-        await this.$store.dispatch(this.storePathResetList)
-      }
-      await this.$store.dispatch(this.storePathGetList, this.listQuery)
+      this.$parent.getListRealizationAdmin()
     }
   }
 }

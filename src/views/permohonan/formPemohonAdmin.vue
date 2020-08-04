@@ -18,7 +18,7 @@
           <center>{{ $t('label.step_title_4') }}</center>
         </v-stepper-step>
       </v-stepper-header>
-      <v-stepper-item>
+      <v-stepper-items>
         <v-stepper-content step="1">
           <identitas-instansi-pemohon
             :form-applicant="formApplicant"
@@ -39,7 +39,7 @@
         <v-stepper-content step="4">
           <surat-permohonan />
         </v-stepper-content>
-      </v-stepper-item>
+      </v-stepper-items>
     </v-stepper>
   </div>
   <div v-else>

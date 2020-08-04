@@ -38,7 +38,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="12" md="4">
+        <v-col cols="12" sm="12" md="12">
           <v-card
             class="mx-auto"
             color="#4F4F4F"
@@ -55,7 +55,7 @@
             </v-list-item>
           </v-card>
         </v-col>
-        <v-col cols="12" sm="12" md="4">
+        <!-- <v-col cols="12" sm="12" md="4">
           <v-card
             class="mx-auto"
             color="#219653"
@@ -88,7 +88,7 @@
               </v-list-item-content>
             </v-list-item>
           </v-card>
-        </v-col>
+        </v-col> -->
       </v-row>
     </div>
     <div v-if="dataLogisticRequestSummary.total_request > 0">

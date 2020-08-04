@@ -82,10 +82,10 @@
               v-slot="{ errors }"
               rules="requiredBrand"
             >
-              <v-label class="title"><b>{{ $t('label.brand') }}</b></v-label>
+              <v-label class="title"><b>{{ $t('label.description') }}</b></v-label>
               <v-text-field
                 v-model="data.brand"
-                :placeholder="$t('label.input_brand')"
+                :placeholder="$t('label.input_description')"
                 :error-messages="errors"
                 outlined
                 solo-inverted
@@ -122,7 +122,7 @@
               rules="requiredUnit"
             >
               <v-label class="title"><b>{{ $t('label.unit') }}</b></v-label>
-              <v-select
+              <v-autocomplete
                 v-model="data.unitId"
                 :items="data.unitList"
                 outlined
@@ -130,7 +130,6 @@
                 :error-messages="errors"
                 item-value="unit_id"
                 item-text="unit"
-                @change="setUnitName(data)"
               />
             </ValidationProvider>
           </v-col>
@@ -163,7 +162,7 @@
               rules="requiredUrgencyLevel"
             >
               <v-label class="title"><b>{{ $t('label.urgency_level') }}</b></v-label>
-              <v-select
+              <v-autocomplete
                 v-model="data.urgency"
                 :items="urgency"
                 :placeholder="$t('label.input_urgency_level')"
@@ -306,19 +305,11 @@ export default {
     async setUnit(value) {
       value.unitId = ''
       value.unitName = ''
-      value.unitList = await this.$store.dispatch('logistics/getListApdUnit', value.apd)
-      this.listAPD.forEach(element => {
-        if (element.id === value.apd) {
-          value.apdName = element.name
-          return
-        }
-      })
-    },
-    setUnitName(value) {
+      value.unitList = await this.$store.dispatch('logistics/getListApdUnitMaterialGroup', value.apd)
       value.unitList.forEach(element => {
-        if (value.unitId === element.unit_id) {
-          value.unitName = element.unit
-          return
+        element.value = {
+          unit_id: element.unit_id,
+          unit: element.unit
         }
       })
     },
@@ -330,7 +321,7 @@ export default {
       }
     },
     async getListAPD() {
-      await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
+      await this.$store.dispatch('logistics/getListAPDMaterialGroup', this.listQueryAPD)
       this.listAPD.forEach(element => {
         element.value = {
           id: element.id,

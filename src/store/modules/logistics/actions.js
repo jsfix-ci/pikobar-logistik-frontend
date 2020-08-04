@@ -1,8 +1,8 @@
-import { fetchList, doPostUpdate } from '@/api'
+import { fetchList, doPostUpdate, doDetailDelete } from '@/api'
 import request from '@/utils/request'
 
 export default {
-  async getListAPD({ commit }, params) {
+  async getListAPDMaterialGroup({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/landing-page-registration/products', 'GET')
       commit('SET_LIST_APD', response.data)
@@ -11,10 +11,28 @@ export default {
       return e
     }
   },
-  async getListApdUnit({ commit }, idAlkes) {
+  async getListApdUnitMaterialGroup({ commit }, idAlkes) {
     try {
       const response = await fetchList(`/api/v1/landing-page-registration/product-unit/${idAlkes}`, 'GET')
-      commit('SET_LIST_APD_UNIT', response)
+      commit('SET_LIST_APD_UNIT', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getListAPD({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/logistic-realization/products', 'GET', params)
+      commit('SET_LIST_APD', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getListApdUnit({ commit }, idAlkes) {
+    try {
+      const response = await fetchList(`/api/v1/logistic-realization/product-units/${idAlkes}`, 'GET')
+      commit('SET_LIST_APD_UNIT', response.data)
       return response
     } catch (e) {
       return e
@@ -107,10 +125,57 @@ export default {
       return e
     }
   },
+  async postUpdateLogisticNeedsAdmin({ commit }, params) {
+    try {
+      params.realization_quantity = parseInt(params.realization_quantity)
+      const response = await doPostUpdate('/api/v1/logistic-admin-realization', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async updateLogisticNeedsAdmin({ commit }, params) {
+    const id = params.id
+    try {
+      params.realization_quantity = parseInt(params.realization_quantity)
+      const response = await doPostUpdate(`/api/v1/logistic-admin-realization/${id}`, 'PUT', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async deleteRealization({ commit }, id) {
+    try {
+      const response = await doDetailDelete(`/api/v1/logistic-admin-realization`, 'DELETE', id)
+      return response
+    } catch (error) {
+      return error.response
+    }
+  },
+  async getLogisticNeedsAdmin({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/logistic-admin-realization', 'GET', params)
+      commit('SET_LIST_REALIZATION', response.data.data)
+      commit('SET_TOTAL_LIST_REALIZATION', response.data.last_page)
+      commit('SET_TOTAL_DATA_REALIZATION', response.data.total)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getLogisticRequestSummary({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/logistic-request-summary', 'GET', params)
       commit('SET_DATA_LOGISTIC_REQUEST_SUMMARY', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getStock({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/stock', 'GET', params)
+      commit('SET_STOCK', response.data)
       return response
     } catch (e) {
       return e

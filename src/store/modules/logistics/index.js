@@ -15,7 +15,11 @@ const state = {
   dataLogisticRequestSummary: {},
   dataFaskesTypeTotalRequest: [],
   dataProductTotalRequest: [],
-  dataCityTotalRequest: []
+  dataCityTotalRequest: [],
+  listStock: [],
+  listRealization: [],
+  totalListRealization: 0,
+  totalDataRealization: 0
 }
 
 export default {

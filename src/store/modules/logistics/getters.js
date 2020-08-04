@@ -37,5 +37,17 @@ export default {
   },
   dataCityTotalRequest: (state, getters) => {
     return state.dataCityTotalRequest
+  },
+  listStock: (state) => {
+    return state.listStock
+  },
+  listRealization: (state) => {
+    return state.listRealization
+  },
+  totalListRealization: (state) => {
+    return state.totalListRealization
+  },
+  totalDataRealization: (state) => {
+    return state.totalDataRealization
   }
 }

@@ -171,7 +171,7 @@ extend('isPhoneNumber', {
 extend('notMinus', {
   message: (_, values) => i18n.t('errors.not_minus', values),
   validate: value => {
-    return value >= 0
+    return value > 0
   }
 })
 
@@ -220,4 +220,9 @@ extend('distributionDateRequired', {
 extend('subDistricRequired', {
   ...required,
   message: (_, values) => i18n.t('errors.required_fields.select_sub_district', values)
+})
+
+extend('letterNumber', {
+  ...required,
+  message: (_, values) => i18n.t('errors.required_fields.letter_number', values)
 })
