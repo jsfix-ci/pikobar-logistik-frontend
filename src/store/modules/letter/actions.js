@@ -27,6 +27,14 @@ export default {
       return e
     }
   },
+  async postOutgoingMailApplication({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/application-letter', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getDetailLetter({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/outgoing-letter/' + params, 'GET')

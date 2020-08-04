@@ -7,9 +7,11 @@
     <v-card>
       <ValidationObserver ref="observer">
         <v-col>
-          <span class="title-update-logistic-needs">{{ $t('label.outgoing_mail_add') }}</span>
+          <span v-if="type === 'update'" class="title-update-logistic-needs">{{ $t('label.outgoing_mail_add') }}</span>
+          <span v-else-if="type === 'add'" class="title-update-logistic-needs">{{ $t('label.outgoing_mail_add_application') }}</span>
+          <span v-else class="title-update-logistic-needs">{{ $t('label.outgoing_mail_add') }}</span>
         </v-col>
-        <v-col>
+        <v-col v-if="type === 'create'">
           <p class="sub-title-update-logistic-needs">{{ $t('route.outgoing_mail') }}</p>
           <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_number_form') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
           <ValidationProvider
@@ -24,14 +26,18 @@
             />
           </ValidationProvider>
         </v-col>
-        <v-col class="margin-top-min-30-update-logistic-needs">
+        <v-col v-if="type === 'create'" class="margin-top-min-30-update-logistic-needs">
           <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_date') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
           <date-picker-input
             :value="data.letter_date"
             @selected="changeDate"
           />
         </v-col>
-        <hr class="margin-top-min-10-update-logistic-needs">
+        <hr v-if="type === 'create'" class="margin-top-min-10-update-logistic-needs">
+        <v-col v-if="type === 'add'">
+          <div class="value-sub-title-update-logistic-needs"> {{ $t('label.outgoing_mail_number_form') }} </div>
+          <div class="sub-title-update-logistic-needs letter_number"> {{ dataSource.letter_number }} </div>
+        </v-col>
         <v-col>
           <p class="sub-title-update-logistic-needs mb-10">{{ $t('label.applicant_letter') }}</p>
           <div v-for="(applicant, index) in letter_request" :key="index" class="mt-n5">
@@ -54,7 +60,7 @@
                   />
                 </ValidationProvider>
               </v-col>
-              <v-col cols="1">
+              <v-col v-if="letter_request.length > 1" cols="1">
                 <center><v-icon class="padding-10-third-step" color="red" size="25" @click="deleteApplicant(index)">mdi-delete</v-icon></center>
               </v-col>
             </v-row>
@@ -80,7 +86,7 @@
               <v-btn outlined small width="150px" height="50px" color="success">{{ $t('label.outgoing_mail_print') }}</v-btn>
             </v-col>
             <v-col>
-              <v-btn small width="150px" height="50px" color="success" @click="submitData(true)">{{ $t('label.add') }}</v-btn>
+              <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -104,6 +110,14 @@ export default {
     show: {
       type: Boolean,
       default: null
+    },
+    dataSource: {
+      type: Object,
+      default: null
+    },
+    type: {
+      type: String,
+      default: 'create'
     }
   },
   data() {
@@ -153,13 +167,18 @@ export default {
     },
     setDialog(type, data, value) {
     },
-    async submitData(value) {
+    async submitData() {
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
       }
       this.data.letter_request = JSON.stringify(this.letter_request)
-      await this.$store.dispatch('letter/postOutgoingMail', this.data)
+      if (this.type === 'create') {
+        await this.$store.dispatch('letter/postOutgoingMail', this.data)
+      } else if (this.type === 'add') {
+        this.data.outgoing_letter_id = this.dataSource.id
+        await this.$store.dispatch('letter/postOutgoingMailApplication', this.data)
+      }
       window.location.reload()
     },
     hideDialog() {
@@ -231,5 +250,10 @@ export default {
   }
   .total_applicant {
     margin-top: 10px;
+  }
+  .letter_number {
+    margin: 15px 0;
+    font-weight: normal;
+    font-size: 15px;
   }
 </style>

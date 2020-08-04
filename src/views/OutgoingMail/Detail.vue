@@ -79,7 +79,7 @@
         </v-card>
       </v-col>
       <v-col>
-        <v-btn outlined color="success" height="50px" absolute right @click.stop="openForm(true)">
+        <v-btn outlined color="success" height="50px" absolute right @click.stop="openForm('add')">
           <v-icon dark>mdi-plus</v-icon>
           {{ $t('label.outgoing_mail_add_number_letter') }}
         </v-btn>
@@ -171,15 +171,27 @@
         </v-btn>
       </v-col>
     </v-row>
+    <CreateLetter
+      :show="showForm"
+      :data-source="dataSource"
+      :type="type"
+    />
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import CreateLetter from './Create'
 
 export default {
+  components: {
+    CreateLetter
+  },
   data() {
     return {
       loaded: false,
+      showForm: false,
+      dataSource: null,
+      type: null,
       listQuery: {
         page: 1,
         limit: 3,
@@ -214,8 +226,10 @@ export default {
     async handleSearch() {
       await this.getDetailApplication()
     },
-    openForm() {
-      console.log('open form')
+    openForm(value) {
+      this.type = value
+      this.dataSource = this.detailLetter.outgoing_letter
+      this.showForm = true
     },
     async onNext() {
       await this.getDetailApplication()
