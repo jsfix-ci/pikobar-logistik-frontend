@@ -7,7 +7,7 @@
     <v-card>
       <ValidationObserver ref="observer">
         <v-col>
-          <span v-if="type === 'update'" class="title-update-logistic-needs">{{ $t('label.outgoing_mail_add') }}</span>
+          <span v-if="type === 'update'" class="title-update-logistic-needs">{{ $t('label.outgoing_mail_update_application') }}</span>
           <span v-else-if="type === 'add'" class="title-update-logistic-needs">{{ $t('label.outgoing_mail_add_application') }}</span>
           <span v-else class="title-update-logistic-needs">{{ $t('label.outgoing_mail_add') }}</span>
         </v-col>
@@ -34,9 +34,9 @@
           />
         </v-col>
         <hr v-if="type === 'create'" class="margin-top-min-10-update-logistic-needs">
-        <v-col v-if="type === 'add'">
+        <v-col v-if="type !== 'create'">
           <div class="value-sub-title-update-logistic-needs"> {{ $t('label.outgoing_mail_number_form') }} </div>
-          <div class="sub-title-update-logistic-needs letter_number"> {{ dataSource.letter_number }} </div>
+          <div class="sub-title-update-logistic-needs letter_number"> {{ dataSource ? dataSource.letter_number : '-' }} </div>
         </v-col>
         <v-col>
           <p class="sub-title-update-logistic-needs mb-10">{{ $t('label.applicant_letter') }}</p>
@@ -77,13 +77,23 @@
           </v-row>
         </v-col>
         <hr class="margin-top-min-10-update-logistic-needs">
-        <v-col class="margin-top-min-10-update-logistic-needs">
+        <v-col v-if="type === 'create'" class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
               <v-btn outlined small width="150px" height="50px" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
               <v-btn outlined small width="150px" height="50px" color="success">{{ $t('label.outgoing_mail_print') }}</v-btn>
+            </v-col>
+            <v-col>
+              <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col v-else class="margin-top-min-10-update-logistic-needs">
+          <v-row>
+            <v-col>
+              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
               <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
@@ -112,6 +122,10 @@ export default {
       default: null
     },
     dataSource: {
+      type: Object,
+      default: null
+    },
+    dataUpdate: {
       type: Object,
       default: null
     },
@@ -165,7 +179,10 @@ export default {
     deleteApplicant(index) {
       this.letter_request.splice(index, 1)
     },
-    setDialog(type, data, value) {
+    async setDialog(value) {
+      this.letter_request[0] = value
+      console.log(this.letter_request)
+      await this.getApplicationLetter()
     },
     async submitData() {
       const valid = await this.$refs.observer.validate()

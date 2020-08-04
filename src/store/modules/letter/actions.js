@@ -1,4 +1,4 @@
-import { fetchList, doPostUpdate } from '@/api'
+import { fetchList, doPostUpdate, doDetailDelete } from '@/api'
 
 export default {
   async getListOutgoingMail({ commit }, params) {
@@ -53,6 +53,14 @@ export default {
       return response
     } catch (e) {
       return e
+    }
+  },
+  async deleteApplicationLetter({ commit }, id) {
+    try {
+      const response = await doDetailDelete(`/api/v1/application-letter`, 'DELETE', id)
+      return response
+    } catch (error) {
+      return error.response
     }
   }
 }

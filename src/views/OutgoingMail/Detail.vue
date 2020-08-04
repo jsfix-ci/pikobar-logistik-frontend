@@ -137,12 +137,12 @@
                         </template>
                         <v-card>
                           <v-list-item>
-                            <v-btn text small color="info" @click="openForm(null, index)">
+                            <v-btn text small color="info" @click="openForm('update', item)">
                               {{ $t('label.update') }}
                             </v-btn>
                           </v-list-item>
                           <v-list-item>
-                            <v-btn text small color="info" @click="deleteRealization(item)">
+                            <v-btn text small color="info" @click="deleteData(item)">
                               {{ $t('label.delete') }}
                             </v-btn>
                           </v-list-item>
@@ -172,25 +172,40 @@
       </v-col>
     </v-row>
     <CreateLetter
+      ref="updateForm"
       :show="showForm"
       :data-source="dataSource"
+      :data-update="dataUpdate"
       :type="type"
+    />
+    <DialogDelete
+      :dialog="dialogDelete"
+      :data-deleted="dataDelete"
+      :dialog-delete.sync="dialogDelete"
+      :delete-date.sync="dataDelete"
+      :store-path-delete="`letter/deleteApplicationLetter`"
+      :type="'letter'"
     />
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import CreateLetter from './Create'
+import DialogDelete from '@/components/DialogDelete'
 
 export default {
   components: {
-    CreateLetter
+    CreateLetter,
+    DialogDelete
   },
   data() {
     return {
       loaded: false,
       showForm: false,
       dataSource: null,
+      dataUpdate: null,
+      dataDelete: null,
+      dialogDelete: false,
       type: null,
       listQuery: {
         page: 1,
@@ -213,6 +228,10 @@ export default {
     await this.getDetailApplication()
   },
   methods: {
+    async deleteData(item) {
+      this.dialogDelete = true
+      this.dataDelete = await item
+    },
     async getDetailData() {
       await this.$store.dispatch('letter/getDetailLetter', this.$route.params.id)
     },
@@ -226,8 +245,10 @@ export default {
     async handleSearch() {
       await this.getDetailApplication()
     },
-    openForm(value) {
-      this.type = value
+    openForm(type, value) {
+      this.$refs.updateForm.setDialog(value)
+      this.type = type
+      this.dataUpdate = value
       this.dataSource = this.detailLetter.outgoing_letter
       this.showForm = true
     },
