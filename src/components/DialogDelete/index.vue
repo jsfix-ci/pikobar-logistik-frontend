@@ -3,7 +3,7 @@
     <v-dialog
       v-model="dialogDelete"
       persistent
-      max-width="340px"
+      max-width="400px"
     >
       <v-card>
         <div class="justify-center dialog-img-delete">
@@ -15,7 +15,12 @@
             v-if="dataDeleted.id"
             class="font-weight-black"
           >
-            {{ dataDeleted.product_name.toUpperCase() +'?' }}
+            <div v-if="type === 'letter'">
+              {{ dataDeleted.application_letter_number }}
+            </div>
+            <div v-else>
+              {{ dataDeleted.product_name.toUpperCase() +'?' }}
+            </div>
           </span>
         </v-card-text>
         <v-card-actions class="justify-center" style="padding: 2rem">
@@ -56,6 +61,10 @@ export default {
     dataDeleted: {
       type: Object,
       default: null
+    },
+    type: {
+      type: String,
+      default: null
     }
   },
   computed: {
@@ -74,7 +83,11 @@ export default {
       await this.$emit('update:dialogDelete', false)
       await this.$emit('update:deletedData', {})
       await this.$store.dispatch('toast/successToast', this.$t('success.data_success_delete'))
-      this.$parent.getListRealizationAdmin()
+      if (this.type === 'letter') {
+        await this.$parent.getDetailApplication()
+      } else {
+        this.$parent.getListRealizationAdmin()
+      }
     }
   }
 }

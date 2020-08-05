@@ -31,7 +31,8 @@ export default {
     help: 'Bantuan',
     letter_manage: 'Manajemen Surat',
     outgoing_mail: 'Surat Keluar',
-    incoming_mail: 'Surat Masuk'
+    incoming_mail: 'Surat Masuk',
+    outgoing_mail_detail: 'Detail Surat Keluar'
   },
   label: {
     username: 'Username',
@@ -97,6 +98,7 @@ export default {
     number: 'No',
     delivered_kit: 'Kit Terkirim',
     action: 'Aksi',
+    action_options: 'Pilih Aksi',
     edit_2: 'Edit',
     kit_received: 'Kit Diterima',
     kit_available: 'Kit Tersedia',
@@ -324,7 +326,13 @@ export default {
     outgoing_mail_upload: 'Upload Surat Keluar',
     outgoing_mail_add: 'Tambah Surat Keluar',
     total_applicant: 'Total Permohonan',
-    outgoing_mail_print: 'Cetak Surat'
+    outgoing_mail_print: 'Cetak Surat',
+    outgoing_mail_detail: 'Detail Surat Keluar',
+    outgoing_mail_date_print: 'Tanggal Cetak',
+    outgoing_mail_total_applicant: 'Jumlah Permohonan',
+    outgoing_mail_add_number_letter: 'Tambah No. Surat Permohonan',
+    outgoing_mail_add_application: 'Tambah Surat Permohonan',
+    outgoing_mail_update_application: 'Edit Surat Permohonan'
   },
   success: {
     login_success: 'Login Berhasil',
