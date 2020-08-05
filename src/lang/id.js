@@ -98,6 +98,7 @@ export default {
     number: 'No',
     delivered_kit: 'Kit Terkirim',
     action: 'Aksi',
+    action_options: 'Pilih Aksi',
     edit_2: 'Edit',
     kit_received: 'Kit Diterima',
     kit_available: 'Kit Tersedia',

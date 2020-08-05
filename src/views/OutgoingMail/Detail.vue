@@ -31,20 +31,12 @@
         <v-card outlined>
           <v-card-text>
             <v-row class="ml-2">
-              <v-col cols="2" sm="2">
-                <div class="text-title">{{ $t('label.status') }}</div>
-              </v-col>
-              <v-col cols="10" sm="8">
-                <div class="text-data-red">:  {{ detailLetter ? detailLetter.outgoing_letter.status : '-' }}</div>
-              </v-col>
-            </v-row>
-            <v-row class="ml-2 margin-top-min-15">
               <v-col cols="6" md="6">
-                <a :href="'#'" target="_blank" class="blue--text letter-class"><u>{{ $t('label.applicant_letter') }}</u></a>
+                <a :href="'#'" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
               </v-col>
               <v-col cols="6" md="6">
                 <div class="margin-top-min-15">
-                  <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
+                  <v-btn small outlined color="success" width="130px" height="50px" absolute right>
                     {{ $t('label.outgoing_mail_print') }}
                   </v-btn>
                 </div>
@@ -132,7 +124,7 @@
                             outlined
                             v-on="on"
                           >
-                            Pilih aksi<v-icon style="color: #009D57;font-size: 2rem;" right>mdi-menu-down</v-icon>
+                            {{ $t('label.action_options') }}<v-icon style="color: #009D57;font-size: 2rem;" right>mdi-menu-down</v-icon>
                           </v-btn>
                         </template>
                         <v-card>
