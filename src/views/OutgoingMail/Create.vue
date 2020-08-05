@@ -66,10 +66,10 @@
             </v-row>
           </div>
         </v-col>
-        <!-- <v-col>
+        <v-col v-if="type === 'update'">
           <p class="sub-title-update-logistic-needs mb-10">{{ $t('label.applicant_letter') }}</p>
-          <div v-for="(applicant, index) in letter_request" :key="index" class="mt-n5">
-            <span class="value-sub-title-update-logistic-needs"><span class="pr-1">{{ index + 1 }}.</span> {{ $t('label.applicant_letter_number') }}</span>
+          <div class="mt-n5">
+            <span class="value-sub-title-update-logistic-needs">{{ $t('label.applicant_letter_number') }}</span>
             <v-row>
               <v-col cols="10" class="ml-5">
                 <ValidationProvider
@@ -77,7 +77,7 @@
                   rules="requiredApplicantLetterNumber"
                 >
                   <v-autocomplete
-                    v-model="applicant.applicant_id"
+                    v-model="item.applicant_id"
                     outlined
                     solo-inverted
                     :placeholder="$t('label.applicant_letter_number')"
@@ -88,13 +88,10 @@
                   />
                 </ValidationProvider>
               </v-col>
-              <v-col v-if="letter_request.length > 1" cols="1">
-                <center><v-icon class="padding-10-third-step" color="red" size="25" @click="deleteApplicant(index)">mdi-delete</v-icon></center>
-              </v-col>
             </v-row>
           </div>
-        </v-col> -->
-        <v-col class="margin-top-min-30-update-logistic-needs">
+        </v-col>
+        <v-col v-if="type !== 'update'" class="margin-top-min-30-update-logistic-needs">
           <v-row class="margin-top-min-30-update-logistic-needs">
             <v-col class="total_applicant">
               <p> {{ $t('label.total_applicant') }} <span class="pl-1"> <b> {{ letter_request.length }} {{ $t('route.applicant_medical_tools_title') }} </b></span></p>
@@ -208,7 +205,8 @@ export default {
       this.letter_request.splice(index, 1)
     },
     async setDialog(value) {
-      // this.letter_request[0] = value )
+      this.item.applicant_id = value.applicant_id
+      this.item.application_letter_number = value.application_letter_number
     },
     async submitData() {
       const valid = await this.$refs.observer.validate()

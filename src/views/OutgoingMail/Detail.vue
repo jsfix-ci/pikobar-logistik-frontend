@@ -15,7 +15,7 @@
         <v-col cols="7" sm="8">
           <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</div>
           <div class="text-data-green">:  {{ detailLetter ? $moment.utc(detailLetter.outgoing_letter.letter_date).tz('Asia/Jakarta').format('LL') : '-' }}</div>
-          <div class="text-data-green">:  {{ detailLetter ? detailLetter.request_letter.length : '-' }}</div>
+          <div class="text-data-green">:  {{ detailLetterApplication ? detailLetterApplication.data.length : '-' }}</div>
         </v-col>
       </v-row>
     </div>

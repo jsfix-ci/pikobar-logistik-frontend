@@ -62,5 +62,14 @@ export default {
     } catch (error) {
       return error.response
     }
+  },
+  async updateApplicationLetter({ commit }, params) {
+    const id = params.id
+    try {
+      const response = await doPostUpdate(`/api/v1/application-letter/${id}`, 'PUT', params)
+      return response
+    } catch (e) {
+      return e
+    }
   }
 }
