@@ -82,11 +82,16 @@
                     solo-inverted
                     :placeholder="$t('label.applicant_letter_number')"
                     :error-messages="errors"
-                    :item-value="'id'"
+                    item-value="applicant_id"
                     item-text="application_letter_number"
-                    :items="applicationLetter"
+                    :items="item"
                   />
                 </ValidationProvider>
+                <v-text-field
+                  v-model="item.applicant_id"
+                  outlined
+                  solo-inverted
+                />
               </v-col>
             </v-row>
           </div>
@@ -163,12 +168,13 @@ export default {
     return {
       data: {
         letter_number: null,
-        letter_date: null
+        letter_date: null,
+        letter_request: null
       },
       letter_request: [{
         'applicant_id': null
       }],
-      item: {},
+      item: [],
       updateName: false,
       isCreate: false,
       isUpdate: false,
@@ -205,8 +211,11 @@ export default {
       this.letter_request.splice(index, 1)
     },
     async setDialog(value) {
-      this.item.applicant_id = value.applicant_id
-      this.item.application_letter_number = value.application_letter_number
+      // this.item.push(value)
+      this.item = value
+      this.item.push(this.applicationLetter)
+      console.log(value)
+      // this.item.application_letter_number = value.application_letter_number
     },
     async submitData() {
       const valid = await this.$refs.observer.validate()
