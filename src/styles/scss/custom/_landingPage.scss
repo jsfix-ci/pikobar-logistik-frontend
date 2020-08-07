@@ -3,12 +3,13 @@
 }
 .main-card-landing-page {
     margin: 10px 120px 30px 120px;
-    height: 500px;
-    padding: 100px 10px;
+    // height: 500px;
+    padding: 50px 20px;
 }
 .header-landing-page {
     padding: 45px;
     margin-left: 100px;
+    margin-right: 100px;
     margin-top: -30px;
 }
 .title-page-landing-page {
@@ -49,7 +50,30 @@
     line-height: 24px;
 }
 .full-landing-page {
-    background: #27ae60;
+    background: #16A75C;
+}
+.title-logistic {
+    color: #16A75C;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+}
+.landing-page-logo-jds {
+    margin-top: -100px;
+    margin-left: 120px;
+}
+.copyright {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+    color: #757575;
+    float: right;
+    margin-right: 120px;
 }
 .negative-landing-page {
     margin-top: -50px;
@@ -82,6 +106,11 @@
 .margin-icon-help-mobile-landing-page {
     margin-top: 30px;
     margin-left: 10px;
+}
+.landing-page-guide {
+    margin-top: 2px;
+    margin-right: 10px;
+    font-weight: normal;
 }
 @media (max-width: 1199px) and (min-width: 960px) {
 }
