@@ -54,6 +54,7 @@
                     solo-inverted
                     :placeholder="$t('label.applicant_letter_number')"
                     :error-messages="errors"
+                    :no-data-text="$t('label.no_data')"
                     :item-value="'id'"
                     item-text="application_letter_number"
                     :items="applicationLetter"
