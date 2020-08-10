@@ -212,11 +212,7 @@ export default {
       this.letter_request.splice(index, 1)
     },
     async setDialog(value) {
-      // this.item.push(value)
       this.item = value
-      this.item.push(this.applicationLetter)
-      console.log(value)
-      // this.item.application_letter_number = value.application_letter_number
     },
     async submitData() {
       const valid = await this.$refs.observer.validate()
