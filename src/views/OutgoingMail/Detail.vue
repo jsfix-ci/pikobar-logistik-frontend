@@ -15,7 +15,7 @@
         <v-col cols="7" sm="8">
           <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</div>
           <div class="text-data-green">:  {{ detailLetter ? $moment.utc(detailLetter.outgoing_letter.letter_date).tz('Asia/Jakarta').format('LL') : '-' }}</div>
-          <div class="text-data-green">:  {{ detailLetterApplication ? detailLetterApplication.data.length : '-' }}</div>
+          <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.request_letter_total : '-' }}</div>
         </v-col>
       </v-row>
     </div>
@@ -64,7 +64,7 @@
             solo-inverted
             flat
             hide-details
-            :placeholder="$t('label.search_data')"
+            :placeholder="$t('label.search_application_letter')"
             prepend-inner-icon="search"
             @change="handleSearch"
           />
@@ -99,7 +99,7 @@
                   <td class="text-center" :colspan="7">{{ $t('label.no_data') }}</td>
                 </tr>
                 <tr v-for="(item, index) in detailLetterApplication ? detailLetterApplication.data : null" v-else :key="item.index">
-                  <td>{{ index + 1 }}</td>
+                  <td>{{ getTableRowNumbering(index) }}</td>
                   <td>{{ item.application_letter_number }}</td>
                   <td>{{ item.agency_name || '-' }}</td>
                   <td>{{ item.kemendagri_kabupaten_nama || '-' }}</td>
@@ -220,6 +220,9 @@ export default {
     await this.getDetailApplication()
   },
   methods: {
+    getTableRowNumbering(index) {
+      return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
+    },
     async deleteData(item) {
       this.dialogDelete = true
       this.dataDelete = await item
