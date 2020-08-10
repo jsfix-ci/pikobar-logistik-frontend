@@ -78,12 +78,12 @@
                   rules="requiredApplicantLetterNumber"
                 >
                   <v-autocomplete
-                    v-model="item.application_letter_number"
+                    v-model="item.applicant_id"
                     outlined
                     solo-inverted
                     :placeholder="$t('label.applicant_letter_number')"
                     :error-messages="errors"
-                    item-value="applicant_id"
+                    item-value="id"
                     item-text="application_letter_number"
                     :items="applicationLetter"
                   />
@@ -113,6 +113,16 @@
             </v-col>
             <v-col>
               <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col v-else-if="type === 'update'" class="margin-top-min-10-update-logistic-needs">
+          <v-row>
+            <v-col>
+              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+            </v-col>
+            <v-col>
+              <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.save_update') }}</v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -170,7 +180,9 @@ export default {
       letter_request: [{
         'applicant_id': null
       }],
-      item: [],
+      item: [{
+        'applicant_id': null
+      }],
       updateName: false,
       isCreate: false,
       isUpdate: false,
