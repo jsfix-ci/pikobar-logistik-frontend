@@ -118,15 +118,21 @@
 .mobile-space-icon-help {    
   margin-top: -5px;
 }
-@media (max-width: 1199px) and (min-width: 960px) {
+@media (max-width: 1024px) and (min-width: 768px) {
+  .text-card-main {
+    display: none;
+  }
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+  }
 }
 @media (max-width: 768px) and (min-width: 320px) {
   .main-card-landing-page {
     margin: 0px;
-    padding: 100px 10px;
-  }
-  .logistic-need-part {
-    margin-top: -100px;
+    padding: 10px 10px;
   }
   .card-title-landing-page {
     font-size: 30px;
@@ -157,7 +163,7 @@
 @media (max-width: 588px) and (min-width: 320px) {
   .main-card-landing-page {
     margin: 0px;
-    padding: 100px 10px;
+    padding: 10px 10px;
   }
   .header-landing-page {
     display: none;
@@ -174,9 +180,6 @@
   .text-card-main-mobile {
     display: block;
     margin-top: 20px;
-  }
-  .logistic-need-part {
-    margin-top: -90px;
   }
   .card-title-landing-page {
     font-size: 30px;
