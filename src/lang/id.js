@@ -109,6 +109,7 @@ export default {
     phone_number: 'Nomor Telepon (HP/WA)',
     example_phone_number: 'Masukkan nomor telepon yang bisa dihubungi',
     save: 'Simpan',
+    save_update: 'Simpan Perubahan',
     faskes_name: 'Nama Faskes',
     received_stock: 'Stok Diterima',
     used_stock: 'Stok Terpakai',

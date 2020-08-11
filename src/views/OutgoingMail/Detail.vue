@@ -133,7 +133,7 @@
                               {{ $t('label.update') }}
                             </v-btn>
                           </v-list-item>
-                          <v-list-item>
+                          <v-list-item v-if="detailLetterApplication ? detailLetterApplication.data.length > 1 : '-'">
                             <v-btn text small color="info" @click="deleteData(item)">
                               {{ $t('label.delete') }}
                             </v-btn>
