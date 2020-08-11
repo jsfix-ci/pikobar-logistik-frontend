@@ -1,5 +1,6 @@
 .background-landing-page {
   background-color: #e0e0e0;
+  overflow: hidden;
 }
 .main-card-landing-page {
   margin: 10px 120px 30px 120px;
@@ -136,6 +137,10 @@
   }
   .footer-logo-mobile {
     margin-left: 15px;
+  }
+  .text-card-main-mobile {
+    display: block;
+    margin-top: 20px;
   }
   .copyright-mobile {
     float: right;

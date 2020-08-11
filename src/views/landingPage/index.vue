@@ -117,16 +117,20 @@
               </center>
             </v-col>
             <v-col sm="12" cols="12">
-              <img src="../../static/group.png" width="350px">
+              <center>
+                <img src="../../static/group.png" width="350px">
+              </center>
             </v-col>
           </v-row>
         </div>
         <!-- End -->
-        <v-row class="text-card-main">
-          <v-col>
-            <img style="float: right; margin-right: -20px" src="../../static/bgFlat_lingkar.png">
-          </v-col>
-        </v-row>
+        <div class="text-card-main">
+          <v-row>
+            <v-col>
+              <img style="float: right; margin-right: -20px" src="../../static/bgFlat_lingkar.png">
+            </v-col>
+          </v-row>
+        </div>
         <div class="text-card-main">
           <v-row>
             <v-col cols="7" md="7">
@@ -154,39 +158,44 @@
               </center>
             </v-col>
             <v-col cols="12" sm="12">
-              <img src="../../static/tracking_logistik_1.png" width="350px">
+              <center>
+                <img src="../../static/tracking_logistik_1.png" width="350px">
+              </center>
             </v-col>
           </v-row>
         </div>
-        <!-- Mobile footer -->
-        <!-- End -->
       </v-card>
-      <v-row class="text-card-main" style="margin-top: -20px">
-        <v-col>
-          <img class="landing-page-logo-jds" src="../../static/jds-logo.png">
-        </v-col>
-        <v-col>
-          <div class="copyright">
-            <p>
-              <span>{{ $t('label.copyright') }}</span>
-              <span> &copy; </span>
-              <span>{{ $t('label.year') }}</span>
-            </p>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row class="text-card-main-mobile">
-        <v-col>
-          <img class="footer-logo-mobile" src="../../static/jds-logo.png">
-          <div class="copyright-mobile">
-            <p>
-              <span>{{ $t('label.copyright') }}</span>
-              <span> &copy; </span>
-              <span>{{ $t('label.year') }}</span>
-            </p>
-          </div>
-        </v-col>
-      </v-row>
+      <div class="text-card-main">
+        <v-row style="margin-top: -20px">
+          <v-col cols="6" md="6">
+            <img class="landing-page-logo-jds" src="../../static/jds-logo.png">
+          </v-col>
+          <v-col cols="6" md="6">
+            <div class="copyright">
+              <p>
+                <span>{{ $t('label.copyright') }}</span>
+                <span> &copy; </span>
+                <span>{{ $t('label.year') }}</span>
+              </p>
+            </div>
+          </v-col>
+        </v-row>
+      </div>
+      <!-- Mobile Footer -->
+      <div class="text-card-main-mobile">
+        <v-row>
+          <v-col>
+            <img class="footer-logo-mobile" src="../../static/jds-logo.png">
+            <div class="copyright-mobile">
+              <p>
+                <span>{{ $t('label.copyright') }}</span>
+                <span> &copy; </span>
+                <span>{{ $t('label.year') }}</span>
+              </p>
+            </div>
+          </v-col>
+        </v-row>
+      </div>
     </div>
     <v-dialog
       v-model="dialog"
