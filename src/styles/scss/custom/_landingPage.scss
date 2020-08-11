@@ -1,147 +1,193 @@
 .background-landing-page {
-    background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }
 .main-card-landing-page {
-    margin: 10px 120px 30px 120px;
-    // height: 500px;
-    padding: 50px 20px;
+  margin: 10px 120px 30px 120px;
+  padding: 50px 20px;
 }
 .header-landing-page {
-    padding: 45px;
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: -30px;
+  padding: 45px;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: -30px;
 }
 .title-page-landing-page {
-    padding: 5px 20px;
-    font-size: 24px;
-    color: white;
-    font-weight: bold;
-    line-height: 29px;
+  padding: 5px 20px;
+  font-size: 24px;
+  color: white;
+  font-weight: bold;
+  line-height: 29px;
 }
 .title-page-landing-page-mobile {
-    font-size: 16px;
-    color: white;
-    padding-left: 5px;
+  font-size: 16px;
+  color: white;
+  padding-top: 10px;
 }
 .call-center-landing-page {
-    color: white;
-    font-size: 16px;
-    margin-left: 10px;
-    margin-right: 40px;
+  color: white;
+  font-size: 16px;
+  margin-left: 10px;
+  margin-right: 40px;
 }
 .pusat-bantuan-landing-page {
-    color: white;
-    font-size: 16px;
-    margin-left: 10px;
+  color: white;
+  font-size: 16px;
+  margin-left: 10px;
 }
 .float-right-landing-page {
-    float: right;
+  float: right;
 }
 .font-product-sans-landing-page {
-    font-family: "Product Sans" !important;
+  font-family: "Lora" !important;
+}
+.font-text {
+  font-family: "Lato" !important;
 }
 .card-title-landing-page {
-    font-size: 36px;
-    line-height: 44px;
+  font-size: 36px;
+  line-height: 44px;
 }
 .card-text-landing-page {
-    font-size: 16px;
-    line-height: 24px;
+  font-size: 16px;
+  line-height: 24px;
 }
 .full-landing-page {
-    background: #16A75C;
+  background: #16A75C;
 }
 .title-logistic {
-    color: #16A75C;
+  color: #16A75C;
 }
 .center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 20%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
 }
 .landing-page-logo-jds {
-    margin-top: -100px;
-    margin-left: 120px;
+  margin-top: -100px;
+  margin-left: 120px;
 }
 .copyright {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 21px;
+  color: #757575;
+  float: right;
+  margin-right: 120px;
+}
+.negative-landing-page {
+  margin-top: -50px;
+}
+.header-landing-page-mobile {
+  display: none;
+}
+.text-card-main {
+  display: block;
+}
+.text-card-main-mobile {
+  display: none;
+}
+.margin-20 {
+  margin: 20px;
+}
+.margin-left-20 {
+  margin-left: -20px;
+}
+.margin-right-20 {
+  margin-right: 20px;
+}
+.margin-left-title-mobile-landing-page {
+  margin-left: 20px
+}
+.margin-icon-talk-mobile-landing-page {
+  margin-top: 30px;
+  margin-right:10px;
+}
+.margin-icon-help-mobile-landing-page {
+  margin-top: 30px;
+  margin-left: 10px;
+}
+.landing-page-guide {
+  margin-top: 2px;
+  margin-right: 10px;
+  font-weight: normal;
+}
+.mobile-space-icon-help {    
+  margin-top: -5px;
+}
+@media (max-width: 1199px) and (min-width: 960px) {
+}
+@media (max-width: 768px) and (min-width: 320px) {
+  .main-card-landing-page {
+    margin: 0px;
+    padding: 100px 10px;
+  }
+  .logistic-need-part {
+    margin-top: -100px;
+  }
+  .card-title-landing-page {
+    font-size: 30px;
+    line-height: 44px;
+  }
+  .card-text-layout {
+    padding: 0 15px
+  }
+  .footer-logo-mobile {
+    margin-left: 15px;
+  }
+  .copyright-mobile {
+    float: right;
     font-family: Lato;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
     line-height: 21px;
     color: #757575;
-    float: right;
-    margin-right: 120px;
-}
-.negative-landing-page {
-    margin-top: -50px;
-}
-.header-landing-page-mobile {
-    display: none;
-}
-.text-card-main {
-    display: block;
-}
-.text-card-main-mobile {
-    display: none;
-}
-.margin-20 {
-    margin: 20px;
-}
-.margin-left-20 {
-    margin-left: -20px;
-}
-.margin-right-20 {
-    margin-right: 20px;
-}
-.margin-left-title-mobile-landing-page {
-    margin-left: 20px
-}
-.margin-icon-talk-mobile-landing-page {
-    margin-top: 30px;
-    margin-right:10px;
-}
-.margin-icon-help-mobile-landing-page {
-    margin-top: 30px;
-    margin-left: 10px;
-}
-.landing-page-guide {
-    margin-top: 2px;
-    margin-right: 10px;
-    font-weight: normal;
-}
-@media (max-width: 1199px) and (min-width: 960px) {
-}
-@media (max-width: 768px) and (min-width: 320px) {
-    .main-card-landing-page {
-        margin: 0px;
-        height: 500px;
-        padding: 100px 10px;
-    }
+    margin-right: 15px;
+  }
 }
 
 @media (max-width: 588px) and (min-width: 320px) {
-    .main-card-landing-page {
-        margin: 0px;
-        height: 500px;
-        padding: 100px 10px;
-    }
-    .header-landing-page {
-        display: none;
-    }
-    .header-landing-page-mobile {
-        display: block;
-        margin-left: 50px;
-        margin-right: 50px;
-        margin-bottom: 50px;
-    }
-    .text-card-main {
-        display: none;
-    }
-    .text-card-main-mobile {
-        display: block;
-        margin-top: 20px;
-    }
+  .main-card-landing-page {
+    margin: 0px;
+    padding: 100px 10px;
+  }
+  .header-landing-page {
+    display: none;
+  }
+  .header-landing-page-mobile {
+    display: block;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+  }
+  .text-card-main {
+    display: none;
+  }
+  .text-card-main-mobile {
+    display: block;
+    margin-top: 20px;
+  }
+  .logistic-need-part {
+    margin-top: -90px;
+  }
+  .card-title-landing-page {
+    font-size: 30px;
+    line-height: 44px;
+  }
+  .card-text-layout {
+    padding: 0 15px
+  }
+  .copyright-mobile {
+    float: right;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+    color: #757575;
+    margin-right: 15px;
+  }
 }
