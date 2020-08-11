@@ -128,11 +128,33 @@
     margin-right: auto;
     width: 20%;
   }
+  .header-landing-page {
+    display: none;
+  }
+  .header-landing-page-mobile {
+    display: block;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+  }
+  .margin-left-title-mobile-landing-page {
+    margin-left: -30px
+  }
+
 }
 @media (max-width: 768px) and (min-width: 320px) {
   .main-card-landing-page {
     margin: 0px;
     padding: 10px 10px;
+  }
+  .header-landing-page {
+    display: none;
+  }
+  .header-landing-page-mobile {
+    display: block;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
   }
   .card-title-landing-page {
     font-size: 30px;
