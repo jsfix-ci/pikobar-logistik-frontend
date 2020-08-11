@@ -224,7 +224,7 @@ export default {
     },
     async setDialog(value) {
       this.item = value
-      await this.getApplicationLetter(value.applicant_id)
+      await this.getApplicationLetter(value ? value.applicant_id : null)
     },
     async submitData() {
       const valid = await this.$refs.observer.validate()
