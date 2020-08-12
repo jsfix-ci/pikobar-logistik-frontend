@@ -11,14 +11,12 @@
         </div>
         <v-card-text v-if="dataDeleted" class="dialog-delete-title font-weight-bold">
           {{ $t('label.delete_dialog') }} <br>
-          <span
-            v-if="dataDeleted.id"
-            class="font-weight-black"
-          >
-            <div v-if="type === 'letter'">
-              {{ dataDeleted.application_letter_number }}
+          <span v-if="dataDeleted.id">
+            <div v-if="type === 'letter'" class="dialog-delete-data">
+              {{ $t('label.applicant_letter_number') }} <br>
+              {{ dataDeleted.application_letter_number + '?' }}
             </div>
-            <div v-else>
+            <div v-else class="dialog-delete-data">
               {{ dataDeleted.product_name.toUpperCase() +'?' }}
             </div>
           </span>
