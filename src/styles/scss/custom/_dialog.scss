@@ -1,5 +1,5 @@
 .dialog-delete-title {
-  font-size: 1.5rem !important;
+  font-size: 1.3rem !important;
   line-height: 30px;
   text-align: center;
   padding: 15px 58px 10px;
@@ -10,4 +10,8 @@
   padding-bottom: 2rem;
   margin: auto;
   width: 30%;
+}
+.dialog-delete-data {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
