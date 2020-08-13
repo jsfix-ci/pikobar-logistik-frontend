@@ -36,7 +36,7 @@
               </v-col>
               <v-col cols="6" md="6">
                 <div class="margin-top-min-15">
-                  <v-btn small outlined color="success" width="130px" height="50px" absolute right>
+                  <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="downloadLetter">
                     {{ $t('label.outgoing_mail_print') }}
                   </v-btn>
                 </div>
@@ -154,6 +154,8 @@
             @input="onNext"
           />
         </v-card>
+        <!-- {{ detailLetter }} -->
+        {{ detailLetterApplication.data[0] }}
       </v-col>
     </v-row>
     <v-row class="mb-15">
@@ -184,6 +186,7 @@
 import { mapGetters } from 'vuex'
 import CreateLetter from './Create'
 import DialogDelete from '@/components/DialogDelete'
+import pdfMake from 'pdfmake/build/pdfmake'
 
 export default {
   components: {
@@ -204,7 +207,8 @@ export default {
         limit: 3,
         outgoing_letter_id: null,
         application_letter_number: null
-      }
+      },
+      logo: require('@/static/pemprov_jabar.png')
     }
   },
   computed: {
@@ -220,6 +224,132 @@ export default {
     await this.getDetailApplication()
   },
   methods: {
+    downloadLetter() {
+      const docDefinition = {
+        content: [
+          {
+            text: 'PEMERINTAH DAERAH PROVINSI JAWA BARAT',
+            style: 'headerPemprov'
+          },
+          {
+            text: 'DINAS PERINDUSTRIAN DAN PERDAGANGAN',
+            style: 'headerDisperindag'
+          },
+          {
+            text: 'Jalan Asia Afrika No. 146 Tlp. (022) 4230897 Fax. (022) 4200331 – 43209 \n Website: http://disperindag.jabarprov.go.id, email: disperindag@jabarprov.go.id',
+            style: 'address'
+          },
+          {
+            text: 'BANDUNG - 40261',
+            style: 'city'
+          },
+          {
+            text: '\n\n'
+          },
+          {
+            text: 'Bandung, ' + this.$moment(this.detailLetter.outgoing_letter.letter_date).format('LL') + '\n\n',
+            style: 'date',
+            margin: [0, 0, 100, 0]
+          },
+          {
+            columns: [
+              {
+                width: 70,
+                text: 'Nomor\n Sifat\n Lampiran \n Hal\n',
+                style: 'fontSizeBody'
+              },
+              {
+                width: 210,
+                text: ': ' + this.detailLetter.outgoing_letter.letter_number + '\n : Biasa \n : Satu Lembar \n : Penyaluran Permohonan Logistik Kesehatan',
+                style: 'fontSizeBody'
+              },
+              {
+                text: 'Kepada Yth. Gubernur Jawa Barat selaku \n Ketua Gugus Tugas Percepatan \n Penanggulangan Covid-19 di \n Jawa Barat \n di \n Bandung\n\n',
+                style: 'fontSizeBody'
+              }
+            ]
+          },
+          {
+            text: '\tDisampaikan dengan hormat, menindaklanjuti Surat ' + this.detailLetterApplication.data[0].agency_name + ' dengan nomor ' + this.detailLetterApplication.data[0].application_letter_number + ', Bersama ini kami sampaikan permohonan penyaluran logistik alat kesehatan.\n\n',
+            style: 'fontSizeBody'
+          },
+          {
+            text: 'Adapun jenis dan jumlah barang-barang Kesehatan yang dimaksud adalah sebagai berikut:\n\n',
+            style: 'fontSizeBody'
+          },
+          {
+            text: 'Ini daftar barang\n\n\n'
+          },
+          {
+            text: 'Demikian disampaikan. Atas perhatian dan perkenan Bapak kami ucapkan terima kasih.',
+            style: 'fontSizeBody'
+          },
+          {
+            text: 'KEPALA\nDINAS PERINDUSTRIAN DAN PERDAGANGAN\nselaku\nKETUA DIVISI LOGISTIK GUGUS TUGAS\nPERCEPATAN PENANGGULANGAN COVID-19\nDI JAWA BARAT',
+            style: 'signatureTitle'
+          },
+          {
+            text: 'Drs. H. MOHAMAD ARIFIN SOEDJAYANA, MM.\nPembina Utama Madya\nNIP 19640730 198903 1 004\n\n',
+            style: 'signatureData'
+          },
+          {
+            text: 'Tembusan:',
+            style: 'fontSizeBody'
+          },
+          {
+            ol: [
+              'Yth. Wakil Gubernur Jawa Barat',
+              'Yth. Sekretaris Daerah Provinsi Jawa Barat',
+              'Yth. Asisten Perekonomian dan Pembangunan Setda Prov. Jawa Barat',
+              'Yth. Asisten Administrasi Setda Prov. Jawa Barat',
+              'Yth. Asisten Pemerintahan, Hukum dan Kesejahteraan Sosial Setda Prov. Jawa Barat',
+              'Yth. Inspektur Provinsi Jawa Barat',
+              'Yth. Gugus Tugas Percepatan Penanggulangan COVID-19 di Jawa Barat'
+            ],
+            style: 'fontSizeBody'
+          }
+        ],
+        styles: {
+          headerPemprov: {
+            fontSize: 12,
+            bold: true,
+            alignment: 'center'
+          },
+          headerDisperindag: {
+            fontSize: 16,
+            bold: true,
+            alignment: 'center'
+          },
+          address: {
+            fontSize: 10,
+            alignment: 'center'
+          },
+          city: {
+            fontSize: 11,
+            bold: true,
+            alignment: 'center'
+          },
+          date: {
+            fontSize: 11,
+            alignment: 'right'
+          },
+          fontSizeBody: {
+            fontSize: 11
+          },
+          signatureTitle: {
+            fontSize: 11,
+            alignment: 'center',
+            margin: [225, 50, 0, 0]
+          },
+          signatureData: {
+            fontSize: 11,
+            alignment: 'center',
+            margin: [225, 70, 0, 0]
+          }
+        }
+      }
+      pdfMake.createPdf(docDefinition, 'surat').open()
+    },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
     },
