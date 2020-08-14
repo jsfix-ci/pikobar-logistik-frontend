@@ -155,7 +155,8 @@
           />
         </v-card>
         <!-- {{ detailLetter }} -->
-        {{ detailLetterApplication.data[0] }}
+        <!-- {{ detailLetterApplication.data[0] }} -->
+        {{ detailLetterPrint }}
       </v-col>
     </v-row>
     <v-row class="mb-15">
@@ -209,11 +210,58 @@ export default {
         application_letter_number: null
       },
       logo: require('@/static/pemprov_jabar.png')
+      // detailLetterPrint: {
+      //   data: {
+      //     letter_request: [
+      //       {
+      //         'id': 1,
+      //         'outgoing_letter_id': 3,
+      //         'applicant_id': 1351,
+      //         'application_letter_number': '1351/DINKES/15/06/2020',
+      //         'agency_id': '1351',
+      //         'agency_name': 'KLINIK Bandung',
+      //         'location_district_code': '32.73',
+      //         'kemendagri_kabupaten_nama': 'KOTA BANDUNG',
+      //         'applicant_name': 'Uni Choirini'
+      //       },
+      //       {
+      //         'id': 2,
+      //         'outgoing_letter_id': 4,
+      //         'applicant_id': 1351,
+      //         'application_letter_number': '1352/DINKES/15/06/2020',
+      //         'agency_id': '1351',
+      //         'agency_name': 'KLINIK LMC SUDIRMAN',
+      //         'location_district_code': '32.73',
+      //         'kemendagri_kabupaten_nama': 'KOTA BANDUNG',
+      //         'applicant_name': 'Uni Choirini'
+      //       }
+      //     ],
+      //     material: [
+      //       {
+      //         'product_id': 'MAT-0003',
+      //         'product_name': 'NEO MASKER HEADLOOP (GUBERNUR)',
+      //         'realization_unit': 'PCS',
+      //         'material_group': 'MASKER BEDAH',
+      //         'realization_quantity': '120',
+      //         'location': 'WHS_PAKUAN_A'
+      //       },
+      //       {
+      //         'product_id': 'MAT-0004',
+      //         'product_name': 'MASKER HEADLOOP (GUBERNUR)',
+      //         'realization_unit': 'PCS',
+      //         'material_group': 'MASKER BEDAH',
+      //         'realization_quantity': '120',
+      //         'location': 'WHS_PAKUAN_A'
+      //       }
+      //     ]
+      //   }
+      // }
     }
   },
   computed: {
     ...mapGetters('letter', [
       'detailLetter',
+      'detailLetterPrint',
       'detailLetterApplication',
       'totalDataLetterApplication',
       'totalListLetterApplication'
@@ -224,7 +272,27 @@ export default {
     await this.getDetailApplication()
   },
   methods: {
-    downloadLetter() {
+    async downloadLetter() {
+      await this.getDetailPrint()
+      const instansi = []
+      const itemLogistic = []
+      const bodyData = []
+      this.detailLetterPrint.request_letter.forEach(element => {
+        instansi.push(element.agency_name + ' dengan nomor surat ' + element.application_letter_number)
+      })
+      this.detailLetterPrint.material.forEach((element, index) => {
+        itemLogistic.push(element.material_group + ' ' + element.realization_quantity + ' ' + element.realization_unit + ' ' + element.product_id)
+        const dataRow = []
+        dataRow.push(index + 1)
+        dataRow.push(element.material_group)
+        dataRow.push(element.realization_quantity)
+        dataRow.push(element.realization_unit)
+        dataRow.push(element.product_id)
+        dataRow.push(element.product_name)
+        dataRow.push(element.location)
+
+        bodyData.push(dataRow)
+      })
       const docDefinition = {
         content: [
           {
@@ -270,18 +338,20 @@ export default {
             ]
           },
           {
-            text: '\tDisampaikan dengan hormat, menindaklanjuti Surat ' + this.detailLetterApplication.data[0].agency_name + ' dengan nomor ' + this.detailLetterApplication.data[0].application_letter_number + ', Bersama ini kami sampaikan permohonan penyaluran logistik alat kesehatan.\n\n',
+            text: '\u200B\t\u200B\t\u200B\t\u200B\tDisampaikan dengan hormat, menindaklanjuti Surat ' + instansi + ' Bersama ini kami sampaikan permohonan penyaluran logistik alat kesehatan.\n\n',
             style: 'fontSizeBody'
           },
           {
-            text: 'Adapun jenis dan jumlah barang-barang Kesehatan yang dimaksud adalah sebagai berikut:\n\n',
+            text: '\u200B\t\u200B\t\u200B\t\u200B\tAdapun jenis dan jumlah barang-barang Kesehatan yang dimaksud adalah sebagai berikut:\n\n',
             style: 'fontSizeBody'
           },
           {
-            text: 'Ini daftar barang\n\n\n'
+            ol: itemLogistic,
+            margin: [50, 0, 0, 0],
+            style: 'fontSizeBody'
           },
           {
-            text: 'Demikian disampaikan. Atas perhatian dan perkenan Bapak kami ucapkan terima kasih.',
+            text: '\n\u200B\t\u200B\t\u200B\t\u200B\tDemikian disampaikan. Atas perhatian dan perkenan Bapak kami ucapkan terima kasih.',
             style: 'fontSizeBody'
           },
           {
@@ -306,7 +376,38 @@ export default {
               'Yth. Inspektur Provinsi Jawa Barat',
               'Yth. Gugus Tugas Percepatan Penanggulangan COVID-19 di Jawa Barat'
             ],
+            style: 'fontSizeBody',
+            pageBreak: 'after'
+          },
+          {
+            text: 'Lampiran: ',
+            margin: [250, 0, 0, 10],
             style: 'fontSizeBody'
+          },
+          {
+            columns: [
+              {
+                width: 90,
+                text: 'NOMOR \n TANGGAL \n TENTANG',
+                style: 'fontSizeBody'
+              },
+              {
+                width: 200,
+                text: ': ' + this.detailLetter.outgoing_letter.letter_number + ' \n : ' + this.$moment(this.detailLetter.outgoing_letter.letter_date).format('LL') + ' \n : Penyaluran Permohonan Logistik Kesehatan'
+              }
+            ],
+            margin: [250, 0, 0, 30],
+            style: 'fontSizeBody'
+          },
+          {
+            table: {
+              style: 'tableStyle',
+              widths: [30, '*', 50, 50, 60, '*', '*'],
+              // body: [
+              //   [{ text: 'No', style: 'tableStyle' }, { text: 'Material', style: 'tableStyle' }, { text: 'Jumlah', style: 'tableStyle' }, { text: 'Satuan', style: 'tableStyle' }, { text: 'ID Material', style: 'tableStyle' }, { text: 'Nama Material', style: 'tableStyle' }, { text: 'Lokasi', style: 'tableStyle' }]
+              // ]
+              body: bodyData
+            }
           }
         ],
         styles: {
@@ -345,10 +446,13 @@ export default {
             fontSize: 11,
             alignment: 'center',
             margin: [225, 70, 0, 0]
+          },
+          tableStyle: {
+            fontSize: 11
           }
         }
       }
-      pdfMake.createPdf(docDefinition, 'surat').open()
+      pdfMake.createPdf(docDefinition).open()
     },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
@@ -356,6 +460,9 @@ export default {
     async deleteData(item) {
       this.dialogDelete = true
       this.dataDelete = await item
+    },
+    async getDetailPrint() {
+      await this.$store.dispatch('letter/getDetailLetterPrint', this.$route.params.id)
     },
     async getDetailData() {
       await this.$store.dispatch('letter/getDetailLetter', this.$route.params.id)
