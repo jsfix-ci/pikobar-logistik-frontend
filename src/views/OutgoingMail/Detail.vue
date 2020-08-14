@@ -188,6 +188,7 @@ import { mapGetters } from 'vuex'
 import CreateLetter from './Create'
 import DialogDelete from '@/components/DialogDelete'
 import pdfMake from 'pdfmake/build/pdfmake'
+const imageToBase64 = require('image-to-base64')
 
 export default {
   components: {
@@ -272,11 +273,60 @@ export default {
     await this.getDetailApplication()
   },
   methods: {
+    imageConvert() {
+      imageToBase64(this.logo) // Image URL
+        .then(
+          (response) => {
+            console.log(response) // "iVBORw0KGgoAAAANSwCAIA..."
+          }
+        )
+        .catch(
+          (error) => {
+            console.log(error) // Logs an error if there was one
+          }
+        )
+    },
+    buildTableBody(data, columns) {
+      const body = []
+      body.push(columns)
+      data.forEach(function(row) {
+        const dataRow = []
+        columns.forEach(function(column) {
+          dataRow.push(row[column])
+        })
+        body.push(dataRow)
+        console.log(body)
+      })
+      return body
+    },
+    table(data, columns) {
+      return {
+        table: {
+          headerRows: 1,
+          body: this.buildTableBody(data, columns)
+        }
+      }
+    },
     async downloadLetter() {
       await this.getDetailPrint()
+      // this.imageConvert()
       const instansi = []
       const itemLogistic = []
-      const bodyData = []
+      const value = [
+      ]
+      // value.push({ text: 'Asda', style: 'tableHeader' })
+      // value.push({ text: 'Bsa', style: 'tableHeader' })
+      // value.push({ text: 'ccc', style: 'tableHeader' })
+      // value.push({ text: 'ddd', style: 'tableHeader' })
+      const column = []
+      column.push({ text: 'A', style: 'tableHeader' })
+      column.push({ text: 'B', style: 'tableHeader' })
+      column.push({ text: 'C', style: 'tableHeader' })
+      column.push({ text: 'D', style: 'tableHeader' })
+      column.push({ text: 'B', style: 'tableHeader' })
+      column.push({ text: 'C', style: 'tableHeader' })
+      column.push({ text: 'D', style: 'tableHeader' })
+      console.log(column)
       this.detailLetterPrint.request_letter.forEach(element => {
         instansi.push(element.agency_name + ' dengan nomor surat ' + element.application_letter_number)
       })
@@ -291,10 +341,15 @@ export default {
         dataRow.push(element.product_name)
         dataRow.push(element.location)
 
-        bodyData.push(dataRow)
+        value.push(dataRow)
       })
+      console.log(value)
       const docDefinition = {
         content: [
+          // {
+          //   image: 'blob:http://bachors.com/4d315a8f-b0eb-4dc8-8c11-31fa13c68f0a',
+          //   width: 150
+          // },
           {
             text: 'PEMERINTAH DAERAH PROVINSI JAWA BARAT',
             style: 'headerPemprov'
@@ -312,12 +367,29 @@ export default {
             style: 'city'
           },
           {
-            text: '\n\n'
+            canvas:
+            [
+              {
+                type: 'line',
+                x1: 0, y1: 10,
+                x2: 500, y2: 10,
+                lineWidth: 2
+              },
+              {
+                type: 'line',
+                x1: 0, y1: 13,
+                x2: 500, y2: 13,
+                lineWidth: 1
+              }
+            ]
+          },
+          {
+            text: '\n'
           },
           {
             text: 'Bandung, ' + this.$moment(this.detailLetter.outgoing_letter.letter_date).format('LL') + '\n\n',
             style: 'date',
-            margin: [0, 0, 100, 0]
+            margin: [0, 0, 85, 0]
           },
           {
             columns: [
@@ -333,7 +405,8 @@ export default {
               },
               {
                 text: 'Kepada Yth. Gubernur Jawa Barat selaku \n Ketua Gugus Tugas Percepatan \n Penanggulangan Covid-19 di \n Jawa Barat \n di \n Bandung\n\n',
-                style: 'fontSizeBody'
+                style: 'fontSizeBody',
+                margin: [20, 0, 0, 0]
               }
             ]
           },
@@ -399,14 +472,12 @@ export default {
             margin: [250, 0, 0, 30],
             style: 'fontSizeBody'
           },
+          // this.table(value, ['Nama', 'age'])
           {
             table: {
               style: 'tableStyle',
               widths: [30, '*', 50, 50, 60, '*', '*'],
-              // body: [
-              //   [{ text: 'No', style: 'tableStyle' }, { text: 'Material', style: 'tableStyle' }, { text: 'Jumlah', style: 'tableStyle' }, { text: 'Satuan', style: 'tableStyle' }, { text: 'ID Material', style: 'tableStyle' }, { text: 'Nama Material', style: 'tableStyle' }, { text: 'Lokasi', style: 'tableStyle' }]
-              // ]
-              body: bodyData
+              body: value
             }
           }
         ],
