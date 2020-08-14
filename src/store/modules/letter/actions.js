@@ -55,6 +55,15 @@ export default {
       return e
     }
   },
+  async getDetailLetterPrint({ commit }, id) {
+    try {
+      const response = await fetchList(`/api/v1/outgoing-letter-print/${id}`, 'GET')
+      commit('SET_DETAIL_LETTER_PRINT', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async deleteApplicationLetter({ commit }, id) {
     try {
       const response = await doDetailDelete(`/api/v1/application-letter`, 'DELETE', id)
