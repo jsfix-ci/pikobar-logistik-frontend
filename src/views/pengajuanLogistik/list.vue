@@ -99,7 +99,8 @@
                   <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
+                  <th v-if="isApproved" class="text-left">{{ $t('label.approved_by').toUpperCase() }}</th>
+                  <th v-else class="text-left">{{ $t('label.status').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
@@ -111,7 +112,7 @@
                   <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
                   <td>{{ data.applicant.applicant_name }}</td>
                   <td>{{ data.created_at === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
-                  <td v-if="isApproved">{{ data.applicant.approval_status }}</td>
+                  <td v-if="isApproved">{{ data.applicant.approved_by.name }}</td>
                   <td v-else>{{ data.applicant.verification_status }}</td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
                 </tr>

@@ -122,6 +122,16 @@
           </span>
         </v-col>
       </v-row>
+      <v-row v-if="isApproved">
+        <v-col cols="3" sm="2">
+          <span class="text-title">{{ $t('label.approved_by') }}</span>
+        </v-col>
+        <v-col class="margin-left-min-30" cols="7" sm="8">
+          <span
+            class="text-data-green"
+          >:  {{ detailLogisticRequest.applicant.approved_by.name }}</span>
+        </v-col>
+      </v-row>
       <rejectKebutuhanLogistik
         :show="showDialogReject"
         :item="detailLogisticRequest"

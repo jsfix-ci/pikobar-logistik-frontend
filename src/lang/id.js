@@ -292,6 +292,7 @@ export default {
     input_date: 'Pilih Tanggal',
     approved: 'Sudah Disetujui',
     approved_item: 'Disetujui',
+    approved_by: 'Disetujui Oleh',
     not_delivered: 'Belum Dikirim',
     delivered: 'Sudah Dikirim',
     not_available: 'Barang Belum Tersedia',
