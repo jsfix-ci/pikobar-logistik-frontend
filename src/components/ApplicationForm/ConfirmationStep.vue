@@ -154,11 +154,10 @@
                   <tr>
                     <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.apd_name_specification') }}</th>
-                    <th class="text-left">{{ $t('label.brand') }}</th>
+                    <th class="text-left">{{ $t('label.description') }}</th>
                     <th class="text-left">{{ $t('label.total') }}</th>
                     <th class="text-left">{{ $t('label.unit') }}</th>
                     <th class="text-left">{{ $t('label.purpose') }}</th>
-                    <th class="text-left">{{ $t('label.urgency_level') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -167,12 +166,11 @@
                   </tr>
                   <tr v-for="(item, index) in dataShow" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
-                    <td>{{ item.apdName }}</td>
+                    <td>{{ item.unitList[0].name }}</td>
                     <td>{{ item.brand }}</td>
                     <td>{{ item.total }}</td>
-                    <td>{{ item.unitName }}</td>
+                    <td>{{ item.unitList[0].unit }}</td>
                     <td>{{ item.purpose }}</td>
-                    <td>{{ item.urgency }}</td>
                   </tr>
                 </tbody>
               </template>

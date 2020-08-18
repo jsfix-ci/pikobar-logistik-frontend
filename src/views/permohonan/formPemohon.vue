@@ -80,6 +80,7 @@
             </v-stepper-content>
             <v-stepper-content step="3">
               <kebutuhan-logistik
+                ref="updateData"
                 :logistic-needs="logisticNeeds"
               />
             </v-stepper-content>
@@ -120,6 +121,9 @@ export default {
   created() {
     EventBus.$on('nextStep', (value) => {
       this.step = value + 1
+      if (this.step === 3) {
+        this.getDataForm()
+      }
     })
     EventBus.$on('prevStep', (value) => {
       this.isConfirm = false
@@ -131,6 +135,11 @@ export default {
       this.isConfirm = true
       this.step = 5
     })
+  },
+  methods: {
+    getDataForm() {
+      this.$refs.updateData.getData(this.formApplicant.instanceType)
+    }
   }
 }
 </script>
