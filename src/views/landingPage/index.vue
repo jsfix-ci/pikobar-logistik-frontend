@@ -100,7 +100,9 @@
                 {{ $t('label.landing_page_alur_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}.</span>
               </div>
               <p class="ml-10 font-text card-text-landing-page">{{ $t('label.landing_page_text_alur') }}</p>
-              <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" @click="goAlur">{{ $t('label.landing_page_alur_button') }}</v-btn>
+              <a href="https://bit.ly/alurpermohonanlogistik" target="_blank" rel="noopener noreferrer">
+                <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C">{{ $t('label.landing_page_alur_button') }}</v-btn>
+              </a>
             </v-col>
           </v-row>
         </div>
@@ -113,7 +115,9 @@
               </div>
               <p class="font-text card-text-landing-page text-center card-text-layout">{{ $t('label.landing_page_text_alur') }}</p>
               <center>
-                <v-btn class="white--text" min-width="140px" color="#16A75C" @click="goAlur">{{ $t('label.landing_page_alur_button') }}</v-btn>
+                <a href="https://bit.ly/alurpermohonanlogistik" target="_blank" rel="noopener noreferrer">
+                  <v-btn class="white--text" min-width="140px" color="#16A75C">{{ $t('label.landing_page_alur_button') }}</v-btn>
+                </a>
               </center>
             </v-col>
             <v-col sm="12" cols="12">
@@ -138,7 +142,7 @@
                 {{ $t('label.landing_page_tracking_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}.</span>
               </div>
               <p class="ml-10 font-text card-text-landing-page">{{ $t('label.landing_page_text_tracking') }}</p>
-              <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" @click="goAlur">{{ $t('label.landing_page_tracking_button') }}</v-btn>
+              <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" @click="openPopup">{{ $t('label.landing_page_tracking_button') }}</v-btn>
             </v-col>
             <v-col cols="5" md="5">
               <img src="../../static/tracking_logistik_1.png">
@@ -154,7 +158,7 @@
               </div>
               <p class="font-text card-text-landing-page text-center card-text-layout">{{ $t('label.landing_page_text_tracking') }}</p>
               <center>
-                <v-btn class="white--text" min-width="140px" color="#16A75C" @click="goAlur">{{ $t('label.landing_page_tracking_button') }}</v-btn>
+                <v-btn class="white--text" min-width="140px" color="#16A75C" @click="openPopup">{{ $t('label.landing_page_tracking_button') }}</v-btn>
               </center>
             </v-col>
             <v-col cols="12" sm="12">
@@ -234,7 +238,7 @@ export default {
     }
   },
   methods: {
-    goAlur() {
+    openPopup() {
       this.dialog = true
     }
   }
