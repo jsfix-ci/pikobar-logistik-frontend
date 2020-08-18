@@ -361,7 +361,7 @@
                     <th class="text-left">{{ $t('label.total').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.purpose').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.urgency_level').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.item_type').toUpperCase() }}</th>
                     <th v-if="isVerified" class="text-left">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
@@ -380,7 +380,7 @@
                     <td>{{ item.quantity || '-' }}</td>
                     <td>{{ item.unit.unit || '-' }}</td>
                     <td>{{ item.usage || '-' }}</td>
-                    <td>{{ item.priority || '-' }}</td>
+                    <td>{{ item.product ? item.product.category : '-' }}</td>
                     <td v-if="isVerified"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
                     <td>{{ item.realization_quantity || '-' }}</td>
                     <td>{{ item.realization_date || '-' }}</td>

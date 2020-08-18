@@ -53,7 +53,7 @@
           <v-col
             cols="12"
             sm="12"
-            md="2"
+            md="3"
           >
             <ValidationProvider
               v-slot="{ errors }"
@@ -95,7 +95,7 @@
           <v-col
             cols="4"
             sm="4"
-            md="1"
+            md="2"
           >
             <ValidationProvider
               v-slot="{ errors }"
@@ -146,26 +146,6 @@
               <v-text-field
                 v-model="data.purpose"
                 :placeholder="$t('label.input_purpose')"
-                outlined
-                solo-inverted
-                :error-messages="errors"
-              />
-            </ValidationProvider>
-          </v-col>
-          <v-col
-            cols="12"
-            sm="12"
-            md="2"
-          >
-            <ValidationProvider
-              v-slot="{ errors }"
-              rules="requiredUrgencyLevel"
-            >
-              <v-label class="title"><b>{{ $t('label.urgency_level') }}</b></v-label>
-              <v-autocomplete
-                v-model="data.urgency"
-                :items="urgency"
-                :placeholder="$t('label.input_urgency_level')"
                 outlined
                 solo-inverted
                 :error-messages="errors"
