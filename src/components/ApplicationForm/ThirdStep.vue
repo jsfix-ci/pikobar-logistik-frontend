@@ -257,6 +257,9 @@ export default {
     await this.getListAPD()
   },
   methods: {
+    async getData(data) {
+      await this.getListAPD(data)
+    },
     onClick() {
       this.isAddAPD = true
     },
@@ -300,7 +303,12 @@ export default {
         this.isValid = false
       }
     },
-    async getListAPD() {
+    async getListAPD(param) {
+      const idPublicApplicant = 4
+      const user_filter = 9
+      if (param === idPublicApplicant) {
+        this.listQueryAPD.user_filter = user_filter
+      }
       await this.$store.dispatch('logistics/getListAPDMaterialGroup', this.listQueryAPD)
       this.listAPD.forEach(element => {
         element.value = {
