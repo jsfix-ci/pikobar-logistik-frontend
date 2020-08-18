@@ -188,6 +188,7 @@ import { mapGetters } from 'vuex'
 import CreateLetter from './Create'
 import DialogDelete from '@/components/DialogDelete'
 import pdfMake from 'pdfmake/build/pdfmake'
+import { image } from './imageBase64'
 const imageToBase64 = require('image-to-base64')
 
 export default {
@@ -346,13 +347,21 @@ export default {
       console.log(value)
       const docDefinition = {
         content: [
-          // {
-          //   image: 'blob:http://bachors.com/4d315a8f-b0eb-4dc8-8c11-31fa13c68f0a',
-          //   width: 150
-          // },
+          {
+            image: image.pemprov,
+            width: 70,
+            margin: [0, 0, 0, 0]
+          },
+          {
+            image: image.logistic,
+            width: 80,
+            alignment: 'right',
+            margin: [0, -80, 0, 0]
+          },
           {
             text: 'PEMERINTAH DAERAH PROVINSI JAWA BARAT',
-            style: 'headerPemprov'
+            style: 'headerPemprov',
+            margin: [0, -70, 0, 0]
           },
           {
             text: 'DINAS PERINDUSTRIAN DAN PERDAGANGAN',
@@ -372,13 +381,13 @@ export default {
               {
                 type: 'line',
                 x1: 0, y1: 10,
-                x2: 500, y2: 10,
+                x2: 510, y2: 10,
                 lineWidth: 2
               },
               {
                 type: 'line',
                 x1: 0, y1: 13,
-                x2: 500, y2: 13,
+                x2: 510, y2: 13,
                 lineWidth: 1
               }
             ]
