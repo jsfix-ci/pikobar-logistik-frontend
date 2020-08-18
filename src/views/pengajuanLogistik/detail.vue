@@ -414,7 +414,7 @@
           </v-card>
         </v-col>
       </v-row>
-      <div>
+      <div v-if="isVerified">
         <v-row>
           <v-col>
             <span class="text-data-green">
@@ -423,7 +423,7 @@
           </v-col>
         </v-row>
       </div>
-      <v-row>
+      <v-row v-if="isVerified">
         <v-col>
           <v-card outlined min-height="100">
             <v-card-text>

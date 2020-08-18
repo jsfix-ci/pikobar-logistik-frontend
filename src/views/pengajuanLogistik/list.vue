@@ -112,7 +112,7 @@
                   <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
                   <td>{{ data.applicant.applicant_name }}</td>
                   <td>{{ data.created_at === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
-                  <td v-if="isApproved">{{ data.applicant.approved_by.name }}</td>
+                  <td v-if="isApproved">{{ data.applicant.approved_by ? data.applicant.approved_by.name : '-' }}</td>
                   <td v-else>{{ data.applicant.verification_status }}</td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
                 </tr>
