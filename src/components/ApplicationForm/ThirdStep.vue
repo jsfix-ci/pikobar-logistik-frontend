@@ -243,8 +243,7 @@ export default {
       isValid: false,
       showAlert: false,
       listQueryAPD: {
-        limit: 10,
-        name: ''
+        user_filter: null
       }
     }
   },
@@ -305,9 +304,8 @@ export default {
     },
     async getListAPD(param) {
       const idPublicApplicant = 4
-      const user_filter = 9
       if (param === idPublicApplicant) {
-        this.listQueryAPD.user_filter = user_filter
+        this.listQueryAPD.user_filter = idPublicApplicant
       }
       await this.$store.dispatch('logistics/getListAPDMaterialGroup', this.listQueryAPD)
       this.listAPD.forEach(element => {
