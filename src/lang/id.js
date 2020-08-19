@@ -201,7 +201,7 @@ export default {
     not_yet_upload_file: 'Belum ada file yang diupload',
     upload: 'Upload',
     reupload: 'Upload Ulang',
-    upload_error_message: 'Mohon Upload File dengan benar',
+    upload_error_message: 'Ukuran foto tidak boleh lebih dari 10MB',
     apd_name_spec: 'Nama Barang',
     description: 'Deskripsi',
     input_description: 'Deskripsi (Jika ada)',
