@@ -154,9 +154,6 @@
             @input="onNext"
           />
         </v-card>
-        <!-- {{ detailLetter }} -->
-        <!-- {{ detailLetterApplication.data[0] }} -->
-        {{ detailLetterPrint }}
       </v-col>
     </v-row>
     <v-row class="mb-15">
@@ -393,7 +390,7 @@ export default {
           },
           {
             table: {
-              style: 'tableStyle',
+              style: 'fontSizeBody',
               body: [column, ...value]
             }
           }
@@ -437,9 +434,6 @@ export default {
           },
           tableHeader: {
             bold: true
-          },
-          tableStyle: {
-            fontSize: 11
           }
         }
       }
