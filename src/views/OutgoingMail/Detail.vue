@@ -32,11 +32,11 @@
           <v-card-text>
             <v-row class="ml-2">
               <v-col cols="6" md="6">
-                <a :href="'#'" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
+                <a class="blue--text letter-class" @click="downloadLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
               </v-col>
               <v-col cols="6" md="6">
                 <div class="margin-top-min-15">
-                  <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="downloadLetter">
+                  <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="downloadLetter('download')">
                     {{ $t('label.outgoing_mail_print') }}
                   </v-btn>
                 </div>
@@ -188,8 +188,6 @@ import { mapGetters } from 'vuex'
 import CreateLetter from './Create'
 import DialogDelete from '@/components/DialogDelete'
 import pdfMake from 'pdfmake/build/pdfmake'
-import { image } from './imageBase64'
-const imageToBase64 = require('image-to-base64')
 
 export default {
   components: {
@@ -210,54 +208,7 @@ export default {
         limit: 3,
         outgoing_letter_id: null,
         application_letter_number: null
-      },
-      logo: require('@/static/pemprov_jabar.png')
-      // detailLetterPrint: {
-      //   data: {
-      //     letter_request: [
-      //       {
-      //         'id': 1,
-      //         'outgoing_letter_id': 3,
-      //         'applicant_id': 1351,
-      //         'application_letter_number': '1351/DINKES/15/06/2020',
-      //         'agency_id': '1351',
-      //         'agency_name': 'KLINIK Bandung',
-      //         'location_district_code': '32.73',
-      //         'kemendagri_kabupaten_nama': 'KOTA BANDUNG',
-      //         'applicant_name': 'Uni Choirini'
-      //       },
-      //       {
-      //         'id': 2,
-      //         'outgoing_letter_id': 4,
-      //         'applicant_id': 1351,
-      //         'application_letter_number': '1352/DINKES/15/06/2020',
-      //         'agency_id': '1351',
-      //         'agency_name': 'KLINIK LMC SUDIRMAN',
-      //         'location_district_code': '32.73',
-      //         'kemendagri_kabupaten_nama': 'KOTA BANDUNG',
-      //         'applicant_name': 'Uni Choirini'
-      //       }
-      //     ],
-      //     material: [
-      //       {
-      //         'product_id': 'MAT-0003',
-      //         'product_name': 'NEO MASKER HEADLOOP (GUBERNUR)',
-      //         'realization_unit': 'PCS',
-      //         'material_group': 'MASKER BEDAH',
-      //         'realization_quantity': '120',
-      //         'location': 'WHS_PAKUAN_A'
-      //       },
-      //       {
-      //         'product_id': 'MAT-0004',
-      //         'product_name': 'MASKER HEADLOOP (GUBERNUR)',
-      //         'realization_unit': 'PCS',
-      //         'material_group': 'MASKER BEDAH',
-      //         'realization_quantity': '120',
-      //         'location': 'WHS_PAKUAN_A'
-      //       }
-      //     ]
-      //   }
-      // }
+      }
     }
   },
   computed: {
@@ -274,62 +225,21 @@ export default {
     await this.getDetailApplication()
   },
   methods: {
-    imageConvert() {
-      imageToBase64(this.logo) // Image URL
-        .then(
-          (response) => {
-            console.log(response) // "iVBORw0KGgoAAAANSwCAIA..."
-          }
-        )
-        .catch(
-          (error) => {
-            console.log(error) // Logs an error if there was one
-          }
-        )
-    },
-    buildTableBody(data, columns) {
-      const body = []
-      body.push(columns)
-      data.forEach(function(row) {
-        const dataRow = []
-        columns.forEach(function(column) {
-          dataRow.push(row[column])
-        })
-        body.push(dataRow)
-        console.log(body)
-      })
-      return body
-    },
-    table(data, columns) {
-      return {
-        table: {
-          headerRows: 1,
-          body: this.buildTableBody(data, columns)
-        }
-      }
-    },
-    async downloadLetter() {
+    async downloadLetter(openType) {
       await this.getDetailPrint()
-      // this.imageConvert()
       const instansi = []
       const itemLogistic = []
-      const value = [
-      ]
-      // value.push({ text: 'Asda', style: 'tableHeader' })
-      // value.push({ text: 'Bsa', style: 'tableHeader' })
-      // value.push({ text: 'ccc', style: 'tableHeader' })
-      // value.push({ text: 'ddd', style: 'tableHeader' })
+      const value = []
       const column = []
-      column.push({ text: 'A', style: 'tableHeader' })
-      column.push({ text: 'B', style: 'tableHeader' })
-      column.push({ text: 'C', style: 'tableHeader' })
-      column.push({ text: 'D', style: 'tableHeader' })
-      column.push({ text: 'B', style: 'tableHeader' })
-      column.push({ text: 'C', style: 'tableHeader' })
-      column.push({ text: 'D', style: 'tableHeader' })
-      console.log(column)
+      column.push({ text: this.$t('label.number').toUpperCase(), style: 'tableHeader' })
+      column.push({ text: this.$t('label.print_mail_material').toUpperCase(), style: 'tableHeader' })
+      column.push({ text: this.$t('label.total').toUpperCase(), style: 'tableHeader' })
+      column.push({ text: this.$t('label.unit').toUpperCase(), style: 'tableHeader' })
+      column.push({ text: this.$t('label.print_mail_material_id').toUpperCase(), style: 'tableHeader' })
+      column.push({ text: this.$t('label.print_mail_material_name').toUpperCase(), style: 'tableHeader' })
+      column.push({ text: this.$t('label.location_stock').toUpperCase(), style: 'tableHeader' })
       this.detailLetterPrint.request_letter.forEach(element => {
-        instansi.push(element.agency_name + ' dengan nomor surat ' + element.application_letter_number)
+        instansi.push(element.agency_name + ' ' + this.$t('label.print_mail_with_number') + ' ' + element.application_letter_number)
       })
       this.detailLetterPrint.material.forEach((element, index) => {
         itemLogistic.push(element.material_group + ' ' + element.realization_quantity + ' ' + element.realization_unit + ' ' + element.product_id)
@@ -344,35 +254,34 @@ export default {
 
         value.push(dataRow)
       })
-      console.log(value)
       const docDefinition = {
         content: [
           {
-            image: image.pemprov,
+            image: this.detailLetterPrint.image.pemprov,
             width: 70,
             margin: [0, 0, 0, 0]
           },
           {
-            image: image.logistic,
+            image: this.detailLetterPrint.image.divlog,
             width: 80,
             alignment: 'right',
             margin: [0, -80, 0, 0]
           },
           {
-            text: 'PEMERINTAH DAERAH PROVINSI JAWA BARAT',
+            text: this.$t('label.print_mail_header_pemprov').toUpperCase(),
             style: 'headerPemprov',
             margin: [0, -70, 0, 0]
           },
           {
-            text: 'DINAS PERINDUSTRIAN DAN PERDAGANGAN',
+            text: this.$t('label.print_mail_header_indag').toUpperCase(),
             style: 'headerDisperindag'
           },
           {
-            text: 'Jalan Asia Afrika No. 146 Tlp. (022) 4230897 Fax. (022) 4200331 – 43209 \n Website: http://disperindag.jabarprov.go.id, email: disperindag@jabarprov.go.id',
+            text: this.$t('label.print_mail_address') + ' \n ' + this.$t('label.print_mail_website'),
             style: 'address'
           },
           {
-            text: 'BANDUNG - 40261',
+            text: this.$t('label.print_mail_postal_code'),
             style: 'city'
           },
           {
@@ -396,7 +305,7 @@ export default {
             text: '\n'
           },
           {
-            text: 'Bandung, ' + this.$moment(this.detailLetter.outgoing_letter.letter_date).format('LL') + '\n\n',
+            text: this.$t('label.print_mail_city') + this.$moment(this.detailLetter.outgoing_letter.letter_date).format('LL') + '\n\n',
             style: 'date',
             margin: [0, 0, 85, 0]
           },
@@ -404,27 +313,27 @@ export default {
             columns: [
               {
                 width: 70,
-                text: 'Nomor\n Sifat\n Lampiran \n Hal\n',
+                text: this.$t('label.print_mail_nomor') + '\n' + this.$t('label.print_mail_nature') + '\n' + this.$t('label.print_mail_attachment') + '\n' + this.$t('label.print_mail_purpose') + '\n',
                 style: 'fontSizeBody'
               },
               {
                 width: 210,
-                text: ': ' + this.detailLetter.outgoing_letter.letter_number + '\n : Biasa \n : Satu Lembar \n : Penyaluran Permohonan Logistik Kesehatan',
+                text: ': ' + this.detailLetter.outgoing_letter.letter_number + '\n : ' + this.$t('label.print_mail_usual') + ' \n : ' + this.$t('label.print_mail_one_sheet') + ' \n : ' + this.$t('label.print_mail_logistic_need'),
                 style: 'fontSizeBody'
               },
               {
-                text: 'Kepada Yth. Gubernur Jawa Barat selaku \n Ketua Gugus Tugas Percepatan \n Penanggulangan Covid-19 di \n Jawa Barat \n di \n Bandung\n\n',
+                text: this.$t('label.print_mail_purpose_governor') + ' \n ' + this.$t('label.print_mail_purpose_gugus_tugas') + ' \n ' + this.$t('label.print_mail_purpose_covid') + ' \n ' + this.$t('label.print_mail_purpose_jabar') + ' \n ' + this.$t('label.print_mail_purpose_in') + ' \n ' + this.$t('label.print_mail_purpose_city') + '\n\n',
                 style: 'fontSizeBody',
                 margin: [20, 0, 0, 0]
               }
             ]
           },
           {
-            text: '\u200B\t\u200B\t\u200B\t\u200B\tDisampaikan dengan hormat, menindaklanjuti Surat ' + instansi + ' Bersama ini kami sampaikan permohonan penyaluran logistik alat kesehatan.\n\n',
+            text: '\u200B\t\u200B\t\u200B\t\u200B\t' + this.$t('label.print_mail_body_opening') + instansi + this.$t('label.print_mail_body_purpose') + '\n\n',
             style: 'fontSizeBody'
           },
           {
-            text: '\u200B\t\u200B\t\u200B\t\u200B\tAdapun jenis dan jumlah barang-barang Kesehatan yang dimaksud adalah sebagai berikut:\n\n',
+            text: '\u200B\t\u200B\t\u200B\t\u200B\t' + this.$t('label.print_mail_body_logistic') + '\n\n',
             style: 'fontSizeBody'
           },
           {
@@ -433,36 +342,37 @@ export default {
             style: 'fontSizeBody'
           },
           {
-            text: '\n\u200B\t\u200B\t\u200B\t\u200B\tDemikian disampaikan. Atas perhatian dan perkenan Bapak kami ucapkan terima kasih.',
+            text: '\n\u200B\t\u200B\t\u200B\t\u200B\t' + this.$t('label.print_mail_body_closing'),
             style: 'fontSizeBody'
           },
           {
-            text: 'KEPALA\nDINAS PERINDUSTRIAN DAN PERDAGANGAN\nselaku\nKETUA DIVISI LOGISTIK GUGUS TUGAS\nPERCEPATAN PENANGGULANGAN COVID-19\nDI JAWA BARAT',
+            text: this.$t('label.print_mail_footer_head').toUpperCase() + '\n' + this.$t('label.print_mail_footer_indag').toUpperCase() + '\n' + this.$t('label.print_mail_footer_as') + '\n' + this.$t('label.print_mail_footer_logistic').toUpperCase() + '\n' + this.$t('label.print_mail_footer_covid_manag').toUpperCase() + '\n' + this.$t('label.print_mail_footer_jabar').toUpperCase(),
             style: 'signatureTitle'
           },
           {
-            text: 'Drs. H. MOHAMAD ARIFIN SOEDJAYANA, MM.\nPembina Utama Madya\nNIP 19640730 198903 1 004\n\n',
+            text: this.$t('label.print_mail_footer_head_name') + '\n' + this.$t('label.print_mail_footer_position') + '\n' + this.$t('label.print_mail_footer_nip') + '\n\n',
             style: 'signatureData'
           },
           {
-            text: 'Tembusan:',
+            text: this.$t('label.print_mail_copy').toUpperCase(),
             style: 'fontSizeBody'
           },
           {
             ol: [
-              'Yth. Wakil Gubernur Jawa Barat',
-              'Yth. Sekretaris Daerah Provinsi Jawa Barat',
-              'Yth. Asisten Perekonomian dan Pembangunan Setda Prov. Jawa Barat',
-              'Yth. Asisten Administrasi Setda Prov. Jawa Barat',
-              'Yth. Asisten Pemerintahan, Hukum dan Kesejahteraan Sosial Setda Prov. Jawa Barat',
-              'Yth. Inspektur Provinsi Jawa Barat',
-              'Yth. Gugus Tugas Percepatan Penanggulangan COVID-19 di Jawa Barat'
+              this.$t('label.print_mail_copy_governor'),
+              this.$t('label.print_mail_copy_sekda'),
+              this.$t('label.print_mail_copy_economic_assistant'),
+              this.$t('label.print_mail_copy_admin_assistant'),
+              this.$t('label.print_mail_copy_law_assistant'),
+              this.$t('label.print_mail_copy_inspecture'),
+              this.$t('label.print_mail_copy_gugus_tugas')
             ],
             style: 'fontSizeBody',
+            margin: [20, 10, 0, 0],
             pageBreak: 'after'
           },
           {
-            text: 'Lampiran: ',
+            text: this.$t('label.print_mail_attachment').toUpperCase() + ': ',
             margin: [250, 0, 0, 10],
             style: 'fontSizeBody'
           },
@@ -470,7 +380,7 @@ export default {
             columns: [
               {
                 width: 90,
-                text: 'NOMOR \n TANGGAL \n TENTANG',
+                text: this.$t('label.print_mail_nomor').toUpperCase() + ' \n ' + this.$t('label.date').toUpperCase() + ' \n ' + this.$t('label.print_mail_about').toUpperCase(),
                 style: 'fontSizeBody'
               },
               {
@@ -481,12 +391,10 @@ export default {
             margin: [250, 0, 0, 30],
             style: 'fontSizeBody'
           },
-          // this.table(value, ['Nama', 'age'])
           {
             table: {
               style: 'tableStyle',
-              widths: [30, '*', 50, 50, 60, '*', '*'],
-              body: value
+              body: [column, ...value]
             }
           }
         ],
@@ -527,12 +435,19 @@ export default {
             alignment: 'center',
             margin: [225, 70, 0, 0]
           },
+          tableHeader: {
+            bold: true
+          },
           tableStyle: {
             fontSize: 11
           }
         }
       }
-      pdfMake.createPdf(docDefinition).open()
+      if (openType === 'download') {
+        pdfMake.createPdf(docDefinition).download(this.detailLetter.outgoing_letter.letter_number)
+      } else {
+        pdfMake.createPdf(docDefinition).open()
+      }
     },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
