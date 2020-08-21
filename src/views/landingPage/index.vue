@@ -242,19 +242,21 @@
         <v-card-title class="headline">{{ $t('label.warning').toUpperCase() }}</v-card-title>
 
         <v-card-text>
-          <span>{{ $t('label.applicant_popup_warning') }} </span>
-          <span>{{ $t('label.applicant_popup_warning_verification') }}</span>
+          <span class="popup-body">{{ $t('label.applicant_popup_warning') }} </span>
+          <span class="popup-body">{{ $t('label.applicant_popup_warning_verification') }}</span>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer />
 
-          <v-btn color="error darken-1" text @click="applicantDialog = false">
-            {{ $t('label.cancel') }}
-          </v-btn>
-          <v-btn color="green darken-1" text @click="goForm">
-            {{ $t('label.apply_now') }}
-          </v-btn>
+          <div class="center-button">
+            <v-btn color="error darken-1 margin-right-20 margin-button" min-width="140px" @click="applicantDialog = false">
+              {{ $t('label.cancel') }}
+            </v-btn>
+            <v-btn color="white--text green darken-1" min-width="140px" @click="goForm">
+              {{ $t('label.apply_now') }}
+            </v-btn>
+          </div>
         </v-card-actions>
       </v-card>
     </v-dialog>
