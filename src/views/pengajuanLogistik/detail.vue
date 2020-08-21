@@ -129,7 +129,7 @@
         <v-col class="margin-left-min-30" cols="7" sm="8">
           <span
             class="text-data-green"
-          >:  {{ detailLogisticRequest.applicant.approved_by.name }}</span>
+          >:  {{ detailLogisticRequest.applicant.approved_by.name + ' (' + detailLogisticRequest.applicant.approved_by.agency_name + ')' }}</span>
         </v-col>
       </v-row>
       <rejectKebutuhanLogistik
