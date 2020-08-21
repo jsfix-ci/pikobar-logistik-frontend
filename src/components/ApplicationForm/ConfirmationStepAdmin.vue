@@ -20,11 +20,14 @@
     <v-row align="center" justify="center">
       <div class="save-style-data-confirmation-admin">{{ $t('label.save_success') }}</div>
     </v-row>
-    <v-row align="center" justify="center" class="confirmation-text margin-top-10-data-confirmation-admin">
+    <v-row align="center" justify="center" class="margin-top-10-data-confirmation-admin">
       {{ $t('label.loading_done_one') }}
     </v-row>
-    <v-row align="center" justify="center" class="confirmation-text">
+    <v-row align="center" justify="center">
       {{ $t('label.loading_done_two') }}
+    </v-row>
+    <v-row align="center" justify="center">
+      {{ $t('label.loading_done_three') }}
     </v-row>
     <br>
     <v-row align="center" justify="center">
@@ -329,10 +332,5 @@ export default {
   }
   .text-center-data-confirmation-admin {
     text-align: center;
-  }
-  .confirmation-text {
-    text-align: center;
-    padding-left: 75px;
-    padding-right: 75px;
   }
 </style>
