@@ -10,8 +10,7 @@ const state = {
   detailLetter: null,
   detailLetterApplication: null,
   totalListLetterApplication: 0,
-  totalDataLetterApplication: 0,
-  detailLetterPrint: null
+  totalDataLetterApplication: 0
 }
 
 export default {

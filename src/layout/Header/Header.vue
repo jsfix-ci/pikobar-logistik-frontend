@@ -20,7 +20,7 @@
       <div class="title-app">
         <img
           height="50"
-          src="../../static/logo_logistik_teks_3.png"
+          src="../../static/logo_logistik_teks.svg"
         >
       </div>
       <v-app-bar-nav-icon

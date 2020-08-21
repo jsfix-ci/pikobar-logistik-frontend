@@ -22,8 +22,5 @@ export default {
   },
   SET_TOTAL_DATA_OUTGOING_MAIL_APPLICATION: (state, data) => {
     state.totalDataLetterApplication = data
-  },
-  SET_DETAIL_LETTER_PRINT: (state, data) => {
-    state.detailLetterPrint = data
   }
 }

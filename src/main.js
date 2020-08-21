@@ -27,9 +27,6 @@ import './permission' // permission control
 import '@/utils/vee-validate' // include all validate form
 import i18n from './lang' // Internationalization
 import './registerServiceWorker'
-import pdfMake from 'pdfmake/build/pdfmake'
-import pdfFonts from 'pdfmake/build/vfs_fonts'
-pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 Vue.use(FlagIcon)
 Vue.use(Vue2Dragula)
