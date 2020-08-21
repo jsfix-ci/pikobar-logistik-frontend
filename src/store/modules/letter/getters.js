@@ -22,5 +22,8 @@ export default {
   },
   totalListLetterApplication: (state) => {
     return state.totalListLetterApplication
+  },
+  detailLetterPrint: (state) => {
+    return state.detailLetterPrint
   }
 }
