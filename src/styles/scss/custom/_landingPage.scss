@@ -64,6 +64,11 @@
   margin-right: auto;
   width: 40%;
 }
+.center-button {
+  display: block;
+  margin: auto;
+  width: 80%;
+}
 .landing-page-logo-jds {
   margin-top: -100px;
   margin-left: 120px;
@@ -121,6 +126,10 @@
 .button-icon {
   margin-left: 15px;
 }
+.popup-body {
+  font-size: 16px;
+}
+
 @media (max-width: 1024px) and (min-width: 768px) {
   .text-card-main {
     display: none;
@@ -146,8 +155,11 @@
   .button-icon {
     margin-left: 15px;
   }
-
+  .popup-body {
+    font-size: 16px;
+  }
 }
+
 @media (max-width: 768px) and (min-width: 320px) {
   .button-icon {
     margin-left: 15px;
@@ -189,6 +201,9 @@
     color: #757575;
     margin-right: 15px;
   }
+  .popup-body {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 588px) and (min-width: 320px) {
@@ -228,5 +243,12 @@
     line-height: 21px;
     color: #757575;
     margin-right: 15px;
+  }
+  .margin-button {
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
+  .popup-body {
+    font-size: 16px;
   }
 }
