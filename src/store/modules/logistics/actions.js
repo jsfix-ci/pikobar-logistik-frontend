@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export default {
   async getListAPDMaterialGroup({ commit }, params) {
     try {
-      const response = await fetchList('/api/v1/landing-page-registration/products', 'GET')
+      const response = await fetchList('/api/v1/landing-page-registration/products', 'GET', params)
       commit('SET_LIST_APD', response.data)
       return response
     } catch (e) {
