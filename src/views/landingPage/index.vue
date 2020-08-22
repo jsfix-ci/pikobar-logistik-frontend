@@ -52,7 +52,7 @@
               </div>
               <p class="ml-10 font-text card-text-landing-page text-center">{{ $t('label.landing_page_text') }}</p>
               <div class="text-center">
-                <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" href="#/form-pemohon">{{ $t('label.start') }}</v-btn>
+                <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" @click="goApplicant">{{ $t('label.start') }}</v-btn>
               </div>
             </v-col>
             <v-col cols="2" md="2" />
@@ -73,7 +73,7 @@
                 {{ $t('label.landing_page_logistic_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}</span> <span>{{ $t('label.landing_page_here') }}</span>
               </div>
               <p class="text-center font-text card-text-landing-page card-text-layout">{{ $t('label.landing_page_text') }}</p>
-              <center><v-btn class="white--text" min-width="140px" color="#16A75C" href="#/form-pemohon">{{ $t('label.start') }}</v-btn></center>
+              <center><v-btn class="white--text" min-width="140px" color="#16A75C" @click="goApplicant">{{ $t('label.start') }}</v-btn></center>
             </v-col>
           </v-row>
           <v-row>
@@ -234,6 +234,32 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="applicantDialog"
+      max-width="550"
+    >
+      <v-card>
+        <v-card-title class="headline">{{ $t('label.warning').toUpperCase() }}</v-card-title>
+
+        <v-card-text>
+          <span class="popup-body">{{ $t('label.applicant_popup_warning') }} </span>
+          <span class="popup-body">{{ $t('label.applicant_popup_warning_verification') }}</span>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <div class="center-button">
+            <v-btn color="error darken-1 margin-right-20 margin-button" min-width="140px" @click="applicantDialog = false">
+              {{ $t('label.cancel') }}
+            </v-btn>
+            <v-btn color="white--text green darken-1" min-width="140px" @click="goForm">
+              {{ $t('label.apply_now') }}
+            </v-btn>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
   </div>
 </template>
@@ -242,12 +268,19 @@ export default {
   name: 'LandingPage',
   data() {
     return {
-      dialog: false
+      dialog: false,
+      applicantDialog: false
     }
   },
   methods: {
     openPopup() {
       this.dialog = true
+    },
+    goApplicant() {
+      this.applicantDialog = true
+    },
+    goForm() {
+      this.$router.push('/form-pemohon')
     }
   }
 }
