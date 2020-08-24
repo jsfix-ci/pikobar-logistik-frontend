@@ -402,6 +402,7 @@ export default {
     print_mail_copy_inspecture: 'Yth. Inspektur Provinsi Jawa Barat',
     print_mail_copy_gugus_tugas: 'Yth. Gugus Tugas Percepatan Penanggulangan COVID-19 di Jawa Barat',
     tracking_search: 'ID/No. HP/Email Permohonan',
+    tracking_search_placeholder: 'Masukan ID/No. HP/Email Permohonan',
     tracking_cek: 'Cek',
     tracking_logistic: 'Lacak pengajuan',
     tracking_body: 'Fitur ini memudahkan Anda untuk mencari tahu telah sejauh mana tahapan dari pengajuan Anda'
@@ -443,6 +444,7 @@ export default {
     field_must_be_filled_upper_name: 'Nama Atasan tidak boleh kosong',
     field_must_be_filled_faskes_location: 'Lokasi Faskes tidak boleh kosong',
     field_must_be_filled_realization_amount: 'Jumlah realisasi tidak boleh kosong',
+    field_must_be_filled_tracking: 'ID/No. HP/Email Permohonan harus diisi',
     field_must_be_filled_realization_date: 'Tanggal tidak boleh kosong',
     field_must_be_filled_status: 'Status tidak boleh kosong',
     field_must_be_filled_reason_reject: 'Alasan Ditolak tidak boleh kosong',

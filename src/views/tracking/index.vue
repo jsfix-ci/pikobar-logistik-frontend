@@ -62,20 +62,21 @@
                 <v-label><b>{{ $t('label.tracking_search') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                 <ValidationProvider
                   v-slot="{ errors }"
-                  rules="requiredRealizationAmount|numericRealizationAmount"
+                  rules="requiredTrackingField"
                 >
                   <v-text-field
-                    v-model="data"
+                    v-model="listQuery.search"
                     outlined
                     solo-inverted
                     :error-messages="errors"
+                    :placeholder="$t('label.tracking_search_placeholder')"
                   />
                 </ValidationProvider>
               </ValidationObserver>
             </div>
             <div class="button-action">
               <v-btn class="button-style" min-width="150px" outlined text>{{ $t('label.cancel') }}</v-btn>
-              <v-btn class="button-style" min-width="150px" color="success">{{ $t('label.tracking_cek') }}</v-btn>
+              <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking">{{ $t('label.tracking_cek') }}</v-btn>
             </div>
           </v-col>
           <v-col cols="5">
@@ -129,15 +130,16 @@ export default {
   data() {
     return {
       listQuery: {
-        search: '089123456987'
+        search: null
       }
     }
   },
-  async created() {
-    this.getDataTracking()
-  },
   methods: {
     async getDataTracking() {
+      const valid = await this.$refs.observer.validate()
+      if (!valid) {
+        return
+      }
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
     }
   }
