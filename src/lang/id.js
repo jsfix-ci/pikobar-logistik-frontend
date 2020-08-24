@@ -400,7 +400,8 @@ export default {
     print_mail_copy_admin_assistant: 'Yth. Asisten Administrasi Setda Prov. Jawa Barat',
     print_mail_copy_law_assistant: 'Yth. Asisten Pemerintahan, Hukum dan Kesejahteraan Sosial Setda Prov. Jawa Barat',
     print_mail_copy_inspecture: 'Yth. Inspektur Provinsi Jawa Barat',
-    print_mail_copy_gugus_tugas: 'Yth. Gugus Tugas Percepatan Penanggulangan COVID-19 di Jawa Barat'
+    print_mail_copy_gugus_tugas: 'Yth. Gugus Tugas Percepatan Penanggulangan COVID-19 di Jawa Barat',
+    warning_letter: 'Fitur ini belum tersedia dan sedang dalam pengembangan.'
   },
   success: {
     login_success: 'Login Berhasil',
