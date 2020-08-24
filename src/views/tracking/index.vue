@@ -172,6 +172,58 @@
             </v-tabs>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-stepper value="1" :alt-labels="true">
+              <v-stepper-header>
+                <v-stepper-step
+                  complete
+                  step="1"
+                >
+                  Permohonan masuk
+                </v-stepper-step>
+
+                <v-divider />
+
+                <v-stepper-step
+                  complete
+                  step="2"
+                > Pemeriksaan Administrasi
+                </v-stepper-step>
+
+                <v-divider />
+
+                <v-stepper-step
+                  complete
+                  step="3"
+                >
+                  Permohonan Disetujui
+                </v-stepper-step>
+
+                <v-divider />
+
+                <v-stepper-step
+                  complete
+                  step="4"
+                >
+                  Pendistribusian Barang
+                </v-stepper-step>
+
+                <v-divider />
+
+                <v-stepper-step
+                  complete
+                  step="5"
+                >
+                  Pendistribusian Diterima
+                </v-stepper-step>
+              </v-stepper-header>
+            </v-stepper>
+          </v-col>
+        </v-row>
+        <div class="identity text-data-green">
+          {{ $t('label.list_logistic_need') }}
+        </div>
       </v-card>
       <div class="text-card-main">
         <v-row style="margin-top: -20px">
