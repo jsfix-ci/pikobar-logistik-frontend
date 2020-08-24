@@ -11,6 +11,7 @@ import dashboardRouter from './modules/dashboard'
 import pengajuanLogistik from './modules/pengajuanLogistik'
 import faskesRouter from './modules/faskes'
 import formPemohonAdmin from './modules/formPemohonAdmin'
+import letterRouter from './modules/letter'
 
 /**
  * constantRoutes
