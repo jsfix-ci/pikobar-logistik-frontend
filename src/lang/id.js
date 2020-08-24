@@ -405,7 +405,9 @@ export default {
     tracking_search_placeholder: 'Masukan ID/No. HP/Email Permohonan',
     tracking_cek: 'Cek',
     tracking_logistic: 'Lacak pengajuan',
-    tracking_body: 'Fitur ini memudahkan Anda untuk mencari tahu telah sejauh mana tahapan dari pengajuan Anda'
+    tracking_body: 'Fitur ini memudahkan Anda untuk mencari tahu telah sejauh mana tahapan dari pengajuan Anda',
+    tracking_count_success: 'Berhasil menemukan',
+    tracking_result: 'Hasil'
   },
   success: {
     login_success: 'Login Berhasil',

@@ -70,6 +70,7 @@
                     solo-inverted
                     :error-messages="errors"
                     :placeholder="$t('label.tracking_search_placeholder')"
+                    @keyup.enter.native="getDataTracking"
                   />
                 </ValidationProvider>
               </ValidationObserver>
@@ -81,6 +82,94 @@
           </v-col>
           <v-col cols="5">
             <img src="../../static/tracking_logistik_1.png" width="350px">
+          </v-col>
+        </v-row>
+      </v-card>
+      <v-card v-if="dataTracking" class="main-card-landing-page card-data-tracking" outlined>
+        <div class="result">
+          <p>{{ $t('label.tracking_count_success') }} <b>{{ dataTracking.total }}</b> {{ $t('label.tracking_result') }}</p>
+        </div>
+        <v-row>
+          <v-col>
+            <v-tabs
+              v-model="tab"
+              background-color="#EEEEEE"
+              color="#069550"
+              height="60px"
+            >
+              <v-tab
+                v-for="(item, index) in dataTracking.application"
+                :key="index"
+              >
+                {{ item.id }}
+              </v-tab>
+              <v-tab-item
+                v-for="(item, index) in dataTracking.application"
+                :key="index"
+              >
+                <div class="identity text-data-green">
+                  {{ $t('label.step_title_2') }}
+                </div>
+                <v-card
+                  class="mx-auto"
+                  outlined
+                >
+                  <v-row>
+                    <v-col class="margin-20" cols="12" sm="6" md="6">
+                      <v-row class="margin-top-min-15">
+                        <v-col>
+                          <span class="text-title-green">
+                            {{ $t('label.instance_type') }}
+                          </span>
+                          <br>
+                          <v-label>
+                            {{ item.master_faskes_type.name }}
+                          </v-label>
+                        </v-col>
+                        <v-col>
+                          <span class="text-title-green">
+                            {{ $t('label.contact_person') }}
+                          </span>
+                          <br>
+                          <v-label>
+                            {{ item.applicant.applicant_name }}
+                          </v-label>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col>
+                          <span class="text-title-green">
+                            {{ $t('label.instance_name') }}
+                          </span>
+                          <br>
+                          <v-label>
+                            {{ item.agency_name }}
+                          </v-label>
+                        </v-col>
+                        <v-col>
+                          <span class="text-title-green">
+                            {{ $t('label.applicant_position_identity') }}
+                          </span>
+                          <br>
+                          <v-label>
+                            {{ item.applicant.applicants_office }}
+                          </v-label>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                    <v-col class="margin-20" cols="12" sm="4" md="4">
+                      <span class="text-title-green">
+                        {{ $t('label.full_address') }}
+                      </span>
+                      <br>
+                      <v-label>
+                        {{ item.location_address }}
+                      </v-label>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-tab-item>
+            </v-tabs>
           </v-col>
         </v-row>
       </v-card>
@@ -120,6 +209,7 @@
 </template>
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'LandingPage',
@@ -129,10 +219,16 @@ export default {
   },
   data() {
     return {
+      tab: null,
       listQuery: {
         search: null
       }
     }
+  },
+  computed: {
+    ...mapGetters('logistics', [
+      'dataTracking'
+    ])
   },
   methods: {
     async getDataTracking() {
@@ -169,10 +265,38 @@ export default {
    font-size: 18px;
    line-height: 26px;
  }
+ .card-data-tracking {
+   margin-top: -30px;
+ }
+ .result {
+   p {
+     font-family: Lato;
+     font-size: 18px;
+   }
+ }
+ .identity {
+   margin: 20px 0;
+ }
+ .text-data-green {
+  font-family: "Product Sans";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 17px;
+  color: #219653;
+}
+.text-title-green {
+  font-family: "Product Sans";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  color: #219653;
+}
  .title {
    h3 {
     font-family: Lora;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: bold;
     line-height: 45px;
 
