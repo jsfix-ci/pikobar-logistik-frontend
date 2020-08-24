@@ -10,7 +10,6 @@ import Layout from '@/layout'
 import dashboardRouter from './modules/dashboard'
 import pengajuanLogistik from './modules/pengajuanLogistik'
 import faskesRouter from './modules/faskes'
-import letterRouter from './modules/letter'
 import formPemohonAdmin from './modules/formPemohonAdmin'
 
 /**
