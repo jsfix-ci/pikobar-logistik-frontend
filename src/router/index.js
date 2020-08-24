@@ -74,6 +74,7 @@ export const asyncRoutes = [
   dashboardRouter,
   formPemohonAdmin,
   pengajuanLogistik,
+  letterRouter,
   faskesRouter,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/', hidden: true }

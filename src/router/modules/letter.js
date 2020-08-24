@@ -23,24 +23,25 @@ const letter = {
     },
     {
       path: '/letter/incoming',
-      component: () => import('@/views/masterData/faskes/list'),
+      component: () => import('@/views/InboxMail/index'),
       name: 'incoming_mail',
       meta: {
         title: 'incoming_mail',
         noCache: true,
         roles: ['superadmin', 'dinkesprov']
       }
+    },
+    {
+      path: '/letter/outgoing/detail/:id',
+      component: () => import('@/views/OutgoingMail/Detail'),
+      name: 'outgoing_mail_detail',
+      hidden: true,
+      meta: {
+        title: 'outgoing_mail_detail',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov']
+      }
     }
-    // {
-    //   path: '/letter/create',
-    //   component: () => import('@/views/masterData/faskes/list'),
-    //   name: 'FaskesDitolak',
-    //   meta: {
-    //     title: 'rejected_title',
-    //     noCache: true,
-    //     roles: ['superadmin', 'dinkesprov']
-    //   }
-    // }
   ]
 }
 
