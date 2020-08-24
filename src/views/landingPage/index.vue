@@ -239,7 +239,7 @@
       max-width="550"
     >
       <v-card>
-        <v-card-title class="headline">{{ $t('label.warning').toUpperCase() }}</v-card-title>
+        <v-card-title class="headline">{{ $t('label.attention').toUpperCase() }}</v-card-title>
 
         <v-card-text>
           <span class="popup-body">{{ $t('label.applicant_popup_warning') }} </span>
