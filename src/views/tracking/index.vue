@@ -45,7 +45,9 @@
       <v-card class="main-card-landing-page" outlined>
         <div class="back">
           <span>
-            <img class="back-image" width="15px" src="../../static/back_icon.png">
+            <a href="#/landing-page">
+              <img class="back-image" width="15px" src="../../static/back_icon.png">
+            </a>
             <span class="back-text">{{ $t('label.back') }}</span>
           </span>
         </div>
@@ -100,6 +102,7 @@
               <v-tab
                 v-for="(item, index) in dataTracking.application"
                 :key="index"
+                @click="getTrackingLogisticNeedList(item.id)"
               >
                 {{ item.id }}
               </v-tab>
@@ -224,6 +227,54 @@
         <div class="identity text-data-green">
           {{ $t('label.list_logistic_need') }}
         </div>
+        <v-row>
+          <v-col>
+            <v-card outlined>
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.description').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.total').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.purpose').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.item_type').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-if="listLogisticRequest.length === 0">
+                      <td class="text-center" :colspan="12">{{ $t('label.no_data') }}</td>
+                    </tr>
+                    <tr v-for="(item, index) in listLogisticRequest" v-else :key="item.index">
+                      <td>{{ getTableRowNumbering(index) }}</td>
+                      <td>{{ item.product ? item.product.name : '-' }}</td>
+                      <td>{{ item.brand || '-' }}</td>
+                      <td>{{ item.quantity || '-' }}</td>
+                      <td>{{ item.unit.unit || '-' }}</td>
+                      <td>{{ item.usage || '-' }}</td>
+                      <td>{{ item.product.category ? item.product.category : '-' }}</td>
+                      <td>{{ item.realization_quantity || '-' }}</td>
+                      <td>{{ item.realization_date || '-' }}</td>
+                      <td>{{ changeStatus(item.status) }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+              <br>
+              <v-pagination
+                v-model="listQuery.page"
+                :length="totalListLogisticRequest"
+                :total-visible="3"
+                @input="onNext"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
       </v-card>
       <div class="text-card-main">
         <v-row style="margin-top: -20px">
@@ -273,13 +324,18 @@ export default {
     return {
       tab: null,
       listQuery: {
-        search: null
+        search: null,
+        page: 1,
+        limit: 3
       }
     }
   },
   computed: {
     ...mapGetters('logistics', [
-      'dataTracking'
+      'dataTracking',
+      'listLogisticRequest',
+      'totalListLogisticRequest',
+      'totalDataLogisticRequest'
     ])
   },
   methods: {
@@ -289,6 +345,32 @@ export default {
         return
       }
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
+      this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
+    },
+    async getTrackingLogisticNeedList(id) {
+      await this.$store.dispatch('logistics/getTrackingLogisticNeedList', id)
+    },
+    changeStatus(value) {
+      switch (value) {
+        case 'approved':
+          return this.$t('label.approved')
+        case 'not_delivered':
+          return this.$t('label.not_delivered')
+        case 'delivered':
+          return this.$t('label.delivered')
+        case 'not_available':
+          return this.$t('label.not_available')
+        case 'replaced':
+          return this.$t('label.replaced')
+        default:
+          return this.$t('label.not_approved')
+      }
+    },
+    async onNext() {
+      await this.getTrackingLogisticNeedList()
+    },
+    getTableRowNumbering(index) {
+      return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
     }
   }
 }

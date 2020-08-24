@@ -217,6 +217,17 @@ export default {
       return e
     }
   },
+  async getTrackingLogisticNeedList({ commit }, params) {
+    try {
+      const response = await fetchList(`/api/v1/landing-page-registration/tracking/${params}`, 'GET')
+      commit('SET_LIST_LOGISTIC_REQUEST', response.data.data)
+      commit('SET_TOTAL_LIST_LOGISTIC_REQUEST', response.data.last_page)
+      commit('SET_TOTAL_DATA_LOGISTIC_REQUEST', response.data.total)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async logisticRequestExportData({ commit }, params) {
     try {
       const response = await request({
