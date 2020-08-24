@@ -13,7 +13,7 @@
         <v-btn
           color="green darken-1"
           text
-          @click="goDashboard"
+          @click="goBack"
         >
           {{ $t('label.ok') }}
         </v-btn>
@@ -32,7 +32,7 @@ export default {
     this.dialog = true
   },
   methods: {
-    goDashboard() {
+    goBack() {
       this.dialog = false
       this.$router.go(-1)
     }
