@@ -19,7 +19,8 @@ const state = {
   listStock: [],
   listRealization: [],
   totalListRealization: 0,
-  totalDataRealization: 0
+  totalDataRealization: 0,
+  dataTracking: null
 }
 
 export default {

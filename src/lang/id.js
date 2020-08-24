@@ -400,7 +400,11 @@ export default {
     print_mail_copy_admin_assistant: 'Yth. Asisten Administrasi Setda Prov. Jawa Barat',
     print_mail_copy_law_assistant: 'Yth. Asisten Pemerintahan, Hukum dan Kesejahteraan Sosial Setda Prov. Jawa Barat',
     print_mail_copy_inspecture: 'Yth. Inspektur Provinsi Jawa Barat',
-    print_mail_copy_gugus_tugas: 'Yth. Gugus Tugas Percepatan Penanggulangan COVID-19 di Jawa Barat'
+    print_mail_copy_gugus_tugas: 'Yth. Gugus Tugas Percepatan Penanggulangan COVID-19 di Jawa Barat',
+    tracking_search: 'ID/No. HP/Email Permohonan',
+    tracking_cek: 'Cek',
+    tracking_logistic: 'Lacak pengajuan',
+    tracking_body: 'Fitur ini memudahkan Anda untuk mencari tahu telah sejauh mana tahapan dari pengajuan Anda'
   },
   success: {
     login_success: 'Login Berhasil',

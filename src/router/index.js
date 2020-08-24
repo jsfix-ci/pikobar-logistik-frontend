@@ -49,6 +49,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/tracking',
+    component: () => import('@/views/tracking/index'),
+    hidden: true
+  },
+  {
     path: '/change-password',
     component: Layout,
     hidden: true,

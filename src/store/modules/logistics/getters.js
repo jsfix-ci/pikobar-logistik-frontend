@@ -49,5 +49,8 @@ export default {
   },
   totalDataRealization: (state) => {
     return state.totalDataRealization
+  },
+  dataTracking: (state) => {
+    return state.dataTracking
   }
 }
