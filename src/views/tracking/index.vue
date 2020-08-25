@@ -171,59 +171,59 @@
                     </v-col>
                   </v-row>
                 </v-card>
-              </v-tab-item>
-            </v-tabs>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <v-stepper value="1" :alt-labels="true">
-              <v-stepper-header class="tracking-status">
                 <v-row>
                   <v-col cols="12">
-                    <div class="tracking-status-text">
-                      <p>Status Permohonan Anda: Administrasi Terverifikasi</p>
-                    </div>
+                    <v-stepper value="1" :alt-labels="true">
+                      <v-stepper-header class="tracking-status">
+                        <v-row>
+                          <v-col cols="12">
+                            <div class="tracking-status-text">
+                              <p><span>{{ $t('label.tracking_status') }}</span> <span>{{ item.tracking.status }}</span></p>
+                            </div>
+                          </v-col>
+                        </v-row>
+                        <v-stepper-step
+                          :complete="item.tracking.request"
+                          step="1"
+                          class="tracking-step tracking-step-first"
+                        >
+                          <div class="color-step">
+                            <img src="../../static/iconChecklist.png">
+                            <span>{{ $t('label.tracking_step1') }}</span>
+                          </div>
+                        </v-stepper-step>
+                        <v-divider class="tracking-divider" />
+                        <v-stepper-step
+                          :complete="item.tracking.verification"
+                          step="2"
+                          class="tracking-step"
+                        >
+                          <span class="color-step">
+                            <img src="../../static/iconBox.png">
+                            <span>{{ $t('label.tracking_step2') }}</span>
+                          </span>
+                        </v-stepper-step>
+                        <v-divider class="tracking-divider" />
+                        <v-stepper-step v-if="item.tracking.status === 'Permohonan Ditolak'" :rules="[() => false]" step="3" class="tracking-step tracking-step-error">
+                          {{ $t('label.tracking_step4') }}
+                        </v-stepper-step>
+                        <v-stepper-step
+                          v-else
+                          :complete="item.tracking.approval"
+                          step="3"
+                          class="tracking-step"
+                        >
+                          <span class="color-step">
+                            <img src="../../static/iconContract.png">
+                            <span>{{ $t('label.tracking_step3') }}</span>
+                          </span>
+                        </v-stepper-step>
+                      </v-stepper-header>
+                    </v-stepper>
                   </v-col>
                 </v-row>
-                <v-stepper-step
-                  complete
-                  step="1"
-                  class="tracking-step tracking-step-first"
-                >
-                  <div class="color-step">
-                    <img src="../../static/iconChecklist.png">
-                    <span>{{ $t('label.tracking_step1') }}</span>
-                  </div>
-                </v-stepper-step>
-                <v-divider class="tracking-divider" />
-                <v-stepper-step
-                  complete
-                  step="2"
-                  class="tracking-step"
-                >
-                  <span class="color-step">
-                    <img src="../../static/iconBox.png">
-                    <span>{{ $t('label.tracking_step2') }}</span>
-                  </span>
-                </v-stepper-step>
-                <v-divider class="tracking-divider" />
-                <v-stepper-step
-                  :complete="false"
-                  step="3"
-                  class="tracking-step"
-                >
-                  <span class="color-step">
-                    <img src="../../static/iconContract.png">
-                    <span>{{ $t('label.tracking_step3') }}</span>
-                  </span>
-                </v-stepper-step>
-                <!-- <v-stepper-step :rules="[() => false]" step="3" class="tracking-step">
-                  {{ $t('label.tracking_step4') }}
-                </v-stepper-step> -->
-
-              </v-stepper-header>
-            </v-stepper>
+              </v-tab-item>
+            </v-tabs>
           </v-col>
         </v-row>
         <div class="identity text-data-green">
@@ -464,5 +464,8 @@ export default {
  .tracking-divider {
    background: white;
    margin-top: 90px !important;
+ }
+ .tracking-step-error {
+   color: #D50000 !important;
  }
 </style>
