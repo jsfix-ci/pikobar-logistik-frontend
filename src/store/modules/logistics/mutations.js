@@ -49,5 +49,8 @@ export default {
   },
   SET_TOTAL_DATA_REALIZATION: (state, data) => {
     state.totalDataRealization = data
+  },
+  SET_DATA_TRACKING: (state, data) => {
+    state.dataTracking = data
   }
 }
