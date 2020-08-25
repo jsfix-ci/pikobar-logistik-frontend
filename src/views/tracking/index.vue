@@ -455,7 +455,7 @@ export default {
    padding-bottom: 20px;
  }
  .tracking-step-first {
-   margin-left: -950px;
+   margin-left: -60rem;
  }
  .tracking-step {
    color: white;
@@ -470,7 +470,7 @@ export default {
  }
  .step-name {
    text-align: left;
-   margin-left: 40px;
+   margin-left: 35px;
    margin-top: -30px;
  }
 </style>
