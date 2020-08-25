@@ -413,7 +413,8 @@ export default {
     tracking_step3: 'Permohonan Disetujui',
     tracking_step4: 'Permohonan Ditolak',
     tracking_step5: 'Pendistribusian Diterima',
-    tracking_status: 'Status Permohonan Anda:'
+    tracking_status: 'Status Permohonan Anda:',
+    tracking_id: 'Kode:#'
   },
   success: {
     login_success: 'Login Berhasil',

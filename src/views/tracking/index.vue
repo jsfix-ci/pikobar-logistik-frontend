@@ -104,7 +104,7 @@
                 :key="index"
                 @click="getTrackingLogisticNeedList(item.id)"
               >
-                {{ item.id }}
+                {{ $t('label.tracking_id') }}{{ item.id }}
               </v-tab>
               <v-tab-item
                 v-for="(item, index) in dataTracking.application"
