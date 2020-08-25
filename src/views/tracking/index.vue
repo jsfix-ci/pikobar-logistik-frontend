@@ -189,7 +189,7 @@
                         >
                           <div class="color-step">
                             <img src="../../static/iconChecklist.png">
-                            <span>{{ $t('label.tracking_step1') }}</span>
+                            <div class="step-name">{{ $t('label.tracking_step1') }}</div>
                           </div>
                         </v-stepper-step>
                         <v-divider class="tracking-divider" />
@@ -200,7 +200,7 @@
                         >
                           <span class="color-step">
                             <img src="../../static/iconBox.png">
-                            <span>{{ $t('label.tracking_step2') }}</span>
+                            <div class="step-name">{{ $t('label.tracking_step2') }}</div>
                           </span>
                         </v-stepper-step>
                         <v-divider class="tracking-divider" />
@@ -215,7 +215,7 @@
                         >
                           <span class="color-step">
                             <img src="../../static/iconContract.png">
-                            <span>{{ $t('label.tracking_step3') }}</span>
+                            <div class="step-name">{{ $t('label.tracking_step3') }}</div>
                           </span>
                         </v-stepper-step>
                       </v-stepper-header>
@@ -467,5 +467,10 @@ export default {
  }
  .tracking-step-error {
    color: #D50000 !important;
+ }
+ .step-name {
+   text-align: left;
+   margin-left: 40px;
+   margin-top: -30px;
  }
 </style>
