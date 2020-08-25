@@ -407,7 +407,12 @@ export default {
     tracking_logistic: 'Lacak pengajuan',
     tracking_body: 'Fitur ini memudahkan Anda untuk mencari tahu telah sejauh mana tahapan dari pengajuan Anda',
     tracking_count_success: 'Berhasil menemukan',
-    tracking_result: 'Hasil'
+    tracking_result: 'Hasil',
+    tracking_step1: 'Permohonan Masuk',
+    tracking_step2: 'Pemeriksaan Administrasi',
+    tracking_step3: 'Permohonan Disetujui',
+    tracking_step4: 'Permohonan Ditolak',
+    tracking_step5: 'Pendistribusian Diterima',
   },
   success: {
     login_success: 'Login Berhasil',

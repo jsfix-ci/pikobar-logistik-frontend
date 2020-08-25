@@ -178,48 +178,50 @@
         <v-row>
           <v-col cols="12">
             <v-stepper value="1" :alt-labels="true">
-              <v-stepper-header>
+              <v-stepper-header class="tracking-status">
+                <v-row>
+                  <v-col cols="12">
+                    <div class="tracking-status-text">
+                      <p>Status Permohonan Anda: Administrasi Terverifikasi</p>
+                    </div>
+                  </v-col>
+                </v-row>
                 <v-stepper-step
                   complete
                   step="1"
+                  class="tracking-step tracking-step-first"
                 >
-                  Permohonan masuk
+                  <div class="color-step">
+                    <img src="../../static/iconChecklist.png">
+                    <span>{{ $t('label.tracking_step1') }}</span>
+                  </div>
                 </v-stepper-step>
-
-                <v-divider />
-
+                <v-divider class="tracking-divider" />
                 <v-stepper-step
                   complete
                   step="2"
-                > Pemeriksaan Administrasi
+                  class="tracking-step"
+                >
+                  <span class="color-step">
+                    <img src="../../static/iconBox.png">
+                    <span>{{ $t('label.tracking_step2') }}</span>
+                  </span>
                 </v-stepper-step>
-
-                <v-divider />
-
+                <v-divider class="tracking-divider" />
                 <v-stepper-step
-                  complete
+                  :complete="false"
                   step="3"
+                  class="tracking-step"
                 >
-                  Permohonan Disetujui
+                  <span class="color-step">
+                    <img src="../../static/iconContract.png">
+                    <span>{{ $t('label.tracking_step3') }}</span>
+                  </span>
                 </v-stepper-step>
+                <!-- <v-stepper-step :rules="[() => false]" step="3" class="tracking-step">
+                  {{ $t('label.tracking_step4') }}
+                </v-stepper-step> -->
 
-                <v-divider />
-
-                <v-stepper-step
-                  complete
-                  step="4"
-                >
-                  Pendistribusian Barang
-                </v-stepper-step>
-
-                <v-divider />
-
-                <v-stepper-step
-                  complete
-                  step="5"
-                >
-                  Pendistribusian Diterima
-                </v-stepper-step>
               </v-stepper-header>
             </v-stepper>
           </v-col>
@@ -266,13 +268,13 @@
                 </template>
               </v-simple-table>
               <br>
-              <v-pagination
-                v-model="listQuery.page"
-                :length="totalListLogisticRequest"
-                :total-visible="3"
-                @input="onNext"
-              />
             </v-card>
+            <v-pagination
+              v-model="listQuery.page"
+              :length="totalListLogisticRequest"
+              :total-visible="3"
+              @input="onNext"
+            />
           </v-col>
         </v-row>
       </v-card>
@@ -345,7 +347,7 @@ export default {
         return
       }
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
-      this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
+      if (this.dataTracking.application !== null) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
     },
     async getTrackingLogisticNeedList(id) {
       await this.$store.dispatch('logistics/getTrackingLogisticNeedList', id)
@@ -438,5 +440,29 @@ export default {
       color: #16A75C
     }
    }
+ }
+ .color-step {
+   color: white;
+ }
+ .tracking-status {
+   background: #16A75C;
+ }
+ .tracking-status-text {
+   color: white;
+   margin: 20px;
+   width: 500px;
+   padding-left: 35px;
+   padding-bottom: 20px;
+ }
+ .tracking-step-first {
+   margin-left: -950px;
+ }
+ .tracking-step {
+   color: white;
+   padding-top: 80px
+ }
+ .tracking-divider {
+   background: white;
+   margin-top: 90px !important;
  }
 </style>
