@@ -204,7 +204,7 @@
                           </span>
                         </v-stepper-step>
                         <v-divider class="tracking-divider" />
-                        <v-stepper-step v-if="item.tracking.status === 'Permohonan Ditolak'" :rules="[() => false]" step="3" class="tracking-step tracking-step-error">
+                        <v-stepper-step v-if="item.tracking.approval === 'reject'" :rules="[() => false]" step="3" class="tracking-step tracking-step-error">
                           {{ $t('label.tracking_step4') }}
                         </v-stepper-step>
                         <v-stepper-step
