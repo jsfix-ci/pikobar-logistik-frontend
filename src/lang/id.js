@@ -414,8 +414,7 @@ export default {
     tracking_step4: 'Permohonan Ditolak',
     tracking_step5: 'Pendistribusian Diterima',
     tracking_status: 'Status Permohonan Anda:',
-    tracking_id: 'Kode:#'
-    tracking_status: 'Status Permohonan Anda:',
+    tracking_id: 'Kode:#',
     warning_letter: 'Fitur ini belum tersedia dan sedang dalam pengembangan.'
   },
   success: {
