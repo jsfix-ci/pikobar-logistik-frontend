@@ -52,7 +52,7 @@
           </span>
         </div>
         <v-row>
-          <v-col cols="7" class="left-side">
+          <v-col md="7" sm="12" class="left-side">
             <div class="title">
               <h3>{{ $t('label.tracking_logistic') }} <span class="logistic">{{ $t('label.logistic').toLowerCase() }}</span></h3>
             </div>
@@ -82,7 +82,7 @@
               <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking">{{ $t('label.tracking_cek') }}</v-btn>
             </div>
           </v-col>
-          <v-col cols="5">
+          <v-col md="5" sm="12">
             <img src="../../static/tracking_logistik_1.png" width="350px">
           </v-col>
         </v-row>
