@@ -52,7 +52,7 @@
           </span>
         </div>
         <v-row>
-          <v-col cols="7" class="left-side">
+          <v-col sm="12" md="7" class="left-side">
             <div class="title">
               <h3>{{ $t('label.tracking_logistic') }} <span class="logistic">{{ $t('label.logistic').toLowerCase() }}</span></h3>
             </div>
@@ -60,34 +60,36 @@
               <p>{{ $t('label.tracking_body') }}</p>
             </div>
             <div class="form">
-              <ValidationObserver ref="observer">
-                <v-label><b>{{ $t('label.tracking_search') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  rules="requiredTrackingField"
-                >
-                  <v-text-field
-                    v-model="listQuery.search"
-                    outlined
-                    solo-inverted
-                    :error-messages="errors"
-                    :placeholder="$t('label.tracking_search_placeholder')"
-                    @keyup.enter.native="getDataTracking"
-                  />
-                </ValidationProvider>
-              </ValidationObserver>
-            </div>
-            <div class="button-action">
-              <v-btn class="button-style" min-width="150px" outlined text>{{ $t('label.cancel') }}</v-btn>
-              <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking">{{ $t('label.tracking_cek') }}</v-btn>
+              <v-form ref="form">
+                <ValidationObserver ref="observer">
+                  <v-label><b>{{ $t('label.tracking_search') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    rules="requiredTrackingField"
+                  >
+                    <v-text-field
+                      v-model="listQuery.search"
+                      outlined
+                      solo-inverted
+                      :error-messages="errors"
+                      :placeholder="$t('label.tracking_search_placeholder')"
+                      @keyup.enter.native="getDataTracking"
+                    />
+                  </ValidationProvider>
+                  <div class="button-action">
+                    <v-btn class="button-style" min-width="150px" outlined text @click="resetData">{{ $t('label.cancel') }}</v-btn>
+                    <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking">{{ $t('label.tracking_cek') }}</v-btn>
+                  </div>
+                </ValidationObserver>
+              </v-form>
             </div>
           </v-col>
-          <v-col cols="5">
+          <v-col sm="12" md="5">
             <img src="../../static/tracking_logistik_1.png" width="350px">
           </v-col>
         </v-row>
       </v-card>
-      <v-card v-if="dataTracking" class="main-card-landing-page card-data-tracking" outlined>
+      <v-card v-if="clicked && dataTracking" class="main-card-landing-page card-data-tracking" outlined>
         <div class="result">
           <p>{{ $t('label.tracking_count_success') }} <b>{{ dataTracking.total }}</b> {{ $t('label.tracking_result') }}</p>
         </div>
@@ -184,7 +186,7 @@
                         </v-row>
                         <v-stepper-step
                           :complete="item.tracking.request"
-                          step="1"
+                          step=""
                           class="tracking-step tracking-step-first"
                         >
                           <div class="color-step">
@@ -195,7 +197,7 @@
                         <v-divider class="tracking-divider" />
                         <v-stepper-step
                           :complete="item.tracking.verification"
-                          step="2"
+                          step=""
                           class="tracking-step"
                         >
                           <span class="color-step">
@@ -210,7 +212,7 @@
                         <v-stepper-step
                           v-else
                           :complete="item.tracking.approval"
-                          step="3"
+                          step=""
                           class="tracking-step"
                         >
                           <span class="color-step">
@@ -325,6 +327,7 @@ export default {
   data() {
     return {
       tab: null,
+      clicked: false,
       listQuery: {
         search: null,
         page: 1,
@@ -348,6 +351,7 @@ export default {
       }
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
       if (this.dataTracking.application !== null) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
+      this.clicked = true
     },
     async getTrackingLogisticNeedList(id) {
       await this.$store.dispatch('logistics/getTrackingLogisticNeedList', id)
@@ -373,6 +377,9 @@ export default {
     },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
+    },
+    async resetData() {
+      this.$refs.form.reset()
     }
   }
 }
