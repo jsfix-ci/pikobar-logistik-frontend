@@ -415,6 +415,8 @@ export default {
     tracking_step5: 'Pendistribusian Diterima',
     tracking_status: 'Status Permohonan Anda:',
     tracking_id: 'Kode:#',
+    tracking_not_found_title: 'Data Permohonan Tidak Ditemukan',
+    tracking_not_found_text: 'Maaf, Kami tidak dapat menemukan Data Permohonan yang Anda cari.',
     warning_letter: 'Fitur ini belum tersedia dan sedang dalam pengembangan.'
   },
   success: {

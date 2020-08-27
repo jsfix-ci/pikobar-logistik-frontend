@@ -89,7 +89,7 @@
           </v-col>
         </v-row>
       </v-card>
-      <v-card v-if="clicked && dataTracking" class="main-card-landing-page card-data-tracking" outlined>
+      <v-card v-if="clicked && dataTracking.application.length > 0" class="main-card-landing-page card-data-tracking" outlined>
         <div class="result">
           <p>{{ $t('label.tracking_count_success') }} <b>{{ dataTracking.total }}</b> {{ $t('label.tracking_result') }}</p>
         </div>
@@ -256,14 +256,14 @@
                     </tr>
                     <tr v-for="(item, index) in listLogisticRequest" v-else :key="item.index">
                       <td>{{ getTableRowNumbering(index) }}</td>
-                      <td>{{ item.product ? item.product.name : '-' }}</td>
-                      <td>{{ item.brand || '-' }}</td>
-                      <td>{{ item.quantity || '-' }}</td>
-                      <td>{{ item.unit.unit || '-' }}</td>
-                      <td>{{ item.usage || '-' }}</td>
-                      <td>{{ item.product.category ? item.product.category : '-' }}</td>
+                      <td>{{ item.product_name ? item.product_name : '-' }}</td>
+                      <td>{{ item.need_description || '-' }}</td>
+                      <td>{{ item.need_quantity || '-' }}</td>
+                      <td>{{ item.need_unit_name || '-' }}</td>
+                      <td>{{ item.need_usage || '-' }}</td>
+                      <td>{{ item.category ? item.category : '-' }}</td>
                       <td>{{ item.realization_quantity || '-' }}</td>
-                      <td>{{ item.realization_date || '-' }}</td>
+                      <td>{{ item.realized_at || '-' }}</td>
                       <td>{{ changeStatus(item.status) }}</td>
                     </tr>
                   </tbody>
@@ -271,14 +271,35 @@
               </v-simple-table>
               <br>
             </v-card>
-            <v-pagination
-              v-model="listQuery.page"
-              :length="totalListLogisticRequest"
-              :total-visible="3"
-              @input="onNext"
-            />
+            <v-row>
+              <v-card
+                outlined
+                height="80%"
+                style="margin: 13px"
+              >
+                <v-list-item>
+                  <v-list-item-content>
+                    {{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}
+                  </v-list-item-content>
+                </v-list-item>
+              </v-card>
+              <v-pagination
+                v-model="listQueryTable.page"
+                :length="totalListLogisticRequest"
+                :page.sync="listQueryTable.page"
+                :total-visible="20"
+                @input="onNext"
+              />
+            </v-row>
           </v-col>
         </v-row>
+      </v-card>
+      <v-card v-else-if="clicked && dataTracking.application.length === 0" class="main-card-landing-page card-data-tracking" outlined>
+        <center>
+          <img src="../../static/tracking_not_found.png" width="350px">
+          <div class="not-found-title">{{ $t('label.tracking_not_found_title') }}</div>
+          <div class="not-found-text">{{ $t('label.tracking_not_found_text') }}</div>
+        </center>
       </v-card>
       <div class="text-card-main">
         <v-row style="margin-top: -20px">
@@ -326,11 +347,14 @@ export default {
   },
   data() {
     return {
+      id: null,
       tab: null,
       clicked: false,
       listQuery: {
-        search: null,
-        page: 1,
+        search: null
+      },
+      listQueryTable: {
+        page: 2,
         limit: 3
       }
     }
@@ -350,11 +374,13 @@ export default {
         return
       }
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
-      if (this.dataTracking.application !== null) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
+      if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
       this.clicked = true
     },
     async getTrackingLogisticNeedList(id) {
-      await this.$store.dispatch('logistics/getTrackingLogisticNeedList', id)
+      this.id = id
+      this.listQueryTable.id = id
+      await this.$store.dispatch('logistics/getTrackingLogisticNeedList', this.listQueryTable)
     },
     changeStatus(value) {
       switch (value) {
@@ -373,10 +399,10 @@ export default {
       }
     },
     async onNext() {
-      await this.getTrackingLogisticNeedList()
+      await this.getTrackingLogisticNeedList(this.id)
     },
     getTableRowNumbering(index) {
-      return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
+      return ((parseInt(this.listQueryTable.page) - 1) * parseInt(this.listQueryTable.limit)) + (parseInt(index) + 1)
     },
     async resetData() {
       this.$refs.form.reset()
@@ -480,5 +506,21 @@ export default {
    text-align: left;
    margin-left: 35px;
    margin-top: -30px;
+ }
+ .not-found-title {
+   font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 34px;
+    color: #020814;
+ }
+ .not-found-text {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #414D5C;
  }
 </style>
