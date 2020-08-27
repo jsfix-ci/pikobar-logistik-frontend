@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isConfirm" class="background-landing-page background-height-form-pemohon">
+  <div v-if="!isConfirm" class="background-landing-page">
     <div class="full-landing-page">
       <div class="header-landing-page">
         <v-row justify="space-between" align="center">
@@ -146,8 +146,7 @@ export default {
 <style>
 .main-card-form-pemohon {
   margin: -50px 120px 30px 120px;
-  height: 500px;
-  padding: 100px 10px;
+  padding-top: 100px;
 }
 .title-page-form-pemohon {
   padding: 5px 20px;
@@ -160,9 +159,6 @@ export default {
 }
 .right-margin-form-pemohon {
   margin-right: 200px;
-}
-.background-height-form-pemohon {
-  height: 1000px;
 }
 .stepper-margin-form-pemohon {
   margin: -100px -10px 0px -10px;
