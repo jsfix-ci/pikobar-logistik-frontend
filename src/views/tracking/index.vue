@@ -272,24 +272,20 @@
               <br>
             </v-card>
             <v-row>
-              <v-card
-                outlined
-                height="80%"
-                style="margin: 13px"
-              >
-                <v-list-item>
-                  <v-list-item-content>
-                    {{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}
-                  </v-list-item-content>
-                </v-list-item>
-              </v-card>
-              <v-pagination
-                v-model="listQueryTable.page"
-                :length="totalListLogisticRequest"
-                :page.sync="listQueryTable.page"
-                :total-visible="20"
-                @input="onNext"
-              />
+              <v-col>
+                <div class="total-data-title">{{ $t('label.tracking_total_data_logistic') }} <span class="total-data">{{ totalDataLogisticRequest }} {{ $t('label.tracking_data_prefix') }}</span> </div>
+              </v-col>
+              <v-col>
+                <div class="pagination">
+                  <v-pagination
+                    v-model="listQueryTable.page"
+                    :length="totalListLogisticRequest"
+                    :page.sync="listQueryTable.page"
+                    :total-visible="20"
+                    @input="onNext"
+                  />
+                </div>
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
@@ -522,5 +518,21 @@ export default {
     font-size: 16px;
     line-height: 26px;
     color: #414D5C;
+ }
+ .total-data-title {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 23px;
+    color: #757575;
+ }
+ .total-data {
+   font-weight: bold;
+   color: #4F4F4F;
+ }
+ .pagination {
+   display: block;
+   float: right !important;
  }
 </style>
