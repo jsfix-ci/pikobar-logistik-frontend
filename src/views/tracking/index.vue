@@ -380,6 +380,7 @@ export default {
     },
     async resetData() {
       this.$refs.form.reset()
+      this.clicked = false
     }
   }
 }
