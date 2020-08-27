@@ -350,7 +350,7 @@ export default {
         search: null
       },
       listQueryTable: {
-        page: 2,
+        page: 1,
         limit: 3
       }
     }
