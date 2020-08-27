@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isConfirm" class="background-landing-page">
+  <div v-if="!isConfirm" class="background-landing-page landing-page-height">
     <div class="full-landing-page">
       <div class="header-landing-page">
         <v-row justify="space-between" align="center">
@@ -144,6 +144,9 @@ export default {
 }
 </script>
 <style>
+.landing-page-height {
+ min-height: 100%;
+}
 .main-card-form-pemohon {
   margin: -50px 120px 30px 120px;
   padding-top: 100px;
