@@ -210,7 +210,7 @@
                         <v-stepper-step
                           v-else
                           :complete="item.tracking.approval"
-                          step="3"
+                          step=""
                           class="tracking-step"
                         >
                           <span class="color-step">
