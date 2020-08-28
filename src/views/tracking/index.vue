@@ -175,8 +175,8 @@
                 </v-card>
                 <v-row>
                   <v-col cols="12">
-                    <v-stepper value="1" :alt-labels="true">
-                      <v-stepper-header class="tracking-status">
+                    <v-stepper value="1" :alt-labels="true" :dark="true" :light="false">
+                      <v-stepper-header v-if="item.tracking.reject_note === null" class="tracking-status">
                         <v-row>
                           <v-col cols="12">
                             <div class="tracking-status-text">
@@ -196,7 +196,7 @@
                         </v-stepper-step>
                         <v-divider class="tracking-divider" />
                         <v-stepper-step
-                          :complete="item.tracking.verification"
+                          :complete="item.tracking.verification.status"
                           step=""
                           class="tracking-step"
                         >
@@ -206,17 +206,60 @@
                           </span>
                         </v-stepper-step>
                         <v-divider class="tracking-divider" />
-                        <v-stepper-step v-if="item.tracking.approval === 'reject'" :rules="[() => false]" step="3" class="tracking-step tracking-step-error">
-                          {{ $t('label.tracking_step4') }}
-                        </v-stepper-step>
                         <v-stepper-step
-                          v-else
-                          :complete="item.tracking.approval"
+                          :complete="item.tracking.approval.status"
                           step=""
                           class="tracking-step"
                         >
                           <span class="color-step">
                             <img src="../../static/iconContract.png">
+                            <div class="step-name">{{ $t('label.tracking_step3') }}</div>
+                          </span>
+                        </v-stepper-step>
+                      </v-stepper-header>
+                      <v-stepper-header v-else class="tracking-status-reject">
+                        <v-row>
+                          <v-col cols="12">
+                            <div class="tracking-status-text">
+                              <p><span>{{ $t('label.tracking_status') }}</span> <span>{{ item.tracking.status }}</span></p>
+                            </div>
+                            <div class="tracking-status-reject-note">
+                              <p class="reject-reason">{{ $t('label.tracking_reason_reject') }}</p>
+                              <p class="reject-reason reject-reason-data">{{ item.tracking.reject_note }}</p>
+                            </div>
+                          </v-col>
+                        </v-row>
+                        <v-stepper-step
+                          :complete="item.tracking.request"
+                          step=""
+                          class="tracking-step tracking-step-first"
+                        >
+                          <div class="color-step">
+                            <img src="../../static/iconChecklist.png">
+                            <div class="step-name">{{ $t('label.tracking_step1') }}</div>
+                          </div>
+                        </v-stepper-step>
+                        <v-divider class="tracking-divider" />
+                        <v-stepper-step
+                          :complete="item.tracking.verification.status"
+                          step=""
+                          class="tracking-step"
+                        >
+                          <span class="color-step">
+                            <img src="../../static/iconBox.png">
+                            <div v-if="item.tracking.verification.is_reject" class="step-name">{{ item.tracking.status }}</div>
+                            <div v-else class="step-name">{{ $t('label.tracking_step2') }}</div>
+                          </span>
+                        </v-stepper-step>
+                        <v-divider class="tracking-divider" />
+                        <v-stepper-step
+                          :complete="item.tracking.approval.status"
+                          step=""
+                          class="tracking-step"
+                        >
+                          <span class="color-step">
+                            <img src="../../static/iconContract.png">
+                            <div v-if="item.tracking.approval.is_reject" class="step-name">{{ item.tracking.status }}</div>
                             <div class="step-name">{{ $t('label.tracking_step3') }}</div>
                           </span>
                         </v-stepper-step>
@@ -477,12 +520,25 @@ export default {
  .tracking-status {
    background: #16A75C;
  }
+ .tracking-status-reject {
+   background: #EF5350;
+ }
  .tracking-status-text {
    color: white;
    margin: 20px;
    width: 500px;
    padding-left: 35px;
    padding-bottom: 20px;
+ }
+ .tracking-status-reject-note {
+    color: white;
+    margin: 20px;
+    padding-left: 5rem;
+    margin-top: 10rem;
+    color: white;
+    margin: 20px;
+    padding-left: 2rem;
+    padding-top: 4rem;
  }
  .tracking-step-first {
    margin-left: -60rem;
@@ -504,7 +560,7 @@ export default {
    margin-top: -30px;
  }
  .not-found-title {
-   font-family: Roboto;
+    font-family: Roboto;
     font-style: normal;
     font-weight: 500;
     font-size: 22px;
@@ -528,11 +584,19 @@ export default {
     color: #757575;
  }
  .total-data {
-   font-weight: bold;
-   color: #4F4F4F;
+    font-weight: bold;
+    color: #4F4F4F;
  }
  .pagination {
-   display: block;
-   float: right !important;
+    display: block;
+    float: right !important;
  }
+ .reject-reason {
+    font-size: 16px;
+    line-height: 26px;
+ }
+ .reject-reason-data {
+   margin-top: -1rem;
+ }
+
 </style>
