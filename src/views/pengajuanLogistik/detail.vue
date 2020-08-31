@@ -336,7 +336,7 @@
           <v-card-text>
             <v-row class="ml-2">
               <v-col cols="6" md="6">
-                <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ $t('label.applicant_letter') }}</u></a>
+                <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.application_letter_number : '-' }}</u></a>
               </v-col>
               <v-col cols="6" md="6">
                 <div class="margin-top-min-15">
@@ -609,9 +609,15 @@ export default {
       const formData = new FormData()
       this.showDialogReject = false
       formData.append('applicant_id', this.detailLogisticRequest.id)
-      formData.append('verification_status', 'rejected')
-      formData.append('note', value)
-      this.postReject(formData)
+      if (this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi') {
+        formData.append('approval_status', 'rejected')
+        formData.append('approval_note', value)
+        this.postRejectApproval(formData)
+      } else {
+        formData.append('verification_status', 'rejected')
+        formData.append('note', value)
+        this.postReject(formData)
+      }
     })
   },
   methods: {
@@ -716,6 +722,10 @@ export default {
       await this.$store.dispatch('logistics/postVerificationStatus', formData)
       window.location.reload()
     },
+    async postRejectApproval(formData) {
+      await this.$store.dispatch('logistics/postApprovalStatus', formData)
+      window.location.reload()
+    },
     setTotal() {
       this.totalAPD = 0
       this.listLogisticNeeds.forEach(element => {
@@ -726,8 +736,15 @@ export default {
       const formData = new FormData()
       formData.append('applicant_id', this.detailLogisticRequest.id)
       formData.append('approval_status', 'approved')
-      await this.$store.dispatch('logistics/postApprovalStatus', formData)
-      window.location.reload(true)
+      const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
+      if (response.status === 200) {
+        window.location.reload()
+      } else if (response.response.status === 422) {
+        this.scrollToElement()
+      }
+    },
+    scrollToElement(options) {
+      window.scrollTo(0, 1200)
     },
     getStockItem(value) {
       this.dialogStock = true
