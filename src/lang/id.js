@@ -181,7 +181,7 @@ export default {
     landing_page_alur_title: 'Alur proses pengajuan',
     landing_page_tracking_title: 'Lacak pengajuan',
     landing_page_here: 'kamu disini.',
-    landing_page_text: 'Portal ini berfungsi untuk mendata permohonan darurat logistik yang dibutuhkan oleh instansi dan selanjutnya akan disaring sesuai dengan prioritas wilayah kedaruratan terdampak COVID-19 di Jawa Barat.',
+    landing_page_text: 'Portal ini berfungsi untuk mendata permohonan darurat logistik yang dibutuhkan oleh instansi, rumah sakit, puskesmas, & klinik untuk selanjutnya akan disaring sesuai dengan prioritas wilayah kedaruratan terdampak COVID-19 di Jawa Barat.',
     landing_page_text_alur: 'Anda ingin tahu alur pengajuan logistik dari pengajuan pertama kali sampai pengajuan Anda terkirim? Anda dapat mengklik tombol dibawah ini.',
     landing_page_text_tracking: 'Fitur ini memudahkan Anda untuk mencari tahu telah sejauh mana tahapan dari pengajuan Anda. Untuk info lebih lanjut, Anda dapat mengklik tombol dibawah ini.',
     start: 'Mulai Pengajuan Sekarang',
