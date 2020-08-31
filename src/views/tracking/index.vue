@@ -89,7 +89,7 @@
           </v-col>
         </v-row>
       </v-card>
-      <v-card v-if="clicked && dataTracking" class="main-card-landing-page card-data-tracking" outlined>
+      <v-card v-if="clicked && dataTracking.application.length > 0" class="main-card-landing-page card-data-tracking" outlined>
         <div class="result">
           <p>{{ $t('label.tracking_count_success') }} <b>{{ dataTracking.total }}</b> {{ $t('label.tracking_result') }}</p>
         </div>
@@ -175,8 +175,8 @@
                 </v-card>
                 <v-row>
                   <v-col cols="12">
-                    <v-stepper value="1" :alt-labels="true">
-                      <v-stepper-header class="tracking-status">
+                    <v-stepper value="1" :alt-labels="true" :dark="true" :light="false">
+                      <v-stepper-header v-if="item.tracking.reject_note === null" class="tracking-status">
                         <v-row>
                           <v-col cols="12">
                             <div class="tracking-status-text">
@@ -196,7 +196,7 @@
                         </v-stepper-step>
                         <v-divider class="tracking-divider" />
                         <v-stepper-step
-                          :complete="item.tracking.verification"
+                          :complete="item.tracking.verification.status"
                           step=""
                           class="tracking-step"
                         >
@@ -206,17 +206,60 @@
                           </span>
                         </v-stepper-step>
                         <v-divider class="tracking-divider" />
-                        <v-stepper-step v-if="item.tracking.approval === 'reject'" :rules="[() => false]" step="3" class="tracking-step tracking-step-error">
-                          {{ $t('label.tracking_step4') }}
-                        </v-stepper-step>
                         <v-stepper-step
-                          v-else
-                          :complete="item.tracking.approval"
+                          :complete="item.tracking.approval.status"
                           step=""
                           class="tracking-step"
                         >
                           <span class="color-step">
                             <img src="../../static/iconContract.png">
+                            <div class="step-name">{{ $t('label.tracking_step3') }}</div>
+                          </span>
+                        </v-stepper-step>
+                      </v-stepper-header>
+                      <v-stepper-header v-else class="tracking-status-reject">
+                        <v-row>
+                          <v-col cols="12">
+                            <div class="tracking-status-text">
+                              <p><span>{{ $t('label.tracking_status') }}</span> <span>{{ item.tracking.status }}</span></p>
+                            </div>
+                            <div class="tracking-status-reject-note">
+                              <p class="reject-reason">{{ $t('label.tracking_reason_reject') }}</p>
+                              <p class="reject-reason reject-reason-data">{{ item.tracking.reject_note }}</p>
+                            </div>
+                          </v-col>
+                        </v-row>
+                        <v-stepper-step
+                          :complete="item.tracking.request"
+                          step=""
+                          class="tracking-step tracking-step-first"
+                        >
+                          <div class="color-step">
+                            <img src="../../static/iconChecklist.png">
+                            <div class="step-name">{{ $t('label.tracking_step1') }}</div>
+                          </div>
+                        </v-stepper-step>
+                        <v-divider class="tracking-divider" />
+                        <v-stepper-step
+                          :complete="item.tracking.verification.status"
+                          step=""
+                          class="tracking-step"
+                        >
+                          <span class="color-step">
+                            <img src="../../static/iconBox.png">
+                            <div v-if="item.tracking.verification.is_reject" class="step-name">{{ item.tracking.status }}</div>
+                            <div v-else class="step-name">{{ $t('label.tracking_step2') }}</div>
+                          </span>
+                        </v-stepper-step>
+                        <v-divider class="tracking-divider" />
+                        <v-stepper-step
+                          :complete="item.tracking.approval.status"
+                          step=""
+                          class="tracking-step"
+                        >
+                          <span class="color-step">
+                            <img src="../../static/iconContract.png">
+                            <div v-if="item.tracking.approval.is_reject" class="step-name">{{ item.tracking.status }}</div>
                             <div class="step-name">{{ $t('label.tracking_step3') }}</div>
                           </span>
                         </v-stepper-step>
@@ -256,14 +299,14 @@
                     </tr>
                     <tr v-for="(item, index) in listLogisticRequest" v-else :key="item.index">
                       <td>{{ getTableRowNumbering(index) }}</td>
-                      <td>{{ item.product ? item.product.name : '-' }}</td>
-                      <td>{{ item.brand || '-' }}</td>
-                      <td>{{ item.quantity || '-' }}</td>
-                      <td>{{ item.unit.unit || '-' }}</td>
-                      <td>{{ item.usage || '-' }}</td>
-                      <td>{{ item.product.category ? item.product.category : '-' }}</td>
+                      <td>{{ item.product_name ? item.product_name : '-' }}</td>
+                      <td>{{ item.need_description || '-' }}</td>
+                      <td>{{ item.need_quantity || '-' }}</td>
+                      <td>{{ item.need_unit_name || '-' }}</td>
+                      <td>{{ item.need_usage || '-' }}</td>
+                      <td>{{ item.category ? item.category : '-' }}</td>
                       <td>{{ item.realization_quantity || '-' }}</td>
-                      <td>{{ item.realization_date || '-' }}</td>
+                      <td>{{ item.realized_at || '-' }}</td>
                       <td>{{ changeStatus(item.status) }}</td>
                     </tr>
                   </tbody>
@@ -271,14 +314,31 @@
               </v-simple-table>
               <br>
             </v-card>
-            <v-pagination
-              v-model="listQuery.page"
-              :length="totalListLogisticRequest"
-              :total-visible="3"
-              @input="onNext"
-            />
+            <v-row>
+              <v-col>
+                <div class="total-data-title">{{ $t('label.tracking_total_data_logistic') }} <span class="total-data">{{ totalDataLogisticRequest }} {{ $t('label.tracking_data_prefix') }}</span> </div>
+              </v-col>
+              <v-col>
+                <div class="pagination">
+                  <v-pagination
+                    v-model="listQueryTable.page"
+                    :length="totalListLogisticRequest"
+                    :page.sync="listQueryTable.page"
+                    :total-visible="20"
+                    @input="onNext"
+                  />
+                </div>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
+      </v-card>
+      <v-card v-else-if="clicked && dataTracking.application.length === 0" class="main-card-landing-page card-data-tracking" outlined>
+        <center>
+          <img src="../../static/tracking_not_found.png" width="350px">
+          <div class="not-found-title">{{ $t('label.tracking_not_found_title') }}</div>
+          <div class="not-found-text">{{ $t('label.tracking_not_found_text') }}</div>
+        </center>
       </v-card>
       <div class="text-card-main">
         <v-row style="margin-top: -20px">
@@ -326,10 +386,13 @@ export default {
   },
   data() {
     return {
+      id: null,
       tab: null,
       clicked: false,
       listQuery: {
-        search: null,
+        search: null
+      },
+      listQueryTable: {
         page: 1,
         limit: 3
       }
@@ -350,11 +413,13 @@ export default {
         return
       }
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
-      if (this.dataTracking.application !== null) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
+      if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
       this.clicked = true
     },
     async getTrackingLogisticNeedList(id) {
-      await this.$store.dispatch('logistics/getTrackingLogisticNeedList', id)
+      this.id = id
+      this.listQueryTable.id = id
+      await this.$store.dispatch('logistics/getTrackingLogisticNeedList', this.listQueryTable)
     },
     changeStatus(value) {
       switch (value) {
@@ -373,10 +438,10 @@ export default {
       }
     },
     async onNext() {
-      await this.getTrackingLogisticNeedList()
+      await this.getTrackingLogisticNeedList(this.id)
     },
     getTableRowNumbering(index) {
-      return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
+      return ((parseInt(this.listQueryTable.page) - 1) * parseInt(this.listQueryTable.limit)) + (parseInt(index) + 1)
     },
     async resetData() {
       this.$refs.form.reset()
@@ -455,12 +520,25 @@ export default {
  .tracking-status {
    background: #16A75C;
  }
+ .tracking-status-reject {
+   background: #EF5350;
+ }
  .tracking-status-text {
    color: white;
    margin: 20px;
    width: 500px;
    padding-left: 35px;
    padding-bottom: 20px;
+ }
+ .tracking-status-reject-note {
+    color: white;
+    margin: 20px;
+    padding-left: 5rem;
+    margin-top: 10rem;
+    color: white;
+    margin: 20px;
+    padding-left: 2rem;
+    padding-top: 4rem;
  }
  .tracking-step-first {
    margin-left: -60rem;
@@ -481,4 +559,44 @@ export default {
    margin-left: 35px;
    margin-top: -30px;
  }
+ .not-found-title {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 34px;
+    color: #020814;
+ }
+ .not-found-text {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #414D5C;
+ }
+ .total-data-title {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 23px;
+    color: #757575;
+ }
+ .total-data {
+    font-weight: bold;
+    color: #4F4F4F;
+ }
+ .pagination {
+    display: block;
+    float: right !important;
+ }
+ .reject-reason {
+    font-size: 16px;
+    line-height: 26px;
+ }
+ .reject-reason-data {
+   margin-top: -1rem;
+ }
+
 </style>
