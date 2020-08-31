@@ -260,7 +260,7 @@
                           <span class="color-step">
                             <img src="../../static/iconContract.png">
                             <div v-if="item.tracking.approval.is_reject" class="step-name">{{ item.tracking.status }}</div>
-                            <div class="step-name">{{ $t('label.tracking_step3') }}</div>
+                            <div v-else class="step-name">{{ $t('label.tracking_step3') }}</div>
                           </span>
                         </v-stepper-step>
                       </v-stepper-header>
