@@ -221,7 +221,7 @@
                         <v-row>
                           <v-col cols="12">
                             <div class="tracking-status-text">
-                              <p><span>{{ $t('label.tracking_status') }}</span> <span>{{ item.tracking.status }}</span></p>
+                              <p><span>{{ $t('label.tracking_status') }}</span> <b>{{ item.tracking.status }}</b></p>
                             </div>
                           </v-col>
                         </v-row>
@@ -482,7 +482,7 @@ export default {
  .result {
    p {
      font-family: Lato;
-     font-size: 18px;
+     font-size: 16px;
    }
  }
  .identity {
@@ -577,7 +577,7 @@ export default {
     font-family: Lato;
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 23px;
     color: #757575;
  }
