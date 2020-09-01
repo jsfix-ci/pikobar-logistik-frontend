@@ -144,7 +144,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
   .margin-auto {
     margin: auto;
   }
