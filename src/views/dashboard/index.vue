@@ -73,7 +73,7 @@
                     </div>
                     <div class="verified space-data-card">
                       <v-list-item-title class="title-data-card dongker-text">
-                        <b>{{ $t('label.tracking_step3') }}</b>
+                        <b>{{ $t('label.tracking_verified') }}</b>
                       </v-list-item-title>
                       <div class="value-card-data dongker-text">
                         {{ dataLogisticRequestSummary.total_verified | currency }}
@@ -101,20 +101,9 @@
                         <img class="in-full-image" src="../../static/in-full-icon.png">
                       </span>
                     </div>
-                    <div class="verified space-data-card">
-                      <v-list-item-title class="title-data-card purple-text">
-                        <b>{{ $t('label.tracking_step5') }}</b>
-                      </v-list-item-title>
-                      <div class="value-card-data purple-text">
-                        {{ dataLogisticRequestSummary.total_verified | currency }}
-                      </div>
-                      <span class="in-full-text">
-                        {{ $t('label.in_full') }}
-                      </span>
-                      <span>
-                        <img class="in-full-image" src="../../static/in-full-icon.png">
-                      </span>
-                    </div>
+                  </v-col>
+                  <v-col md="3">
+                    <summary-chart />
                   </v-col>
                 </v-row>
               </v-list-item-content>

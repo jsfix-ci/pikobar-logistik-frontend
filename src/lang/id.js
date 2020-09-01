@@ -309,8 +309,8 @@ export default {
     total_incoming_request: 'Total Permohonan Masuk',
     with_pikobar: 'Melalu Pikobar',
     with_dinkes_province: 'Melalui Dinkes Provinsi',
-    tools_type_title: 'Jenis Barang pada Permohonan Logistik',
-    applicant_instance: 'Instansi Pemohon',
+    tools_type_title: 'Statistik Barang yang Dimohon',
+    applicant_instance: 'Statistik Instansi',
     statistic_alkes_title: 'Statistik Permohonan pada Kota/Kab',
     request_number: 'Jumlah Permohonan',
     apply: 'Terapkan',
@@ -415,10 +415,15 @@ export default {
     tracking_step4: 'Permohonan Ditolak',
     tracking_step5: 'Permohonan Terdistribusi',
     tracking_status: 'Status Permohonan Anda:',
+    tracking_verified: 'Permohonan Diverifikasi',
     tracking_id: 'Kode:#',
     warning_letter: 'Fitur ini belum tersedia dan sedang dalam pengembangan.',
     dashboard_time_range: 'Pilih Tanggal di bawah untuk mengganti rentang waktu.',
-    in_full: 'Selengkapnya'
+    in_full: 'Selengkapnya',
+    dashboard_total_logistic_request: 'Total Permohonan Barang',
+    dashboard_request_max: 'Barang yang paling banyak dimohon',
+    dashboard_total_instance_request: 'Total Instansi Pemohon',
+    dashboard_total_request_instance_max: 'Instansi yang paling banyak memohon'
   },
   success: {
     login_success: 'Login Berhasil',
