@@ -421,8 +421,7 @@ export default {
     tracking_not_found_text: 'Maaf, Kami tidak dapat menemukan Data Permohonan yang Anda cari.',
     tracking_total_data_logistic: 'Total Kebutuhan Logistik:',
     tracking_data_prefix: 'Buah',
-    tracking_reason_reject: 'Alasan Penolakan',
-    warning_letter: 'Fitur ini belum tersedia dan sedang dalam pengembangan.'
+    tracking_reason_reject: 'Alasan Penolakan:',
     warning_letter: 'Fitur ini belum tersedia dan sedang dalam pengembangan.',
     dashboard_time_range: 'Pilih Tanggal di bawah untuk mengganti rentang waktu.',
     in_full: 'Selengkapnya',
