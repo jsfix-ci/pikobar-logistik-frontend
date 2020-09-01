@@ -3,44 +3,27 @@
     :loading="loading"
     type="article"
   >
-    <v-card
-      class="chart mx-auto"
-      outlined
-    >
-      <v-row>
-        <v-col cols="5">
-          <v-card-title class="title ml-0 mb-3 black--text title-chart">
-            {{ $t("label.applicant_instance") }}
-          </v-card-title>
-          <div class="total-title space-text">{{ $t('label.dashboard_total_instance_request') }}</div>
-          <span class="total-data space-text">2000</span> <span class="total-prefix">{{ $t('label.instance') }}</span>
-          <div class="instance-max space-text" style="padding-top: 15px; margin-right: -120px">{{ $t('label.dashboard_total_request_instance_max') }}</div>
-          <div class="instance-name space-text">Nama instansi</div>
-          <span class="instance-max-data space-text">1000</span> <span class="instance-max-prefix">{{ $t('route.applicant_medical_tools_title') }}</span>
-        </v-col>
-        <v-col cols="7" class="chart-data">
-          <v-card-text>
-            <chart-doughnut
-              v-if="loaded"
-              ref="pieChart"
-              :chart-data="chartData"
-              :styles="chartStyles"
-              :options="chartOptions"
-            />
-          </v-card-text>
-        </v-col>
-      </v-row>
-    </v-card>
+    <v-row>
+      <v-col cols="12">
+        <chart-doughnut
+          v-if="loaded"
+          ref="pieChart"
+          :chart-data="chartData"
+          :styles="chartStyles"
+          :options="chartOptions"
+        />
+      </v-col>
+    </v-row>
   </v-skeleton-loader>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import FormatingNumber from '../../helpers/formattingNumber'
+// import FormatingNumber from '../../helpers/formattingNumber'
 import EventBus from '@/utils/eventBus'
 
 export default {
-  name: 'ApplicantInstanceChart',
+  name: 'SummaryChart',
   props: {
     chartHeight: {
       type: Number,
@@ -53,16 +36,14 @@ export default {
       loaded: false,
       index: 0,
       chartData: {
-        labels: ['', '', '', '', ''],
+        labels: [],
         datasets: [
           {
-            data: [0, 0, 0, 0, 0],
+            data: [],
             backgroundColor: [
               '#FF0606',
-              '#1AAFE6',
-              '#27AE60',
-              '#F36464',
-              '#F4A60B'
+              '#1A4373',
+              '#27AE60'
             ]
           }
         ]
@@ -75,23 +56,6 @@ export default {
             boxWidth: 10
           },
           reverse: true
-        },
-        tooltips: {
-          callbacks: {
-            title: (tooltipItem, data) => {
-              return data['labels'][tooltipItem[0]['index']]
-            },
-            label: (tooltipItem, data) => {
-              const formattingNumber = new FormatingNumber()
-              const dataset = data.datasets[tooltipItem.datasetIndex]
-              const total = dataset.data.reduce((previousValue, currentValue, currentIndex, array) => {
-                return previousValue + currentValue
-              })
-              const currentValue = dataset.data[tooltipItem.index]
-              const percentage = Math.floor((currentValue / total) * 100)
-              return `${this.$t('label.request_number')} : ${formattingNumber.currency(data['datasets'][0]['data'][tooltipItem['index']])} (${percentage}%)`
-            }
-          }
         },
         animation: {
           animateScale: true,
@@ -112,31 +76,31 @@ export default {
       }
     },
     ...mapGetters('logistics', [
-      'dataFaskesTypeTotalRequest'
+      'dataLogisticRequestSummary'
     ])
   },
   created() {
-    EventBus.$on('getFaskesTypeTotalRequest', (value) => {
+    EventBus.$on('getLogisticRequestSummary', (value) => {
       this.listQuery.start_date = value.start_date
       this.listQuery.end_date = value.end_date
-      this.getFaskesTypeTotalRequest()
+      this.getLogisticRequestSummary()
     })
   },
   async mounted() {
-    await this.getFaskesTypeTotalRequest()
+    await this.getLogisticRequestSummary()
   },
   methods: {
-    async getFaskesTypeTotalRequest() {
+    async getLogisticRequestSummary() {
       this.loaded = false
       this.index = 0
-      this.chartData.labels = ['', '', '', '', '']
-      this.chartData.datasets[0].data = [0, 0, 0, 0, 0]
-      await this.$store.dispatch('logistics/getFaskesTypeTotalRequest', this.listQuery)
-      this.dataFaskesTypeTotalRequest.forEach(element => {
-        this.chartData.labels[this.index] = element.name
-        this.chartData.datasets[0].data[this.index] = element.total_request
-        this.index += 1
-      })
+      await this.$store.dispatch('logistics/getLogisticRequestSummary', this.listQuery)
+      console.log(this.dataLogisticRequestSummary)
+      this.chartData.labels.push('Ditolak')
+      this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_rejected)
+      this.chartData.labels.push('Diverifikasi')
+      this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_verified)
+      this.chartData.labels.push('Disetujui')
+      this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_approved)
       this.loaded = true
     }
   }

@@ -121,13 +121,12 @@ export default {
   methods: {
     async getCityTotalRequest() {
       this.loaded = false
-      this.color = '#56CCF2'
+      this.color = '#1FB767'
       await this.$store.dispatch('logistics/getCityTotalRequest', this.listQuery)
       this.index = 0
       this.dataCityTotalRequest.forEach(element => {
         this.chartData.labels[this.index] = element.kemendagri_kabupaten_nama
         this.chartData.datasets[0].data[this.index] = element.agency_count
-        this.color = this.shadeColor(this.color, -5)
         this.chartData.datasets[0].backgroundColor[this.index] = this.color
         this.index += 1
       })
@@ -158,10 +157,10 @@ export default {
 
 <style>
   .title-bar-chart-dashboard {
-    font-family: 'Product Sans';
+    font-family: 'Roboto';
     font-style: normal;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 28px;
   }
   .chartAreaWrapper {

@@ -3,18 +3,8 @@
     <div>
       <v-row>
         <v-col>
-          <span class="text-title-dashboard">{{ $t('label.dashboard_title') }}</span>
-        </v-col>
-      </v-row>
-      <v-row class="margin-top-min-20-dashboard margin-bot-min-40-dashboard">
-        <v-col cols="12" sm="12" md="5">
-          <span class="text-last-update-dashboard">{{ $t('label.last_update') }}: {{ dataLogisticRequestSummary.last_update === null ? $t('label.stripe') : $moment(dataLogisticRequestSummary.last_update).format('LLL') }}</span>
-        </v-col>
-        <v-col cols="12" sm="12" md="7" class="margin-top-min-20-dashboard">
-          <date-picker-dashboard
-            :date="listQuery.start_date"
-            @selected="updateChart"
-          />
+          <div class="text-title-dashboard">{{ $t('label.dashboard_title') }}</div>
+          <div class="text-last-update-dashboard">({{ $t('label.last_update') }}: {{ dataLogisticRequestSummary.last_update === null ? $t('label.stripe') : $moment(dataLogisticRequestSummary.last_update).format('LLL') }})</div>
         </v-col>
       </v-row>
     </div>
@@ -23,13 +13,14 @@
         <v-col>
           <v-card
             class="mx-auto"
-            color="#219653"
+            color="#16A75C"
           >
             <v-row>
               <v-col cols="12" sm="12" md="12">
                 <v-card-text>
                   <div>
-                    <a class="text-card-source-dashboard" :href="baseURL" target="_blank">{{ $t('label.dashboard_title_text') }} ({{ baseURL }})</a>
+                    <span class="text-card-source-dashboard text-card-white">{{ $t('label.dashboard_title_text') }}</span>
+                    <span><a class="text-card-source-dashboard text-card-white" :href="baseURL" target="_blank"><b>{{ $t('label.dashboard_link') }}</b></a></span>
                   </div>
                 </v-card-text>
               </v-col>
@@ -41,68 +32,102 @@
         <v-col cols="12" sm="12" md="12">
           <v-card
             class="mx-auto"
-            color="#4F4F4F"
           >
-            <v-list-item two-line>
+            <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="text-card-source-dashboard">
-                  {{ $t('label.total_incoming_request') }}
-                </v-list-item-title>
-                <v-list-item-title class="value-card-source-dashboard">
-                  {{ dataLogisticRequestSummary.total_request | currency }}
-                </v-list-item-title>
+                <v-row>
+                  <v-col sm="12" md="4">
+                    <v-list-item-title class="text-card-source-dashboard text-card-data-title">
+                      <b>{{ $t('label.total_incoming_request') }}</b>
+                    </v-list-item-title>
+                    <v-list-item-title>
+                      <div class="text-card-time-range text-card-time-range-space">{{ $t('label.dashboard_time_range') }}</div>
+                    </v-list-item-title>
+                    <date-picker-dashboard
+                      :date="listQuery.start_date"
+                      @selected="updateChart"
+                    />
+                    <v-list-item-title>
+                      <div class="value-card-source-dashboard">
+                        {{ dataLogisticRequestSummary.total_request | currency }}
+                      </div>
+                      <small class="text-card-time-range value-card-prefix-color">
+                        {{ $t('route.applicant_medical_tools_title') }}
+                      </small>
+                    </v-list-item-title>
+                  </v-col>
+                  <v-col sm="12" md="2" offset-md="1">
+                    <div class="approved">
+                      <v-list-item-title class="title-data-card green-text">
+                        <b>{{ $t('label.tracking_step3') }}</b>
+                      </v-list-item-title>
+                      <div class="value-card-data green-text">
+                        {{ dataLogisticRequestSummary.total_approved | currency }}
+                      </div>
+                      <span class="in-full-text">
+                        {{ $t('label.in_full') }}
+                      </span>
+                      <span>
+                        <img class="in-full-image" src="../../static/in-full-icon.png">
+                      </span>
+                    </div>
+                    <div class="verified space-data-card">
+                      <v-list-item-title class="title-data-card dongker-text">
+                        <b>{{ $t('label.tracking_verified') }}</b>
+                      </v-list-item-title>
+                      <div class="value-card-data dongker-text">
+                        {{ dataLogisticRequestSummary.total_verified | currency }}
+                      </div>
+                      <span class="in-full-text">
+                        {{ $t('label.in_full') }}
+                      </span>
+                      <span>
+                        <img class="in-full-image" src="../../static/in-full-icon.png">
+                      </span>
+                    </div>
+                  </v-col>
+                  <v-col sm="12" md="2">
+                    <div class="approved">
+                      <v-list-item-title class="title-data-card red-text">
+                        <b>{{ $t('label.tracking_step4') }}</b>
+                      </v-list-item-title>
+                      <div class="value-card-data red-text">
+                        {{ dataLogisticRequestSummary.total_rejected | currency }}
+                      </div>
+                      <span class="in-full-text">
+                        {{ $t('label.in_full') }}
+                      </span>
+                      <span>
+                        <img class="in-full-image" src="../../static/in-full-icon.png">
+                      </span>
+                    </div>
+                  </v-col>
+                  <v-col md="3">
+                    <summary-chart />
+                  </v-col>
+                </v-row>
               </v-list-item-content>
             </v-list-item>
-          </v-card>
-        </v-col>
-        <!-- <v-col cols="12" sm="12" md="4">
-          <v-card
-            class="mx-auto"
-            color="#219653"
-          >
-            <v-list-item two-line>
-              <v-list-item-content>
-                <v-list-item-title class="text-card-source-dashboard">
-                  {{ $t('label.with_pikobar') }}
-                </v-list-item-title>
-                <v-list-item-title class="value-card-source-dashboard">
-                  {{ dataLogisticRequestSummary.total_pikobar | currency }}
-                </v-list-item-title>
-              </v-list-item-content>
+            <v-list-item>
+              <v-list-item-title>
+                <div v-if="dataLogisticRequestSummary.total_request > 0">
+                  <v-row>
+                    <v-col cols="12" sm="12" md="6">
+                      <tools-type-chart />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="6">
+                      <applicant-instance-chart />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <statistic-appilcant-chart />
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-list-item-title>
             </v-list-item>
           </v-card>
-        </v-col>
-        <v-col cols="12" sm="12" md="4">
-          <v-card
-            class="mx-auto"
-            color="#E62929"
-          >
-            <v-list-item two-line>
-              <v-list-item-content>
-                <v-list-item-title class="text-card-source-dashboard">
-                  {{ $t('label.with_dinkes_province') }}
-                </v-list-item-title>
-                <v-list-item-title class="value-card-source-dashboard">
-                  {{ dataLogisticRequestSummary.total_dinkesprov | currency }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-card>
-        </v-col> -->
-      </v-row>
-    </div>
-    <div v-if="dataLogisticRequestSummary.total_request > 0">
-      <v-row>
-        <v-col cols="12" sm="12" md="6">
-          <tools-type-chart />
-        </v-col>
-        <v-col cols="12" sm="12" md="6">
-          <applicant-instance-chart />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" sm="12" md="12">
-          <statistic-appilcant-chart />
         </v-col>
       </v-row>
     </div>
@@ -149,43 +174,104 @@ export default {
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
   .text-title-dashboard {
-    font-family: 'Product Sans';
+    font-family: 'Roboto';
     font-style: normal;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 21px;
     line-height: 29px;
   }
   .text-last-update-dashboard {
-    font-family: 'Product Sans';
+    font-family: 'Roboto';
     font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
+    font-weight: normal;
+    font-size: 14px;
     line-height: 22px;
     color: #828282;
   }
   .text-card-source-dashboard {
-    font-family: 'Product Sans';
+    font-family: 'Lato';
     font-style: normal;
     font-weight: normal;
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 16px;
+    line-height: 26px;
+  }
+  .text-card-data-title {
+    font-size: 20px;
+  }
+  .text-card-white {
     color: #FFFFFF !important;
   }
   .value-card-source-dashboard {
-    font-family: 'Product Sans';
+    font-family: Roboto;
     font-style: normal;
     font-weight: bold;
-    font-size: 28px;
-    line-height: 34px;
+    font-size: 60px;
+    line-height: 66px;
     display: flex;
     align-items: center;
-    color: #FFFFFF !important;
+    color: #1565C0;
+    margin-top: -10px;
   }
   .margin-top-min-20-dashboard {
     margin-top: -20px;
   }
   .margin-bot-min-40-dashboard {
     margin-bottom: -40px;
+  }
+  .text-card-time-range {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+  }
+  .text-card-time-range-space {
+    padding: 10px 0;
+  }
+  .value-card-prefix-color {
+    color: #1565C0;
+  }
+  .title-data-card {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 23px;
+  }
+  .green-text {
+    color: #16A75C;
+  }
+  .dongker-text {
+    color: #1A4373
+  }
+  .red-text {
+    color: #E53935;
+  }
+  .purple-text {
+    color: #8D24AA;
+  }
+  .value-card-data {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 42px;
+    line-height: 37px;
+    margin: 10px 0;
+  }
+  .in-full-text {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 23px;
+    color: #1565C0;
+  }
+  .in-full-image {
+    padding-left: 5px;
+  }
+  .space-data-card {
+    margin-top: 30px;
   }
 </style>
