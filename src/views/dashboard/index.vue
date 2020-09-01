@@ -64,12 +64,14 @@
                       <div class="value-card-data green-text">
                         {{ dataLogisticRequestSummary.total_approved | currency }}
                       </div>
-                      <span class="in-full-text">
-                        {{ $t('label.in_full') }}
-                      </span>
-                      <span>
-                        <img class="in-full-image" src="../../static/in-full-icon.png">
-                      </span>
+                      <a href="/#/alat-kesehatan/disetujui">
+                        <span class="in-full-text">
+                          {{ $t('label.in_full') }}
+                        </span>
+                        <span>
+                          <img class="in-full-image" src="../../static/in-full-icon.png">
+                        </span>
+                      </a>
                     </div>
                     <div class="verified space-data-card">
                       <v-list-item-title class="title-data-card dongker-text">
@@ -78,12 +80,14 @@
                       <div class="value-card-data dongker-text">
                         {{ dataLogisticRequestSummary.total_verified | currency }}
                       </div>
-                      <span class="in-full-text">
-                        {{ $t('label.in_full') }}
-                      </span>
-                      <span>
-                        <img class="in-full-image" src="../../static/in-full-icon.png">
-                      </span>
+                      <a href="/#/alat-kesehatan/terverifikasi">
+                        <span class="in-full-text">
+                          {{ $t('label.in_full') }}
+                        </span>
+                        <span>
+                          <img class="in-full-image" src="../../static/in-full-icon.png">
+                        </span>
+                      </a>
                     </div>
                   </v-col>
                   <v-col sm="12" md="2">
@@ -94,12 +98,14 @@
                       <div class="value-card-data red-text">
                         {{ dataLogisticRequestSummary.total_rejected | currency }}
                       </div>
-                      <span class="in-full-text">
-                        {{ $t('label.in_full') }}
-                      </span>
-                      <span>
-                        <img class="in-full-image" src="../../static/in-full-icon.png">
-                      </span>
+                      <a href="/#/alat-kesehatan/ditolak">
+                        <span class="in-full-text">
+                          {{ $t('label.in_full') }}
+                        </span>
+                        <span>
+                          <img class="in-full-image" src="../../static/in-full-icon.png">
+                        </span>
+                      </a>
                     </div>
                   </v-col>
                   <v-col md="3">
@@ -174,7 +180,6 @@ export default {
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
   .text-title-dashboard {
     font-family: 'Roboto';
     font-style: normal;
