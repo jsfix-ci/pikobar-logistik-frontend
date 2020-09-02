@@ -190,10 +190,28 @@ export default {
       return e
     }
   },
+  async getFaskesTypeTopRequest({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/faskes-type-top-request', 'GET', params)
+      commit('SET_DATA_FASKES_TOP_TOTAL_REQUEST', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getProductTotalRequest({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/products-total-request', 'GET', params)
       commit('SET_PRODUCT_TOTAL_REQUEST', response.data.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getProductTopRequest({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/products-top-request', 'GET', params)
+      commit('SET_PRODUCT_TOP_REQUEST', response.data.data)
       return response
     } catch (e) {
       return e

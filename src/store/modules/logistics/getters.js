@@ -52,5 +52,11 @@ export default {
   },
   dataTracking: (state) => {
     return state.dataTracking
+  },
+  productTopRequest: (state) => {
+    return state.productTopRequest
+  },
+  faskesTopRequest: (state) => {
+    return state.faskesTopRequest
   }
 }
