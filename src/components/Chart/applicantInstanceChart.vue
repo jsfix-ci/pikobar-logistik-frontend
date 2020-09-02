@@ -13,10 +13,10 @@
             {{ $t("label.applicant_instance") }}
           </v-card-title>
           <div class="total-title space-text">{{ $t('label.dashboard_total_instance_request') }}</div>
-          <span class="total-data space-text">2000</span> <span class="total-prefix">{{ $t('label.instance') }}</span>
+          <span class="total-data space-text">{{ faskesTopRequest.total_agency }}</span> <span class="total-prefix">{{ $t('label.instance') }}</span>
           <div class="instance-max space-text" style="padding-top: 15px; margin-right: -120px">{{ $t('label.dashboard_total_request_instance_max') }}</div>
-          <div class="instance-name space-text">Nama instansi</div>
-          <span class="instance-max-data space-text">1000</span> <span class="instance-max-prefix">{{ $t('route.applicant_medical_tools_title') }}</span>
+          <div class="instance-name space-text">{{ faskesTopRequest.total_max.name }}</div>
+          <span class="instance-max-data space-text">{{ faskesTopRequest.total_max.total }}</span> <span class="instance-max-prefix">{{ $t('route.applicant_medical_tools_title') }}</span>
         </v-col>
         <v-col cols="7" class="chart-data">
           <v-card-text>
@@ -112,7 +112,8 @@ export default {
       }
     },
     ...mapGetters('logistics', [
-      'dataFaskesTypeTotalRequest'
+      'dataFaskesTypeTotalRequest',
+      'faskesTopRequest'
     ])
   },
   created() {
@@ -131,6 +132,7 @@ export default {
       this.index = 0
       this.chartData.labels = ['', '', '', '', '']
       this.chartData.datasets[0].data = [0, 0, 0, 0, 0]
+      await this.$store.dispatch('logistics/getFaskesTypeTopRequest', this.listQuery)
       await this.$store.dispatch('logistics/getFaskesTypeTotalRequest', this.listQuery)
       this.dataFaskesTypeTotalRequest.forEach(element => {
         this.chartData.labels[this.index] = element.name
