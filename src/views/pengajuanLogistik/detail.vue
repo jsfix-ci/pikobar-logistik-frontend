@@ -52,7 +52,7 @@
         </v-col>
         <v-col class="margin-left-min-30" cols="2" sm="2">
           <span
-            v-if="isVerified && !isApproved"
+            v-if="isVerified && !isApproved && !isRejectedApproval"
             class="text-data-green"
           >
             :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}
@@ -62,6 +62,12 @@
             class="text-data-green"
           >
             :  {{ detailLogisticRequest.applicant.approval_status }}
+          </span>
+          <span
+            v-else-if="isRejectedApproval"
+            class="text-data-red"
+          >
+            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.approval_status : '-' }}
           </span>
           <span
             v-else
@@ -82,7 +88,7 @@
               {{ $t('label.verif_now') }}
             </v-btn>
             <v-btn
-              v-if="isRejected"
+              v-if="isRejected || isRejectedApproval"
               outlined
               color="#2E7D32"
               @click.stop="showDialogReasonReject = true"
@@ -90,7 +96,7 @@
               {{ $t('label.reason_reject') }}
             </v-btn>
             <v-btn
-              v-if="isVerified && !isApproved"
+              v-if="isVerified && !isApproved && !isRejectedApproval"
               outlined
               color="#2E7D32"
               class="margin-btn"
@@ -110,7 +116,7 @@
               {{ $t('route.rejected_title') }}
             </v-btn>
             <v-btn
-              v-if="isVerified && !isApproved"
+              v-if="isVerified && !isApproved && !isRejectedApproval"
               outlined
               color="#e62929"
               class="margin-btn"
@@ -558,6 +564,7 @@ export default {
       isVerified: false,
       isRejected: false,
       isApproved: false,
+      isRejectedApproval: false,
       isCreate: false,
       listQuery: {
         page: 1,
@@ -594,6 +601,7 @@ export default {
     this.letterFileType = temp[temp.length - 1]
     this.isVerified = this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi'
     this.isRejected = this.detailLogisticRequest.applicant.verification_status === 'Pengajuan Ditolak'
+    this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
     this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
