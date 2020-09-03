@@ -19,7 +19,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import FormatingNumber from '../../helpers/formattingNumber'
 import EventBus from '@/utils/eventBus'
 
 export default {
@@ -94,7 +93,6 @@ export default {
       this.loaded = false
       this.index = 0
       await this.$store.dispatch('logistics/getLogisticRequestSummary', this.listQuery)
-      console.log(this.dataLogisticRequestSummary)
       this.chartData.labels.push('Ditolak')
       this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_rejected)
       this.chartData.labels.push('Diverifikasi')

@@ -211,7 +211,7 @@ export default {
   async getProductTopRequest({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/products-top-request', 'GET', params)
-      commit('SET_PRODUCT_TOP_REQUEST', response.data.data)
+      commit('SET_PRODUCT_TOP_REQUEST', response.data)
       return response
     } catch (e) {
       return e

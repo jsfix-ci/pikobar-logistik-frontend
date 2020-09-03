@@ -13,10 +13,10 @@
             {{ $t("label.tools_type_title") }}
           </v-card-title>
           <div class="total-title space-text">{{ $t('label.dashboard_total_logistic_request') }}</div>
-          <span class="total-data space-text">2000</span> <span class="total-prefix">{{ $t('route.applicant_medical_tools_title') }}</span>
+          <span class="total-data space-text">{{ productTopRequest ? productTopRequest.total_items : '-' }}</span> <span class="total-prefix">{{ $t('label.goods') }}</span>
           <div class="instance-max space-text" style="padding-top: 15px; margin-right: -120px">{{ $t('label.dashboard_request_max') }}</div>
-          <div class="instance-name space-text">Nama instansi</div>
-          <span class="instance-max-data space-text">1000</span> <span class="instance-max-prefix">{{ $t('route.applicant_medical_tools_title') }}</span>
+          <div class="instance-name space-text">{{ productTopRequest ? productTopRequest.total_max.name : '-' }}</div>
+          <span class="instance-max-data space-text">{{ productTopRequest ? productTopRequest.total_max.total : '-' }}</span> <span class="instance-max-prefix">{{ $t('label.pcs') }}</span>
         </v-col>
         <v-col cols="7" class="chart-data">
           <v-card-text>
@@ -119,7 +119,8 @@ export default {
       }
     },
     ...mapGetters('logistics', [
-      'dataProductTotalRequest'
+      'dataProductTotalRequest',
+      'productTopRequest'
     ])
   },
   created() {
@@ -138,6 +139,7 @@ export default {
       this.index = 0
       this.chartData.datasets[0].data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       this.chartData.labels = ['', '', '', '', '', '', '', '', '', '']
+      await this.$store.dispatch('logistics/getProductTopRequest', this.listQuery)
       await this.$store.dispatch('logistics/getProductTotalRequest', this.listQuery)
       this.dataProductTotalRequest.forEach(element => {
         this.chartData.labels[this.index] = element.name

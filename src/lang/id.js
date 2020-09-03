@@ -335,6 +335,8 @@ export default {
     alert_verified_title_card_logistic_needs_4: 'tautan berikut.',
     realization_item: 'Realisasi Barang',
     item_type: 'Jenis Barang',
+    goods: 'Barang',
+    pcs: 'PCS',
     approve: 'Setujui Permohonan',
     letter_number: 'Nomor Surat',
     applicant_letter_number: 'Nomor Surat Permohonan',
