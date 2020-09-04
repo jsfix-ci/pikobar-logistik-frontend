@@ -210,7 +210,7 @@ export default {
     } else if (this.$route.name === 'notVerified') {
       this.listQuery.verification_status = 'not_verified'
     } else if (this.$route.name === 'rejected') {
-      this.is_rejected = 1
+      this.listQuery.is_rejected = 1
     } else if (this.$route.name === 'approved') {
       this.listQuery.verification_status = 'verified'
       this.listQuery.approval_status = 'approved'
