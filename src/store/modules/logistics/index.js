@@ -20,7 +20,9 @@ const state = {
   listRealization: [],
   totalListRealization: 0,
   totalDataRealization: 0,
-  dataTracking: null
+  dataTracking: null,
+  productTopRequest: null,
+  faskesTopRequest: null
 }
 
 export default {

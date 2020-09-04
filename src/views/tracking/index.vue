@@ -221,11 +221,7 @@
                         <v-row>
                           <v-col cols="12">
                             <div class="tracking-status-text">
-                              <p><span>{{ $t('label.tracking_status') }}</span> <span>{{ item.tracking.status }}</span></p>
-                            </div>
-                            <div class="tracking-status-reject-note">
-                              <p class="reject-reason">{{ $t('label.tracking_reason_reject') }}</p>
-                              <p class="reject-reason reject-reason-data">{{ item.tracking.reject_note }}</p>
+                              <p><span>{{ $t('label.tracking_status') }}</span> <b>{{ item.tracking.status }}</b></p>
                             </div>
                           </v-col>
                         </v-row>
@@ -265,6 +261,12 @@
                         </v-stepper-step>
                       </v-stepper-header>
                     </v-stepper>
+                    <v-card v-if="item.tracking.reject_note !== null" class="tracking-status-reject tracking-reject-reason">
+                      <div class="tracking-status-reject-note">
+                        <p class="reject-reason-title">{{ $t('label.tracking_reason_reject') }}</p>
+                        <p class="reject-reason-data">{{ item.tracking.reject_note }}</p>
+                      </div>
+                    </v-card>
                   </v-col>
                 </v-row>
               </v-tab-item>
@@ -471,7 +473,7 @@ export default {
  }
  .body-text {
    font-family: Lato;
-   font-size: 18px;
+   font-size: 16px;
    line-height: 26px;
  }
  .card-data-tracking {
@@ -480,7 +482,7 @@ export default {
  .result {
    p {
      font-family: Lato;
-     font-size: 18px;
+     font-size: 16px;
    }
  }
  .identity {
@@ -534,11 +536,7 @@ export default {
     color: white;
     margin: 20px;
     padding-left: 5rem;
-    margin-top: 10rem;
-    color: white;
-    margin: 20px;
     padding-left: 2rem;
-    padding-top: 4rem;
  }
  .tracking-step-first {
    margin-left: -60rem;
@@ -579,7 +577,7 @@ export default {
     font-family: Lato;
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 23px;
     color: #757575;
  }
@@ -591,12 +589,17 @@ export default {
     display: block;
     float: right !important;
  }
- .reject-reason {
-    font-size: 16px;
-    line-height: 26px;
+ .reject-reason-title {
+   font-size: 16px;
+   line-height: 26px;
  }
  .reject-reason-data {
+   font-size: 14px;
+   line-height: 26px;
    margin-top: -1rem;
+ }
+ .tracking-reject-reason {
+   margin-top: .5rem;
  }
 
 </style>

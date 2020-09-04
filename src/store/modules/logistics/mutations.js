@@ -52,5 +52,11 @@ export default {
   },
   SET_DATA_TRACKING: (state, data) => {
     state.dataTracking = data
+  },
+  SET_PRODUCT_TOP_REQUEST: (state, data) => {
+    state.productTopRequest = data
+  },
+  SET_DATA_FASKES_TOP_TOTAL_REQUEST: (state, data) => {
+    state.faskesTopRequest = data
   }
 }
