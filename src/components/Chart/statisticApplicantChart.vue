@@ -10,6 +10,7 @@
       <v-card-title class="title-bar-chart-dashboard">
         {{ $t("label.statistic_alkes_title") }}
       </v-card-title>
+      <div class="disclaimer">{{ $t('label.dahsboard_disclaimer_kabkota') }}</div>
       <v-card-text>
         <div class="chartAreaWrapper">
           <chart-bar-horizontal
@@ -169,5 +170,12 @@ export default {
   .walking-speed-chart{
     height: 1700px;
     overflow-y: scroll;
+  }
+  .disclaimer {
+    padding-left: 16px;
+    margin-top: -15px;
+    font-size: 80%;
+    color: #828282;
+    margin-right: -300px;
   }
 </style>

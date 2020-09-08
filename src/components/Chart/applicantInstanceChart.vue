@@ -12,6 +12,7 @@
           <v-card-title class="title ml-0 mb-3 black--text title-chart">
             {{ $t("label.applicant_instance") }}
           </v-card-title>
+          <div class="disclaimer">{{ $t('label.dashboard_disclaimer_instance') }}</div>
           <div class="total-title space-text">{{ $t('label.dashboard_total_instance_request') }}</div>
           <span class="total-data space-text">{{ faskesTopRequest ? faskesTopRequest.total_agency : '-' }}</span> <span class="total-prefix">{{ $t('label.instance') }}</span>
           <div class="instance-max space-text" style="padding-top: 15px; margin-right: -120px">{{ $t('label.dashboard_total_request_instance_max') }}</div>
@@ -150,7 +151,7 @@ export default {
     margin: auto;
   }
   .chart-data {
-    margin-top: 2.5rem;
+    margin-top: 5rem;
   }
   .titel-chart {
     font-family: 'Roboto';
@@ -161,6 +162,7 @@ export default {
     color: #212121;
   }
   .total-title {
+    margin-top: 1rem;
     font-family: Lato;
     font-style: normal;
     font-weight: 500;
@@ -227,5 +229,12 @@ export default {
   .space-text {
     padding-left: 16px;
     padding-top: 5px;
+  }
+  .disclaimer {
+    padding-left: 16px;
+    margin-top: -30px;
+    font-size: 80%;
+    color: #828282;
+    margin-right: -300px;
   }
 </style>

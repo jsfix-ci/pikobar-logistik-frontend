@@ -430,7 +430,10 @@ export default {
     dashboard_total_logistic_request: 'Total Permohonan Barang',
     dashboard_request_max: 'Barang yang paling banyak dimohon',
     dashboard_total_instance_request: 'Total Instansi Pemohon',
-    dashboard_total_request_instance_max: 'Instansi yang paling banyak memohon'
+    dashboard_total_request_instance_max: 'Instansi yang paling banyak memohon',
+    dashboard_disclaimer_logistic: '*Data Statistik Barang yang dimohon berasal dari data permohonan dalam status Permohonan Telah Terverifikasi',
+    dashboard_disclaimer_instance: '*Data Statistik Instansi berasal dari data suatu instansi yang memohon dan berada dalam status Permohonan Telah Terverifikasi',
+    dahsboard_disclaimer_kabkota: '*Data Statistik Permohonan pada Kota/Kab didapatkan dari permohonan yang masuk dan berada dalam status Permohonan Telah Terverifikasi'
   },
   success: {
     login_success: 'Login Berhasil',
