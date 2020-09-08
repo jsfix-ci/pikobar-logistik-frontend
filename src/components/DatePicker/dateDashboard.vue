@@ -20,7 +20,7 @@
           append-icon="event"
           :error-messages="errors"
           v-on="on"
-          @click:clear="startDate = null"
+          @click:clear="resetDate"
         />
       </ValidationProvider>
     </template>
@@ -87,6 +87,10 @@ export default {
     handleSelectedDate() {
       this.menu = false
       this.$emit('selected', { startDate: this.startDate, endDate: this.endDate })
+    },
+    resetDate() {
+      this.startDate = null
+      window.location.reload()
     }
   }
 }
