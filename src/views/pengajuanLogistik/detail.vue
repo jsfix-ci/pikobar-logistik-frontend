@@ -142,6 +142,7 @@
         :show="showDialogReject"
         :item="detailLogisticRequest"
         :total="listLogisticNeeds.length > 0 ? listLogisticNeeds[0].logistic_item_summary : null"
+        @submitReject="rejectData"
       />
       <reasonDeniedLogisticNeeds
         :show="showDialogReasonReject"
@@ -613,7 +614,9 @@ export default {
       this.showDialogReject = value
       this.showDialogReasonReject = value
     })
-    EventBus.$on('submitReject', (value) => {
+  },
+  methods: {
+    rejectData(value) {
       const formData = new FormData()
       this.showDialogReject = false
       formData.append('applicant_id', this.detailLogisticRequest.id)
@@ -626,9 +629,7 @@ export default {
         formData.append('note', value)
         this.postReject(formData)
       }
-    })
-  },
-  methods: {
+    },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
     },

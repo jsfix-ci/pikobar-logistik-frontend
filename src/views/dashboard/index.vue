@@ -174,6 +174,7 @@ export default {
       EventBus.$emit('getCityTotalRequest', this.listQuery)
       EventBus.$emit('getProductTotalRequest', this.listQuery)
       EventBus.$emit('getFaskesTypeTotalRequest', this.listQuery)
+      EventBus.$emit('getLogisticRequestSummary', this.listQuery)
     }
   }
 }

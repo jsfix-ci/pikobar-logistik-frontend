@@ -90,6 +90,7 @@ export default {
   },
   methods: {
     async getLogisticRequestSummary() {
+      Object.assign(this.$data.chartData, this.$options.data().chartData)
       this.loaded = false
       this.index = 0
       await this.$store.dispatch('logistics/getLogisticRequestSummary', this.listQuery)
