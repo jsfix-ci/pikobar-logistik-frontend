@@ -4,7 +4,6 @@
     v-model="menu"
     :close-on-content-click="false"
     transition="scale-transition"
-    offset-y
     width="600"
     min-width="none"
   >
@@ -15,20 +14,19 @@
       >
         <v-text-field
           v-model="dateFormatted"
-          persistent-hint
           clearable
           solo
           :placeholder="$t('label.date_dashboard_placeholder')"
-          prepend-icon="event"
+          append-icon="event"
           :error-messages="errors"
           v-on="on"
-          @click:clear="startDate = null"
+          @click:clear="resetDate"
         />
       </ValidationProvider>
     </template>
     <v-dialog
       v-model="menu"
-      max-width="590"
+      max-width="650"
     >
       <v-card>
         <v-date-picker v-model="startDate" :max="endDate" no-title />
@@ -76,12 +74,12 @@ export default {
   watch: {
     startDate(val) {
       if (this.startDate !== null && this.endDate !== null) {
-        this.dateFormatted = `${this.$moment(this.startDate).format('DD/MM/YYYY')} - ${this.$moment(this.endDate).format('DD/MM/YYYY')}`
+        this.dateFormatted = `${this.$moment(this.startDate).format('DD MMMM YYYY')} - ${this.$moment(this.endDate).format('DD MMMM YYYY')}`
       }
     },
     endDate(val) {
       if (this.startDate !== null && this.endDate !== null) {
-        this.dateFormatted = `${this.$moment(this.startDate).format('DD/MM/YYYY')} - ${this.$moment(this.endDate).format('DD/MM/YYYY')}`
+        this.dateFormatted = `${this.$moment(this.startDate).format('DD MMMM YYYY')} - ${this.$moment(this.endDate).format('DD MMMM YYYY')}`
       }
     }
   },
@@ -89,6 +87,10 @@ export default {
     handleSelectedDate() {
       this.menu = false
       this.$emit('selected', { startDate: this.startDate, endDate: this.endDate })
+    },
+    resetDate() {
+      this.startDate = null
+      window.location.reload()
     }
   }
 }

@@ -97,7 +97,7 @@ export default {
     async submitReject() {
       const valid = await this.$refs.observer.validate()
       if (!valid) return
-      EventBus.$emit('submitReject', this.note)
+      this.$emit('submitReject', this.note)
     }
   }
 }

@@ -146,7 +146,7 @@
                 {{ $t('label.landing_page_tracking_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}.</span>
               </div>
               <p class="ml-10 font-text card-text-landing-page">{{ $t('label.landing_page_text_tracking') }}</p>
-              <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" @click="openPopup">{{ $t('label.landing_page_tracking_button') }}
+              <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" href="#/tracking">{{ $t('label.landing_page_tracking_button') }}
                 <img class="button-icon" src="../../static/truck.png">
               </v-btn>
             </v-col>
@@ -164,7 +164,7 @@
               </div>
               <p class="font-text card-text-landing-page text-center card-text-layout">{{ $t('label.landing_page_text_tracking') }}</p>
               <center>
-                <v-btn class="white--text" min-width="140px" color="#16A75C" @click="openPopup">{{ $t('label.landing_page_tracking_button') }}
+                <v-btn class="white--text" min-width="140px" color="#16A75C" href="#/tracking">{{ $t('label.landing_page_tracking_button') }}
                   <img class="button-icon" src="../../static/truck.png">
                 </v-btn>
               </center>

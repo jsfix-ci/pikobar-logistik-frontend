@@ -52,7 +52,7 @@
         </v-col>
         <v-col class="margin-left-min-30" cols="2" sm="2">
           <span
-            v-if="isVerified && !isApproved"
+            v-if="isVerified && !isApproved && !isRejectedApproval"
             class="text-data-green"
           >
             :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}
@@ -62,6 +62,12 @@
             class="text-data-green"
           >
             :  {{ detailLogisticRequest.applicant.approval_status }}
+          </span>
+          <span
+            v-else-if="isRejectedApproval"
+            class="text-data-red"
+          >
+            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.approval_status : '-' }}
           </span>
           <span
             v-else
@@ -82,7 +88,7 @@
               {{ $t('label.verif_now') }}
             </v-btn>
             <v-btn
-              v-if="isRejected"
+              v-if="isRejected || isRejectedApproval"
               outlined
               color="#2E7D32"
               @click.stop="showDialogReasonReject = true"
@@ -90,7 +96,7 @@
               {{ $t('label.reason_reject') }}
             </v-btn>
             <v-btn
-              v-if="isVerified && !isApproved"
+              v-if="isVerified && !isApproved && !isRejectedApproval"
               outlined
               color="#2E7D32"
               class="margin-btn"
@@ -110,7 +116,7 @@
               {{ $t('route.rejected_title') }}
             </v-btn>
             <v-btn
-              v-if="isVerified && !isApproved"
+              v-if="isVerified && !isApproved && !isRejectedApproval"
               outlined
               color="#e62929"
               class="margin-btn"
@@ -136,6 +142,7 @@
         :show="showDialogReject"
         :item="detailLogisticRequest"
         :total="listLogisticNeeds.length > 0 ? listLogisticNeeds[0].logistic_item_summary : null"
+        @submitReject="rejectData"
       />
       <reasonDeniedLogisticNeeds
         :show="showDialogReasonReject"
@@ -336,7 +343,7 @@
           <v-card-text>
             <v-row class="ml-2">
               <v-col cols="6" md="6">
-                <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ $t('label.applicant_letter') }}</u></a>
+                <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.application_letter_number : '-' }}</u></a>
               </v-col>
               <v-col cols="6" md="6">
                 <div class="margin-top-min-15">
@@ -558,6 +565,7 @@ export default {
       isVerified: false,
       isRejected: false,
       isApproved: false,
+      isRejectedApproval: false,
       isCreate: false,
       listQuery: {
         page: 1,
@@ -594,6 +602,7 @@ export default {
     this.letterFileType = temp[temp.length - 1]
     this.isVerified = this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi'
     this.isRejected = this.detailLogisticRequest.applicant.verification_status === 'Pengajuan Ditolak'
+    this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
     this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
@@ -605,16 +614,22 @@ export default {
       this.showDialogReject = value
       this.showDialogReasonReject = value
     })
-    EventBus.$on('submitReject', (value) => {
+  },
+  methods: {
+    rejectData(value) {
       const formData = new FormData()
       this.showDialogReject = false
       formData.append('applicant_id', this.detailLogisticRequest.id)
-      formData.append('verification_status', 'rejected')
-      formData.append('note', value)
-      this.postReject(formData)
-    })
-  },
-  methods: {
+      if (this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi') {
+        formData.append('approval_status', 'rejected')
+        formData.append('approval_note', value)
+        this.postRejectApproval(formData)
+      } else {
+        formData.append('verification_status', 'rejected')
+        formData.append('note', value)
+        this.postReject(formData)
+      }
+    },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
     },
@@ -716,6 +731,10 @@ export default {
       await this.$store.dispatch('logistics/postVerificationStatus', formData)
       window.location.reload()
     },
+    async postRejectApproval(formData) {
+      await this.$store.dispatch('logistics/postApprovalStatus', formData)
+      window.location.reload()
+    },
     setTotal() {
       this.totalAPD = 0
       this.listLogisticNeeds.forEach(element => {
@@ -726,8 +745,15 @@ export default {
       const formData = new FormData()
       formData.append('applicant_id', this.detailLogisticRequest.id)
       formData.append('approval_status', 'approved')
-      await this.$store.dispatch('logistics/postApprovalStatus', formData)
-      window.location.reload(true)
+      const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
+      if (response.status === 200) {
+        window.location.reload()
+      } else if (response.response.status === 422) {
+        this.scrollToElement()
+      }
+    },
+    scrollToElement(options) {
+      window.scrollTo(0, 1200)
     },
     getStockItem(value) {
       this.dialogStock = true

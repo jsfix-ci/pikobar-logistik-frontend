@@ -49,5 +49,14 @@ export default {
   },
   totalDataRealization: (state) => {
     return state.totalDataRealization
+  },
+  dataTracking: (state) => {
+    return state.dataTracking
+  },
+  productTopRequest: (state) => {
+    return state.productTopRequest
+  },
+  faskesTopRequest: (state) => {
+    return state.faskesTopRequest
   }
 }

@@ -190,6 +190,15 @@ export default {
       return e
     }
   },
+  async getFaskesTypeTopRequest({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/faskes-type-top-request', 'GET', params)
+      commit('SET_DATA_FASKES_TOP_TOTAL_REQUEST', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getProductTotalRequest({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/products-total-request', 'GET', params)
@@ -199,10 +208,41 @@ export default {
       return e
     }
   },
+  async getProductTopRequest({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/products-top-request', 'GET', params)
+      commit('SET_PRODUCT_TOP_REQUEST', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getCityTotalRequest({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/logistic-request/cities/total-request', 'GET', params)
       commit('SET_CITY_TOTAL_REQUEST', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getTrackingLogistic({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/landing-page-registration/tracking', 'GET', params)
+      commit('SET_DATA_TRACKING', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getTrackingLogisticNeedList({ commit }, params) {
+    const id = params.id
+    delete params.id
+    try {
+      const response = await fetchList(`/api/v1/landing-page-registration/tracking/${id}`, 'GET', params)
+      commit('SET_LIST_LOGISTIC_REQUEST', response.data.data)
+      commit('SET_TOTAL_LIST_LOGISTIC_REQUEST', response.data.last_page)
+      commit('SET_TOTAL_DATA_LOGISTIC_REQUEST', response.data.total)
       return response
     } catch (e) {
       return e

@@ -19,7 +19,10 @@ const state = {
   listStock: [],
   listRealization: [],
   totalListRealization: 0,
-  totalDataRealization: 0
+  totalDataRealization: 0,
+  dataTracking: null,
+  productTopRequest: null,
+  faskesTopRequest: null
 }
 
 export default {
