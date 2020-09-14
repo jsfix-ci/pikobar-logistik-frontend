@@ -380,8 +380,8 @@
                     <th class="text-left">{{ $t('label.purpose').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.item_type').toUpperCase() }}</th>
                     <th v-if="isVerified" class="text-left">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.allocation_amount').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.allocation_date').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
                     <th v-if="isVerified" class="text-left">{{ $t('label.action').toUpperCase() }}</th>
                   </tr>
@@ -399,8 +399,8 @@
                     <td>{{ item.usage || '-' }}</td>
                     <td>{{ item.product ? item.product.category : '-' }}</td>
                     <td v-if="isVerified"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
-                    <td>{{ item.realization_quantity || '-' }}</td>
-                    <td>{{ item.realization_date || '-' }}</td>
+                    <td>{{ item.allocation_quantity || '-' }}</td>
+                    <td>{{ item.allocation_date || '-' }}</td>
                     <td>{{ item.statusLabel || '-' }}</td>
                     <td v-if="isVerified">
                       <v-btn text small color="info" @click.stop="openForm(false, item.product, index)">
@@ -446,9 +446,9 @@
                         <tr>
                           <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
                           <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                          <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
+                          <th class="text-left">{{ $t('label.allocation_amount').toUpperCase() }}</th>
                           <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
-                          <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
+                          <th class="text-left">{{ $t('label.allocation_date').toUpperCase() }}</th>
                           <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
                           <th v-if="isVerified" class="text-left">{{ $t('label.action').toUpperCase() }}</th>
                         </tr>
@@ -460,9 +460,9 @@
                         <tr v-for="(item, index) in listRealization" v-else :key="item.index">
                           <td>{{ getTableRowNumbering(index) }}</td>
                           <td>{{ item.product_name ? item.product_name : '-' }}</td>
-                          <td>{{ item.realization_quantity || '-' }}</td>
-                          <td>{{ item.realization_unit || '-' }}</td>
-                          <td>{{ item.realization_date || '-' }}</td>
+                          <td>{{ item.allocation_quantity || '-' }}</td>
+                          <td>{{ item.allocation_unit || '-' }}</td>
+                          <td>{{ item.allocation_date || '-' }}</td>
                           <td>{{ item.statusLabel || '-' }}</td>
                           <td v-if="isVerified">
                             <v-card-actions>

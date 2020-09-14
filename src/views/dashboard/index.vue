@@ -40,9 +40,7 @@
                     <v-list-item-title class="text-card-source-dashboard text-card-data-title">
                       <b>{{ $t('label.total_incoming_request') }}</b>
                     </v-list-item-title>
-                    <v-list-item-title>
-                      <div class="text-card-time-range text-card-time-range-space">{{ $t('label.dashboard_time_range') }}</div>
-                    </v-list-item-title>
+                    <div class="text-card-time-range text-card-time-range-space">{{ $t('label.dashboard_time_range') }}</div>
                     <date-picker-dashboard
                       :date="listQuery.start_date"
                       @selected="updateChart"
@@ -58,9 +56,9 @@
                   </v-col>
                   <v-col sm="12" md="2" offset-md="1">
                     <div class="approved">
-                      <v-list-item-title class="title-data-card green-text">
+                      <div class="title-card-data green-text">
                         <b>{{ $t('label.tracking_step3') }}</b>
-                      </v-list-item-title>
+                      </div>
                       <div class="value-card-data green-text">
                         {{ dataLogisticRequestSummary.total_approved | currency }}
                       </div>
@@ -92,9 +90,9 @@
                   </v-col>
                   <v-col sm="12" md="2">
                     <div class="approved">
-                      <v-list-item-title class="title-data-card red-text">
+                      <div class="title-card-data red-text">
                         <b>{{ $t('label.tracking_step4') }}</b>
-                      </v-list-item-title>
+                      </div>
                       <div class="value-card-data red-text">
                         {{ dataLogisticRequestSummary.total_rejected | currency }}
                       </div>
