@@ -309,7 +309,7 @@ export default {
     total_incoming_request: 'Total Permohonan Masuk',
     with_pikobar: 'Melalu Pikobar',
     with_dinkes_province: 'Melalui Dinkes Provinsi',
-    tools_type_title: 'Statistik Barang yang Dimohon',
+    tools_type_title: 'Statistik Barang',
     applicant_instance: 'Statistik Instansi',
     statistic_alkes_title: 'Statistik Permohonan pada Kota/Kab',
     request_number: 'Jumlah Permohonan',
