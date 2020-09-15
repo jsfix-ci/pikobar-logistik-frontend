@@ -76,6 +76,7 @@
               <identitas-pemohon
                 :form-identity-applicant="formIdentityApplicant"
                 :instance-type="formApplicant.instanceType"
+                :is-admin="isAdmin"
               />
             </v-stepper-content>
             <v-stepper-content step="3">
