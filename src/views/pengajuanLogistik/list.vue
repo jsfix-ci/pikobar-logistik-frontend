@@ -99,8 +99,10 @@
                   <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
-                  <th v-if="isApproved" class="text-left">{{ $t('label.approved_by').toUpperCase() }}</th>
+                  <th v-if="isApproved" class="text-center">{{ $t('label.approved_by').toUpperCase() }}</th>
+                  <th v-if="isApproved" class="text-center">{{ $t('label.finalized_by').toUpperCase() }}</th>
                   <th v-else class="text-left">{{ $t('label.status').toUpperCase() }}</th>
+                  <th v-if="isVerified" class="text-center">{{ $t('label.verified_by').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
@@ -112,8 +114,19 @@
                   <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
                   <td>{{ data.applicant.applicant_name }}</td>
                   <td>{{ data.created_at === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
-                  <td v-if="isApproved">{{ data.applicant.approved_by ? data.applicant.approved_by.name : '-' }}</td>
+                  <td v-if="isApproved" class="text-center">
+                    <span v-if="data.applicant.approved_by">{{ data.applicant.approved_by.name }}</span>
+                    <span v-else class="red--text">{{ 'Belum DiSetujui' }}</span>
+                  </td>
+                  <td v-if="isApproved" class="text-center">
+                    <span v-if="data.applicant.finalized_by">{{ data.applicant.finalized_by.name }}</span>
+                    <span v-else class="red--text">{{ 'Belum diselesaikan' }}</span>
+                  </td>
                   <td v-else>{{ data.applicant.status }}</td>
+                  <td v-if="isVerified" class="text-center">
+                    <span v-if="data.applicant.verified_by">{{ data.applicant.verified_by.name }}</span>
+                    <span v-else class="red--text">{{ 'Belum Diverifikasi' }}</span>
+                  </td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
                 </tr>
                 <tr v-if="listLogisticRequest.length === 0">
@@ -190,6 +203,7 @@ export default {
       ],
       date: null,
       showFilter: false,
+      isVerified: false,
       isApproved: false
     }
   },
@@ -205,6 +219,7 @@ export default {
   },
   async created() {
     if (this.$route.name === 'verified') {
+      this.isVerified = true
       this.listQuery.verification_status = 'verified'
       this.listQuery.approval_status = 'not_approved'
     } else if (this.$route.name === 'notVerified') {
