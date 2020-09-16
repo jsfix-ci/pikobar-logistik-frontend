@@ -20,7 +20,6 @@
                 <v-card-text>
                   <div>
                     <span class="text-card-source-dashboard text-card-white">{{ $t('label.dashboard_title_text') }}</span>
-                    <span><a class="text-card-source-dashboard text-card-white" :href="baseURL" target="_blank"><b>{{ $t('label.dashboard_link') }}</b></a></span>
                   </div>
                 </v-card-text>
               </v-col>
@@ -38,7 +37,7 @@
                 <v-row>
                   <v-col sm="12" md="4">
                     <v-list-item-title class="text-card-source-dashboard text-card-data-title">
-                      <b>{{ $t('label.total_incoming_request') }}</b>
+                      <b>{{ $t('label.incoming_request_statistic') }}</b>
                     </v-list-item-title>
                     <div class="text-card-time-range text-card-time-range-space">{{ $t('label.dashboard_time_range') }}</div>
                     <date-picker-dashboard
@@ -50,19 +49,19 @@
                         {{ dataLogisticRequestSummary.total_request | currency }}
                       </div>
                       <small class="text-card-time-range value-card-prefix-color">
-                        {{ $t('route.applicant_medical_tools_title') }}
+                        {{ $t('label.total_applicant') }}
                       </small>
                     </v-list-item-title>
                   </v-col>
                   <v-col sm="12" md="2" offset-md="1">
                     <div class="approved">
-                      <div class="title-card-data green-text">
-                        <b>{{ $t('label.tracking_step3') }}</b>
+                      <div class="title-card-data amber--text darken-4">
+                        <b>{{ $t('label.dashboard_unverified') }}</b>
                       </div>
-                      <div class="value-card-data green-text">
-                        {{ dataLogisticRequestSummary.total_approved | currency }}
+                      <div class="value-card-data amber--text darken-4">
+                        {{ dataLogisticRequestSummary.total_unverified | currency }}
                       </div>
-                      <a href="/#/alat-kesehatan/disetujui">
+                      <a href="/#/alat-kesehatan/belum-terverifikasi">
                         <span class="in-full-text">
                           {{ $t('label.in_full') }}
                         </span>
@@ -72,10 +71,10 @@
                       </a>
                     </div>
                     <div class="verified space-data-card">
-                      <v-list-item-title class="title-data-card dongker-text">
-                        <b>{{ $t('label.tracking_verified') }}</b>
-                      </v-list-item-title>
-                      <div class="value-card-data dongker-text">
+                      <div class="title-card-data light-blue--text darken-4">
+                        <b>{{ $t('label.dashboard_verified') }}</b>
+                      </div>
+                      <div class="value-card-data light-blue--text darken-4">
                         {{ dataLogisticRequestSummary.total_verified | currency }}
                       </div>
                       <a href="/#/alat-kesehatan/terverifikasi">
@@ -87,9 +86,41 @@
                         </span>
                       </a>
                     </div>
+                    <div class="verified space-data-card">
+                      <div class="title-card-data light-green--text accent-4">
+                        <b>{{ $t('label.dashboard_approved') }}</b>
+                      </div>
+                      <div class="value-card-data light-green--text accent-4">
+                        {{ dataLogisticRequestSummary.total_approved | currency }}
+                      </div>
+                      <a href="/#/alat-kesehatan/disetujui">
+                        <span class="in-full-text">
+                          {{ $t('label.in_full') }}
+                        </span>
+                        <span>
+                          <img class="in-full-image" src="../../static/in-full-icon.png">
+                        </span>
+                      </a>
+                    </div>
                   </v-col>
                   <v-col sm="12" md="2">
                     <div class="approved">
+                      <div class="title-card-data green--text accent-4">
+                        <b>{{ $t('label.dashboard_final') }}</b>
+                      </div>
+                      <div class="value-card-data green--text accent-4">
+                        {{ dataLogisticRequestSummary.total_final | currency }}
+                      </div>
+                      <a href="/#/alat-kesehatan/disetujui">
+                        <span class="in-full-text">
+                          {{ $t('label.in_full') }}
+                        </span>
+                        <span>
+                          <img class="in-full-image" src="../../static/in-full-icon.png">
+                        </span>
+                      </a>
+                    </div>
+                    <div class="verified space-data-card">
                       <div class="title-card-data red-text">
                         <b>{{ $t('label.tracking_step4') }}</b>
                       </div>
