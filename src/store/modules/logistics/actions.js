@@ -276,5 +276,13 @@ export default {
     } catch (e) {
       return e
     }
+  },
+  async postFinalStatus({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/logistic-request/final', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
   }
 }
