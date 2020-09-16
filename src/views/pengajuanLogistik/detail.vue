@@ -58,6 +58,12 @@
             :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}
           </span>
           <span
+            v-else-if="isFinalized"
+            class="text-data-green"
+          >
+            :  {{ $t('label.finalized_status') }}
+          </span>
+          <span
             v-else-if="isApproved"
             class="text-data-green"
           >
@@ -128,14 +134,35 @@
           </span>
         </v-col>
       </v-row>
-      <v-row v-if="isApproved">
+      <v-row v-if="isFinalized">
         <v-col cols="3" sm="2">
           <span class="text-title">{{ $t('label.approved_by') }}</span>
         </v-col>
-        <v-col class="margin-left-min-30" cols="7" sm="8">
+        <v-col class="margin-left-min-30" cols="2" sm="2">
+          <span> :  {{ detailLogisticRequest.applicant.finalized_by.name + ' (' + detailLogisticRequest.applicant.finalized_by.agency_name + ')' }}</span>
+        </v-col>
+      </v-row>
+      <v-row v-else-if="isApproved">
+        <v-col cols="3" sm="2">
+          <span class="text-title">{{ $t('label.approved_by') }}</span>
+        </v-col>
+        <v-col class="margin-left-min-30" cols="2" sm="2">
           <span
             class="text-data-green"
           >:  {{ detailLogisticRequest.applicant.approved_by.name + ' (' + detailLogisticRequest.applicant.approved_by.agency_name + ')' }}</span>
+        </v-col>
+        <v-col cols="5" sm="5">
+          <span>
+            <v-btn
+              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
+              outlined
+              color="#2E7D32"
+              class="margin-btn"
+              @click="submitFinal()"
+            >
+              {{ $t('label.final') }}
+            </v-btn>
+          </span>
         </v-col>
       </v-row>
       <rejectKebutuhanLogistik
@@ -372,38 +399,80 @@
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.description').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.total').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.purpose').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.item_type').toUpperCase() }}</th>
-                    <th v-if="isVerified" class="text-left">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.allocation_amount').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.allocation_date').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
-                    <th v-if="isVerified" class="text-left">{{ $t('label.action').toUpperCase() }}</th>
+                    <th colspan="7" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
+                    <th v-if="isVerified" rowspan="2" class="text-center grey lighten-5">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
+                    <th v-if="isVerified" colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
+                    <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
+                    <th v-if="isVerified" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
+                  </tr>
+                  <tr>
+                    <th class="text-left green lighten-5">{{ $t('label.number').toUpperCase() }}</th>
+                    <th class="text-left green lighten-5">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                    <th class="text-left green lighten-5">{{ $t('label.description').toUpperCase() }}</th>
+                    <th class="text-left green lighten-5">{{ $t('label.total').toUpperCase() }}</th>
+                    <th class="text-left green lighten-5">{{ $t('label.unit').toUpperCase() }}</th>
+                    <th class="text-left green lighten-5">{{ $t('label.purpose').toUpperCase() }}</th>
+                    <th class="text-left green lighten-5">{{ $t('label.item_type').toUpperCase() }}</th>
+                    <th v-if="isVerified" class="text-left green lighten-4">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                    <th v-if="isVerified" class="text-left green lighten-4">{{ $t('label.total').toUpperCase() }}</th>
+                    <th v-if="isVerified" class="text-left green lighten-4">{{ $t('label.unit').toUpperCase() }}</th>
+                    <th v-if="isVerified" class="text-left green lighten-4">{{ $t('label.date').toUpperCase() }}</th>
+                    <th v-if="isVerified" class="text-left green lighten-4">{{ $t('label.status').toUpperCase() }}</th>
+                    <th v-if="isVerified" class="text-left green lighten-4">{{ $t('label.pic').toUpperCase() }}</th>
+                    <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                    <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.total').toUpperCase() }}</th>
+                    <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.unit').toUpperCase() }}</th>
+                    <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.date').toUpperCase() }}</th>
+                    <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.status').toUpperCase() }}</th>
+                    <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.pic').toUpperCase() }}</th>
                   </tr>
                 </thead>
                 <tbody v-if="loaded">
                   <tr v-if="listLogisticNeeds.length === 0">
-                    <td class="text-center" :colspan="7">{{ $t('label.no_data') }}</td>
+                    <td class="text-center" :colspan="21">{{ $t('label.no_data') }}</td>
                   </tr>
                   <tr v-for="(item, index) in listLogisticNeeds" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
                     <td>{{ item.product ? item.product.name : '-' }}</td>
                     <td>{{ item.brand || '-' }}</td>
-                    <td>{{ item.quantity || '-' }}</td>
+                    <td class="text-right">{{ item.quantity || '-' }}</td>
                     <td>{{ item.unit.unit || '-' }}</td>
                     <td>{{ item.usage || '-' }}</td>
                     <td>{{ item.product ? item.product.category : '-' }}</td>
                     <td v-if="isVerified"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
-                    <td>{{ item.allocation_quantity || '-' }}</td>
-                    <td>{{ item.allocation_date || '-' }}</td>
-                    <td>{{ item.statusLabel || '-' }}</td>
+                    <td v-if="isVerified">{{ item.recommendation_product_name || '-' }}</td>
+                    <td v-if="isVerified" class="text-right">{{ item.recommendation_quantity || '-' }}</td>
+                    <td v-if="isVerified">{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
+                    <td v-if="isVerified">{{ item.recommendation_date || '-' }}</td>
                     <td v-if="isVerified">
-                      <v-btn text small color="info" @click.stop="openForm(false, item.product, index)">
+                      <span v-if="item.recommendationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
+                        {{ item.recommendationStatusLabel || '-' }}
+                      </span>
+                      <span v-else class="green--text text--lighten-1">
+                        {{ item.recommendationStatusLabel || '-' }}
+                      </span>
+                    </td>
+                    <td v-if="isVerified">{{ item.recommendBy || '-' }}</td>
+                    <td v-if="isVerified && !isApproved">
+                      <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, false)">
+                        {{ $t('label.update') }}
+                      </v-btn>
+                    </td>
+                    <td v-if="isApproved">{{ item.realization_product_name || '-' }}</td>
+                    <td v-if="isApproved" class="text-right">{{ item.realization_quantity || '-' }}</td>
+                    <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
+                    <td v-if="isApproved">{{ item.realization_date || '-' }}</td>
+                    <td v-if="isApproved">
+                      <span v-if="item.realizationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
+                        {{ item.realizationStatusLabel || '-' }}
+                      </span>
+                      <span v-else class="green--text text--lighten-1">
+                        {{ item.realizationStatusLabel || '-' }}
+                      </span>
+                    </td>
+                    <td v-if="isApproved">{{ item.realizedBy || '-' }}</td>
+                    <td v-if="isApproved">
+                      <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, true)">
                         {{ $t('label.update') }}
                       </v-btn>
                     </td>
@@ -425,7 +494,7 @@
         <v-row>
           <v-col>
             <span class="text-data-green">
-              {{ $t('label.add_distribution_other') }}
+              {{ $t('label.recommendation_distribution_other') }}
             </span>
           </v-col>
         </v-row>
@@ -436,35 +505,49 @@
             <v-card-text>
               <v-row>
                 <v-col>
-                  <v-btn outlined color="success" height="50px" absolute right @click.stop="openForm(true)">
-                    <v-icon dark>mdi-plus</v-icon>
-                    {{ $t('label.add_distribution_realization') }}
+                  <v-btn v-if="isVerified && !isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
+                    <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_recommendation') }}</span>
+                  </v-btn>
+                  <v-btn v-else-if="isVerified && isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
+                    <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_realization') }}</span>
                   </v-btn>
                   <v-simple-table style="margin-top: 70px">
                     <template v-slot:default>
                       <thead>
                         <tr>
-                          <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                          <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                          <th class="text-left">{{ $t('label.allocation_amount').toUpperCase() }}</th>
-                          <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
-                          <th class="text-left">{{ $t('label.allocation_date').toUpperCase() }}</th>
-                          <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
-                          <th v-if="isVerified" class="text-left">{{ $t('label.action').toUpperCase() }}</th>
+                          <th rowspan="2" class="text-center grey lighten-5">{{ $t('label.number').toUpperCase() }}</th>
+                          <th colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
+                          <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
+                          <th rowspan="" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
+                        </tr>
+                        <tr>
+                          <th class="text-left green lighten-4">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                          <th class="text-left green lighten-4">{{ $t('label.allocation_amount').toUpperCase() }}</th>
+                          <th class="text-left green lighten-4">{{ $t('label.unit').toUpperCase() }}</th>
+                          <th class="text-left green lighten-4">{{ $t('label.allocation_date').toUpperCase() }}</th>
+                          <th class="text-left green lighten-4">{{ $t('label.status').toUpperCase() }}</th>
+                          <th class="text-left green lighten-4">{{ $t('label.pic').toUpperCase() }}</th>
+                          <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                          <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.allocation_amount').toUpperCase() }}</th>
+                          <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.unit').toUpperCase() }}</th>
+                          <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.allocation_date').toUpperCase() }}</th>
+                          <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.status').toUpperCase() }}</th>
+                          <th v-if="isApproved" class="text-left green lighten-3">{{ $t('label.pic').toUpperCase() }}</th>
                         </tr>
                       </thead>
                       <tbody v-if="loaded">
                         <tr v-if="listRealization.length === 0">
-                          <td class="text-center" :colspan="7">{{ $t('label.no_data') }}</td>
+                          <td class="text-center" :colspan="15">{{ $t('label.no_data') }}</td>
                         </tr>
                         <tr v-for="(item, index) in listRealization" v-else :key="item.index">
                           <td>{{ getTableRowNumbering(index) }}</td>
-                          <td>{{ item.product_name ? item.product_name : '-' }}</td>
-                          <td>{{ item.allocation_quantity || '-' }}</td>
-                          <td>{{ item.allocation_unit || '-' }}</td>
-                          <td>{{ item.allocation_date || '-' }}</td>
-                          <td>{{ item.statusLabel || '-' }}</td>
-                          <td v-if="isVerified">
+                          <td>{{ item.recommendation_product_name ? item.recommendation_product_name : '-' }}</td>
+                          <td class="text-right">{{ item.recommendation_quantity || '-' }}</td>
+                          <td>{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
+                          <td>{{ item.recommendation_date || '-' }}</td>
+                          <td>{{ item.recommendationStatusLabel || '-' }}</td>
+                          <td>{{ item.recommendBy || '-' }}</td>
+                          <td v-if="isVerified && !isApproved">
                             <v-card-actions>
                               <v-menu
                                 :close-on-content-click="false"
@@ -487,12 +570,61 @@
                                 </template>
                                 <v-card>
                                   <v-list-item>
-                                    <v-btn text small color="info" @click="openForm(null, index)">
+                                    <v-btn text small color="info" @click="openForm(null, index, null, true, false)">
                                       {{ $t('label.update') }}
                                     </v-btn>
                                   </v-list-item>
                                   <v-list-item>
-                                    <v-btn text small color="info" @click="deleteRealization(item)">
+                                    <v-btn text small color="info" @click="deleteRealization(item, true, false)">
+                                      {{ $t('label.delete') }}
+                                    </v-btn>
+                                  </v-list-item>
+                                </v-card>
+                              </v-menu>
+                            </v-card-actions>
+                          </td>
+                          <td v-if="isApproved">{{ item.realization_product_name ? item.realization_product_name : '-' }}</td>
+                          <td v-if="isApproved" class="text-right">{{ item.realization_quantity || '-' }}</td>
+                          <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
+                          <td v-if="isApproved">{{ item.realization_date || '-' }}</td>
+                          <td v-if="isApproved">
+                            <span v-if="item.realizationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
+                              {{ item.realizationStatusLabel || '-' }}
+                            </span>
+                            <span v-else class="green--text text--lighten-1">
+                              {{ item.realizationStatusLabel || '-' }}
+                            </span>
+                          </td>
+                          <td v-if="isApproved">{{ item.realizedBy || '-' }}</td>
+                          <td v-if="isApproved">
+                            <v-card-actions>
+                              <v-menu
+                                :close-on-content-click="false"
+                                :nudge-width="0"
+                                :nudge-left="0"
+                                :nudge-top="0"
+                                offset-y
+                              >
+                                <template v-slot:activator="{ on }">
+                                  <v-btn
+                                    class="ma-1"
+                                    color="#828282"
+                                    style="text-transform: none;height: 30px;min-width: 50px;"
+                                    tile
+                                    outlined
+                                    v-on="on"
+                                  >
+                                    Pilih aksi<v-icon style="color: #009D57;font-size: 2rem;" right>mdi-menu-down</v-icon>
+                                  </v-btn>
+                                </template>
+                                <v-card>
+                                  <v-list-item>
+                                    <v-btn text small color="info" @click="openForm(null, index, null, true, true)">
+                                      {{ $t('label.update') }}
+                                    </v-btn>
+                                  </v-list-item>
+                                  <v-list-item>
+                                    <v-btn text small color="info" @click="deleteRealization(item, true, true)">
                                       {{ $t('label.delete') }}
                                     </v-btn>
                                   </v-list-item>
@@ -565,6 +697,7 @@ export default {
       isVerified: false,
       isRejected: false,
       isApproved: false,
+      isFinalized: false,
       isRejectedApproval: false,
       isCreate: false,
       listQuery: {
@@ -604,6 +737,7 @@ export default {
     this.isRejected = this.detailLogisticRequest.applicant.verification_status === 'Pengajuan Ditolak'
     this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
     this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
+    this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
     })
@@ -636,43 +770,69 @@ export default {
     downloadFile(value) {
       window.open(value)
     },
-    openForm(type, value, index) {
+    openForm(type, value, index, recommendation, realization) {
       this.showForm = true
       this.isCreate = type
       if (type === true) {
-        this.$refs.updateForm.setDialog(type, this.listQuery.agency_id)
+        this.$refs.updateForm.setDialog(type, this.listQuery.agency_id, null, recommendation, realization)
       } else if (type === false) {
-        this.$refs.updateForm.setDialog(type, this.listLogisticNeeds[index], value.id)
+        this.$refs.updateForm.setDialog(type, this.listLogisticNeeds[index], value.id, recommendation, realization)
       } else {
-        this.$refs.updateForm.setDialog(null, this.listRealization[value])
+        this.$refs.updateForm.setDialog(null, this.listRealization[value], null, recommendation, realization)
       }
     },
-    async deleteRealization(item) {
+    async deleteRealization(item, recommendation, realization) {
       this.dialogDelete = true
+      if (realization) {
+        item.product_name = item.realization_product_name
+      } else {
+        item.product_name = item.recommendation_product_name
+      }
       this.dataDelete = await item
     },
     async getListRealizationAdmin() {
       this.loaded = false
       await this.$store.dispatch('logistics/getLogisticNeedsAdmin', this.listQuery)
       this.listRealization.forEach(element => {
-        switch (element.status) {
+        element.recommendBy = element.recommend_by ? element.recommend_by.name + ' (' + element.recommend_by.agency_name + ')' : null
+        element.realizedBy = element.realized_by ? element.realized_by.name + ' (' + element.realized_by.agency_name + ')' : null
+        switch (element.recommendation_status) {
           case 'approved':
-            element.statusLabel = this.$t('label.approved')
+            element.recommendationStatusLabel = this.$t('label.approved')
             break
           case 'not_delivered':
-            element.statusLabel = this.$t('label.not_delivered')
+            element.recommendationStatusLabel = this.$t('label.not_delivered')
             break
           case 'delivered':
-            element.statusLabel = this.$t('label.delivered')
+            element.recommendationStatusLabel = this.$t('label.delivered')
             break
           case 'not_available':
-            element.statusLabel = this.$t('label.not_available')
+            element.recommendationStatusLabel = this.$t('label.not_available')
             break
           case 'replaced':
-            element.statusLabel = this.$t('label.replaced')
+            element.recommendationStatusLabel = this.$t('label.replaced')
             break
           default:
-            element.statusLabel = this.$t('label.not_approved')
+            element.recommendationStatusLabel = null
+        }
+        switch (element.realization_status) {
+          case 'approved':
+            element.realizationStatusLabel = this.$t('label.approved')
+            break
+          case 'not_delivered':
+            element.realizationStatusLabel = this.$t('label.not_delivered')
+            break
+          case 'delivered':
+            element.realizationStatusLabel = this.$t('label.delivered')
+            break
+          case 'not_available':
+            element.realizationStatusLabel = this.$t('label.not_available')
+            break
+          case 'replaced':
+            element.realizationStatusLabel = this.$t('label.replaced')
+            break
+          default:
+            element.realizationStatusLabel = this.$t('label.not_approved')
         }
       })
       this.loaded = true
@@ -692,24 +852,45 @@ export default {
       this.loaded = false
       await this.$store.dispatch('logistics/getListDetailLogisticNeeds', this.listQuery)
       this.listLogisticNeeds.forEach(element => {
-        switch (element.status) {
+        element.recommendBy = element.recommend_by ? element.recommend_by.name + ' (' + element.recommend_by.agency_name + ')' : null
+        element.realizedBy = element.realized_by ? element.realized_by.name + ' (' + element.realized_by.agency_name + ')' : null
+        switch (element.recommendation_status) {
           case 'approved':
-            element.statusLabel = this.$t('label.approved')
+            element.recommendationStatusLabel = this.$t('label.approved')
             break
           case 'not_delivered':
-            element.statusLabel = this.$t('label.not_delivered')
+            element.recommendationStatusLabel = this.$t('label.not_delivered')
             break
           case 'delivered':
-            element.statusLabel = this.$t('label.delivered')
+            element.recommendationStatusLabel = this.$t('label.delivered')
             break
           case 'not_available':
-            element.statusLabel = this.$t('label.not_available')
+            element.recommendationStatusLabel = this.$t('label.not_available')
             break
           case 'replaced':
-            element.statusLabel = this.$t('label.replaced')
+            element.recommendationStatusLabel = this.$t('label.replaced')
             break
           default:
-            element.statusLabel = this.$t('label.not_approved')
+            element.recommendationStatusLabel = this.$t('label.not_approved')
+        }
+        switch (element.realization_status) {
+          case 'approved':
+            element.realizationStatusLabel = this.$t('label.approved')
+            break
+          case 'not_delivered':
+            element.realizationStatusLabel = this.$t('label.not_delivered')
+            break
+          case 'delivered':
+            element.realizationStatusLabel = this.$t('label.delivered')
+            break
+          case 'not_available':
+            element.realizationStatusLabel = this.$t('label.not_available')
+            break
+          case 'replaced':
+            element.realizationStatusLabel = this.$t('label.replaced')
+            break
+          default:
+            element.realizationStatusLabel = this.$t('label.not_approved')
         }
       })
       this.loaded = true
@@ -746,6 +927,17 @@ export default {
       formData.append('applicant_id', this.detailLogisticRequest.id)
       formData.append('approval_status', 'approved')
       const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
+      if (response.status === 200) {
+        window.location.reload()
+      } else if (response.response.status === 422) {
+        this.scrollToElement()
+      }
+    },
+    async submitFinal() {
+      const formData = new FormData()
+      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('approval_status', 'approved')
+      const response = await this.$store.dispatch('logistics/postFinalStatus', formData)
       if (response.status === 200) {
         window.location.reload()
       } else if (response.response.status === 422) {
