@@ -28,7 +28,7 @@
               v-slot="{ errors }"
               rules="requiredApplicantPosition"
             >
-              <v-label class="title"><b>{{ $t('label.applicant_position') }}</b> <i class="text-small-second-step">{{ $t('label.must_fill') }}  isAdmin = {{ isAdmin }}</i></v-label>
+              <v-label class="title"><b>{{ $t('label.applicant_position') }}</b> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
               <v-text-field
                 v-model="formIdentityApplicant.applicantPosition"
                 outlined
@@ -41,7 +41,7 @@
               v-else
               v-slot="{ errors }"
             >
-              <v-label class="title"><b>{{ $t('label.applicant_position') }}</b> isAdmin = {{ isAdmin }}</v-label>
+              <v-label class="title"><b>{{ $t('label.applicant_position') }}</b></v-label>
               <v-textarea
                 v-model="formIdentityApplicant.applicantPosition"
                 outlined
