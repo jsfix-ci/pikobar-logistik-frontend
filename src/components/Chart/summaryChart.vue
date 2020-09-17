@@ -40,9 +40,11 @@ export default {
           {
             data: [],
             backgroundColor: [
-              '#FF0606',
-              '#1A4373',
-              '#27AE60'
+              '#ffc107',
+              '#03a9f4',
+              '#9C27B0',
+              '#4CAF50',
+              '#E53935'
             ]
           }
         ]
@@ -94,12 +96,16 @@ export default {
       this.loaded = false
       this.index = 0
       await this.$store.dispatch('logistics/getLogisticRequestSummary', this.listQuery)
-      this.chartData.labels.push('Ditolak')
-      this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_rejected)
-      this.chartData.labels.push('Diverifikasi')
+      this.chartData.labels.push('Verifikasi Administrasi')
+      this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_unverified)
+      this.chartData.labels.push('Belum Rekomendasi Salur')
       this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_verified)
-      this.chartData.labels.push('Disetujui')
+      this.chartData.labels.push('Sudah Rekomendasi Salur')
       this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_approved)
+      this.chartData.labels.push('Sudah Realisasi Salur')
+      this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_final)
+      this.chartData.labels.push('Permohonan Ditolak')
+      this.chartData.datasets[0].data.push(this.dataLogisticRequestSummary.total_rejected)
       this.loaded = true
     }
   }

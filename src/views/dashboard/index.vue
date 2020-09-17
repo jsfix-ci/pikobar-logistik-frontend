@@ -87,10 +87,10 @@
                       </a>
                     </div>
                     <div class="verified space-data-card">
-                      <div class="title-card-data light-green--text accent-4">
+                      <div class="title-card-data purple--text accent-4">
                         <b>{{ $t('label.dashboard_approved') }}</b>
                       </div>
-                      <div class="value-card-data light-green--text accent-4">
+                      <div class="value-card-data purple--text accent-4">
                         {{ dataLogisticRequestSummary.total_approved | currency }}
                       </div>
                       <a href="/#/alat-kesehatan/disetujui">
