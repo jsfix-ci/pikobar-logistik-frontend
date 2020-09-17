@@ -186,6 +186,10 @@ export default {
     applicantLetter: {
       type: File,
       default: null
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -211,7 +215,15 @@ export default {
   },
   mounted() {
     this.letterName = this.applicantLetter.name
-    this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
+    if (this.isAdmin) {
+      try {
+        this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
+      } catch (error) {
+        this.url = ""
+      }
+    } else {
+      this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
+    }
     this.urlLetter = URL.createObjectURL(this.applicantLetter)
     this.total = Math.ceil(this.logisticNeeds.length / 3)
     if (this.total === 1) {
@@ -283,9 +295,13 @@ export default {
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'dinkes_provinsi')
       formData.append('created_by', this.user.id)
-      await this.$store.dispatch('logistics/postApplicantFormAdmin', formData)
-      this.isDone = true
-      this.isLoading = false
+      const response = await this.$store.dispatch('logistics/postApplicantFormAdmin', formData)
+      if (response.status === 200) {
+        this.isDone = true
+        this.isLoading = false
+      } else {
+        this.isLoading = false
+      }
     },
     onDone() {
       this.isDone = false

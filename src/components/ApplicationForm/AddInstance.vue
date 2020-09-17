@@ -78,9 +78,6 @@
             outlined
           />
           <div>
-            <i>{{ $t('label.add_instance_not_found_notif') }}</i>
-          </div>
-          <div>
             <v-btn class="margin-10" outlined @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
             <v-btn class="margin-10" color="success" @click="submitData">{{ $t('label.save') }}</v-btn>
           </div>

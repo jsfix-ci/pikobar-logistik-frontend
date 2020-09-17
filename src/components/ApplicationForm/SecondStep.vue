@@ -24,6 +24,7 @@
               />
             </ValidationProvider>
             <ValidationProvider
+              v-if="!isAdmin"
               v-slot="{ errors }"
               rules="requiredApplicantPosition"
             >
@@ -37,7 +38,81 @@
               />
             </ValidationProvider>
             <ValidationProvider
+              v-else
+              v-slot="{ errors }"
+            >
+              <v-label class="title"><b>{{ $t('label.applicant_position') }}</b></v-label>
+              <v-textarea
+                v-model="formIdentityApplicant.applicantPosition"
+                outlined
+                :error-messages="errors"
+                :placeholder="$t('label.applicant_position_placeholder')"
+                solo-inverted
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-if="!isAdmin"
               rules="required"
+            >
+              <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b></v-label>
+              <br>
+              <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
+              <div>
+                <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
+                <v-label v-else>{{ selectedFileName }}</v-label>
+                <br>
+                <input
+                  ref="uploader"
+                  type="file"
+                  class="d-none"
+                  accept=".jpg, .jpeg, .png"
+                  @change="onFileChanged"
+                >
+                <v-text-field
+                  v-model="selectedFileName"
+                  disabled
+                  class="d-none"
+                />
+                <v-btn
+                  v-if="!isUpload"
+                  color="#2E7D32"
+                  class="margin-10"
+                  depressed
+                  :outlined="true"
+                  :loading="isSelecting"
+                  @click="onButtonClick"
+                >
+                  {{ $t('label.upload') }}
+                </v-btn>
+                <v-btn
+                  v-if="isUpload"
+                  outlined
+                  class="btn-delete-mobile-second-step"
+                  @click="deleteFile"
+                >
+                  {{ $t('label.delete') }}
+                </v-btn>
+                <v-btn
+                  v-if="isUpload"
+                  color="#2E7D32"
+                  class="margin-10"
+                  depressed
+                  :outlined="true"
+                  :loading="isSelecting"
+                  @click="onButtonClick"
+                >
+                  {{ $t('label.reupload') }}
+                </v-btn>
+                <v-alert
+                  v-if="uploadAlert"
+                  type="error"
+                >
+                  {{ $t('label.upload_error_message') }}
+                </v-alert>
+              </div>
+            </ValidationProvider>
+            <ValidationProvider
+              v-else
             >
               <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b></v-label>
               <br>
@@ -99,10 +174,24 @@
           </v-col>
           <v-col cols="12" sm="12" md="6">
             <ValidationProvider
+              v-if="!isAdmin"
               v-slot="{ errors }"
               rules="requiredApplicantEmail|email"
             >
               <v-label class="title"><b>{{ $t('label.applicant_email') }}</b> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-text-field
+                v-model="formIdentityApplicant.applicantEmail"
+                outlined
+                :error-messages="errors"
+                :placeholder="$t('label.applicant_email_placeholder')"
+                solo-inverted
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-else
+              v-slot="{ errors }"
+            >
+              <v-label class="title"><b>{{ $t('label.applicant_email') }}</b></v-label>
               <v-text-field
                 v-model="formIdentityApplicant.applicantEmail"
                 outlined
@@ -125,10 +214,24 @@
               />
             </ValidationProvider>
             <ValidationProvider
+              v-if="!isAdmin"
               v-slot="{ errors }"
               rules="requiredApplicantPhoneNumber|isPhoneNumber"
             >
               <v-label class="title"><b>{{ $t('label.other_applicant_phone_number') }}</b> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-text-field
+                v-model="formIdentityApplicant.applicantPhoneNumber2"
+                outlined
+                :error-messages="errors"
+                :placeholder="$t('label.applicant_phone_number_placeholder')"
+                solo-inverted
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-else
+              v-slot="{ errors }"
+            >
+              <v-label class="title"><b>{{ $t('label.other_applicant_phone_number') }}</b></v-label>
               <v-text-field
                 v-model="formIdentityApplicant.applicantPhoneNumber2"
                 outlined
@@ -191,6 +294,10 @@ export default {
     formIdentityApplicant: {
       type: Object,
       default: null
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -207,7 +314,11 @@ export default {
   methods: {
     async onNext() {
       const valid = await this.$refs.observer.validate()
-      if (!valid || !this.isFileValid) {
+      if (this.isAdmin) {
+        if (!valid) {
+          return
+        }
+      } else if (!valid || !this.isFileValid) {
         this.uploadAlert = true
         return
       }

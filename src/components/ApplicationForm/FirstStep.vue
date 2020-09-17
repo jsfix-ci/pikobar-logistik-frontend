@@ -131,10 +131,26 @@
               />
             </ValidationProvider>
             <ValidationProvider
+              v-if="!isAdmin"
               v-slot="{ errors }"
               rules="requiredFullAddress"
             >
               <v-label class="title"><b>{{ $t('label.full_address') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-textarea
+                v-model="formApplicant.fullAddress"
+                outlined
+                :height="100"
+                :no-resize="true"
+                :error-messages="errors"
+                :placeholder="$t('label.example_full_address')"
+                solo-inverted
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-else
+              v-slot="{ errors }"
+            >
+              <v-label class="title"><b>{{ $t('label.full_address') }}</b></v-label>
               <v-textarea
                 v-model="formApplicant.fullAddress"
                 outlined
