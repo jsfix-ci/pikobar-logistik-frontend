@@ -130,7 +130,7 @@
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
                 </tr>
                 <tr v-if="listLogisticRequest.length === 0">
-                  <td colspan="6" class="text-center">{{ $t('label.no_data') }}</td>
+                  <td colspan="10" class="text-center">{{ $t('label.no_data') }}</td>
                 </tr>
               </tbody>
             </template>
