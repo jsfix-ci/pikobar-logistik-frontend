@@ -6,82 +6,144 @@
   >
     <v-card v-if="!isSuccess && !isFail">
       <ValidationObserver ref="observer">
-        <v-col>
-          <span class="title-dialog-add-instance">{{ $t('label.add_medical_facility') }}</span>
-          <br>
-          <br>
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="requiredLicenseNumberFacility"
-          >
-            <v-label class="title"><b>{{ $t('label.license_number_facility') }}</b> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
+          <v-col>
+            <span class="title-dialog-add-instance">{{ $t('label.add_medical_facility') }}</span>
+            <br>
+            <br>
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="requiredLicenseNumberFacility"
+            >
+              <v-label class="title"><b>{{ $t('label.license_number_facility') }}</b> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
+              <v-text-field
+                v-model="listQuery.nomor_izin_sarana"
+                :placeholder="$t('label.license_number_facility_placeholder')"
+                :error-messages="errors"
+                outlined
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              rules=""
+            >
+              <v-label class="title"><b>{{ $t('label.regis_number') }}</b></v-label>
+              <v-text-field
+                v-model="listQuery.nomor_registrasi"
+                :placeholder="$t('label.regis_number_placeholder')"
+                outlined
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="requiredInstanceType"
+            >
+              <v-label class="title"><b>{{ $t('label.instance_type') }}</b> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
+              <v-select
+                v-model="listQuery.id_tipe_faskes"
+                :placeholder="$t('label.autocomplete_instance_placeholder')"
+                outlined
+                :items="faskesTypeList"
+                item-text="name"
+                item-value="id"
+                :error-messages="errors"
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="requiredFaskesName"
+            >
+              <v-label class="title"><b>{{ $t('label.faskes_name') }}</b> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
+              <v-text-field
+                v-model="listQuery.nama_faskes"
+                :placeholder="$t('label.input_faskes_name')"
+                outlined
+                :error-messages="errors"
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="requiredUpperName"
+            >
+              <v-label class="title"><b>{{ $t('label.upper_name') }}</b> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
+              <v-text-field
+                v-model="listQuery.nama_atasan"
+                :placeholder="$t('label.input_upper_name')"
+                outlined
+                :error-messages="errors"
+              />
+            </ValidationProvider>
+            <v-label class="title"><b>{{ $t('label.faskes_location') }}</b></v-label>
             <v-text-field
-              v-model="listQuery.nomor_izin_sarana"
-              :placeholder="$t('label.license_number_facility_placeholder')"
-              :error-messages="errors"
+              v-model="listQuery.point_latitude_longitude"
+              :placeholder="$t('label.input_faskes_location')"
               outlined
             />
-          </ValidationProvider>
-          <ValidationProvider
-            rules=""
-          >
-            <v-label class="title"><b>{{ $t('label.regis_number') }}</b></v-label>
-            <v-text-field
-              v-model="listQuery.nomor_registrasi"
-              :placeholder="$t('label.regis_number_placeholder')"
-              outlined
-            />
-          </ValidationProvider>
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="requiredInstanceType"
-          >
-            <v-label class="title"><b>{{ $t('label.instance_type') }}</b> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
-            <v-select
-              v-model="listQuery.id_tipe_faskes"
-              :placeholder="$t('label.autocomplete_instance_placeholder')"
-              outlined
-              :items="faskesTypeList"
-              item-text="name"
-              item-value="id"
-              :error-messages="errors"
-            />
-          </ValidationProvider>
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="requiredFaskesName"
-          >
-            <v-label class="title"><b>{{ $t('label.faskes_name') }}</b> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
-            <v-text-field
-              v-model="listQuery.nama_faskes"
-              :placeholder="$t('label.input_faskes_name')"
-              outlined
-              :error-messages="errors"
-            />
-          </ValidationProvider>
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="requiredUpperName"
-          >
-            <v-label class="title"><b>{{ $t('label.upper_name') }}</b> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
-            <v-text-field
-              v-model="listQuery.nama_atasan"
-              :placeholder="$t('label.input_upper_name')"
-              outlined
-              :error-messages="errors"
-            />
-          </ValidationProvider>
-          <v-label class="title"><b>{{ $t('label.faskes_location') }}</b></v-label>
-          <v-text-field
-            v-model="listQuery.point_latitude_longitude"
-            :placeholder="$t('label.input_faskes_location')"
-            outlined
-          />
-          <div>
-            <v-btn class="margin-10" outlined @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
-            <v-btn class="margin-10" color="success" @click="submitData">{{ $t('label.save') }}</v-btn>
-          </div>
-        </v-col>
+            <ValidationProvider
+                rules="required"
+            >
+            <v-label class="title"><b>{{ $t('label.upload_fasyankes_letter_permit') }}</b></v-label>
+            <br>
+            <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
+            <div>
+              <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
+              <v-label v-else>{{ selectedFileName }}</v-label>
+              <br>
+              <input
+                ref="uploader"
+                type="file"
+                class="d-none"
+                accept=".jpg, .jpeg, .png"
+                @change="onFileChanged"
+              >
+              <v-text-field
+                v-model="selectedFileName"
+                disabled
+                class="d-none"
+              />
+              <v-btn
+                v-if="!isUpload"
+                color="#2E7D32"
+                class="margin-10"
+                depressed
+                :outlined="true"
+                :loading="isSelecting"
+                @click="onButtonClick"
+              >
+                {{ $t('label.upload') }}
+              </v-btn>
+              <v-btn
+                v-if="isUpload"
+                outlined
+                class="btn-delete-mobile-second-step"
+                @click="deleteFile"
+              >
+                {{ $t('label.delete') }}
+              </v-btn>
+              <v-btn
+                v-if="isUpload"
+                color="#2E7D32"
+                class="margin-10"
+                depressed
+                :outlined="true"
+                :loading="isSelecting"
+                @click="onButtonClick"
+              >
+                {{ $t('label.reupload') }}
+              </v-btn>
+              <v-alert
+                v-if="uploadAlert"
+                type="error"
+              >
+                {{ $t('label.upload_error_message') }}
+              </v-alert>
+            </div>
+            <br>
+            <br>
+            </ValidationProvider>
+            <div>
+              <v-btn class="margin-10" outlined text @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+              <v-btn class="margin-10" color="primary" @click="submitData">{{ $t('label.save') }}</v-btn>
+            </div>
+          </v-col>
       </ValidationObserver>
     </v-card>
     <v-card v-else-if="isSuccess">
@@ -164,7 +226,13 @@ export default {
     return {
       listQuery: {},
       isSuccess: false,
-      isFail: false
+      isFail: false,
+      isSelecting: false,
+      selectedFile: null,
+      selectedFileName: '',
+      isUpload: false,
+      uploadAlert: false,
+      isFileValid: false
     }
   },
   computed: {
@@ -178,10 +246,19 @@ export default {
   methods: {
     async submitData() {
       const valid = await this.$refs.observer.validate()
-      if (!valid) {
+      if (!valid || !this.isFileValid) {
+        console.log(valid + ' ' + this.isFileValid)
+        this.uploadAlert = true
         return
       }
-      const response = await this.$store.dispatch('logistics/postAddFaskes', this.listQuery)
+      const formInstance = new FormData()
+      formInstance.append('id_tipe_faskes', this.listQuery.id_tipe_faskes)
+      formInstance.append('nama_atasan', this.listQuery.nama_atasan)
+      formInstance.append('nama_faskes', this.listQuery.nama_faskes)
+      formInstance.append('nomor_izin_sarana', this.listQuery.nomor_izin_sarana)
+      formInstance.append('nomor_registrasi', this.listQuery.nomor_registrasi)
+      formInstance.append('permit_file', this.listQuery.permit_file)
+      const response = await this.$store.dispatch('logistics/postAddFaskes', formInstance)
       if (response.status === 200) {
         this.isSuccess = true
       } else {
@@ -190,6 +267,35 @@ export default {
     },
     hideDialog() {
       EventBus.$emit('dialogHide', false)
+    },
+    onButtonClick() {
+      this.isSelecting = false
+      this.isUpload = true
+      this.uploadAlert = false
+      this.$refs.uploader.click()
+    },
+    onFileChanged(e) {
+      this.selectedFile = e.target.files[0]
+      if (this.selectedFile.type === 'image/jpeg' || this.selectedFile.type === 'image/jpg' || this.selectedFile.type === 'image/png') {
+        if (this.selectedFile.size <= 10000000) {
+          this.isFileValid = true
+          this.uploadAlert = false
+        } else {
+          this.isFileValid = false
+          this.uploadAlert = true
+          return
+        }
+      } else {
+        this.isFileValid = false
+        return
+      }
+      this.selectedFileName = this.selectedFile.name + ' ' + this.selectedFile.size + ' is ' + this.isFileValid
+      this.isUpload = true
+      this.listQuery.permit_file = this.selectedFile
+    },
+    deleteFile() {
+      this.selectedFileName = ''
+      this.isUpload = false
     }
   }
 }

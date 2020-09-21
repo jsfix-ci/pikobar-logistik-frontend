@@ -203,6 +203,7 @@ export default {
     applicant_phone_number_placeholder: 'Masukkan No. HP/Whatsapp',
     other_applicant_phone_number: 'No. HP/Whatsapp Pemohon lainnya sebagai opsi ke 2',
     upload_applicant_ktp: 'Upload Foto E-KTP/Kartu Pegawai/Surat Tugas',
+    upload_fasyankes_letter_permit: 'Upload Surat Izin',
     not_yet_upload_file: 'Belum ada file yang diupload',
     upload: 'Upload',
     reupload: 'Upload Ulang',
