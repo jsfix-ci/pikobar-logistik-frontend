@@ -7,8 +7,14 @@
     <v-card>
       <ValidationObserver ref="observer">
         <v-col>
-          <div v-if="isUpdate" class="title-update-logistic-needs" style="padding-bottom: 30px">{{ $t('label.update_distribution_realization') }}</div>
-          <div v-else-if="isCreate" class="title-update-logistic-needs" style="padding-bottom: 30px">{{ $t('label.add_distribution_realization') }}</div>
+          <div v-if="isUpdate" class="title-update-logistic-needs" style="padding-bottom: 30px">
+            <span v-if="isVerified && !isApproved">{{ $t('label.update_distribution_recommendation') }}</span>
+            <span v-else>{{ $t('label.update_distribution_realization') }}</span>
+          </div>
+          <div v-else-if="isCreate" class="title-update-logistic-needs" style="padding-bottom: 30px">
+            <span v-if="isVerified && !isApproved">{{ $t('label.add_distribution_recommendation') }}</span>
+            <span v-else>{{ $t('label.add_distribution_realization') }}</span>
+          </div>
           <div v-else class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</div>
         </v-col>
         <v-col v-if="updateName === false" class="mb-30">
@@ -21,7 +27,9 @@
             v-slot="{ errors }"
             rules="requiredStatus"
           >
-            <span class="sub-title-update-logistic-needs">{{ $t('label.status') }}</span>
+            <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_status') }}</span>
+            <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_status') }}</span>
+            <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_status') }}</span>
             <v-autocomplete
               v-model="data.status"
               outlined
@@ -38,7 +46,9 @@
             v-slot="{ errors }"
             rules="requiredAPDName"
           >
-            <span class="sub-title-update-logistic-needs">{{ $t('label.realization_item') }}</span>
+            <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_item') }}</span>
+            <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_item') }}</span>
+            <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_item') }}</span>
             <v-autocomplete
               v-model="data.product_id"
               :placeholder="$t('label.choose_apd')"
@@ -60,7 +70,9 @@
         <v-col v-if="data.status !== 'not_available'" class="margin-top-min-20-update-logistic-needs">
           <v-row>
             <v-col cols="5">
-              <span class="sub-title-update-logistic-needs">{{ $t('label.realization_amount') }}</span>
+              <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_amount') }}</span>
+              <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_amount') }}</span>
+              <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_amount') }}</span>
               <ValidationProvider
                 v-slot="{ errors }"
                 rules="requiredRealizationAmount|numericRealizationAmount"
@@ -99,7 +111,9 @@
           </v-row>
         </v-col>
         <v-col v-if="data.status !== 'not_available'" class="margin-top-min-30-update-logistic-needs">
-          <span class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
+          <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_date') }}</span>
+          <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
+          <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <date-picker-input
             :value="data.realization_date"
             @selected="changeDate"
@@ -144,6 +158,8 @@ export default {
       updateName: false,
       isCreate: false,
       isUpdate: false,
+      isVerified: false,
+      isApproved: false,
       unitList: [],
       unitId: null,
       dialog: false,
@@ -193,9 +209,11 @@ export default {
       await this.$store.dispatch('logistics/getStock', param)
     },
     async getListAPD() {
+      this.listQueryAPD.status = null
+      this.listQueryAPD.id = null
       if (this.data.status === 'approved') {
         this.listQueryAPD.status = 'approved'
-        this.listQueryAPD.id = this.item.product.id
+        this.listQueryAPD.id = this.item.product !== undefined ? this.item.product.id : null
       } else {
         this.listQueryAPD.status = null
         this.listQueryAPD.id = null
@@ -214,16 +232,28 @@ export default {
         this.totalLogistic = this.totalLogistic + parseInt(element.total)
       })
     },
-    async setDialog(type, data, value) {
+    async setDialog(type, data, value, recommendation, realization) {
       this.isCreate = type
       this.updateName = type
+      this.isUpdate = false
+      this.isVerified = recommendation
+      this.isApproved = realization
+      this.data = {}
+      this.item = {}
       if (type === false) {
         this.data = {}
         this.item = data
         this.data = data
-        this.setUnit(data.realization_product_id)
-        this.data.product_id = data.realization_product_id
         this.data.unit_id = '1'
+        if (this.isVerified && !this.isApproved) {
+          this.data.status = this.data.recommendation_status
+          this.setUnit(data.recommendation_product_id)
+          this.data.product_id = data.recommendation_product_id
+        } else if (this.isVerified && this.isApproved) {
+          this.data.status = this.data.realization_status
+          this.setUnit(data.realization_product_id)
+          this.data.product_id = data.realization_product_id
+        }
       } else if (type === true) {
         this.agency_id = data
         this.data = {}
@@ -233,6 +263,13 @@ export default {
         this.isUpdate = true
         this.data = data
         this.setUnit(data.product_id)
+        if (this.isVerified && !this.isApproved) {
+          this.data.status = this.data.recommendation_status
+          this.data.product_id = this.data.recommendation_product_id
+        } else if (this.isVerified && this.isApproved) {
+          this.data.status = this.data.realization_status
+          this.data.product_id = this.data.realization_product_id
+        }
       }
       await this.getListAPD()
     },
@@ -246,6 +283,10 @@ export default {
       })
     },
     async submitData(value) {
+      this.data.store_type = 'recommendation'
+      if (this.isApproved) {
+        this.data.store_type = 'realization'
+      }
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
@@ -253,24 +294,26 @@ export default {
       if (this.isUpdate) {
         this.data.status = 'approved'
         await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
+        this.$parent.getListRealizationAdmin()
       } else {
         if (value === true) {
           this.data.status = 'approved'
           this.data.agency_id = this.agency_id
           await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
+          this.$parent.getListRealizationAdmin()
         } else {
           this.data.need_id = this.item.id
           this.data.product_id = this.data.product_id || this.item.product_id
           this.data.agency_id = this.item.agency_id
           delete this.data.id
           await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
+          this.$parent.getListDetailNeeds()
         }
       }
-      window.location.reload()
+      await this.hideDialog()
     },
     hideDialog() {
       this.$refs.observer.reset()
-      window.location.reload()
       EventBus.$emit('dialogHide', false)
     },
     handleSelectedDate(value) {

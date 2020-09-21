@@ -290,8 +290,8 @@
                       <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
                       <th class="text-left">{{ $t('label.purpose').toUpperCase() }}</th>
                       <th class="text-left">{{ $t('label.item_type').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.allocation_amount').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.allocation_date').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.recommendation_amount').toUpperCase() }}</th>
+                      <th class="text-left">{{ $t('label.recommendation_date').toUpperCase() }}</th>
                       <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
                     </tr>
                   </thead>
@@ -307,8 +307,8 @@
                       <td>{{ item.need_unit_name || '-' }}</td>
                       <td>{{ item.need_usage || '-' }}</td>
                       <td>{{ item.category ? item.category : '-' }}</td>
-                      <td>{{ item.allocation_quantity || '-' }}</td>
-                      <td>{{ item.allocated_at || '-' }}</td>
+                      <td>{{ item.recommendation_quantity || '-' }}</td>
+                      <td>{{ item.recommended_at || '-' }}</td>
                       <td>{{ changeStatus(item.status) }}</td>
                     </tr>
                   </tbody>
