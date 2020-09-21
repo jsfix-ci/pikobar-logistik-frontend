@@ -247,7 +247,6 @@ export default {
     async submitData() {
       const valid = await this.$refs.observer.validate()
       if (!valid || !this.isFileValid) {
-        console.log(valid + ' ' + this.isFileValid)
         this.uploadAlert = true
         return
       }
@@ -289,7 +288,7 @@ export default {
         this.isFileValid = false
         return
       }
-      this.selectedFileName = this.selectedFile.name + ' ' + this.selectedFile.size + ' is ' + this.isFileValid
+      this.selectedFileName = this.selectedFile.name
       this.isUpload = true
       this.listQuery.permit_file = this.selectedFile
     },
