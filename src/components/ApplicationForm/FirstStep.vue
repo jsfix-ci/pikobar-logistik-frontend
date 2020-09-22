@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <ValidationObserver ref="observer">
+    <ValidationObserver ref="firtstep">
       <v-form
         ref="form"
         lazy-validation
@@ -68,11 +68,14 @@
                 color="#2E7D32"
                 large
                 style="margin-left: 30px"
-                @click.stop="showForm = true"
+                @click.stop="showInstanceDialog()"
               >
                 {{ $t('label.adding') }}
               </v-btn>
-              <form-add-instance :show="showForm" />
+              <form-add-instance
+                ref="addInstanceForm"
+                :show="showForm"
+              />
             </div>
             <ValidationProvider
               v-slot="{ errors }"
@@ -273,7 +276,7 @@ export default {
           return
         }
       })
-      const valid = await this.$refs.observer.validate()
+      const valid = await this.$refs.firtstep.validate()
       if (!valid) {
         return
       }
@@ -336,6 +339,10 @@ export default {
     },
     hideDialog(value) {
 
+    },
+    showInstanceDialog() {
+      this.showForm = true
+      this.$refs.addInstanceForm.setShowDialog()
     }
   }
 }

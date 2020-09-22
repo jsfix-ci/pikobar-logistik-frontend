@@ -77,9 +77,7 @@
               :placeholder="$t('label.input_faskes_location')"
               outlined
             />
-            <ValidationProvider
-                rules="required"
-            >
+            <ValidationProvider>
             <v-label class="title"><b>{{ $t('label.upload_fasyankes_letter_permit') }}</b></v-label>
             <br>
             <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
@@ -194,9 +192,7 @@
         <v-row>
           <v-col>
             <center>
-              <v-btn color="primary" to="/landing-page" class="white--text">
-                {{ $t('label.repeat') }}
-              </v-btn>
+              <v-btn color="primary" class="white--text" @click="repeatDialog">{{ $t('label.repeat') }}</v-btn>
             </center>
           </v-col>
         </v-row>
@@ -241,6 +237,7 @@ export default {
     ])
   },
   async created() {
+    await this.setShowDialog()
     await this.$store.dispatch('faskesType/getListFaskesType')
   },
   methods: {
@@ -265,7 +262,42 @@ export default {
       }
     },
     hideDialog() {
+      this.resetDialog()
       EventBus.$emit('dialogHide', false)
+    },
+    resetDefaultValue() {
+      this.listQuery = {}
+      this.isSuccess = false
+      this.isFail = false
+      this.isSelecting = false
+      this.selectedFile = null
+      this.selectedFileName = ''
+      this.isUpload = false
+      this.uploadAlert = false
+      this.isFileValid = false
+      this.$refs.observer.reset()
+    },
+    resetDialog() {
+      this.resetDefaultValue()
+      this.listQuery.id_tipe_faskes = 1
+      this.listQuery.nama_atasan = '-'
+      this.listQuery.nama_faskes = '-'
+      this.listQuery.nomor_izin_sarana = '-'
+      this.listQuery.nomor_registrasi = '-'
+      this.listQuery.permit_file = '-'
+    },
+    async setShowDialog() {
+      this.resetDefaultValue()
+      this.listQuery.id_tipe_faskes = null
+      this.listQuery.nama_atasan = null
+      this.listQuery.nama_faskes = null
+      this.listQuery.nomor_izin_sarana = null
+      this.listQuery.nomor_registrasi = null
+      this.listQuery.permit_file = null
+    },
+    repeatDialog() {
+      this.isSuccess = false
+      this.isFail = false
     },
     onButtonClick() {
       this.isSelecting = false
