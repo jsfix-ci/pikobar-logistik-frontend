@@ -194,9 +194,7 @@
         <v-row>
           <v-col>
             <center>
-              <v-btn color="primary" to="/landing-page" class="white--text">
-                {{ $t('label.repeat') }}
-              </v-btn>
+              <v-btn color="primary" class="white--text" @click="repeatDialog">{{ $t('label.repeat') }}</v-btn>
             </center>
           </v-col>
         </v-row>
@@ -266,6 +264,10 @@ export default {
     },
     hideDialog() {
       EventBus.$emit('dialogHide', false)
+    },
+    repeatDialog() {
+      this.isSuccess = false
+      this.isFail = false
     },
     onButtonClick() {
       this.isSelecting = false
