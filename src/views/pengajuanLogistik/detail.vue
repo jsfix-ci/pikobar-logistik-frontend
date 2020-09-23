@@ -51,37 +51,47 @@
           <span class="text-title">{{ $t('label.status') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="2" sm="2">
-          <span
-            v-if="isVerified && !isApproved && !isRejectedApproval"
-            class="text-data-green"
-          >
-            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}
-          </span>
-          <span
-            v-else-if="isFinalized"
-            class="text-data-green"
-          >
-            :  {{ $t('label.finalized_status') }}
-          </span>
-          <span
-            v-else-if="isApproved"
-            class="text-data-green"
-          >
-            :  {{ detailLogisticRequest.applicant.approval_status }}
-          </span>
-          <span
-            v-else-if="isRejectedApproval"
-            class="text-data-red"
-          >
-            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.approval_status : '-' }}
-          </span>
-          <span
-            v-else
-            class="text-data-red"
-          >
-            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}
+          <span v-if="isVerified && !isApproved && !isRejectedApproval" class="text-data-green"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}</span>
+          <span v-else-if="isFinalized" class="text-data-green"> : {{ $t('label.finalized_status') }}</span>
+          <span v-else-if="isApproved" class="text-data-green"> : {{ detailLogisticRequest.applicant.approval_status }}</span>
+          <span v-else-if="isRejectedApproval" class="text-data-red"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.approval_status : '-' }}</span>
+          <span v-else class="text-data-red"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}</span>
+        </v-col>
+      </v-row>
+      <v-row v-if="isFinalized">
+        <v-col cols="2" sm="2">
+          <span class="text-title">{{ $t('label.approved_by') }}</span>
+        </v-col>
+        <v-col class="margin-left-min-30" cols="5" sm="5">
+          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by.name + ' (' + detailLogisticRequest.applicant.approved_by.handphone + ')' }}</span>
+          <br>
+          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by.agency_name }}</span>
+        </v-col>
+      </v-row>
+      <v-row v-else-if="isApproved">
+        <v-col cols="2" sm="2">
+          <span class="text-title">{{ $t('label.approved_by') }}</span>
+        </v-col>
+        <v-col class="margin-left-min-30" cols="5" sm="5">
+          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by.name + ' (' + detailLogisticRequest.applicant.approved_by.handphone + ')' }}</span>
+          <br>
+          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
+        </v-col>
+        <v-col cols="9" sm="10">
+          <span>
+            <v-btn
+              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
+              outlined
+              color="#2E7D32"
+              class="margin-btn"
+              @click="submitFinal()"
+            >
+              {{ $t('label.final') }}
+            </v-btn>
           </span>
         </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="5" sm="5">
           <span>
             <v-btn
@@ -130,37 +140,6 @@
               @click="setTotal()"
             >
               {{ $t('route.rejected_title') }}
-            </v-btn>
-          </span>
-        </v-col>
-      </v-row>
-      <v-row v-if="isFinalized">
-        <v-col cols="3" sm="2">
-          <span class="text-title">{{ $t('label.approved_by') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="2" sm="2">
-          <span> :  {{ detailLogisticRequest.applicant.finalized_by.name + ' (' + detailLogisticRequest.applicant.finalized_by.agency_name + ')' }}</span>
-        </v-col>
-      </v-row>
-      <v-row v-else-if="isApproved">
-        <v-col cols="3" sm="2">
-          <span class="text-title">{{ $t('label.approved_by') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="2" sm="2">
-          <span
-            class="text-data-green"
-          >:  {{ detailLogisticRequest.applicant.approved_by.name + ' (' + detailLogisticRequest.applicant.approved_by.agency_name + ')' }}</span>
-        </v-col>
-        <v-col cols="5" sm="5">
-          <span>
-            <v-btn
-              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
-              outlined
-              color="#2E7D32"
-              class="margin-btn"
-              @click="submitFinal()"
-            >
-              {{ $t('label.final') }}
             </v-btn>
           </span>
         </v-col>
