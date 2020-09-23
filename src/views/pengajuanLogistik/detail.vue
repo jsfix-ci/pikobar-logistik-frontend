@@ -452,7 +452,10 @@
                         {{ item.recommendationStatusLabel || '-' }}
                       </span>
                     </td>
-                    <td v-if="isVerified">{{ item.recommendBy || '-' }}</td>
+                    <td v-if="isVerified">
+                      <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
+                      <span v-else>-</span>
+                    </td>
                     <td v-if="isVerified && !isApproved">
                       <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, false)">
                         {{ $t('label.update') }}
@@ -470,7 +473,10 @@
                         {{ item.realizationStatusLabel || '-' }}
                       </span>
                     </td>
-                    <td v-if="isApproved">{{ item.realizedBy || '-' }}</td>
+                    <td v-if="isApproved">
+                      <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
+                      <span v-else>-</span>
+                    </td>
                     <td v-if="isApproved">
                       <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, true)">
                         {{ $t('label.update') }}
@@ -546,7 +552,10 @@
                           <td>{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
                           <td>{{ item.recommendation_date || '-' }}</td>
                           <td>{{ item.recommendationStatusLabel || '-' }}</td>
-                          <td>{{ item.recommendBy || '-' }}</td>
+                          <td>
+                            <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
+                            <span v-else>-</span>
+                          </td>
                           <td v-if="isVerified && !isApproved">
                             <v-card-actions>
                               <v-menu
@@ -595,7 +604,10 @@
                               {{ item.realizationStatusLabel || '-' }}
                             </span>
                           </td>
-                          <td v-if="isApproved">{{ item.realizedBy || '-' }}</td>
+                          <td v-if="isApproved">
+                            <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
+                            <span v-else>-</span>
+                          </td>
                           <td v-if="isApproved">
                             <v-card-actions>
                               <v-menu
@@ -670,6 +682,13 @@
       :delete-date.sync="dataDelete"
       :store-path-delete="`logistics/deleteRealization`"
     />
+    <PicInfo
+      :dialog="dialogPic"
+      :data-pic="dataPic"
+      :dialog-pic.sync="dialogPic"
+      :pic-date.sync="dataPic"
+      :store-path-pic="`logistics/deleteRealization`"
+    />
   </div>
 </template>
 
@@ -677,6 +696,7 @@
 import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
+import PicInfo from '@/components/PicInfo'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
@@ -689,7 +709,8 @@ export default {
     rejectKebutuhanLogistik,
     reasonDeniedLogisticNeeds,
     CheckStockDialog,
-    DialogDelete
+    DialogDelete,
+    PicInfo
   },
   data() {
     return {
@@ -712,6 +733,8 @@ export default {
       dialogStock: false,
       dialogDelete: false,
       dataDelete: null,
+      dialogPic: false,
+      dataPic: null,
       logisticNeeds: []
     }
   },
@@ -790,12 +813,25 @@ export default {
       }
       this.dataDelete = await item
     },
+    async picPopUp(item, recommendation, realization, name) {
+      this.dialogPic = true
+      if (realization) {
+        item.name = item.realized_by.name
+        item.agency_name = item.realized_by.agency_name
+        item.handphone = item.realized_by.handphone
+      } else {
+        item.name = item.recommend_by.name
+        item.agency_name = item.recommend_by.agency_name
+        item.handphone = item.recommend_by.handphone
+      }
+      this.dataPic = await item
+    },
     async getListRealizationAdmin() {
       this.loaded = false
       await this.$store.dispatch('logistics/getLogisticNeedsAdmin', this.listQuery)
       this.listRealization.forEach(element => {
-        element.recommendBy = element.recommend_by ? element.recommend_by.name + ' (' + element.recommend_by.agency_name + ')' : null
-        element.realizedBy = element.realized_by ? element.realized_by.name + ' (' + element.realized_by.agency_name + ')' : null
+        element.recommendBy = element.recommend_by ? element.recommend_by.name : null
+        element.realizedBy = element.realized_by ? element.realized_by.name : null
         switch (element.recommendation_status) {
           case 'approved':
             element.recommendationStatusLabel = this.$t('label.approved')
@@ -852,8 +888,8 @@ export default {
       this.loaded = false
       await this.$store.dispatch('logistics/getListDetailLogisticNeeds', this.listQuery)
       this.listLogisticNeeds.forEach(element => {
-        element.recommendBy = element.recommend_by ? element.recommend_by.name + ' (' + element.recommend_by.agency_name + ')' : null
-        element.realizedBy = element.realized_by ? element.realized_by.name + ' (' + element.realized_by.agency_name + ')' : null
+        element.recommendBy = element.recommend_by ? element.recommend_by.name : null
+        element.realizedBy = element.realized_by ? element.realized_by.name : null
         switch (element.recommendation_status) {
           case 'approved':
             element.recommendationStatusLabel = this.$t('label.approved')
