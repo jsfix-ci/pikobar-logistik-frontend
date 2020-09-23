@@ -12,16 +12,6 @@ const pengajuanLogistik = {
   active: false,
   children: [
     {
-      path: '/alat-kesehatan/terverifikasi',
-      component: () => import('@/views/pengajuanLogistik/list'),
-      name: 'verified',
-      meta: {
-        title: 'verified_title',
-        noCache: true,
-        roles: ['superadmin', 'dinkesprov']
-      }
-    },
-    {
       path: '/alat-kesehatan/belum-terverifikasi',
       component: () => import('@/views/pengajuanLogistik/list'),
       name: 'notVerified',
@@ -32,11 +22,11 @@ const pengajuanLogistik = {
       }
     },
     {
-      path: '/alat-kesehatan/ditolak',
+      path: '/alat-kesehatan/terverifikasi',
       component: () => import('@/views/pengajuanLogistik/list'),
-      name: 'rejected',
+      name: 'verified',
       meta: {
-        title: 'rejected_title',
+        title: 'verified_title',
         noCache: true,
         roles: ['superadmin', 'dinkesprov']
       }
@@ -47,6 +37,16 @@ const pengajuanLogistik = {
       name: 'approved',
       meta: {
         title: 'approved_title',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov']
+      }
+    },
+    {
+      path: '/alat-kesehatan/ditolak',
+      component: () => import('@/views/pengajuanLogistik/list'),
+      name: 'rejected',
+      meta: {
+        title: 'rejected_title',
         noCache: true,
         roles: ['superadmin', 'dinkesprov']
       }
