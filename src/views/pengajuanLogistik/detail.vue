@@ -51,39 +51,49 @@
           <span class="text-title">{{ $t('label.status') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="2" sm="2">
-          <span
-            v-if="isVerified && !isApproved && !isRejectedApproval"
-            class="text-data-green"
-          >
-            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}
-          </span>
-          <span
-            v-else-if="isFinalized"
-            class="text-data-green"
-          >
-            :  {{ $t('label.finalized_status') }}
-          </span>
-          <span
-            v-else-if="isApproved"
-            class="text-data-green"
-          >
-            :  {{ detailLogisticRequest.applicant.approval_status }}
-          </span>
-          <span
-            v-else-if="isRejectedApproval"
-            class="text-data-red"
-          >
-            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.approval_status : '-' }}
-          </span>
-          <span
-            v-else
-            class="text-data-red"
-          >
-            :  {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}
+          <span v-if="isVerified && !isApproved && !isRejectedApproval" class="text-data-green"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}</span>
+          <span v-else-if="isFinalized" class="text-data-green"> : {{ $t('label.finalized_status') }}</span>
+          <span v-else-if="isApproved" class="text-data-green"> : {{ detailLogisticRequest.applicant.approval_status }}</span>
+          <span v-else-if="isRejectedApproval" class="text-data-red"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.approval_status : '-' }}</span>
+          <span v-else class="text-data-red"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}</span>
+        </v-col>
+      </v-row>
+      <v-row v-if="isFinalized">
+        <v-col cols="2" sm="2">
+          <span class="text-title">{{ $t('label.approved_by') }}</span>
+        </v-col>
+        <v-col class="margin-left-min-30" cols="5" sm="5">
+          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by.name + ' (' + detailLogisticRequest.applicant.approved_by.handphone + ')' }}</span>
+          <br>
+          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by.agency_name }}</span>
+        </v-col>
+      </v-row>
+      <v-row v-else-if="isApproved">
+        <v-col cols="2" sm="2">
+          <span class="text-title">{{ $t('label.approved_by') }}</span>
+        </v-col>
+        <v-col class="margin-left-min-30" cols="5" sm="5">
+          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by.name + ' (' + detailLogisticRequest.applicant.approved_by.handphone + ')' }}</span>
+          <br>
+          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
+        </v-col>
+        <v-col cols="9" sm="10">
+          <span style="margin-left: 20px">
+            <v-btn
+              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
+              outlined
+              color="#2E7D32"
+              class="margin-btn"
+              @click="submitFinal()"
+            >
+              {{ $t('label.final') }}
+            </v-btn>
           </span>
         </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="5" sm="5">
-          <span>
+          <span style="margin-left: 20px">
             <v-btn
               v-if="!isVerified && !isRejected"
               outlined
@@ -130,37 +140,6 @@
               @click="setTotal()"
             >
               {{ $t('route.rejected_title') }}
-            </v-btn>
-          </span>
-        </v-col>
-      </v-row>
-      <v-row v-if="isFinalized">
-        <v-col cols="3" sm="2">
-          <span class="text-title">{{ $t('label.approved_by') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="2" sm="2">
-          <span> :  {{ detailLogisticRequest.applicant.finalized_by.name + ' (' + detailLogisticRequest.applicant.finalized_by.agency_name + ')' }}</span>
-        </v-col>
-      </v-row>
-      <v-row v-else-if="isApproved">
-        <v-col cols="3" sm="2">
-          <span class="text-title">{{ $t('label.approved_by') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="2" sm="2">
-          <span
-            class="text-data-green"
-          >:  {{ detailLogisticRequest.applicant.approved_by.name + ' (' + detailLogisticRequest.applicant.approved_by.agency_name + ')' }}</span>
-        </v-col>
-        <v-col cols="5" sm="5">
-          <span>
-            <v-btn
-              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
-              outlined
-              color="#2E7D32"
-              class="margin-btn"
-              @click="submitFinal()"
-            >
-              {{ $t('label.final') }}
             </v-btn>
           </span>
         </v-col>
@@ -452,7 +431,10 @@
                         {{ item.recommendationStatusLabel || '-' }}
                       </span>
                     </td>
-                    <td v-if="isVerified">{{ item.recommendBy || '-' }}</td>
+                    <td v-if="isVerified">
+                      <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
+                      <span v-else>-</span>
+                    </td>
                     <td v-if="isVerified && !isApproved">
                       <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, false)">
                         {{ $t('label.update') }}
@@ -470,7 +452,10 @@
                         {{ item.realizationStatusLabel || '-' }}
                       </span>
                     </td>
-                    <td v-if="isApproved">{{ item.realizedBy || '-' }}</td>
+                    <td v-if="isApproved">
+                      <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
+                      <span v-else>-</span>
+                    </td>
                     <td v-if="isApproved">
                       <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, true)">
                         {{ $t('label.update') }}
@@ -546,7 +531,10 @@
                           <td>{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
                           <td>{{ item.recommendation_date || '-' }}</td>
                           <td>{{ item.recommendationStatusLabel || '-' }}</td>
-                          <td>{{ item.recommendBy || '-' }}</td>
+                          <td>
+                            <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
+                            <span v-else>-</span>
+                          </td>
                           <td v-if="isVerified && !isApproved">
                             <v-card-actions>
                               <v-menu
@@ -595,7 +583,10 @@
                               {{ item.realizationStatusLabel || '-' }}
                             </span>
                           </td>
-                          <td v-if="isApproved">{{ item.realizedBy || '-' }}</td>
+                          <td v-if="isApproved">
+                            <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
+                            <span v-else>-</span>
+                          </td>
                           <td v-if="isApproved">
                             <v-card-actions>
                               <v-menu
@@ -670,6 +661,13 @@
       :delete-date.sync="dataDelete"
       :store-path-delete="`logistics/deleteRealization`"
     />
+    <PicInfo
+      :dialog="dialogPic"
+      :data-pic="dataPic"
+      :dialog-pic.sync="dialogPic"
+      :pic-date.sync="dataPic"
+      :store-path-pic="`logistics/deleteRealization`"
+    />
   </div>
 </template>
 
@@ -677,6 +675,7 @@
 import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
+import PicInfo from '@/components/PicInfo'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
@@ -689,7 +688,8 @@ export default {
     rejectKebutuhanLogistik,
     reasonDeniedLogisticNeeds,
     CheckStockDialog,
-    DialogDelete
+    DialogDelete,
+    PicInfo
   },
   data() {
     return {
@@ -712,6 +712,8 @@ export default {
       dialogStock: false,
       dialogDelete: false,
       dataDelete: null,
+      dialogPic: false,
+      dataPic: null,
       logisticNeeds: []
     }
   },
@@ -790,12 +792,25 @@ export default {
       }
       this.dataDelete = await item
     },
+    async picPopUp(item, recommendation, realization, name) {
+      this.dialogPic = true
+      if (realization) {
+        item.name = item.realized_by.name
+        item.agency_name = item.realized_by.agency_name
+        item.handphone = item.realized_by.handphone
+      } else {
+        item.name = item.recommend_by.name
+        item.agency_name = item.recommend_by.agency_name
+        item.handphone = item.recommend_by.handphone
+      }
+      this.dataPic = await item
+    },
     async getListRealizationAdmin() {
       this.loaded = false
       await this.$store.dispatch('logistics/getLogisticNeedsAdmin', this.listQuery)
       this.listRealization.forEach(element => {
-        element.recommendBy = element.recommend_by ? element.recommend_by.name + ' (' + element.recommend_by.agency_name + ')' : null
-        element.realizedBy = element.realized_by ? element.realized_by.name + ' (' + element.realized_by.agency_name + ')' : null
+        element.recommendBy = element.recommend_by ? element.recommend_by.name : null
+        element.realizedBy = element.realized_by ? element.realized_by.name : null
         switch (element.recommendation_status) {
           case 'approved':
             element.recommendationStatusLabel = this.$t('label.approved')
@@ -852,8 +867,8 @@ export default {
       this.loaded = false
       await this.$store.dispatch('logistics/getListDetailLogisticNeeds', this.listQuery)
       this.listLogisticNeeds.forEach(element => {
-        element.recommendBy = element.recommend_by ? element.recommend_by.name + ' (' + element.recommend_by.agency_name + ')' : null
-        element.realizedBy = element.realized_by ? element.realized_by.name + ' (' + element.realized_by.agency_name + ')' : null
+        element.recommendBy = element.recommend_by ? element.recommend_by.name : null
+        element.realizedBy = element.realized_by ? element.realized_by.name : null
         switch (element.recommendation_status) {
           case 'approved':
             element.recommendationStatusLabel = this.$t('label.approved')
