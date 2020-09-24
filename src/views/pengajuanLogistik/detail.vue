@@ -78,7 +78,7 @@
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
         </v-col>
         <v-col cols="9" sm="10">
-          <span>
+          <span style="margin-left: 20px">
             <v-btn
               v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
               outlined
@@ -93,7 +93,7 @@
       </v-row>
       <v-row>
         <v-col cols="5" sm="5">
-          <span>
+          <span style="margin-left: 20px">
             <v-btn
               v-if="!isVerified && !isRejected"
               outlined
