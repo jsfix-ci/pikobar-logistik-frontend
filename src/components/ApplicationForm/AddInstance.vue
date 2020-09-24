@@ -162,7 +162,10 @@
         <v-row>
           <v-col>
             <center>
-              <v-btn color="primary" to="/landing-page" class="white--text">
+              <v-btn v-if="isAdmin" color="primary" class="white--text" @click="show = false">
+                {{ $t('label.ok') }}
+              </v-btn>
+              <v-btn v-else color="primary" to="/landing-page" class="white--text">
                 {{ $t('label.ok') }}
               </v-btn>
             </center>
@@ -228,7 +231,8 @@ export default {
       selectedFileName: '',
       isUpload: false,
       uploadAlert: false,
-      isFileValid: false
+      isFileValid: false,
+      isAdmin: false
     }
   },
   computed: {
@@ -239,6 +243,7 @@ export default {
   async created() {
     await this.setShowDialog()
     await this.$store.dispatch('faskesType/getListFaskesType')
+    this.isAdmin = false
   },
   methods: {
     async submitData() {
@@ -275,7 +280,6 @@ export default {
       this.isUpload = false
       this.uploadAlert = false
       this.isFileValid = false
-      this.$refs.observer.reset()
     },
     resetDialog() {
       this.resetDefaultValue()
@@ -286,7 +290,8 @@ export default {
       this.listQuery.nomor_registrasi = '-'
       this.listQuery.permit_file = '-'
     },
-    async setShowDialog() {
+    async setShowDialog(isAdmin) {
+      this.isAdmin = isAdmin
       this.resetDefaultValue()
       this.listQuery.id_tipe_faskes = null
       this.listQuery.nama_atasan = null

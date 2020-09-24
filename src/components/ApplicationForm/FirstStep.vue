@@ -342,7 +342,7 @@ export default {
     },
     showInstanceDialog() {
       this.showForm = true
-      this.$refs.addInstanceForm.setShowDialog()
+      this.$refs.addInstanceForm.setShowDialog(this.isAdmin)
     }
   }
 }
