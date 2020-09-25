@@ -41,7 +41,7 @@
             />
           </ValidationProvider>
         </v-col>
-        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-30-update-logistic-needs">
+        <v-col v-if="!hideException" class="margin-top-min-30-update-logistic-needs">
           <ValidationProvider
             v-slot="{ errors }"
             rules="requiredAPDName"
@@ -67,7 +67,7 @@
           <br>
           <span class="value-sub-title-update-logistic-needs">{{ item ? item.quantity : '-' }}</span>
         </v-col>
-        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-20-update-logistic-needs">
+        <v-col v-if="!hideException" class="margin-top-min-20-update-logistic-needs">
           <v-row>
             <v-col cols="5">
               <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_amount') }}</span>
@@ -110,7 +110,7 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-30-update-logistic-needs">
+        <v-col v-if="!hideException" class="margin-top-min-30-update-logistic-needs">
           <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_date') }}</span>
           <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
@@ -160,6 +160,7 @@ export default {
       isUpdate: false,
       isVerified: false,
       isApproved: false,
+      hideException: false,
       unitList: [],
       unitId: null,
       dialog: false,
@@ -182,6 +183,10 @@ export default {
         {
           text: this.$t('label.replaced'),
           value: 'replaced'
+        },
+        {
+          text: this.$t('label.not_yet_fulfilled'),
+          value: 'not_yet_fulfilled'
         }
       ]
     }
@@ -209,11 +214,16 @@ export default {
       await this.$store.dispatch('logistics/getStock', param)
     },
     async getListAPD() {
+      this.hideException = false
       this.listQueryAPD.status = null
       this.listQueryAPD.id = null
       if (this.data.status === 'approved') {
         this.listQueryAPD.status = 'approved'
         this.listQueryAPD.id = this.item.product !== undefined ? this.item.product.id : null
+      } else if (this.data.status === 'not_available') {
+        this.hideException = true
+      } else if (this.data.status === 'not_yet_fulfilled') {
+        this.hideException = true
       } else {
         this.listQueryAPD.status = null
         this.listQueryAPD.id = null

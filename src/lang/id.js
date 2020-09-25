@@ -320,6 +320,7 @@ export default {
     not_delivered: 'Belum Dikirim',
     delivered: 'Sudah Dikirim',
     not_available: 'Barang Belum Tersedia',
+    not_yet_fulfilled: 'Belum Bisa Dipenuhi',
     not_approved: 'Belum Disetujui',
     total_data: 'Total Data',
     dashboard_title: 'Statistik Permohonan Logistik',

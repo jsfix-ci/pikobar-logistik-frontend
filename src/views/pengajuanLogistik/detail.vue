@@ -92,7 +92,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="5" sm="5">
+        <v-col cols="12" sm="12">
           <span style="margin-left: 20px">
             <v-btn
               v-if="!isVerified && !isRejected"
@@ -827,6 +827,9 @@ export default {
           case 'replaced':
             element.recommendationStatusLabel = this.$t('label.replaced')
             break
+          case 'not_yet_fulfilled':
+            element.recommendationStatusLabel = this.$t('label.not_yet_fulfilled')
+            break
           default:
             element.recommendationStatusLabel = null
         }
@@ -845,6 +848,9 @@ export default {
             break
           case 'replaced':
             element.realizationStatusLabel = this.$t('label.replaced')
+            break
+          case 'not_yet_fulfilled':
+            element.realizationStatusLabel = this.$t('label.not_yet_fulfilled')
             break
           default:
             element.realizationStatusLabel = this.$t('label.not_approved')
@@ -885,6 +891,9 @@ export default {
           case 'replaced':
             element.recommendationStatusLabel = this.$t('label.replaced')
             break
+          case 'not_yet_fulfilled':
+            element.recommendationStatusLabel = this.$t('label.not_yet_fulfilled')
+            break
           default:
             element.recommendationStatusLabel = this.$t('label.not_approved')
         }
@@ -903,6 +912,9 @@ export default {
             break
           case 'replaced':
             element.realizationStatusLabel = this.$t('label.replaced')
+            break
+          case 'not_yet_fulfilled':
+            element.realizationStatusLabel = this.$t('label.not_yet_fulfilled')
             break
           default:
             element.realizationStatusLabel = this.$t('label.not_approved')
