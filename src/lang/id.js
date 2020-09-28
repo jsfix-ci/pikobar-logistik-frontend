@@ -114,7 +114,7 @@ export default {
     contact_person: 'Nama Pemohon',
     example_contact_person: 'Masukkan nama pemohon/PIC',
     phone_number: 'Nomor Telepon (HP/WA)',
-    example_phone_number: 'Masukkan nomor telepon yang bisa dihubungi',
+    example_phone_number: 'Masukkan nomor telepon yang bisa dihubungi disertai kode area',
     save: 'Simpan',
     save_update: 'Simpan Perubahan',
     faskes_name: 'Nama Faskes',
