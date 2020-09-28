@@ -115,16 +115,16 @@
                   <td>{{ data.applicant.applicant_name }}</td>
                   <td>{{ data.created_at === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
                   <td v-if="isApproved" class="text-center">
-                    <span v-if="data.applicant.approved_by">{{ data.applicant.approved_by.name }}</span>
+                    <span v-if="data.applicant.approved_by" class="green--text">{{ data.applicant.approved_by.name }}</span>
                     <span v-else class="red--text">{{ 'Belum DiSetujui' }}</span>
                   </td>
                   <td v-if="isApproved" class="text-center">
-                    <span v-if="data.applicant.finalized_by">{{ data.applicant.finalized_by.name }}</span>
+                    <span v-if="data.applicant.finalized_by" class="green--text">{{ data.applicant.finalized_by.name }}</span>
                     <span v-else class="red--text">{{ 'Belum diselesaikan' }}</span>
                   </td>
                   <td v-else>{{ data.applicant.status }}</td>
                   <td v-if="isVerified" class="text-center">
-                    <span v-if="data.applicant.verified_by">{{ data.applicant.verified_by.name }}</span>
+                    <span v-if="data.applicant.verified_by" class="green--text">{{ data.applicant.verified_by.name }}</span>
                     <span v-else class="red--text">{{ 'Belum Diverifikasi' }}</span>
                   </td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
