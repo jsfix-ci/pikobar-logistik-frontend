@@ -41,17 +41,6 @@ const letter = {
         noCache: true,
         roles: ['superadmin', 'dinkesprov']
       }
-    },
-    {
-      path: '/letter/incoming/detail/:id',
-      component: () => import('@/views/InboxMail/Detail'),
-      name: 'incoming_mail_detail',
-      hidden: true,
-      meta: {
-        title: 'incoming_mail_detail',
-        noCache: true,
-        roles: ['superadmin', 'dinkesprov']
-      }
     }
   ]
 }
