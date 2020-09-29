@@ -23,7 +23,7 @@ const letter = {
     },
     {
       path: '/letter/incoming',
-      component: () => import('@/views/InboxMail/index'),
+      component: () => import('@/views/InboxMail/list'),
       name: 'incoming_mail',
       meta: {
         title: 'incoming_mail',

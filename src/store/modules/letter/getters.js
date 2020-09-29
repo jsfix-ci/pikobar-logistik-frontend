@@ -8,6 +8,15 @@ export default {
   totalListOutgoingMail: (state) => {
     return state.totalListOutgoingMail
   },
+  listIncomingMail: (state) => {
+    return state.listIncomingMail
+  },
+  totalDataIncomingMail: (state) => {
+    return state.totalDataIncomingMail
+  },
+  totalListIncomingMail: (state) => {
+    return state.totalListIncomingMail
+  },
   applicationLetter: (state) => {
     return state.applicationLetter
   },
