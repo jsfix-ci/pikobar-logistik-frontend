@@ -94,6 +94,7 @@
               <thead>
                 <tr>
                   <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.instance_type').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.instance_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
@@ -109,6 +110,7 @@
               <tbody>
                 <tr v-for="(data, index) in listLogisticRequest" :key="data.index">
                   <td>{{ getTableRowNumbering(index) }}</td>
+                  <td>{{ data.applicant.application_letter_number }}</td>
                   <td>{{ data.master_faskes_type.name }}</td>
                   <td>{{ data.agency_name }}</td>
                   <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
