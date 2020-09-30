@@ -253,7 +253,7 @@ export default {
       this.handleSearch()
     },
     toDetail(data) {
-      this.$router.push(`/incoming/detail/${data.id}`)
+      this.$router.push(`/letter/incoming/detail/${data.id}`)
     }
   }
 }
