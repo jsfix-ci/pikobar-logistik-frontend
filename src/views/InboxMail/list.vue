@@ -121,7 +121,7 @@
                   <td>{{ data.applicant_name }}</td>
                   <td>{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
                   <td>
-                    <span v-if="data.incoming_mail_status==='Ada Surat Perintah'" class="green--text">{{ data.incoming_mail_status }}</span>
+                    <span v-if="data.incoming_mail_status===$t('label.status_outgoing_mail_exists')" class="green--text">{{ data.incoming_mail_status }}</span>
                     <span v-else class="orange--text">{{ data.incoming_mail_status }}</span>
                   </td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
