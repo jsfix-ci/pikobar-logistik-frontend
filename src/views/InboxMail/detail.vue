@@ -416,12 +416,6 @@
             <v-card-text>
               <v-row>
                 <v-col>
-                  <v-btn v-if="isVerified && !isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
-                    <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_recommendation') }}</span>
-                  </v-btn>
-                  <v-btn v-else-if="isVerified && isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
-                    <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_realization') }}</span>
-                  </v-btn>
                   <v-simple-table style="margin-top: 70px">
                     <template v-slot:default>
                       <thead>
