@@ -57,12 +57,8 @@ export default {
   data() {
     return {
       headers: [
-        {
-          text: this.$t('label.apd_name_spec').toUpperCase(),
-          align: 'start',
-          sortable: false,
-          value: 'material_name'
-        },
+        { text: this.$t('label.apd_id_specification').toUpperCase(), align: 'start', sortable: false, value: 'material_id' },
+        { text: this.$t('label.apd_name_spec').toUpperCase(), align: 'start', sortable: false, value: 'material_name' },
         { text: this.$t('label.location_stock').toUpperCase(), sortable: false, value: 'soh_location_name' },
         { text: this.$t('label.remaining_stock').toUpperCase(), sortable: false, align: 'right', value: 'stock_ok' },
         { text: this.$t('label.unit').toUpperCase(), sortable: false, value: 'uom' }

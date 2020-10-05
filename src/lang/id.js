@@ -245,6 +245,7 @@ export default {
     applicant_phone_sub: 'No. HP Pemohon Pengganti',
     applicant_ktp: 'KTP/Kartu Pegawai/Surat Tugas',
     list_logistic_need: 'Daftar Kebutuhan Logistik',
+    apd_id_specification: 'ID Barang',
     apd_name_specification: 'Nama Barang',
     wait: 'Harap Tunggu',
     loading_step_one: 'Saat ini kami sedang menyimpan data kebutuhan Logistik Anda.',
