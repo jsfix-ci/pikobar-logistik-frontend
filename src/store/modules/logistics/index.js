@@ -17,6 +17,7 @@ const state = {
   dataProductTotalRequest: [],
   dataCityTotalRequest: [],
   listStock: [],
+  loadDataStock: false,
   listRealization: [],
   totalListRealization: 0,
   totalDataRealization: 0,

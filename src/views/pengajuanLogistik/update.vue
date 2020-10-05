@@ -54,6 +54,7 @@
               :placeholder="$t('label.choose_apd')"
               :items="listAPD"
               :error-messages="errors"
+              :no-data-text="$t('label.no_data')"
               outlined
               solo-inverted
               item-text="name"

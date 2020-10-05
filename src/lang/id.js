@@ -140,6 +140,8 @@ export default {
     category: 'Kategori',
     check_date: 'Tanggal Pemeriksaan',
     test_result: 'Hasil Test',
+    loading_data: 'Pencarian data...',
+    stock_data_table: 'Barang per Halaman:',
     no_data: 'Tidak ada data',
     stripe: '-',
     applicant_form_header: 'Silahkan isi identitas instansi kesehatan/faskes anda dengan benar sehingga kami bisa melihat kebutuhan yang dibutuhkan oleh faskes anda secara akurat.',
