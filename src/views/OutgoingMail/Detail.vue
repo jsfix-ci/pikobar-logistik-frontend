@@ -308,11 +308,11 @@ export default {
           },
           {
             text: this.$t('label.print_mail_header').toUpperCase(),
-            style: 'address'
+            style: 'headerLetter'
           },
           {
             text: this.$t('label.print_mail_nomor').toUpperCase() + ': ' + this.detailLetter.outgoing_letter.letter_number,
-            style: 'address'
+            style: 'headerLetter'
           },
           {
             text: '\n'
@@ -325,7 +325,12 @@ export default {
                 style: 'fontSizeBody'
               },
               {
-                text: ': ' + this.$t('label.print_mail_purpose_ketua_gugus_tugas'),
+                width: 7,
+                text: ': ',
+                style: 'fontSizeBody'
+              },
+              {
+                text: this.$t('label.print_mail_purpose_ketua_gugus_tugas') + '\n' + this.$t('label.print_mail_footer_covid_manag'),
                 style: 'fontSizeBody'
               }
             ]
@@ -341,7 +346,12 @@ export default {
                 style: 'fontSizeBody'
               },
               {
-                text: ': ' + this.$t('label.print_mail_purpose_to_logistic'),
+                width: 7,
+                text: ': ',
+                style: 'fontSizeBody'
+              },
+              {
+                text: this.$t('label.print_mail_purpose_to_logistic'),
                 style: 'fontSizeBody'
               }
             ]
@@ -365,7 +375,7 @@ export default {
           },
           {
             unbreakable: true,
-            text: this.$t('label.print_mail_city') + '\t' + this.letterDate + '\n\n' + this.$t('label.print_mail_footer_head').toUpperCase() + '\n' + this.$t('label.print_mail_footer_indag').toUpperCase() + '\n' + this.$t('label.print_mail_footer_as') + '\n' + this.$t('label.print_mail_footer_logistic').toUpperCase() + '\n' + this.$t('label.print_mail_footer_covid_manag').toUpperCase() + '\n' + this.$t('label.print_mail_footer_jabar').toUpperCase() + '\n\n\n\n\n\n' + this.$t('label.print_mail_footer_head_name') + '\n' + this.$t('label.print_mail_footer_position') + '\n' + this.$t('label.print_mail_footer_nip') + '\n\n',
+            text: this.$t('label.print_mail_city') + '\t' + this.letterDate + '\n\n' + this.$t('label.print_mail_footer_head').toUpperCase() + '\n' + this.$t('label.print_mail_footer_indag').toUpperCase() + '\n' + this.$t('label.print_mail_footer_as') + '\n' + this.$t('label.print_mail_footer_logistic').toUpperCase() + '\n' + this.$t('label.print_mail_footer_satgas').toUpperCase() + '\n' + this.$t('label.print_mail_footer_covid_manag').toUpperCase() + '\n\n\n\n\n\n' + this.$t('label.print_mail_footer_head_name') + '\n' + this.$t('label.print_mail_footer_position') + '\n' + this.$t('label.print_mail_footer_nip') + '\n\n',
             style: 'signatureTitle'
           }
         ],
@@ -382,6 +392,10 @@ export default {
           },
           address: {
             fontSize: 10,
+            alignment: 'center'
+          },
+          headerLetter: {
+            fontSize: 11,
             alignment: 'center'
           },
           website: {
@@ -407,7 +421,7 @@ export default {
           signatureTitle: {
             fontSize: 11,
             alignment: 'center',
-            margin: [215, 50, 0, 0]
+            margin: [200, 50, 0, 0]
           },
           tableHeader: {
             fontSize: 10,
