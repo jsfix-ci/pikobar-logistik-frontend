@@ -54,10 +54,11 @@
               :placeholder="$t('label.choose_apd')"
               :items="listAPD"
               :error-messages="errors"
+              :no-data-text="$t('label.no_data')"
               outlined
               solo-inverted
               item-text="name"
-              item-value="id"
+              item-value="material_id"
               @change="setUnit(data.product_id)"
             />
           </ValidationProvider>
@@ -78,6 +79,14 @@
                 rules="requiredRealizationAmount|numericRealizationAmount"
               >
                 <v-text-field
+                  v-if="isVerified && !isApproved"
+                  v-model="data.recommendation_quantity"
+                  outlined
+                  solo-inverted
+                  :error-messages="errors"
+                />
+                <v-text-field
+                  v-else
                   v-model="data.realization_quantity"
                   outlined
                   solo-inverted
@@ -92,7 +101,19 @@
                 rules="requiredUnit"
               >
                 <v-autocomplete
-                  v-model="data.unit_id"
+                  v-if="isVerified && !isApproved"
+                  v-model="data.recommendation_unit"
+                  :items="listApdUnit"
+                  outlined
+                  solo-inverted
+                  :no-data-text="$t('label.no_data')"
+                  :error-messages="errors"
+                  item-value="id"
+                  item-text="name"
+                />
+                <v-autocomplete
+                  v-else
+                  v-model="data.realization_unit_id"
                   :items="listApdUnit"
                   outlined
                   solo-inverted
@@ -115,6 +136,12 @@
           <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <date-picker-input
+            v-if="isVerified && !isApproved"
+            :value="data.recommendation_date"
+            @selected="changeDate"
+          />
+          <date-picker-input
+            v-else
             :value="data.realization_date"
             @selected="changeDate"
           />
@@ -231,7 +258,7 @@ export default {
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
         element.value = {
-          id: element.id,
+          id: element.material_id,
           name: element.name
         }
       })
@@ -330,7 +357,11 @@ export default {
       this.$emit('selected', value)
     },
     changeDate(value) {
-      this.data.realization_date = value
+      if (this.isVerified && !this.isApproved) {
+        this.data.recommendation_date = value
+      } else {
+        this.data.realization_date = value
+      }
     }
   }
 }

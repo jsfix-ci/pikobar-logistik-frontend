@@ -41,6 +41,9 @@ export default {
   SET_STOCK: (state, data) => {
     state.listStock = data
   },
+  LOAD_DATA_STOCK: (state, data) => {
+    state.loadDataStock = data
+  },
   SET_LIST_REALIZATION: (state, data) => {
     state.listRealization = data
   },

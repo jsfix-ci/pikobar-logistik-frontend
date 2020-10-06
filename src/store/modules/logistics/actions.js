@@ -21,6 +21,7 @@ export default {
     }
   },
   async getListAPD({ commit }, params) {
+    commit('SET_LIST_APD', [])
     try {
       const response = await fetchList('/api/v1/logistic-realization/products', 'GET', params)
       commit('SET_LIST_APD', response.data)
@@ -174,9 +175,21 @@ export default {
   },
   async getStock({ commit }, params) {
     try {
+      commit('LOAD_DATA_STOCK', true)
       const response = await fetchList('/api/v1/stock', 'GET', params)
       commit('SET_STOCK', response.data)
+      commit('LOAD_DATA_STOCK', false)
       return response
+    } catch (e) {
+      commit('LOAD_DATA_STOCK', false)
+      return e
+    }
+  },
+  async clearStock({ commit }, params) {
+    try {
+      commit('LOAD_DATA_STOCK', true)
+      commit('SET_STOCK', [])
+      commit('LOAD_DATA_STOCK', false)
     } catch (e) {
       return e
     }
