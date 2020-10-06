@@ -196,6 +196,7 @@ export default {
       loaded: false,
       showForm: false,
       dataSource: null,
+      letterDate: null,
       dataUpdate: null,
       dataDelete: null,
       dialogDelete: false,
@@ -229,29 +230,29 @@ export default {
       const value = []
       const column = []
       column.push({ text: this.$t('label.number').toUpperCase(), style: 'tableHeader' })
-      column.push({ text: this.$t('label.print_mail_material').toUpperCase(), style: 'tableHeader' })
+      column.push({ text: this.$t('label.print_mail_receiver').toUpperCase(), style: 'tableHeader' })
+      column.push({ text: this.$t('label.print_mail_material_name').toUpperCase(), style: 'tableHeader' })
       column.push({ text: this.$t('label.total').toUpperCase(), style: 'tableHeader' })
       column.push({ text: this.$t('label.unit').toUpperCase(), style: 'tableHeader' })
-      column.push({ text: this.$t('label.print_mail_material_id').toUpperCase(), style: 'tableHeader' })
-      column.push({ text: this.$t('label.print_mail_material_name').toUpperCase(), style: 'tableHeader' })
-      column.push({ text: this.$t('label.location_stock').toUpperCase(), style: 'tableHeader' })
+      column.push({ text: this.$t('label.print_mail_location_stock').toUpperCase(), style: 'tableHeader' })
       this.detailLetterPrint.request_letter.forEach(element => {
-        instansi.push(element.agency_name + ' ' + this.$t('label.print_mail_with_number') + ' ' + element.application_letter_number)
+        instansi.push(' ' + element.agency_name + ' ' + this.$t('label.print_mail_with_number') + ' ' + element.application_letter_number + ' ' + this.$t('label.date').toLowerCase() + ' ' + this.$moment.utc(element.created_at).tz('Asia/Jakarta').format('DD MMMM YYYY'))
       })
+      this.letterDate = this.$moment.utc(this.detailLetterPrint.outgoing_letter.letter_date).tz('Asia/Jakarta').format('MMMM YYYY')
       this.detailLetterPrint.material.forEach((element, index) => {
-        itemLogistic.push(element.material_group + ' ' + element.realization_quantity + ' ' + element.realization_unit + ' ' + element.product_id)
+        itemLogistic.push(element.material_group + ' ' + element.qty + ' ' + element.final_unit + ' ' + element.final_product_id)
         const dataRow = []
         dataRow.push(index + 1)
-        dataRow.push(element.material_group)
-        dataRow.push(element.realization_quantity)
-        dataRow.push(element.realization_unit)
-        dataRow.push(element.product_id)
-        dataRow.push(element.product_name)
+        dataRow.push(element.agency_name)
+        dataRow.push(element.final_product_name + ' (' + element.final_product_id + ')')
+        dataRow.push({ text: element.qty, alignment: 'right' })
+        dataRow.push(element.final_unit)
         dataRow.push(element.location)
 
         value.push(dataRow)
       })
       const docDefinition = {
+        pageSize: 'A4',
         content: [
           {
             image: this.detailLetterPrint.image.pemprov,
@@ -274,8 +275,12 @@ export default {
             style: 'headerDisperindag'
           },
           {
-            text: this.$t('label.print_mail_address') + ' \n ' + this.$t('label.print_mail_website'),
+            text: this.$t('label.print_mail_address'),
             style: 'address'
+          },
+          {
+            text: this.$t('label.print_mail_website'),
+            style: 'website'
           },
           {
             text: this.$t('label.print_mail_postal_code'),
@@ -302,97 +307,66 @@ export default {
             text: '\n'
           },
           {
-            text: this.$t('label.print_mail_city') + this.$moment(this.detailLetter.outgoing_letter.letter_date).format('LL') + '\n\n',
-            style: 'date',
-            margin: [0, 0, 85, 0]
+            text: this.$t('label.print_mail_header').toUpperCase(),
+            style: 'address'
+          },
+          {
+            text: this.$t('label.print_mail_nomor').toUpperCase() + ': ' + this.detailLetter.outgoing_letter.letter_number,
+            style: 'address'
+          },
+          {
+            text: '\n'
           },
           {
             columns: [
               {
-                width: 70,
-                text: this.$t('label.print_mail_nomor') + '\n' + this.$t('label.print_mail_nature') + '\n' + this.$t('label.print_mail_attachment') + '\n' + this.$t('label.print_mail_purpose') + '\n',
+                width: 40,
+                text: this.$t('label.print_mail_purpose_from'),
                 style: 'fontSizeBody'
               },
               {
-                width: 210,
-                text: ': ' + this.detailLetter.outgoing_letter.letter_number + '\n : ' + this.$t('label.print_mail_usual') + ' \n : ' + this.$t('label.print_mail_one_sheet') + ' \n : ' + this.$t('label.print_mail_logistic_need'),
+                text: ': ' + this.$t('label.print_mail_purpose_ketua_gugus_tugas'),
                 style: 'fontSizeBody'
-              },
-              {
-                text: this.$t('label.print_mail_purpose_governor') + ' \n ' + this.$t('label.print_mail_purpose_gugus_tugas') + ' \n ' + this.$t('label.print_mail_purpose_covid') + ' \n ' + this.$t('label.print_mail_purpose_jabar') + ' \n ' + this.$t('label.print_mail_purpose_in') + ' \n ' + this.$t('label.print_mail_purpose_city') + '\n\n',
-                style: 'fontSizeBody',
-                margin: [20, 0, 0, 0]
               }
             ]
           },
           {
-            text: '\u200B\t\u200B\t\u200B\t\u200B\t' + this.$t('label.print_mail_body_opening') + instansi + this.$t('label.print_mail_body_purpose') + '\n\n',
-            style: 'fontSizeBody'
-          },
-          {
-            text: '\u200B\t\u200B\t\u200B\t\u200B\t' + this.$t('label.print_mail_body_logistic') + '\n\n',
-            style: 'fontSizeBody'
-          },
-          {
-            ol: itemLogistic,
-            margin: [50, 0, 0, 0],
-            style: 'fontSizeBody'
-          },
-          {
-            text: '\n\u200B\t\u200B\t\u200B\t\u200B\t' + this.$t('label.print_mail_body_closing'),
-            style: 'fontSizeBody'
-          },
-          {
-            text: this.$t('label.print_mail_footer_head').toUpperCase() + '\n' + this.$t('label.print_mail_footer_indag').toUpperCase() + '\n' + this.$t('label.print_mail_footer_as') + '\n' + this.$t('label.print_mail_footer_logistic').toUpperCase() + '\n' + this.$t('label.print_mail_footer_covid_manag').toUpperCase() + '\n' + this.$t('label.print_mail_footer_jabar').toUpperCase(),
-            style: 'signatureTitle'
-          },
-          {
-            text: this.$t('label.print_mail_footer_head_name') + '\n' + this.$t('label.print_mail_footer_position') + '\n' + this.$t('label.print_mail_footer_nip') + '\n\n',
-            style: 'signatureData'
-          },
-          {
-            text: this.$t('label.print_mail_copy').toUpperCase(),
-            style: 'fontSizeBody'
-          },
-          {
-            ol: [
-              this.$t('label.print_mail_copy_governor'),
-              this.$t('label.print_mail_copy_sekda'),
-              this.$t('label.print_mail_copy_economic_assistant'),
-              this.$t('label.print_mail_copy_admin_assistant'),
-              this.$t('label.print_mail_copy_law_assistant'),
-              this.$t('label.print_mail_copy_inspecture'),
-              this.$t('label.print_mail_copy_gugus_tugas')
-            ],
-            style: 'fontSizeBody',
-            margin: [20, 10, 0, 0],
-            pageBreak: 'after'
-          },
-          {
-            text: this.$t('label.print_mail_attachment').toUpperCase() + ': ',
-            margin: [250, 0, 0, 10],
-            style: 'fontSizeBody'
+            text: '\n'
           },
           {
             columns: [
               {
-                width: 90,
-                text: this.$t('label.print_mail_nomor').toUpperCase() + ' \n ' + this.$t('label.date').toUpperCase() + ' \n ' + this.$t('label.print_mail_about').toUpperCase(),
+                width: 40,
+                text: this.$t('label.print_mail_purpose_to'),
                 style: 'fontSizeBody'
               },
               {
-                width: 200,
-                text: ': ' + this.detailLetter.outgoing_letter.letter_number + ' \n : ' + this.$moment(this.detailLetter.outgoing_letter.letter_date).format('LL') + ' \n : Penyaluran Permohonan Logistik Kesehatan'
+                text: ': ' + this.$t('label.print_mail_purpose_to_logistic'),
+                style: 'fontSizeBody'
               }
-            ],
-            margin: [250, 0, 0, 30],
+            ]
+          },
+          {
+            text: '\n\n'
+          },
+          {
+            text: this.$t('label.print_mail_body_opening') + '\n\n',
             style: 'fontSizeBody'
           },
           {
+            text: this.$t('label.print_mail_body_agency') + instansi + this.$t('label.print_mail_body_purpose') + '\n\n',
+            style: 'fontSizeBody'
+          },
+          {
+            style: 'fontSizeTable',
             table: {
-              style: 'fontSizeBody',
               body: [column, ...value]
             }
+          },
+          {
+            unbreakable: true,
+            text: this.$t('label.print_mail_city') + '\t' + this.letterDate + '\n\n' + this.$t('label.print_mail_footer_head').toUpperCase() + '\n' + this.$t('label.print_mail_footer_indag').toUpperCase() + '\n' + this.$t('label.print_mail_footer_as') + '\n' + this.$t('label.print_mail_footer_logistic').toUpperCase() + '\n' + this.$t('label.print_mail_footer_covid_manag').toUpperCase() + '\n' + this.$t('label.print_mail_footer_jabar').toUpperCase() + '\n\n\n\n\n\n' + this.$t('label.print_mail_footer_head_name') + '\n' + this.$t('label.print_mail_footer_position') + '\n' + this.$t('label.print_mail_footer_nip') + '\n\n',
+            style: 'signatureTitle'
           }
         ],
         styles: {
@@ -410,6 +384,10 @@ export default {
             fontSize: 10,
             alignment: 'center'
           },
+          website: {
+            fontSize: 9,
+            alignment: 'center'
+          },
           city: {
             fontSize: 11,
             bold: true,
@@ -420,19 +398,20 @@ export default {
             alignment: 'right'
           },
           fontSizeBody: {
+            alignment: 'justify',
             fontSize: 11
+          },
+          fontSizeTable: {
+            fontSize: 10
           },
           signatureTitle: {
             fontSize: 11,
             alignment: 'center',
-            margin: [225, 50, 0, 0]
-          },
-          signatureData: {
-            fontSize: 11,
-            alignment: 'center',
-            margin: [225, 70, 0, 0]
+            margin: [215, 50, 0, 0]
           },
           tableHeader: {
+            fontSize: 10,
+            alignment: 'center',
             bold: true
           }
         }
