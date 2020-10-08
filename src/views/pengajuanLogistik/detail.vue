@@ -414,15 +414,15 @@
                     <td>{{ getTableRowNumbering(index) }}</td>
                     <td>{{ item.product ? item.product.name : '-' }}</td>
                     <td>{{ item.brand || '-' }}</td>
-                    <td class="text-right">{{ item.quantity || '-' }}</td>
+                    <td class="text-right">{{ formatCurrency(item.quantity) || '-' }}</td>
                     <td>{{ item.unit.unit || '-' }}</td>
                     <td>{{ item.usage || '-' }}</td>
                     <td>{{ item.product ? item.product.category : '-' }}</td>
                     <td v-if="isVerified"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
                     <td v-if="isVerified">{{ item.recommendation_product_name || '-' }}</td>
-                    <td v-if="isVerified" class="text-right">{{ item.recommendation_quantity || '-' }}</td>
+                    <td v-if="isVerified" class="text-right">{{ formatCurrency(item.recommendation_quantity) || '-' }}</td>
                     <td v-if="isVerified">{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
-                    <td v-if="isVerified">{{ item.recommendation_date || '-' }}</td>
+                    <td v-if="isVerified">{{ item.recommendationDate || '-' }}</td>
                     <td v-if="isVerified">
                       <span v-if="item.recommendationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
                         {{ item.recommendationStatusLabel || '-' }}
@@ -441,9 +441,9 @@
                       </v-btn>
                     </td>
                     <td v-if="isApproved">{{ item.realization_product_name || '-' }}</td>
-                    <td v-if="isApproved" class="text-right">{{ item.realization_quantity || '-' }}</td>
+                    <td v-if="isApproved" class="text-right">{{ formatCurrency(item.realization_quantity) || '-' }}</td>
                     <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
-                    <td v-if="isApproved">{{ item.realization_date || '-' }}</td>
+                    <td v-if="isApproved">{{ item.realizationDate || '-' }}</td>
                     <td v-if="isApproved">
                       <span v-if="item.realizationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
                         {{ item.realizationStatusLabel || '-' }}
@@ -527,9 +527,9 @@
                         <tr v-for="(item, index) in listRealization" v-else :key="item.index">
                           <td>{{ getTableRowNumbering(index) }}</td>
                           <td>{{ item.recommendation_product_name ? item.recommendation_product_name : '-' }}</td>
-                          <td class="text-right">{{ item.recommendation_quantity || '-' }}</td>
+                          <td class="text-right">{{ formatCurrency(item.recommendation_quantity) || '-' }}</td>
                           <td>{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
-                          <td>{{ item.recommendation_date || '-' }}</td>
+                          <td>{{ item.recommendationDate || '-' }}</td>
                           <td>{{ item.recommendationStatusLabel || '-' }}</td>
                           <td>
                             <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
@@ -572,9 +572,9 @@
                             </v-card-actions>
                           </td>
                           <td v-if="isApproved">{{ item.realization_product_name ? item.realization_product_name : '-' }}</td>
-                          <td v-if="isApproved" class="text-right">{{ item.realization_quantity || '-' }}</td>
+                          <td v-if="isApproved" class="text-right">{{ formatCurrency(item.realization_quantity) || '-' }}</td>
                           <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
-                          <td v-if="isApproved">{{ item.realization_date || '-' }}</td>
+                          <td v-if="isApproved">{{ item.realizationDate || '-' }}</td>
                           <td v-if="isApproved">
                             <span v-if="item.realizationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
                               {{ item.realizationStatusLabel || '-' }}
@@ -811,6 +811,8 @@ export default {
       this.listRealization.forEach(element => {
         element.recommendBy = element.recommend_by ? element.recommend_by.name : null
         element.realizedBy = element.realized_by ? element.realized_by.name : null
+        element.recommendationDate = element.recommendation_date ? this.$moment.utc(element.recommendation_date).tz('Asia/Jakarta').format('DD MMMM YYYY') : '-'
+        element.realizationDate = element.realization_date ? this.$moment.utc(element.realization_date).tz('Asia/Jakarta').format('DD MMMM YYYY') : '-'
         switch (element.recommendation_status) {
           case 'approved':
             element.recommendationStatusLabel = this.$t('label.approved')
@@ -875,6 +877,8 @@ export default {
       this.listLogisticNeeds.forEach(element => {
         element.recommendBy = element.recommend_by ? element.recommend_by.name : null
         element.realizedBy = element.realized_by ? element.realized_by.name : null
+        element.recommendationDate = element.recommendation_date ? this.$moment.utc(element.recommendation_date).tz('Asia/Jakarta').format('DD MMMM YYYY') : '-'
+        element.realizationDate = element.realization_date ? this.$moment.utc(element.realization_date).tz('Asia/Jakarta').format('DD MMMM YYYY') : '-'
         switch (element.recommendation_status) {
           case 'approved':
             element.recommendationStatusLabel = this.$t('label.approved')
@@ -980,6 +984,23 @@ export default {
     },
     back() {
       this.$router.go(-1)
+    },
+    formatCurrency(value, prefix) {
+      if (value) {
+        const number_string = value.toString()
+        const split = number_string.split(',')
+        const modulo = split[0].length % 3
+        let rupiah = split[0].substr(0, modulo)
+        const thousand = split[0].substr(modulo).match(/\d{3}/gi)
+        if (thousand) {
+          const separator = modulo ? '.' : ''
+          rupiah += separator + thousand.join('.')
+        }
+        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah
+        return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '')
+      } else {
+        return '0'
+      }
     }
   }
 }
