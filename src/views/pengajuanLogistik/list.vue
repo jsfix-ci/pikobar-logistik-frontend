@@ -176,7 +176,7 @@ export default {
       ],
       listQuery: {
         page: 1,
-        limit: 10,
+        limit: 3,
         sort: '',
         city_code: '',
         verification_status: '',
