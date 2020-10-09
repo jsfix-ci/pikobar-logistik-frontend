@@ -13,29 +13,39 @@ export default {
   },
   async getListApdUnitMaterialGroup({ commit }, idAlkes) {
     try {
+      commit('LOAD_DATA_STOCK', true)
       const response = await fetchList(`/api/v1/landing-page-registration/product-unit/${idAlkes}`, 'GET')
       commit('SET_LIST_APD_UNIT', response.data)
+      commit('LOAD_DATA_STOCK', false)
       return response
     } catch (e) {
+      commit('LOAD_DATA_STOCK', false)
       return e
     }
   },
   async getListAPD({ commit }, params) {
     commit('SET_LIST_APD', [])
     try {
+      commit('LOAD_DATA_STOCK', true)
       const response = await fetchList('/api/v1/logistic-realization/products', 'GET', params)
       commit('SET_LIST_APD', response.data)
+      commit('LOAD_DATA_STOCK', false)
       return response
     } catch (e) {
+      commit('LOAD_DATA_STOCK', false)
       return e
     }
   },
   async getListApdUnit({ commit }, idAlkes) {
+    commit('SET_LIST_APD_UNIT', [])
     try {
+      commit('LOAD_DATA_STOCK', true)
       const response = await fetchList(`/api/v1/logistic-realization/product-units/${idAlkes}`, 'GET')
       commit('SET_LIST_APD_UNIT', response.data)
+      commit('LOAD_DATA_STOCK', false)
       return response
     } catch (e) {
+      commit('LOAD_DATA_STOCK', false)
       return e
     }
   },

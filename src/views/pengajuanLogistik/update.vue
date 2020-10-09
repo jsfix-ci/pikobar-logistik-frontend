@@ -54,7 +54,7 @@
               :placeholder="$t('label.choose_apd')"
               :items="listAPD"
               :error-messages="errors"
-              :no-data-text="$t('label.no_data')"
+              :no-data-text="loadDataStock ? $t('label.loading_data') : $t('label.no_data')"
               outlined
               solo-inverted
               item-text="name"
@@ -106,7 +106,7 @@
                   :items="listApdUnit"
                   outlined
                   solo-inverted
-                  :no-data-text="$t('label.no_data')"
+                  :no-data-text="loadDataStock ? $t('label.loading_data') : $t('label.no_data')"
                   :error-messages="errors"
                   item-value="id"
                   item-text="name"
@@ -117,7 +117,7 @@
                   :items="listApdUnit"
                   outlined
                   solo-inverted
-                  :no-data-text="$t('label.no_data')"
+                  :no-data-text="loadDataStock ? $t('label.loading_data') : $t('label.no_data')"
                   :error-messages="errors"
                   item-value="id"
                   item-text="name"
@@ -220,7 +220,7 @@ export default {
   },
   computed: {
     ...mapGetters('logistics', [
-      'listAPD', 'listApdUnit'
+      'listAPD', 'listApdUnit', 'loadDataStock'
     ])
   },
   async created() {
