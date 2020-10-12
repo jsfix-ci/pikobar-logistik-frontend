@@ -11,6 +11,16 @@ export default {
       return e
     }
   },
+  async getListIncomingMail({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/incoming-letter', 'GET', params)
+      commit('SET_LIST_INCOMING_MAIL', response.data.data)
+      commit('SET_TOTAL_LIST_INCOMING_MAIL', response.data.last_page)
+      commit('SET_TOTAL_DATA_INCOMING_MAIL', response.data.total)
+    } catch (e) {
+      return e
+    }
+  },
   async getApplicationLetter({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/application-letter/search-by-letter-number', 'GET', params)

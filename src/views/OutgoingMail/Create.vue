@@ -106,10 +106,7 @@
         <v-col v-if="type === 'create'" class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
-            </v-col>
-            <v-col>
-              <v-btn outlined small width="150px" height="50px" color="success">{{ $t('label.outgoing_mail_print') }}</v-btn>
+              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
               <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
@@ -248,7 +245,6 @@ export default {
     },
     hideDialog() {
       this.$refs.observer.reset()
-      window.location.reload()
       EventBus.$emit('dialogHide', false)
     },
     handleSelectedDate(value) {

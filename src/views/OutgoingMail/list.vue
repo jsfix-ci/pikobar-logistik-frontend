@@ -23,13 +23,10 @@
               />
             </v-card>
           </v-col>
-          <v-col cols="12" offset-sm="1" offset-md="1" sm="3" md="3">
+          <v-col cols="12" offset-sm="2" offset-md="5" sm="2" md="2">
             <v-btn color="green" large text outlined style="float: right" @click="addLetter"><v-icon left>mdi-plus</v-icon> {{ $t('label.outgoing_mail_add') }}</v-btn>
           </v-col>
           <v-col cols="12" sm="2" md="2">
-            <v-btn color="green" large text outlined style="margin: auto"><v-icon left>mdi-upload</v-icon> {{ $t('label.outgoing_mail_upload') }}</v-btn>
-          </v-col>
-          <v-col cols="12" sm="1" md="1">
             <v-btn class="primary" large max-width="100px" style="margin-left: 65px" @click="showFilter = !showFilter">{{ $t('label.filter') }} <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon><v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
           </v-col>
         </v-row>

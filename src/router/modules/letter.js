@@ -23,7 +23,7 @@ const letter = {
     },
     {
       path: '/letter/incoming',
-      component: () => import('@/views/InboxMail/index'),
+      component: () => import('@/views/InboxMail/list'),
       name: 'incoming_mail',
       meta: {
         title: 'incoming_mail',
@@ -38,6 +38,17 @@ const letter = {
       hidden: true,
       meta: {
         title: 'outgoing_mail_detail',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov']
+      }
+    },
+    {
+      path: '/letter/incoming/detail/:id',
+      component: () => import('@/views/InboxMail/detail'),
+      name: 'incoming_mail_detail',
+      hidden: true,
+      meta: {
+        title: 'incoming_mail_detail',
         noCache: true,
         roles: ['superadmin', 'dinkesprov']
       }

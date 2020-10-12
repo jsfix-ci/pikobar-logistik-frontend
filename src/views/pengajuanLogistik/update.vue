@@ -41,7 +41,7 @@
             />
           </ValidationProvider>
         </v-col>
-        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-30-update-logistic-needs">
+        <v-col v-if="!hideException" class="margin-top-min-30-update-logistic-needs">
           <ValidationProvider
             v-slot="{ errors }"
             rules="requiredAPDName"
@@ -54,10 +54,11 @@
               :placeholder="$t('label.choose_apd')"
               :items="listAPD"
               :error-messages="errors"
+              :no-data-text="loadDataStock ? $t('label.loading_data') : $t('label.no_data')"
               outlined
               solo-inverted
               item-text="name"
-              item-value="id"
+              item-value="material_id"
               @change="setUnit(data.product_id)"
             />
           </ValidationProvider>
@@ -67,7 +68,7 @@
           <br>
           <span class="value-sub-title-update-logistic-needs">{{ item ? item.quantity : '-' }}</span>
         </v-col>
-        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-20-update-logistic-needs">
+        <v-col v-if="!hideException" class="margin-top-min-20-update-logistic-needs">
           <v-row>
             <v-col cols="5">
               <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_amount') }}</span>
@@ -78,6 +79,14 @@
                 rules="requiredRealizationAmount|numericRealizationAmount"
               >
                 <v-text-field
+                  v-if="isVerified && !isApproved"
+                  v-model="data.recommendation_quantity"
+                  outlined
+                  solo-inverted
+                  :error-messages="errors"
+                />
+                <v-text-field
+                  v-else
                   v-model="data.realization_quantity"
                   outlined
                   solo-inverted
@@ -92,11 +101,23 @@
                 rules="requiredUnit"
               >
                 <v-autocomplete
-                  v-model="data.unit_id"
+                  v-if="isVerified && !isApproved"
+                  v-model="data.recommendation_unit"
                   :items="listApdUnit"
                   outlined
                   solo-inverted
-                  :no-data-text="$t('label.no_data')"
+                  :no-data-text="loadDataStock ? $t('label.loading_data') : $t('label.no_data')"
+                  :error-messages="errors"
+                  item-value="id"
+                  item-text="name"
+                />
+                <v-autocomplete
+                  v-else
+                  v-model="data.realization_unit_id"
+                  :items="listApdUnit"
+                  outlined
+                  solo-inverted
+                  :no-data-text="loadDataStock ? $t('label.loading_data') : $t('label.no_data')"
                   :error-messages="errors"
                   item-value="id"
                   item-text="name"
@@ -110,11 +131,17 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col v-if="data.status !== 'not_available'" class="margin-top-min-30-update-logistic-needs">
+        <v-col v-if="!hideException" class="margin-top-min-30-update-logistic-needs">
           <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_date') }}</span>
           <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <date-picker-input
+            v-if="isVerified && !isApproved"
+            :value="data.recommendation_date"
+            @selected="changeDate"
+          />
+          <date-picker-input
+            v-else
             :value="data.realization_date"
             @selected="changeDate"
           />
@@ -160,6 +187,7 @@ export default {
       isUpdate: false,
       isVerified: false,
       isApproved: false,
+      hideException: false,
       unitList: [],
       unitId: null,
       dialog: false,
@@ -182,13 +210,17 @@ export default {
         {
           text: this.$t('label.replaced'),
           value: 'replaced'
+        },
+        {
+          text: this.$t('label.not_yet_fulfilled'),
+          value: 'not_yet_fulfilled'
         }
       ]
     }
   },
   computed: {
     ...mapGetters('logistics', [
-      'listAPD', 'listApdUnit'
+      'listAPD', 'listApdUnit', 'loadDataStock'
     ])
   },
   async created() {
@@ -209,11 +241,16 @@ export default {
       await this.$store.dispatch('logistics/getStock', param)
     },
     async getListAPD() {
+      this.hideException = false
       this.listQueryAPD.status = null
       this.listQueryAPD.id = null
       if (this.data.status === 'approved') {
         this.listQueryAPD.status = 'approved'
         this.listQueryAPD.id = this.item.product !== undefined ? this.item.product.id : null
+      } else if (this.data.status === 'not_available') {
+        this.hideException = true
+      } else if (this.data.status === 'not_yet_fulfilled') {
+        this.hideException = true
       } else {
         this.listQueryAPD.status = null
         this.listQueryAPD.id = null
@@ -221,7 +258,7 @@ export default {
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
         element.value = {
-          id: element.id,
+          id: element.material_id,
           name: element.name
         }
       })
@@ -320,7 +357,11 @@ export default {
       this.$emit('selected', value)
     },
     changeDate(value) {
-      this.data.realization_date = value
+      if (this.isVerified && !this.isApproved) {
+        this.data.recommendation_date = value
+      } else {
+        this.data.realization_date = value
+      }
     }
   }
 }

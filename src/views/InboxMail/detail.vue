@@ -77,72 +77,6 @@
           <br>
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
         </v-col>
-        <v-col cols="9" sm="10">
-          <span style="margin-left: 20px">
-            <v-btn
-              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
-              outlined
-              color="#2E7D32"
-              class="margin-btn"
-              @click="submitFinal()"
-            >
-              {{ $t('label.final') }}
-            </v-btn>
-          </span>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" sm="12">
-          <span style="margin-left: 20px">
-            <v-btn
-              v-if="!isVerified && !isRejected"
-              outlined
-              color="#2E7D32"
-              class="margin-btn"
-              @click="postVerification"
-            >
-              {{ $t('label.verif_now') }}
-            </v-btn>
-            <v-btn
-              v-if="isRejected || isRejectedApproval"
-              outlined
-              color="#2E7D32"
-              @click.stop="showDialogReasonReject = true"
-            >
-              {{ $t('label.reason_reject') }}
-            </v-btn>
-            <v-btn
-              v-if="isVerified && !isApproved && !isRejectedApproval"
-              outlined
-              color="#2E7D32"
-              class="margin-btn"
-              @click="submitApprove()"
-            >
-              {{ $t('label.approve') }}
-            </v-btn>
-          </span>
-          <span style="margin-left: 20px">
-            <v-btn
-              v-if="!isVerified && !isRejected"
-              outlined
-              color="#e62929"
-              class="margin-btn"
-              @click.stop="showDialogReject = true"
-            >
-              {{ $t('route.rejected_title') }}
-            </v-btn>
-            <v-btn
-              v-if="isVerified && !isApproved && !isRejectedApproval"
-              outlined
-              color="#e62929"
-              class="margin-btn"
-              @click.stop="showDialogReject = true"
-              @click="setTotal()"
-            >
-              {{ $t('route.rejected_title') }}
-            </v-btn>
-          </span>
-        </v-col>
       </v-row>
       <rejectKebutuhanLogistik
         :show="showDialogReject"
@@ -378,14 +312,12 @@
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th colspan="7" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
-                    <th v-if="isVerified" rowspan="2" class="text-center grey lighten-5">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
+                    <th class="text-left" rowspan="2">{{ $t('label.number').toUpperCase() }}</th>
+                    <th colspan="6" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
                     <th v-if="isVerified" colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
                     <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                    <th v-if="isVerified" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                   </tr>
                   <tr>
-                    <th class="text-left green lighten-5">{{ $t('label.number').toUpperCase() }}</th>
                     <th class="text-left green lighten-5">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
                     <th class="text-left green lighten-5">{{ $t('label.description').toUpperCase() }}</th>
                     <th class="text-left green lighten-5">{{ $t('label.total').toUpperCase() }}</th>
@@ -414,15 +346,14 @@
                     <td>{{ getTableRowNumbering(index) }}</td>
                     <td>{{ item.product ? item.product.name : '-' }}</td>
                     <td>{{ item.brand || '-' }}</td>
-                    <td class="text-right">{{ formatCurrency(item.quantity) || '-' }}</td>
+                    <td class="text-right">{{ item.quantity || '-' }}</td>
                     <td>{{ item.unit.unit || '-' }}</td>
                     <td>{{ item.usage || '-' }}</td>
                     <td>{{ item.product ? item.product.category : '-' }}</td>
-                    <td v-if="isVerified"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
                     <td v-if="isVerified">{{ item.recommendation_product_name || '-' }}</td>
-                    <td v-if="isVerified" class="text-right">{{ formatCurrency(item.recommendation_quantity) || '-' }}</td>
+                    <td v-if="isVerified" class="text-right">{{ item.recommendation_quantity || '-' }}</td>
                     <td v-if="isVerified">{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
-                    <td v-if="isVerified">{{ item.recommendationDate || '-' }}</td>
+                    <td v-if="isVerified">{{ item.recommendation_date || '-' }}</td>
                     <td v-if="isVerified">
                       <span v-if="item.recommendationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
                         {{ item.recommendationStatusLabel || '-' }}
@@ -441,9 +372,9 @@
                       </v-btn>
                     </td>
                     <td v-if="isApproved">{{ item.realization_product_name || '-' }}</td>
-                    <td v-if="isApproved" class="text-right">{{ formatCurrency(item.realization_quantity) || '-' }}</td>
+                    <td v-if="isApproved" class="text-right">{{ item.realization_quantity || '-' }}</td>
                     <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
-                    <td v-if="isApproved">{{ item.realizationDate || '-' }}</td>
+                    <td v-if="isApproved">{{ item.realization_date || '-' }}</td>
                     <td v-if="isApproved">
                       <span v-if="item.realizationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
                         {{ item.realizationStatusLabel || '-' }}
@@ -455,11 +386,6 @@
                     <td v-if="isApproved">
                       <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
                       <span v-else>-</span>
-                    </td>
-                    <td v-if="isApproved">
-                      <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, true)">
-                        {{ $t('label.update') }}
-                      </v-btn>
                     </td>
                   </tr>
                 </tbody>
@@ -490,12 +416,6 @@
             <v-card-text>
               <v-row>
                 <v-col>
-                  <v-btn v-if="isVerified && !isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
-                    <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_recommendation') }}</span>
-                  </v-btn>
-                  <v-btn v-else-if="isVerified && isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
-                    <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_realization') }}</span>
-                  </v-btn>
                   <v-simple-table style="margin-top: 70px">
                     <template v-slot:default>
                       <thead>
@@ -503,7 +423,6 @@
                           <th rowspan="2" class="text-center grey lighten-5">{{ $t('label.number').toUpperCase() }}</th>
                           <th colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
                           <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                          <th rowspan="" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                         </tr>
                         <tr>
                           <th class="text-left green lighten-4">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
@@ -527,54 +446,18 @@
                         <tr v-for="(item, index) in listRealization" v-else :key="item.index">
                           <td>{{ getTableRowNumbering(index) }}</td>
                           <td>{{ item.recommendation_product_name ? item.recommendation_product_name : '-' }}</td>
-                          <td class="text-right">{{ formatCurrency(item.recommendation_quantity) || '-' }}</td>
+                          <td class="text-right">{{ item.recommendation_quantity || '-' }}</td>
                           <td>{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
-                          <td>{{ item.recommendationDate || '-' }}</td>
+                          <td>{{ item.recommendation_date || '-' }}</td>
                           <td>{{ item.recommendationStatusLabel || '-' }}</td>
                           <td>
                             <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
                             <span v-else>-</span>
                           </td>
-                          <td v-if="isVerified && !isApproved">
-                            <v-card-actions>
-                              <v-menu
-                                :close-on-content-click="false"
-                                :nudge-width="0"
-                                :nudge-left="0"
-                                :nudge-top="0"
-                                offset-y
-                              >
-                                <template v-slot:activator="{ on }">
-                                  <v-btn
-                                    class="ma-1"
-                                    color="#828282"
-                                    style="text-transform: none;height: 30px;min-width: 50px;"
-                                    tile
-                                    outlined
-                                    v-on="on"
-                                  >
-                                    Pilih aksi<v-icon style="color: #009D57;font-size: 2rem;" right>mdi-menu-down</v-icon>
-                                  </v-btn>
-                                </template>
-                                <v-card>
-                                  <v-list-item>
-                                    <v-btn text small color="info" @click="openForm(null, index, null, true, false)">
-                                      {{ $t('label.update') }}
-                                    </v-btn>
-                                  </v-list-item>
-                                  <v-list-item>
-                                    <v-btn text small color="info" @click="deleteRealization(item, true, false)">
-                                      {{ $t('label.delete') }}
-                                    </v-btn>
-                                  </v-list-item>
-                                </v-card>
-                              </v-menu>
-                            </v-card-actions>
-                          </td>
                           <td v-if="isApproved">{{ item.realization_product_name ? item.realization_product_name : '-' }}</td>
-                          <td v-if="isApproved" class="text-right">{{ formatCurrency(item.realization_quantity) || '-' }}</td>
+                          <td v-if="isApproved" class="text-right">{{ item.realization_quantity || '-' }}</td>
                           <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
-                          <td v-if="isApproved">{{ item.realizationDate || '-' }}</td>
+                          <td v-if="isApproved">{{ item.realization_date || '-' }}</td>
                           <td v-if="isApproved">
                             <span v-if="item.realizationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
                               {{ item.realizationStatusLabel || '-' }}
@@ -586,42 +469,6 @@
                           <td v-if="isApproved">
                             <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
                             <span v-else>-</span>
-                          </td>
-                          <td v-if="isApproved">
-                            <v-card-actions>
-                              <v-menu
-                                :close-on-content-click="false"
-                                :nudge-width="0"
-                                :nudge-left="0"
-                                :nudge-top="0"
-                                offset-y
-                              >
-                                <template v-slot:activator="{ on }">
-                                  <v-btn
-                                    class="ma-1"
-                                    color="#828282"
-                                    style="text-transform: none;height: 30px;min-width: 50px;"
-                                    tile
-                                    outlined
-                                    v-on="on"
-                                  >
-                                    Pilih aksi<v-icon style="color: #009D57;font-size: 2rem;" right>mdi-menu-down</v-icon>
-                                  </v-btn>
-                                </template>
-                                <v-card>
-                                  <v-list-item>
-                                    <v-btn text small color="info" @click="openForm(null, index, null, true, true)">
-                                      {{ $t('label.update') }}
-                                    </v-btn>
-                                  </v-list-item>
-                                  <v-list-item>
-                                    <v-btn text small color="info" @click="deleteRealization(item, true, true)">
-                                      {{ $t('label.delete') }}
-                                    </v-btn>
-                                  </v-list-item>
-                                </v-card>
-                              </v-menu>
-                            </v-card-actions>
                           </td>
                         </tr>
                       </tbody>
@@ -673,22 +520,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import updateKebutuhanLogistik from './update'
-import DialogDelete from '@/components/DialogDelete'
 import PicInfo from '@/components/PicInfo'
-import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
-import rejectKebutuhanLogistik from './reject'
-import reasonDeniedLogisticNeeds from './reasonReject'
 
 export default {
   name: 'ListDetailPengajuanLogistik',
   components: {
-    updateKebutuhanLogistik,
-    rejectKebutuhanLogistik,
-    reasonDeniedLogisticNeeds,
-    CheckStockDialog,
-    DialogDelete,
     PicInfo
   },
   data() {
@@ -811,8 +648,6 @@ export default {
       this.listRealization.forEach(element => {
         element.recommendBy = element.recommend_by ? element.recommend_by.name : null
         element.realizedBy = element.realized_by ? element.realized_by.name : null
-        element.recommendationDate = element.recommendation_date ? this.$moment.utc(element.recommendation_date).tz('Asia/Jakarta').format('DD MMMM YYYY') : '-'
-        element.realizationDate = element.realization_date ? this.$moment.utc(element.realization_date).tz('Asia/Jakarta').format('DD MMMM YYYY') : '-'
         switch (element.recommendation_status) {
           case 'approved':
             element.recommendationStatusLabel = this.$t('label.approved')
@@ -877,8 +712,6 @@ export default {
       this.listLogisticNeeds.forEach(element => {
         element.recommendBy = element.recommend_by ? element.recommend_by.name : null
         element.realizedBy = element.realized_by ? element.realized_by.name : null
-        element.recommendationDate = element.recommendation_date ? this.$moment.utc(element.recommendation_date).tz('Asia/Jakarta').format('DD MMMM YYYY') : '-'
-        element.realizationDate = element.realization_date ? this.$moment.utc(element.realization_date).tz('Asia/Jakarta').format('DD MMMM YYYY') : '-'
         switch (element.recommendation_status) {
           case 'approved':
             element.recommendationStatusLabel = this.$t('label.approved')
@@ -984,23 +817,6 @@ export default {
     },
     back() {
       this.$router.go(-1)
-    },
-    formatCurrency(value) {
-      if (value) {
-        const number_string = value.toString()
-        const split = number_string.split(',')
-        const modulo = split[0].length % 3
-        let result = split[0].substr(0, modulo)
-        const thousand = split[0].substr(modulo).match(/\d{3}/gi)
-        if (thousand) {
-          const separator = modulo ? '.' : ''
-          result += separator + thousand.join('.')
-        }
-        result = split[1] !== undefined ? result + ',' + split[1] : result
-        return result
-      } else {
-        return '0'
-      }
     }
   }
 }

@@ -13,7 +13,7 @@
               class="card-search"
             >
               <v-text-field
-                v-model="listQuery.agency_name"
+                v-model="listQuery.letter_number"
                 solo-inverted
                 flat
                 hide-details
@@ -23,11 +23,8 @@
               />
             </v-card>
           </v-col>
-          <v-col cols="12" offset-sm="4" offset-md="4" sm="2" md="2">
-            <v-btn color="green" large text outlined @click="exportData()"><v-icon left>mdi-upload</v-icon> {{ $t('label.export_data') }}</v-btn>
-          </v-col>
-          <v-col cols="12" sm="2" md="2">
-            <v-btn class="primary" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }} <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon><v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
+          <v-col cols="12" offset-sm="6" offset-md="6" sm="2" md="2">
+            <v-btn class="primary float-right" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }} <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon><v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
           </v-col>
         </v-row>
       </v-card-text>
@@ -56,12 +53,21 @@
           </v-col>
           <v-col cols="12" sm="2">
             <v-label class="title">{{ $t('label.city_district') }}</v-label>
-            <select-area-district-city :on-select-district-city="onSelectDistrictCity" />
+            <v-select
+              v-model="listQuery.district_code"
+              :items="listDistrictCity"
+              solo
+              item-value="kemendagri_kabupaten_kode"
+              item-text="kemendagri_kabupaten_nama"
+              :clearable="true"
+              :placeholder="$t('label.select_district')"
+              @change="handleSearch()"
+            />
           </v-col>
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.instance_type') }}</v-label>
             <v-select
-              v-model="listQuery.faskes_type"
+              v-model="listQuery.agency_type"
               :items="faskesTypeList"
               solo
               item-text="name"
@@ -72,15 +78,15 @@
             />
           </v-col>
           <v-col cols="12" sm="3">
-            <v-label class="title">{{ $t('label.applicant_origin') }}</v-label>
+            <v-label class="title">{{ $t('label.mail_status') }}</v-label>
             <v-select
-              v-model="listQuery.source_data"
-              :items="applicantOrigin"
+              v-model="listQuery.mail_status"
+              :items="mailStatus"
               solo
               item-text="text"
               item-value="value"
               :clearable="true"
-              :placeholder="$t('label.select_applicant_origin')"
+              :placeholder="$t('label.select_mail_status')"
               @change="handleSearch()"
             />
           </v-col>
@@ -95,7 +101,6 @@
                 <tr>
                   <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.instance_type').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.instance_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
@@ -104,34 +109,24 @@
                   <th v-if="isApproved" class="text-center">{{ $t('label.finalized_by').toUpperCase() }}</th>
                   <th v-else class="text-left">{{ $t('label.status').toUpperCase() }}</th>
                   <th v-if="isVerified" class="text-center">{{ $t('label.verified_by').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.action').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(data, index) in listLogisticRequest" :key="data.index">
+                <tr v-for="(data, index) in listIncomingMail" :key="data.index">
                   <td>{{ getTableRowNumbering(index) }}</td>
-                  <td>{{ data.applicant.application_letter_number }}</td>
-                  <td>{{ data.master_faskes_type.name }}</td>
+                  <td>{{ data.letter_number }}</td>
                   <td>{{ data.agency_name }}</td>
-                  <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
-                  <td>{{ data.applicant.applicant_name }}</td>
-                  <td>{{ data.created_at === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
-                  <td v-if="isApproved" class="text-center">
-                    <span v-if="data.applicant.approved_by" class="green--text">{{ data.applicant.approved_by.name }}</span>
-                    <span v-else class="red--text">{{ 'Belum DiSetujui' }}</span>
-                  </td>
-                  <td v-if="isApproved" class="text-center">
-                    <span v-if="data.applicant.finalized_by" class="green--text">{{ data.applicant.finalized_by.name }}</span>
-                    <span v-else class="red--text">{{ 'Belum diselesaikan' }}</span>
-                  </td>
-                  <td v-else>{{ data.applicant.status }}</td>
-                  <td v-if="isVerified" class="text-center">
-                    <span v-if="data.applicant.verified_by" class="green--text">{{ data.applicant.verified_by.name }}</span>
-                    <span v-else class="red--text">{{ 'Belum Diverifikasi' }}</span>
+                  <td>{{ data.district_name }}</td>
+                  <td>{{ data.applicant_name }}</td>
+                  <td>{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
+                  <td>
+                    <span v-if="data.incoming_mail_status===$t('label.status_outgoing_mail_exists')" class="green--text">{{ data.incoming_mail_status }}</span>
+                    <span v-else class="orange--text">{{ data.incoming_mail_status }}</span>
                   </td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
                 </tr>
-                <tr v-if="listLogisticRequest.length === 0">
+                <tr v-if="listIncomingMail.length === 0">
                   <td colspan="10" class="text-center">{{ $t('label.no_data') }}</td>
                 </tr>
               </tbody>
@@ -148,12 +143,12 @@
       >
         <v-list-item>
           <v-list-item-content>
-            {{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}
+            {{ $t('label.total_data') }} : {{ totalDataIncomingMail }}
           </v-list-item-content>
         </v-list-item>
       </v-card>
       <pagination
-        :total="totalListLogisticRequest"
+        :total="totalListIncomingMail"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         :on-next="onNext"
@@ -164,10 +159,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import FileSaver from 'file-saver'
 
 export default {
-  name: 'ListPengajuanLogistik',
+  name: 'ListIncomingMail',
   data() {
     return {
       sortOption: [
@@ -178,9 +172,9 @@ export default {
         page: 1,
         limit: 10,
         sort: '',
-        city_code: '',
-        verification_status: '',
-        agency_name: '',
+        district_code: '',
+        incoming_mail_status: '',
+        letter_number: '',
         date: ''
       },
       status: [
@@ -203,6 +197,16 @@ export default {
           value: 'pikobar'
         }
       ],
+      mailStatus: [
+        {
+          text: this.$t('label.status_outgoing_mail_not_exists'),
+          value: 'not_exists'
+        },
+        {
+          text: this.$t('label.status_outgoing_mail_exists'),
+          value: 'exists'
+        }
+      ],
       date: null,
       showFilter: false,
       isVerified: false,
@@ -210,45 +214,36 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('logistics', [
-      'listLogisticRequest',
-      'totalListLogisticRequest',
-      'totalDataLogisticRequest'
+    ...mapGetters('letter', [
+      'listIncomingMail',
+      'totalListIncomingMail',
+      'totalDataIncomingMail'
     ]),
     ...mapGetters('faskesType', [
       'faskesTypeList'
+    ]),
+    ...mapGetters('region', [
+      'listDistrictCity'
     ])
   },
   async created() {
-    if (this.$route.name === 'verified') {
-      this.isVerified = true
-      this.listQuery.verification_status = 'verified'
-      this.listQuery.approval_status = 'not_approved'
-    } else if (this.$route.name === 'notVerified') {
-      this.listQuery.verification_status = 'not_verified'
-    } else if (this.$route.name === 'rejected') {
-      this.listQuery.is_rejected = 1
-    } else if (this.$route.name === 'approved') {
-      this.listQuery.verification_status = 'verified'
-      this.listQuery.approval_status = 'approved'
-      this.isApproved = true
-    }
     await this.$store.dispatch('faskesType/getListFaskesType')
-    this.getLogisticRequestList()
+    await this.$store.dispatch('region/getListDistrictCity')
+    this.getIncomingMailList()
   },
   methods: {
     async changeDate(value) {
-      this.listQuery.date = value
-      await this.getLogisticRequestList()
+      this.listQuery.letter_date = value
+      await this.getIncomingMailList()
     },
-    async getLogisticRequestList() {
-      await this.$store.dispatch('logistics/getListLogisticRequest', this.listQuery)
+    async getIncomingMailList() {
+      await this.$store.dispatch('letter/getListIncomingMail', this.listQuery)
     },
     async handleSearch() {
-      await this.getLogisticRequestList()
+      await this.getIncomingMailList()
     },
     async onNext() {
-      await this.getLogisticRequestList()
+      await this.getIncomingMailList()
     },
     getTableRowNumbering(index) {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
@@ -258,12 +253,7 @@ export default {
       this.handleSearch()
     },
     toDetail(data) {
-      this.$router.push(`/alat-kesehatan/detail/${data.id}`)
-    },
-    async exportData() {
-      const response = await this.$store.dispatch('logistics/logisticRequestExportData', this.listQuery)
-      const fileName = `${this.$t('label.export_file_name')}-${this.$moment(Date.now()).format('YYYY-MM-DD-h:mm:ss')}.xlsx`
-      await FileSaver.saveAs(response, fileName)
+      this.$router.push(`/letter/incoming/detail/${data.id}`)
     }
   }
 }
