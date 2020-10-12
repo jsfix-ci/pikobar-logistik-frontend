@@ -702,7 +702,7 @@ export default {
       isCreate: false,
       listQuery: {
         page: 1,
-        limit: 10,
+        limit: 3,
         agency_id: null
       },
       showForm: false,
