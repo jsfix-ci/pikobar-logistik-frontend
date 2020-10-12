@@ -4,7 +4,7 @@
     <!-- App Header -->
     <app-header />
     <!-- App Main Content -->
-    <v-main>
+    <v-content>
       <!-- Breadcrumbs -->
       <v-row style="padding: 5px 20px;">
         <breadcrumb />
@@ -15,7 +15,7 @@
           <router-view :key="key" />
         </transition>
       </div>
-    </v-main>
+    </v-content>
     <!-- App Back To Top -->
     <vm-back-top style="bottom: 10px;" />
   </div>
