@@ -283,16 +283,25 @@
                 <template v-slot:default>
                   <thead>
                     <tr>
-                      <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.description').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.total').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.unit').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.purpose').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.item_type').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.recommendation_amount').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.recommendation_date').toUpperCase() }}</th>
-                      <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
+                      <th colspan="6" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
+                      <th colspan="4" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
+                      <th colspan="4" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
+                    </tr>
+                    <tr>
+                      <th class="text-left green lighten-5">{{ $t('label.number').toUpperCase() }}</th>
+                      <th class="text-left green lighten-5">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                      <th class="text-left green lighten-5">{{ $t('label.description').toUpperCase() }}</th>
+                      <th class="text-left green lighten-5">{{ $t('label.total').toUpperCase() }}</th>
+                      <th class="text-left green lighten-5">{{ $t('label.unit').toUpperCase() }}</th>
+                      <th class="text-left green lighten-5">{{ $t('label.item_type').toUpperCase() }}</th>
+                      <th class="text-left green lighten-4">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                      <th class="text-left green lighten-4">{{ $t('label.total').toUpperCase() }}</th>
+                      <th class="text-left green lighten-4">{{ $t('label.unit').toUpperCase() }}</th>
+                      <th class="text-left green lighten-4">{{ $t('label.status').toUpperCase() }}</th>
+                      <th class="text-left green lighten-3">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
+                      <th class="text-left green lighten-3">{{ $t('label.total').toUpperCase() }}</th>
+                      <th class="text-left green lighten-3">{{ $t('label.unit').toUpperCase() }}</th>
+                      <th class="text-left green lighten-3">{{ $t('label.status').toUpperCase() }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -301,15 +310,21 @@
                     </tr>
                     <tr v-for="(item, index) in listLogisticRequest" v-else :key="item.index">
                       <td>{{ getTableRowNumbering(index) }}</td>
-                      <td>{{ item.product_name ? item.product_name : '-' }}</td>
+                      <td>{{ item.need_product_name || '-' }}</td>
                       <td>{{ item.need_description || '-' }}</td>
                       <td>{{ item.need_quantity || '-' }}</td>
                       <td>{{ item.need_unit_name || '-' }}</td>
-                      <td>{{ item.need_usage || '-' }}</td>
-                      <td>{{ item.category ? item.category : '-' }}</td>
+                      <td>{{ item.category || '-' }}</td>
+                      <!-- recommendation -->
+                      <td>{{ item.recommendation_product_name || '-' }}</td>
                       <td>{{ item.recommendation_quantity || '-' }}</td>
-                      <td>{{ item.recommended_at || '-' }}</td>
-                      <td>{{ changeStatus(item.status) }}</td>
+                      <td>{{ item.recommendation_unit_name || '-' }}</td>
+                      <td>{{ changeStatus(item.recommendation_status) || '-' }}</td>
+                      <!-- realization -->
+                      <td>{{ item.final_product_name || '-' }}</td>
+                      <td>{{ item.final_quantity || '-' }}</td>
+                      <td>{{ item.final_unit || '-' }}</td>
+                      <td>{{ changeStatus(item.final_status) || '-' }}</td>
                     </tr>
                   </tbody>
                 </template>

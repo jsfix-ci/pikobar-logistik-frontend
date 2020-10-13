@@ -14,10 +14,10 @@
           </v-card-title>
           <div class="disclaimer">{{ $t('label.dashboard_disclaimer_logistic') }}</div>
           <div class="total-title space-text">{{ $t('label.dashboard_total_logistic_request') }}</div>
-          <span class="total-data space-text">{{ productTopRequest ? productTopRequest.total_items : '-' }}</span> <span class="total-prefix">{{ $t('label.goods') }}</span>
+          <span class="total-data space-text">{{ productTopRequest ? currency(productTopRequest.total_items) : '-' }}</span> <span class="total-prefix">{{ $t('label.goods') }}</span>
           <div class="instance-max space-text" style="padding-top: 15px; margin-right: -120px">{{ $t('label.dashboard_request_max') }}</div>
           <div class="instance-name space-text">{{ productTopRequest ? productTopRequest.total_max.name : '-' }}</div>
-          <span class="instance-max-data space-text">{{ productTopRequest ? productTopRequest.total_max.total : '-' }}</span> <span class="instance-max-prefix">{{ $t('label.pcs') }}</span>
+          <span class="instance-max-data space-text">{{ productTopRequest ? currency(productTopRequest.total_max.total) : '-' }}</span> <span class="instance-max-prefix">{{ $t('label.pcs') }}</span>
         </v-col>
         <v-col cols="7" class="chart-data">
           <v-card-text>
@@ -148,6 +148,10 @@ export default {
         this.index += 1
       })
       this.loaded = true
+    },
+    currency(value) {
+      const formattingNumber = new FormatingNumber()
+      return formattingNumber.formatCurrency(value)
     }
   }
 }

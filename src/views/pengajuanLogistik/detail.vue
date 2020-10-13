@@ -363,7 +363,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <div>
+    <div> <!-- Daftar Barang Permohonan -->
       <v-row>
         <v-col>
           <span class="text-data-green">
