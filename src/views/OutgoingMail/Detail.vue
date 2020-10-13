@@ -29,20 +29,28 @@
     <v-row>
       <v-col>
         <v-card outlined>
-          <v-card-text>
-            <v-row class="ml-2">
-              <v-col cols="6" md="6">
-                <a class="blue--text letter-class" @click="downloadLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
+          <v-col cols="6" md="6">
+            <v-row>
+              <v-col cols="2">
+                <span><b>Status</b></span>
               </v-col>
-              <v-col cols="6" md="6">
-                <div class="margin-top-min-15">
-                  <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="downloadLetter('download')">
-                    {{ $t('label.outgoing_mail_print') }}
-                  </v-btn>
-                </div>
+              <v-col>
+                <span><b>: </b></span>
+                <span v-if="detailLetter.outgoing_letter.file" class="green--text">{{ $t('label.outgoing_mail_ready') }}</span>
+                <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
               </v-col>
             </v-row>
-          </v-card-text>
+            <v-row>
+              <v-col cols="2">
+                <a :href="detailLetter.outgoing_letter.file ? detailLetter.outgoing_letter.file : '#'" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
+              </v-col>
+              <v-col>
+                <v-btn small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="printLetter('download')">
+                  {{ $t('label.outgoing_mail_print') }}
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-col>
         </v-card>
       </v-col>
     </v-row>
@@ -223,7 +231,7 @@ export default {
     await this.getDetailApplication()
   },
   methods: {
-    async downloadLetter(openType) {
+    async printLetter(openType) {
       await this.getDetailPrint()
       const instansi = []
       const itemLogistic = []

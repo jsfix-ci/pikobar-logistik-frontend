@@ -336,6 +336,8 @@ export default {
     status_outgoing_mail_not_exists: 'Belum Ada Surat Perintah',
     status_outgoing_mail_exists: 'Ada Surat Perintah',
     incoming_request_statistic: 'Statistik Permohonan Masuk',
+    outgoing_mail_ready: 'Sudah Tanda Tangan Basah',
+    outgoing_mail_not_ready: 'Belum Tanda Tangan Basah',
     total_incoming_request: 'Total Permohonan Masuk',
     with_pikobar: 'Melalu Pikobar',
     with_dinkes_province: 'Melalui Dinkes Provinsi',
@@ -383,6 +385,7 @@ export default {
     outgoing_mail_data: 'Data Surat Perintah',
     incoming_mail_data: 'Data Surat Masuk',
     outgoing_mail_number: 'No. Surat Perintah',
+    outgoing_mail_name: 'Nama Surat Perintah',
     incoming_mail_number: 'No. Surat Permohonan',
     agency_name: 'Nama Instansi',
     outgoing_mail_number_form: 'Nomor Surat Perintah',
@@ -555,6 +558,7 @@ export default {
       contact_person: 'Nama pemohon harus diisi',
       distribution_date: 'Tanggal distribusi harus diisi',
       select_sub_district: 'Kecamatan harus diisi',
+      letter_name: 'Nama Surat harus diisi',
       letter_number: 'Nomor Surat harus diisi'
     }
   },

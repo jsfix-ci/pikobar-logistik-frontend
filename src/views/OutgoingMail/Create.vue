@@ -13,16 +13,26 @@
         </v-col>
         <v-col v-if="type === 'create'">
           <p class="sub-title-update-logistic-needs">{{ $t('route.outgoing_mail') }}</p>
-          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_number_form') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_name') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
           <ValidationProvider
             v-slot="{ errors }"
-            rules="letterNumber"
+            rules="letterName"
           >
+            <v-text-field
+              v-model="data.letter_name"
+              outlined
+              solo-inverted
+              :error-messages="errors"
+            />
+          </ValidationProvider>
+        </v-col>
+        <v-col v-if="type === 'create'" class="margin-top-min-30-update-logistic-needs">
+          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_number_form') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+          <ValidationProvider>
             <v-text-field
               v-model="data.letter_number"
               outlined
               solo-inverted
-              :error-messages="errors"
             />
           </ValidationProvider>
         </v-col>
@@ -170,6 +180,7 @@ export default {
   data() {
     return {
       data: {
+        letter_name: null,
         letter_number: null,
         letter_date: null,
         letter_request: null
@@ -230,18 +241,26 @@ export default {
       }
       this.data.letter_request = JSON.stringify(this.letter_request)
       if (this.type === 'create') {
-        await this.$store.dispatch('letter/postOutgoingMail', this.data)
+        const response = await this.$store.dispatch('letter/postOutgoingMail', this.data)
+        if (response.status === 200) {
+          window.location.reload()
+        }
       } else if (this.type === 'add') {
         this.data.outgoing_letter_id = this.dataSource.id
-        await this.$store.dispatch('letter/postOutgoingMailApplication', this.data)
+        const response = await this.$store.dispatch('letter/postOutgoingMailApplication', this.data)
+        if (response.status === 200) {
+          window.location.reload()
+        }
       } else if (this.type === 'update') {
         const dataUpdate = {
           id: this.item.id,
           applicant_id: this.item.applicant_id
         }
-        await this.$store.dispatch('letter/updateApplicationLetter', dataUpdate)
+        const response = await this.$store.dispatch('letter/updateApplicationLetter', dataUpdate)
+        if (response.status === 200) {
+          window.location.reload()
+        }
       }
-      window.location.reload()
     },
     hideDialog() {
       this.$refs.observer.reset()
