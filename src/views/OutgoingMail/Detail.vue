@@ -42,7 +42,8 @@
             </v-row>
             <v-row>
               <v-col cols="2">
-                <a :href="detailLetter.outgoing_letter.file ? detailLetter.outgoing_letter.file : '#'" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
+                <a v-if="detailLetter.outgoing_letter.file" :href="detailLetter.outgoing_letter.file" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
+                <a v-else class="blue--text letter-class" @click="printLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
               </v-col>
               <v-col>
                 <v-btn small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="printLetter('download')">
