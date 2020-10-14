@@ -219,7 +219,7 @@ export default {
       try {
         this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
       } catch (error) {
-        this.url = ""
+        this.url = ''
       }
     } else {
       this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
