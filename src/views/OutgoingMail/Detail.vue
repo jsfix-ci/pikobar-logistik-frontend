@@ -41,7 +41,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="2">
+              <v-col cols="6">
                 <a v-if="detailLetter.outgoing_letter.file" :href="detailLetter.outgoing_letter.file" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
                 <a v-else class="blue--text letter-class" @click="printLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
               </v-col>
