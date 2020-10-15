@@ -27,7 +27,7 @@
           </ValidationProvider>
         </v-col>
         <v-col v-if="type === 'create'" class="margin-top-min-30-update-logistic-needs">
-          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_number_form') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_number_form') }}</span>
           <ValidationProvider>
             <v-text-field
               v-model="data.letter_number"
