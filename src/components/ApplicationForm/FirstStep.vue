@@ -42,7 +42,7 @@
                 outlined
                 autocomplete
                 :error-messages="errors"
-                :placeholder="$t('label.example_instance_name')"
+                :placeholder="instanceNamePlaceholder"
                 @input.native="querySearchFaskes"
                 @change="onSelectFaskes"
               />
@@ -57,7 +57,7 @@
                 v-model="formApplicant.instanceEtc"
                 outlined
                 :error-messages="errors"
-                :placeholder="$t('label.autocomplete_instance_placeholder')"
+                :placeholder="instanceNamePlaceholder"
                 solo-inverted
               />
             </ValidationProvider>
@@ -234,7 +234,8 @@ export default {
         id_tipe_faskes: null
       },
       showForm: false,
-      isEtc: false
+      isEtc: false,
+      instanceNamePlaceholder: this.$t('label.example_instance_name')
     }
   },
   computed: {
@@ -318,7 +319,29 @@ export default {
       if (this.formApplicant.instanceType === 4 || this.formApplicant.instanceType === 5) {
         this.isEtc = true
       }
+      this.onChangeInstanceNamePlaceholder(id)
       await this.getListFaskes()
+    },
+    onChangeInstanceNamePlaceholder(value) {
+      switch (value) {
+        case 1:
+          this.instanceNamePlaceholder = this.$t('label.example_instance_name')
+          break
+        case 2:
+          this.instanceNamePlaceholder = this.$t('label.example_instance_second')
+          break
+        case 3:
+          this.instanceNamePlaceholder = this.$t('label.example_instance_three')
+          break
+        case 4:
+          this.instanceNamePlaceholder = this.$t('label.example_instance_last')
+          break
+        case 5:
+          this.instanceNamePlaceholder = this.$t('label.example_instance_last')
+          break
+        default:
+          this.instanceNamePlaceholder = this.$t('label.example_instance_name')
+      }
     },
     async getListFaskes() {
       if (this.isAdmin) {
