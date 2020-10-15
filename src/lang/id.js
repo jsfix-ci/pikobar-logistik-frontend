@@ -257,6 +257,7 @@ export default {
     add_logistics_label: 'Silahkan menambahkan apa saja Alat Pelindung Diri yang anda butuhkan dengan mengklik tombol dibawah ini.',
     alert_logistic_needs: 'Belum ada data logistik',
     max_file_title: 'File dalam bentuk JPG/JPEG/PNG (ukuran maks. 10 MB)',
+    max_type_file_upload_letter: 'File dalam bentuk PDF/JPG/JPEG/PNG (ukuran maks. 10 MB)',
     status: 'Status',
     mail_status: 'Status Surat',
     select_mail_status: 'Pilih Status Surat',

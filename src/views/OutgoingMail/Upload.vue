@@ -26,6 +26,7 @@
           <v-col>
             <v-label class="title"><b>{{ $t('route.outgoing_mail') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
             <br>
+            <v-label><i class="text-small-second-step">({{ $t('label.max_type_file_upload_letter') }})</i></v-label>
             <v-row>
               <v-col cols="3" sm="6" md="3">
                 <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
@@ -125,7 +126,10 @@ export default {
     return {
       isSuccess: false,
       isFail: false,
-      data: {},
+      data: {
+        id: null,
+        letter_number: null
+      },
       // Upload Parameter
       isUpload: false,
       selectedFile: null,
@@ -152,6 +156,14 @@ export default {
     },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0]
+      if (this.selectedFile.size <= 10000000) {
+        this.isFileValid = true
+        this.uploadAlert = false
+      } else {
+        this.isFileValid = false
+        this.uploadAlert = true
+        return
+      }
       this.selectedFileName = this.selectedFile.name
       this.isUpload = true
       this.outgoingLetter = this.selectedFile
@@ -179,7 +191,10 @@ export default {
       this.reset()
     },
     reset() {
-      this.data = {}
+      this.data = {
+        id: null,
+        letter_number: null
+      }
       this.isUpload = false
       this.selectedFile = null
       this.selectedFileName = ''
