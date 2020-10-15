@@ -379,10 +379,10 @@
                 <thead>
                   <tr>
                     <th colspan="7" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
-                    <th v-if="isVerified" rowspan="2" class="text-center grey lighten-5">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
+                    <th v-if="isVerified && !isFinalized" rowspan="2" class="text-center grey lighten-5">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
                     <th v-if="isVerified" colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
                     <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                    <th v-if="isVerified" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
+                    <th v-if="isVerified && !isFinalized" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                   </tr>
                   <tr>
                     <th class="text-left green lighten-5">{{ $t('label.number').toUpperCase() }}</th>
@@ -418,7 +418,7 @@
                     <td>{{ item.unit.unit || '-' }}</td>
                     <td>{{ item.usage || '-' }}</td>
                     <td>{{ item.product ? item.product.category : '-' }}</td>
-                    <td v-if="isVerified"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
+                    <td v-if="isVerified && !isFinalized"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
                     <td v-if="isVerified">{{ item.recommendation_product_name || '-' }}</td>
                     <td v-if="isVerified" class="text-right">{{ formatCurrency(item.recommendation_quantity) || '-' }}</td>
                     <td v-if="isVerified">{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
@@ -456,7 +456,7 @@
                       <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
                       <span v-else>-</span>
                     </td>
-                    <td v-if="isApproved">
+                    <td v-if="isApproved && !isFinalized">
                       <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, true)">
                         {{ $t('label.update') }}
                       </v-btn>
@@ -490,10 +490,10 @@
             <v-card-text>
               <v-row>
                 <v-col>
-                  <v-btn v-if="isVerified && !isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
+                  <v-btn v-if="isVerified && !isApproved && !isFinalized" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
                     <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_recommendation') }}</span>
                   </v-btn>
-                  <v-btn v-else-if="isVerified && isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
+                  <v-btn v-else-if="isVerified && isApproved && !isFinalized" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
                     <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_realization') }}</span>
                   </v-btn>
                   <v-simple-table style="margin-top: 70px">
@@ -503,7 +503,7 @@
                           <th rowspan="2" class="text-center grey lighten-5">{{ $t('label.number').toUpperCase() }}</th>
                           <th colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
                           <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                          <th rowspan="" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
+                          <th v-if="!isFinalized" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                         </tr>
                         <tr>
                           <th class="text-left green lighten-4">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
@@ -587,7 +587,7 @@
                             <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
                             <span v-else>-</span>
                           </td>
-                          <td v-if="isApproved">
+                          <td v-if="isApproved && !isFinalized">
                             <v-card-actions>
                               <v-menu
                                 :close-on-content-click="false"
