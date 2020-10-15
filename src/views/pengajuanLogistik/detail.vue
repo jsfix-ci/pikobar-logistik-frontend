@@ -63,7 +63,7 @@
           <span class="text-title">{{ $t('label.approved_by') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by.name + ' (' + detailLogisticRequest.applicant.approved_by.handphone + ')' }}</span>
+          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by.name + picHandphone }}</span>
           <br>
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by.agency_name }}</span>
         </v-col>
@@ -73,7 +73,7 @@
           <span class="text-title">{{ $t('label.approved_by') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by.name + ' (' + detailLogisticRequest.applicant.approved_by.handphone + ')' }}</span>
+          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by.name + picHandphone }}</span>
           <br>
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
         </v-col>
@@ -714,7 +714,8 @@ export default {
       dataDelete: null,
       dialogPic: false,
       dataPic: null,
-      logisticNeeds: []
+      logisticNeeds: [],
+      picHandphone: ''
     }
   },
   computed: {
@@ -734,6 +735,9 @@ export default {
     await this.getListDetailNeeds()
     await this.getListRealizationAdmin()
     const temp = this.detailLogisticRequest.letter.letter.split('.')
+    if (this.detailLogisticRequest.applicant.approved_by.handphone) {
+      this.picHandphone = ' (' + this.detailLogisticRequest.applicant.approved_by.handphone + ')'
+    }
     this.letterFileType = temp[temp.length - 1]
     this.isVerified = this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi'
     this.isRejected = this.detailLogisticRequest.applicant.verification_status === 'Pengajuan Ditolak'
