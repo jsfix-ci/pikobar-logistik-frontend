@@ -79,7 +79,7 @@
           />
         </v-card>
       </v-col>
-      <v-col>
+      <v-col v-if="!detailLetter.outgoing_letter.file">
         <v-btn outlined color="success" height="50px" absolute right @click.stop="openForm('add')">
           <v-icon dark>mdi-plus</v-icon>
           {{ $t('label.outgoing_mail_add_number_letter') }}
@@ -100,7 +100,7 @@
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
+                  <th v-if="!detailLetter.outgoing_letter.file" class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -115,7 +115,7 @@
                   <td>{{ item.applicant_name || '-' }}</td>
                   <td>{{ item.realization_total }}</td>
                   <td>{{ item.realization_date || '-' }}</td>
-                  <td>
+                  <td v-if="!detailLetter.outgoing_letter.file">
                     <v-card-actions>
                       <v-menu
                         :close-on-content-click="false"
