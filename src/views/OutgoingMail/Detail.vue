@@ -194,6 +194,7 @@ import { mapGetters } from 'vuex'
 import CreateLetter from './Create'
 import DialogDelete from '@/components/DialogDelete'
 import pdfMake from 'pdfmake/build/pdfmake'
+import EventBus from '@/utils/eventBus'
 
 export default {
   components: {
@@ -230,6 +231,12 @@ export default {
   async created() {
     await this.getDetailData()
     await this.getDetailApplication()
+    EventBus.$on('createDialogHide', (value) => {
+      this.showForm = false
+      if (value) {
+        this.getDetailApplication()
+      }
+    })
   },
   methods: {
     async printLetter(openType) {

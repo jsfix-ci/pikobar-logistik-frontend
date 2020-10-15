@@ -116,7 +116,7 @@
         <v-col v-if="type === 'create'" class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
               <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
@@ -126,7 +126,7 @@
         <v-col v-else-if="type === 'update'" class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
               <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.save_update') }}</v-btn>
@@ -134,12 +134,17 @@
           </v-row>
         </v-col>
         <v-col v-else class="margin-top-min-10-update-logistic-needs">
-          <v-row>
+          <v-row v-if="processRequest">
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
               <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
+            </v-col>
+          </v-row>
+          <v-row v-else>
+            <v-col>
+              <span>{{ $t('label.loading_step_two') }}</span>
             </v-col>
           </v-row>
         </v-col>
@@ -200,7 +205,8 @@ export default {
       labelDate: this.$t('label.input_date'),
       listQuery: {
         request_letter_id: null
-      }
+      },
+      processRequest: true
     }
   },
   computed: {
@@ -235,6 +241,7 @@ export default {
       await this.getApplicationLetter(value ? value.applicant_id : null)
     },
     async submitData() {
+      this.processRequest = false
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
@@ -243,13 +250,13 @@ export default {
       if (this.type === 'create') {
         const response = await this.$store.dispatch('letter/postOutgoingMail', this.data)
         if (response.status === 200) {
-          window.location.reload()
+          this.hideDialog(true)
         }
       } else if (this.type === 'add') {
         this.data.outgoing_letter_id = this.dataSource.id
         const response = await this.$store.dispatch('letter/postOutgoingMailApplication', this.data)
         if (response.status === 200) {
-          window.location.reload()
+          this.hideDialog(true)
         }
       } else if (this.type === 'update') {
         const dataUpdate = {
@@ -258,13 +265,14 @@ export default {
         }
         const response = await this.$store.dispatch('letter/updateApplicationLetter', dataUpdate)
         if (response.status === 200) {
-          window.location.reload()
+          this.hideDialog(true)
         }
       }
+      this.processRequest = true
     },
-    hideDialog() {
+    hideDialog(value) {
       this.$refs.observer.reset()
-      EventBus.$emit('dialogHide', false)
+      EventBus.$emit('createDialogHide', value)
     },
     handleSelectedDate(value) {
       this.$emit('selected', value)
