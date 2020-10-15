@@ -68,7 +68,6 @@
                   <th class="text-center">{{ $t('label.outgoing_mail_number').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.outgoing_mail_date').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.outgoing_mail_total').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('route.outgoing_mail').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
@@ -80,21 +79,7 @@
                   <td align="center">{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
                   <td align="center">{{ data.request_letter_total }}</td>
                   <td align="center">
-                    <v-btn
-                      v-if="data.file"
-                      small
-                      outlined
-                      color="success"
-                      :href="data.file ? data.file : '#'"
-                      target="_blank"
-                      class="blue--text letter-class"
-                    >
-                      <v-icon small>mdi-download</v-icon> {{ $t('label.download') }}
-                    </v-btn>
-                    <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
-                  </td>
-                  <td>
-                    <v-card-actions>
+                    <v-card-actions class="justify-center">
                       <v-menu
                         :close-on-content-click="false"
                         :nudge-width="0"
@@ -106,7 +91,7 @@
                           <v-btn
                             class="ma-1"
                             color="#828282"
-                            style="text-transform: none;height: 30px;min-width: 50px;"
+                            style="text-transform: none; height: 30px; min-width: 50px;"
                             tile
                             outlined
                             v-on="on"
@@ -115,11 +100,14 @@
                           </v-btn>
                         </template>
                         <v-card>
-                          <v-list-item>
-                            <v-btn text small color="info" @click="uploadLetter(data)"><v-icon left>mdi-upload</v-icon> {{ $t('label.outgoing_mail_upload') }}</v-btn>
+                          <v-list-item @click="uploadLetter(data)">
+                            <span class="blue--text"><v-icon class="blue--text" left>mdi-upload</v-icon> {{ $t('label.outgoing_mail_upload') }}</span>
                           </v-list-item>
-                          <v-list-item>
-                            <v-btn text small color="info" @click="toDetail(data)"><v-icon left>mdi-view-list</v-icon> {{ $t('label.detail') }}</v-btn>
+                          <v-list-item v-if="data.file" @click="download(data.file)">
+                            <span class="green--text"><v-icon class="green--text" left>mdi-download</v-icon> {{ $t('label.download') }}</span>
+                          </v-list-item>
+                          <v-list-item @click="toDetail(data)">
+                            <span class="black--text"><v-icon class="black--text" left>mdi-view-list</v-icon> {{ $t('label.detail') }}</span>
                           </v-list-item>
                         </v-card>
                       </v-menu>
@@ -218,6 +206,9 @@ export default {
   methods: {
     toDetail(data) {
       this.$router.push(`/letter/outgoing/detail/${data.id}`)
+    },
+    download(data) {
+      window.open(data)
     },
     addLetter() {
       this.showForm = true
