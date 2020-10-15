@@ -14,8 +14,7 @@ if (process.env.VUE_APP_PORT !== undefined && process.env.VUE_APP_PORT.length > 
 // create an axios instance
 const service = axios.create({
   baseURL: url, // api base_url
-  withCredentials: false, // cookies
-  timeout: 10000 // request timeout
+  withCredentials: false // cookies
 })
 
 // request interceptor
