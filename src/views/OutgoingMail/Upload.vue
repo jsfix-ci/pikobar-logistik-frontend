@@ -89,10 +89,12 @@
         <v-col class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-if="processRequest" outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-else disabled outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
-              <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.upload') }}</v-btn>
+              <v-btn v-if="processRequest" small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.upload') }}</v-btn>
+              <v-btn v-else disabled small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.upload') }}</v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -135,7 +137,8 @@ export default {
       selectedFile: null,
       selectedFileName: '',
       uploadAlert: false,
-      letterNumber: null
+      letterNumber: null,
+      processRequest: true
     }
   },
   computed: {
@@ -169,6 +172,7 @@ export default {
       this.outgoingLetter = this.selectedFile
     },
     async submitData() {
+      this.processRequest = false
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         this.uploadAlert = true
@@ -184,6 +188,7 @@ export default {
       } else {
         this.isFail = true
       }
+      this.processRequest = true
     },
     hideDialog(value) {
       this.$refs.observer.reset()

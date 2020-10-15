@@ -134,17 +134,14 @@
           </v-row>
         </v-col>
         <v-col v-else class="margin-top-min-10-update-logistic-needs">
-          <v-row v-if="processRequest">
+          <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-if="processRequest" outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-else disabled outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
-              <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
-            </v-col>
-          </v-row>
-          <v-row v-else>
-            <v-col>
-              <span>{{ $t('label.loading_step_two') }}</span>
+              <v-btn v-if="processRequest" small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
+              <v-btn v-else disabled small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
             </v-col>
           </v-row>
         </v-col>
