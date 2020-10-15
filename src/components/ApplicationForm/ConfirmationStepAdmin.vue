@@ -298,7 +298,7 @@ export default {
       const response = await this.$store.dispatch('logistics/postApplicantFormAdmin', formData)
       if (response.status === 200) {
         this.isDone = true
-      } else {        
+      } else {
         this.isDone = false
       }
       this.isLoading = false
