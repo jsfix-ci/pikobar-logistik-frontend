@@ -9,13 +9,15 @@
       <v-row>
         <v-col cols="3" sm="2">
           <div class="text-title">{{ $t('label.letter_number') }}</div>
+          <div class="text-title">{{ $t('label.outgoing_mail_name') }}</div>
           <div class="text-title">{{ $t('label.outgoing_mail_date_print') }}</div>
           <div class="text-title">{{ $t('label.outgoing_mail_total_applicant') }}</div>
         </v-col>
         <v-col cols="7" sm="8">
           <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</div>
+          <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.letter_name : '-' }}</div>
           <div class="text-data-green">:  {{ detailLetter ? $moment.utc(detailLetter.outgoing_letter.letter_date).tz('Asia/Jakarta').format('LL') : '-' }}</div>
-          <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.request_letter_total : '-' }}</div>
+          <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.request_letter_total + ' Surat Permohonan' : '-' }}</div>
         </v-col>
       </v-row>
     </div>
@@ -114,7 +116,7 @@
                   <td>{{ item.kemendagri_kabupaten_nama || '-' }}</td>
                   <td>{{ item.applicant_name || '-' }}</td>
                   <td>{{ item.realization_total }}</td>
-                  <td>{{ item.realization_date || '-' }}</td>
+                  <td>{{ $moment.utc(item.realization_date).tz('Asia/Jakarta').format('LL') || '-' }}</td>
                   <td v-if="!detailLetter.outgoing_letter.file">
                     <v-card-actions>
                       <v-menu
