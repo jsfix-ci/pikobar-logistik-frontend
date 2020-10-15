@@ -68,6 +68,7 @@
                   <th class="text-center">{{ $t('label.outgoing_mail_number').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.outgoing_mail_date').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.outgoing_mail_total').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.status').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
@@ -78,6 +79,10 @@
                   <td align="center">{{ data.letter_number }}</td>
                   <td align="center">{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
                   <td align="center">{{ data.request_letter_total }}</td>
+                  <td align="center">
+                    <span v-if="data.file" class="green--text">{{ $t('label.outgoing_mail_ready') }}</span>
+                    <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
+                  </td>
                   <td align="center">
                     <v-card-actions class="justify-center">
                       <v-menu
