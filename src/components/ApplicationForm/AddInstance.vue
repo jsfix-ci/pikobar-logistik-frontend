@@ -137,9 +137,13 @@
             <br>
             <br>
           </ValidationProvider>
-          <div>
+          <div v-if="processRequest">
             <v-btn class="margin-10" outlined text @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
             <v-btn class="margin-10" color="primary" @click="submitData">{{ $t('label.save') }}</v-btn>
+          </div>
+          <div v-else>
+            <v-btn disabled class="margin-10" outlined text @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+            <v-btn disabled class="margin-10" color="primary" @click="submitData">{{ $t('label.save') }}</v-btn>
           </div>
         </v-col>
       </ValidationObserver>
@@ -232,7 +236,8 @@ export default {
       isUpload: false,
       uploadAlert: false,
       isFileValid: false,
-      isAdmin: false
+      isAdmin: false,
+      processRequest: true
     }
   },
   computed: {
@@ -247,6 +252,7 @@ export default {
   },
   methods: {
     async submitData() {
+      this.processRequest = false
       const valid = await this.$refs.observer.validate()
       if (!valid || !this.isFileValid) {
         this.uploadAlert = true
@@ -265,6 +271,7 @@ export default {
       } else {
         this.isFail = true
       }
+      this.processRequest = true
     },
     hideDialog() {
       this.resetDialog()

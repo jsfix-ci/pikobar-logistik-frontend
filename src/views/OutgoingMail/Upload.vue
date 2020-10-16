@@ -26,6 +26,7 @@
           <v-col>
             <v-label class="title"><b>{{ $t('route.outgoing_mail') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
             <br>
+            <v-label><i class="text-small-second-step">({{ $t('label.max_type_file_upload_letter') }})</i></v-label>
             <v-row>
               <v-col cols="3" sm="6" md="3">
                 <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
@@ -88,10 +89,12 @@
         <v-col class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-if="processRequest" outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-else disabled outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
-              <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.upload') }}</v-btn>
+              <v-btn v-if="processRequest" small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.upload') }}</v-btn>
+              <v-btn v-else disabled small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.upload') }}</v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -125,13 +128,17 @@ export default {
     return {
       isSuccess: false,
       isFail: false,
-      data: {},
+      data: {
+        id: null,
+        letter_number: null
+      },
       // Upload Parameter
       isUpload: false,
       selectedFile: null,
       selectedFileName: '',
       uploadAlert: false,
-      letterNumber: null
+      letterNumber: null,
+      processRequest: true
     }
   },
   computed: {
@@ -152,11 +159,20 @@ export default {
     },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0]
+      if (this.selectedFile.size <= 10000000) {
+        this.isFileValid = true
+        this.uploadAlert = false
+      } else {
+        this.isFileValid = false
+        this.uploadAlert = true
+        return
+      }
       this.selectedFileName = this.selectedFile.name
       this.isUpload = true
       this.outgoingLetter = this.selectedFile
     },
     async submitData() {
+      this.processRequest = false
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         this.uploadAlert = true
@@ -172,6 +188,7 @@ export default {
       } else {
         this.isFail = true
       }
+      this.processRequest = true
     },
     hideDialog(value) {
       this.$refs.observer.reset()
@@ -179,7 +196,10 @@ export default {
       this.reset()
     },
     reset() {
-      this.data = {}
+      this.data = {
+        id: null,
+        letter_number: null
+      }
       this.isUpload = false
       this.selectedFile = null
       this.selectedFileName = ''

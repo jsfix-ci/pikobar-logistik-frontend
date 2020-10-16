@@ -161,6 +161,67 @@
       <v-row>
         <v-col>
           <span class="text-data-green">
+            {{ $t('label.applicant_urgency') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="margin-20" cols="12" sm="12" md="12">
+                <v-row v-if="isUrgent" class="margin-top-min-15">
+                  <v-col>
+                    <span>
+                      {{ $t('label.applicant_label_urgency') }} <b>{{ $t('label.important_applicant') }}</b>
+                    </span>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      outlined
+                      absolute
+                      right
+                      color="warning"
+                      class="margin-btn margin-top-min-15"
+                      @click="urgencyChange(detailLogisticRequest.applicant.id, 0)"
+                    >
+                      {{ $t('label.important') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row v-else>
+                  <v-col>
+                    <span class="text-title-green">
+                      {{ $t('label.applicant_label_no_urgency') }}
+                    </span>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      outlined
+                      absolute
+                      right
+                      color="#2E7D32"
+                      class="margin-btn margin-top-min-15"
+                      @click="urgencyChange(detailLogisticRequest.applicant.id, 1)"
+                    >
+                      {{ $t('label.button_applicant_urgency_important') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+    <div>
+      <br>
+      <v-row>
+        <v-col>
+          <span class="text-data-green">
             {{ $t('label.instance_identity') }}
           </span>
         </v-col>
@@ -668,6 +729,11 @@
       :pic-date.sync="dataPic"
       :store-path-pic="`logistics/deleteRealization`"
     />
+    <DialogUrgencyConfirmation
+      ref="urgencyConfirmation"
+      :dialog-show="showDialogUrgency"
+      :data-dialog="dataUrgencyConfirmation"
+    />
   </div>
 </template>
 
@@ -675,6 +741,7 @@
 import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
+import DialogUrgencyConfirmation from './dialogUrgency'
 import PicInfo from '@/components/PicInfo'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
@@ -689,7 +756,8 @@ export default {
     reasonDeniedLogisticNeeds,
     CheckStockDialog,
     DialogDelete,
-    PicInfo
+    PicInfo,
+    DialogUrgencyConfirmation
   },
   data() {
     return {
@@ -715,7 +783,17 @@ export default {
       dialogPic: false,
       dataPic: null,
       logisticNeeds: [],
-      picHandphone: ''
+      picHandphone: '',
+      dataUrgencyConfirmation: {
+        id: null,
+        agency_name: '-',
+        applicant: {
+          application_letter_number: '-',
+          applicant_name: '-'
+        }
+      },
+      showDialogUrgency: false,
+      isUrgent: false
     }
   },
   computed: {
@@ -734,16 +812,6 @@ export default {
     await this.getListDetail()
     await this.getListDetailNeeds()
     await this.getListRealizationAdmin()
-    const temp = this.detailLogisticRequest.letter.letter.split('.')
-    if (this.detailLogisticRequest.applicant.approved_by.handphone) {
-      this.picHandphone = ' (' + this.detailLogisticRequest.applicant.approved_by.handphone + ')'
-    }
-    this.letterFileType = temp[temp.length - 1]
-    this.isVerified = this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi'
-    this.isRejected = this.detailLogisticRequest.applicant.verification_status === 'Pengajuan Ditolak'
-    this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
-    this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
-    this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
     })
@@ -753,6 +821,12 @@ export default {
     EventBus.$on('dialogHideReject', (value) => {
       this.showDialogReject = value
       this.showDialogReasonReject = value
+    })
+    EventBus.$on('dialogUrgencyConfirmation', (value) => {
+      this.showDialogUrgency = false
+      if (value) {
+        this.getListDetail()
+      }
     })
   },
   methods: {
@@ -787,6 +861,11 @@ export default {
         this.$refs.updateForm.setDialog(null, this.listRealization[value], null, recommendation, realization)
       }
     },
+    urgencyChange(id, value) {
+      this.showDialogUrgency = true
+      this.dataUrgencyConfirmation = this.detailLogisticRequest
+      this.$refs.urgencyConfirmation.setData(id, value, this.dataUrgencyConfirmation)
+    },
     async deleteRealization(item, recommendation, realization) {
       this.dialogDelete = true
       if (realization) {
@@ -801,11 +880,11 @@ export default {
       if (realization) {
         item.name = item.realized_by.name
         item.agency_name = item.realized_by.agency_name
-        item.handphone = item.realized_by.handphone
+        item.handphone = item.realized_by.handphone | '-'
       } else {
         item.name = item.recommend_by.name
         item.agency_name = item.recommend_by.agency_name
-        item.handphone = item.recommend_by.handphone
+        item.handphone = item.recommend_by.handphone | '-'
       }
       this.dataPic = await item
     },
@@ -866,8 +945,24 @@ export default {
     },
     async getListDetail() {
       await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
-      const temp = this.detailLogisticRequest.letter.letter.split('.')
-      this.letterFileType = '.' + temp[temp.length - 1]
+      if (this.detailLogisticRequest.letter !== null) {
+        const temp = this.detailLogisticRequest.letter.letter.split('.')
+        this.letterFileType = temp[temp.length - 1]
+      }
+      this.isVerified = this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi'
+      this.isRejected = this.detailLogisticRequest.applicant.verification_status === 'Pengajuan Ditolak'
+      this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
+      this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
+      this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
+      if (this.isVerified && !this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.verified_by.handphone ?? '-'
+      } else if (this.isVerified && this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.approved_by.handphone ?? '-'
+      } else if (this.isFinalized) {
+        this.picHandphone = this.detailLogisticRequest.applicant.finalized_by.handphone ?? '-'
+      }
+      this.picHandphone = ' (' + this.picHandphone + ')'
+      this.isUrgent = this.detailLogisticRequest.applicant.is_urgency === 1
     },
     async getStock(value) {
       const param = {

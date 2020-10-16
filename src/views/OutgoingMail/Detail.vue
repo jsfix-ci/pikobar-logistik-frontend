@@ -9,13 +9,15 @@
       <v-row>
         <v-col cols="3" sm="2">
           <div class="text-title">{{ $t('label.letter_number') }}</div>
+          <div class="text-title">{{ $t('label.outgoing_mail_name') }}</div>
           <div class="text-title">{{ $t('label.outgoing_mail_date_print') }}</div>
           <div class="text-title">{{ $t('label.outgoing_mail_total_applicant') }}</div>
         </v-col>
         <v-col cols="7" sm="8">
           <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</div>
+          <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.letter_name : '-' }}</div>
           <div class="text-data-green">:  {{ detailLetter ? $moment.utc(detailLetter.outgoing_letter.letter_date).tz('Asia/Jakarta').format('LL') : '-' }}</div>
-          <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.request_letter_total : '-' }}</div>
+          <div class="text-data-green">:  {{ detailLetter ? detailLetter.outgoing_letter.request_letter_total + ' Surat Permohonan' : '-' }}</div>
         </v-col>
       </v-row>
     </div>
@@ -46,7 +48,10 @@
                 <a v-else class="blue--text letter-class" @click="printLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
               </v-col>
               <v-col>
-                <v-btn small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="printLetter('download')">
+                <v-btn v-if="detailLetter.outgoing_letter.file" small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="download(detailLetter.outgoing_letter.file)">
+                  {{ $t('label.download') }}
+                </v-btn>
+                <v-btn v-else small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="printLetter('download')">
                   {{ $t('label.outgoing_mail_print') }}
                 </v-btn>
               </v-col>
@@ -79,7 +84,7 @@
           />
         </v-card>
       </v-col>
-      <v-col>
+      <v-col v-if="!detailLetter.outgoing_letter.file">
         <v-btn outlined color="success" height="50px" absolute right @click.stop="openForm('add')">
           <v-icon dark>mdi-plus</v-icon>
           {{ $t('label.outgoing_mail_add_number_letter') }}
@@ -100,7 +105,7 @@
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
+                  <th v-if="!detailLetter.outgoing_letter.file" class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -114,8 +119,8 @@
                   <td>{{ item.kemendagri_kabupaten_nama || '-' }}</td>
                   <td>{{ item.applicant_name || '-' }}</td>
                   <td>{{ item.realization_total }}</td>
-                  <td>{{ item.realization_date || '-' }}</td>
-                  <td>
+                  <td>{{ $moment.utc(item.realization_date).tz('Asia/Jakarta').format('LL') || '-' }}</td>
+                  <td v-if="!detailLetter.outgoing_letter.file">
                     <v-card-actions>
                       <v-menu
                         :close-on-content-click="false"
@@ -194,6 +199,7 @@ import { mapGetters } from 'vuex'
 import CreateLetter from './Create'
 import DialogDelete from '@/components/DialogDelete'
 import pdfMake from 'pdfmake/build/pdfmake'
+import EventBus from '@/utils/eventBus'
 
 export default {
   components: {
@@ -230,6 +236,12 @@ export default {
   async created() {
     await this.getDetailData()
     await this.getDetailApplication()
+    EventBus.$on('createDialogHide', (value) => {
+      this.showForm = false
+      if (value) {
+        this.getDetailApplication()
+      }
+    })
   },
   methods: {
     async printLetter(openType) {
@@ -444,6 +456,9 @@ export default {
       } else {
         pdfMake.createPdf(docDefinition).open()
       }
+    },
+    download(filePath) {
+      window.open(filePath)
     },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
