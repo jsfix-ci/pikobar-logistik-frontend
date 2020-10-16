@@ -48,7 +48,10 @@
                 <a v-else class="blue--text letter-class" @click="printLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
               </v-col>
               <v-col>
-                <v-btn small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="printLetter('download')">
+                <v-btn v-if="detailLetter.outgoing_letter.file" small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="download(detailLetter.outgoing_letter.file)">
+                  {{ $t('label.download') }}
+                </v-btn>
+                <v-btn v-else small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="printLetter('download')">
                   {{ $t('label.outgoing_mail_print') }}
                 </v-btn>
               </v-col>
@@ -453,6 +456,9 @@ export default {
       } else {
         pdfMake.createPdf(docDefinition).open()
       }
+    },
+    download(filePath) {
+      window.open(filePath)
     },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQuery.page) - 1) * parseInt(this.listQuery.limit)) + (parseInt(index) + 1)
