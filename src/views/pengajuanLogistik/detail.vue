@@ -63,7 +63,7 @@
           <span class="text-title">{{ $t('label.approved_by') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by.name + ' (' + detailLogisticRequest.applicant.approved_by.handphone + ')' }}</span>
+          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by.name + picHandphone }}</span>
           <br>
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by.agency_name }}</span>
         </v-col>
@@ -73,7 +73,7 @@
           <span class="text-title">{{ $t('label.approved_by') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by.name + ' (' + detailLogisticRequest.applicant.approved_by.handphone + ')' }}</span>
+          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by.name + picHandphone }}</span>
           <br>
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
         </v-col>
@@ -155,6 +155,67 @@
         :item="detailLogisticRequest"
         :total="listLogisticNeeds.length > 0 ? listLogisticNeeds[0].logistic_item_summary : null"
       />
+    </div>
+    <div>
+      <br>
+      <v-row>
+        <v-col>
+          <span class="text-data-green">
+            {{ $t('label.applicant_urgency') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="margin-20" cols="12" sm="12" md="12">
+                <v-row v-if="isUrgent" class="margin-top-min-15">
+                  <v-col>
+                    <span>
+                      {{ $t('label.applicant_label_urgency') }} <b>{{ $t('label.important_applicant') }}</b>
+                    </span>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      outlined
+                      absolute
+                      right
+                      color="warning"
+                      class="margin-btn margin-top-min-15"
+                      @click="urgencyChange(detailLogisticRequest.applicant.id, 0)"
+                    >
+                      {{ $t('label.important') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row v-else>
+                  <v-col>
+                    <span class="text-title-green">
+                      {{ $t('label.applicant_label_no_urgency') }}
+                    </span>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      outlined
+                      absolute
+                      right
+                      color="#2E7D32"
+                      class="margin-btn margin-top-min-15"
+                      @click="urgencyChange(detailLogisticRequest.applicant.id, 1)"
+                    >
+                      {{ $t('label.button_applicant_urgency_important') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
     </div>
     <div>
       <br>
@@ -363,7 +424,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <div>
+    <div> <!-- Daftar Barang Permohonan -->
       <v-row>
         <v-col>
           <span class="text-data-green">
@@ -379,10 +440,10 @@
                 <thead>
                   <tr>
                     <th colspan="7" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
-                    <th v-if="isVerified" rowspan="2" class="text-center grey lighten-5">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
+                    <th v-if="isVerified && !isFinalized" rowspan="2" class="text-center grey lighten-5">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
                     <th v-if="isVerified" colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
                     <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                    <th v-if="isVerified" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
+                    <th v-if="isVerified && !isFinalized" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                   </tr>
                   <tr>
                     <th class="text-left green lighten-5">{{ $t('label.number').toUpperCase() }}</th>
@@ -418,7 +479,7 @@
                     <td>{{ item.unit.unit || '-' }}</td>
                     <td>{{ item.usage || '-' }}</td>
                     <td>{{ item.product ? item.product.category : '-' }}</td>
-                    <td v-if="isVerified"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
+                    <td v-if="isVerified && !isFinalized"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
                     <td v-if="isVerified">{{ item.recommendation_product_name || '-' }}</td>
                     <td v-if="isVerified" class="text-right">{{ formatCurrency(item.recommendation_quantity) || '-' }}</td>
                     <td v-if="isVerified">{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
@@ -456,7 +517,7 @@
                       <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
                       <span v-else>-</span>
                     </td>
-                    <td v-if="isApproved">
+                    <td v-if="isApproved && !isFinalized">
                       <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, true)">
                         {{ $t('label.update') }}
                       </v-btn>
@@ -490,10 +551,10 @@
             <v-card-text>
               <v-row>
                 <v-col>
-                  <v-btn v-if="isVerified && !isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
+                  <v-btn v-if="isVerified && !isApproved && !isFinalized" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
                     <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_recommendation') }}</span>
                   </v-btn>
-                  <v-btn v-else-if="isVerified && isApproved" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
+                  <v-btn v-else-if="isVerified && isApproved && !isFinalized" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
                     <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_realization') }}</span>
                   </v-btn>
                   <v-simple-table style="margin-top: 70px">
@@ -503,7 +564,7 @@
                           <th rowspan="2" class="text-center grey lighten-5">{{ $t('label.number').toUpperCase() }}</th>
                           <th colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
                           <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                          <th rowspan="" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
+                          <th v-if="!isFinalized" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                         </tr>
                         <tr>
                           <th class="text-left green lighten-4">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
@@ -587,7 +648,7 @@
                             <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
                             <span v-else>-</span>
                           </td>
-                          <td v-if="isApproved">
+                          <td v-if="isApproved && !isFinalized">
                             <v-card-actions>
                               <v-menu
                                 :close-on-content-click="false"
@@ -668,6 +729,11 @@
       :pic-date.sync="dataPic"
       :store-path-pic="`logistics/deleteRealization`"
     />
+    <DialogUrgencyConfirmation
+      ref="urgencyConfirmation"
+      :dialog-show="showDialogUrgency"
+      :data-dialog="dataUrgencyConfirmation"
+    />
   </div>
 </template>
 
@@ -675,6 +741,7 @@
 import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
+import DialogUrgencyConfirmation from './dialogUrgency'
 import PicInfo from '@/components/PicInfo'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
@@ -689,7 +756,8 @@ export default {
     reasonDeniedLogisticNeeds,
     CheckStockDialog,
     DialogDelete,
-    PicInfo
+    PicInfo,
+    DialogUrgencyConfirmation
   },
   data() {
     return {
@@ -714,7 +782,18 @@ export default {
       dataDelete: null,
       dialogPic: false,
       dataPic: null,
-      logisticNeeds: []
+      logisticNeeds: [],
+      picHandphone: '',
+      dataUrgencyConfirmation: {
+        id: null,
+        agency_name: '-',
+        applicant: {
+          application_letter_number: '-',
+          applicant_name: '-'
+        }
+      },
+      showDialogUrgency: false,
+      isUrgent: false
     }
   },
   computed: {
@@ -733,13 +812,6 @@ export default {
     await this.getListDetail()
     await this.getListDetailNeeds()
     await this.getListRealizationAdmin()
-    const temp = this.detailLogisticRequest.letter.letter.split('.')
-    this.letterFileType = temp[temp.length - 1]
-    this.isVerified = this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi'
-    this.isRejected = this.detailLogisticRequest.applicant.verification_status === 'Pengajuan Ditolak'
-    this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
-    this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
-    this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
     })
@@ -749,6 +821,12 @@ export default {
     EventBus.$on('dialogHideReject', (value) => {
       this.showDialogReject = value
       this.showDialogReasonReject = value
+    })
+    EventBus.$on('dialogUrgencyConfirmation', (value) => {
+      this.showDialogUrgency = false
+      if (value) {
+        this.getListDetail()
+      }
     })
   },
   methods: {
@@ -783,6 +861,11 @@ export default {
         this.$refs.updateForm.setDialog(null, this.listRealization[value], null, recommendation, realization)
       }
     },
+    urgencyChange(id, value) {
+      this.showDialogUrgency = true
+      this.dataUrgencyConfirmation = this.detailLogisticRequest
+      this.$refs.urgencyConfirmation.setData(id, value, this.dataUrgencyConfirmation)
+    },
     async deleteRealization(item, recommendation, realization) {
       this.dialogDelete = true
       if (realization) {
@@ -797,11 +880,11 @@ export default {
       if (realization) {
         item.name = item.realized_by.name
         item.agency_name = item.realized_by.agency_name
-        item.handphone = item.realized_by.handphone
+        item.handphone = item.realized_by.handphone | '-'
       } else {
         item.name = item.recommend_by.name
         item.agency_name = item.recommend_by.agency_name
-        item.handphone = item.recommend_by.handphone
+        item.handphone = item.recommend_by.handphone | '-'
       }
       this.dataPic = await item
     },
@@ -862,8 +945,24 @@ export default {
     },
     async getListDetail() {
       await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
-      const temp = this.detailLogisticRequest.letter.letter.split('.')
-      this.letterFileType = '.' + temp[temp.length - 1]
+      if (this.detailLogisticRequest.letter !== null) {
+        const temp = this.detailLogisticRequest.letter.letter.split('.')
+        this.letterFileType = temp[temp.length - 1]
+      }
+      this.isVerified = this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi'
+      this.isRejected = this.detailLogisticRequest.applicant.verification_status === 'Pengajuan Ditolak'
+      this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
+      this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
+      this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
+      if (this.isVerified && !this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.verified_by.handphone ?? '-'
+      } else if (this.isVerified && this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.approved_by.handphone ?? '-'
+      } else if (this.isFinalized) {
+        this.picHandphone = this.detailLogisticRequest.applicant.finalized_by.handphone ?? '-'
+      }
+      this.picHandphone = ' (' + this.picHandphone + ')'
+      this.isUrgent = this.detailLogisticRequest.applicant.is_urgency === 1
     },
     async getStock(value) {
       const param = {

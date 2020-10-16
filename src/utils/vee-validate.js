@@ -227,6 +227,11 @@ extend('subDistricRequired', {
   message: (_, values) => i18n.t('errors.required_fields.select_sub_district', values)
 })
 
+extend('letterName', {
+  ...required,
+  message: (_, values) => i18n.t('errors.required_fields.letter_name', values)
+})
+
 extend('letterNumber', {
   ...required,
   message: (_, values) => i18n.t('errors.required_fields.letter_number', values)

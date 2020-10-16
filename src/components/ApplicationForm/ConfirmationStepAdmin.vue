@@ -219,7 +219,7 @@ export default {
       try {
         this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
       } catch (error) {
-        this.url = ""
+        this.url = ''
       }
     } else {
       this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
@@ -298,10 +298,10 @@ export default {
       const response = await this.$store.dispatch('logistics/postApplicantFormAdmin', formData)
       if (response.status === 200) {
         this.isDone = true
-        this.isLoading = false
       } else {
-        this.isLoading = false
+        this.isDone = false
       }
+      this.isLoading = false
     },
     onDone() {
       this.isDone = false

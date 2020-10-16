@@ -13,16 +13,26 @@
         </v-col>
         <v-col v-if="type === 'create'">
           <p class="sub-title-update-logistic-needs">{{ $t('route.outgoing_mail') }}</p>
-          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_number_form') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_name') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
           <ValidationProvider
             v-slot="{ errors }"
-            rules="letterNumber"
+            rules="letterName"
           >
+            <v-text-field
+              v-model="data.letter_name"
+              outlined
+              solo-inverted
+              :error-messages="errors"
+            />
+          </ValidationProvider>
+        </v-col>
+        <v-col v-if="type === 'create'" class="margin-top-min-30-update-logistic-needs">
+          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_number_form') }}</span>
+          <ValidationProvider>
             <v-text-field
               v-model="data.letter_number"
               outlined
               solo-inverted
-              :error-messages="errors"
             />
           </ValidationProvider>
         </v-col>
@@ -106,7 +116,7 @@
         <v-col v-if="type === 'create'" class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
               <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
@@ -116,7 +126,7 @@
         <v-col v-else-if="type === 'update'" class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
               <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.save_update') }}</v-btn>
@@ -126,10 +136,12 @@
         <v-col v-else class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-if="processRequest" outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-else disabled outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
-              <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
+              <v-btn v-if="processRequest" small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
+              <v-btn v-else disabled small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -170,6 +182,7 @@ export default {
   data() {
     return {
       data: {
+        letter_name: null,
         letter_number: null,
         letter_date: null,
         letter_request: null
@@ -189,7 +202,8 @@ export default {
       labelDate: this.$t('label.input_date'),
       listQuery: {
         request_letter_id: null
-      }
+      },
+      processRequest: true
     }
   },
   computed: {
@@ -224,28 +238,38 @@ export default {
       await this.getApplicationLetter(value ? value.applicant_id : null)
     },
     async submitData() {
+      this.processRequest = false
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
       }
       this.data.letter_request = JSON.stringify(this.letter_request)
       if (this.type === 'create') {
-        await this.$store.dispatch('letter/postOutgoingMail', this.data)
+        const response = await this.$store.dispatch('letter/postOutgoingMail', this.data)
+        if (response.status === 200) {
+          this.hideDialog(true)
+        }
       } else if (this.type === 'add') {
         this.data.outgoing_letter_id = this.dataSource.id
-        await this.$store.dispatch('letter/postOutgoingMailApplication', this.data)
+        const response = await this.$store.dispatch('letter/postOutgoingMailApplication', this.data)
+        if (response.status === 200) {
+          this.hideDialog(true)
+        }
       } else if (this.type === 'update') {
         const dataUpdate = {
           id: this.item.id,
           applicant_id: this.item.applicant_id
         }
-        await this.$store.dispatch('letter/updateApplicationLetter', dataUpdate)
+        const response = await this.$store.dispatch('letter/updateApplicationLetter', dataUpdate)
+        if (response.status === 200) {
+          this.hideDialog(true)
+        }
       }
-      window.location.reload()
+      this.processRequest = true
     },
-    hideDialog() {
+    hideDialog(value) {
       this.$refs.observer.reset()
-      EventBus.$emit('dialogHide', false)
+      EventBus.$emit('createDialogHide', value)
     },
     handleSelectedDate(value) {
       this.$emit('selected', value)

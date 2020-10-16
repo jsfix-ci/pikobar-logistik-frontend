@@ -33,7 +33,7 @@ import FormatingNumber from '../../helpers/formattingNumber'
 import EventBus from '@/utils/eventBus'
 
 export default {
-  name: 'StatisticAppilcantChart',
+  name: 'StatisticApplicantChart',
   data() {
     return {
       loading: false,
@@ -151,6 +151,10 @@ export default {
       const BB = ((B.toString(16).length === 1) ? '0' + B.toString(16) : B.toString(16))
 
       return `#${RR}${GG}${BB}`
+    },
+    currency(value) {
+      const formattingNumber = new FormatingNumber()
+      return formattingNumber.formatCurrency(value)
     }
   }
 }

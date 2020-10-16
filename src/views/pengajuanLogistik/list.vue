@@ -102,9 +102,10 @@
                   <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
                   <th v-if="isApproved" class="text-center">{{ $t('label.approved_by').toUpperCase() }}</th>
                   <th v-if="isApproved" class="text-center">{{ $t('label.finalized_by').toUpperCase() }}</th>
-                  <th v-else class="text-left">{{ $t('label.status').toUpperCase() }}</th>
+                  <th v-else class="text-center">{{ $t('label.status').toUpperCase() }}</th>
                   <th v-if="isVerified" class="text-center">{{ $t('label.verified_by').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.action').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.urgency').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -128,6 +129,9 @@
                   <td v-if="isVerified" class="text-center">
                     <span v-if="data.applicant.verified_by" class="green--text">{{ data.applicant.verified_by.name }}</span>
                     <span v-else class="red--text">{{ 'Belum Diverifikasi' }}</span>
+                  </td>
+                  <td align="center">
+                    <v-btn v-if="data.applicant.is_urgency === 1" outlined small color="warning">{{ $t('label.important') }}</v-btn>
                   </td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
                 </tr>

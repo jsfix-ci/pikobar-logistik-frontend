@@ -292,6 +292,14 @@ export default {
       return e
     }
   },
+  async postUrgencyChange({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/logistic-request/urgency', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async postApprovalStatus({ commit }, params) {
     try {
       const response = await doPostUpdate('/api/v1/logistic-request/approval', 'POST', params)

@@ -46,7 +46,7 @@
                     />
                     <v-list-item-title>
                       <div class="value-card-source-dashboard">
-                        {{ dataLogisticRequestSummary.total_request | currency }}
+                        {{ currency(dataLogisticRequestSummary.total_request) }}
                       </div>
                       <small class="text-card-time-range value-card-prefix-color">
                         {{ $t('label.total_applicant') }}
@@ -59,7 +59,7 @@
                         <b>{{ $t('label.dashboard_unverified') }}</b>
                       </div>
                       <div class="value-card-data amber--text darken-4">
-                        {{ dataLogisticRequestSummary.total_unverified | currency }}
+                        {{ currency(dataLogisticRequestSummary.total_unverified) }}
                       </div>
                       <a href="/#/alat-kesehatan/belum-terverifikasi">
                         <span class="in-full-text">
@@ -75,7 +75,7 @@
                         <b>{{ $t('label.dashboard_verified') }}</b>
                       </div>
                       <div class="value-card-data light-blue--text darken-4">
-                        {{ dataLogisticRequestSummary.total_verified | currency }}
+                        {{ currency(dataLogisticRequestSummary.total_verified) }}
                       </div>
                       <a href="/#/alat-kesehatan/terverifikasi">
                         <span class="in-full-text">
@@ -91,7 +91,7 @@
                         <b>{{ $t('label.dashboard_approved') }}</b>
                       </div>
                       <div class="value-card-data purple--text accent-4">
-                        {{ dataLogisticRequestSummary.total_approved | currency }}
+                        {{ currency(dataLogisticRequestSummary.total_approved) }}
                       </div>
                       <a href="/#/alat-kesehatan/disetujui">
                         <span class="in-full-text">
@@ -109,7 +109,7 @@
                         <b>{{ $t('label.dashboard_final') }}</b>
                       </div>
                       <div class="value-card-data green--text accent-4">
-                        {{ dataLogisticRequestSummary.total_final | currency }}
+                        {{ currency(dataLogisticRequestSummary.total_final) }}
                       </div>
                       <a href="/#/alat-kesehatan/disetujui">
                         <span class="in-full-text">
@@ -125,7 +125,7 @@
                         <b>{{ $t('label.tracking_step4') }}</b>
                       </div>
                       <div class="value-card-data red-text">
-                        {{ dataLogisticRequestSummary.total_rejected | currency }}
+                        {{ currency(dataLogisticRequestSummary.total_rejected) }}
                       </div>
                       <a href="/#/alat-kesehatan/ditolak">
                         <span class="in-full-text">
@@ -156,7 +156,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <statistic-appilcant-chart />
+                      <statistic-applicant-chart />
                     </v-col>
                   </v-row>
                 </div>
@@ -172,6 +172,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import EventBus from '@/utils/eventBus'
+import FormatingNumber from '../../helpers/formattingNumber'
 
 export default {
   name: 'Dashboard',
@@ -204,6 +205,10 @@ export default {
       EventBus.$emit('getProductTotalRequest', this.listQuery)
       EventBus.$emit('getFaskesTypeTotalRequest', this.listQuery)
       EventBus.$emit('getLogisticRequestSummary', this.listQuery)
+    },
+    currency(value) {
+      const formattingNumber = new FormatingNumber()
+      return formattingNumber.formatCurrency(value)
     }
   }
 }

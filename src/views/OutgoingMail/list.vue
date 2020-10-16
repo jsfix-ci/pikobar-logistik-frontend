@@ -63,20 +63,61 @@
             <template v-slot:default>
               <thead>
                 <tr>
-                  <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.outgoing_mail_number').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.outgoing_mail_date').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.outgoing_mail_total').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.action').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.number').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.outgoing_mail_name').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.outgoing_mail_number').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.outgoing_mail_date').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.outgoing_mail_total').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.status').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(data, index) in listOutgoingMail" :key="data.index">
                   <td>{{ getTableRowNumbering(index) }}</td>
-                  <td>{{ data.letter_number }}</td>
-                  <td>{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
-                  <td>{{ data.request_letter_total }}</td>
-                  <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
+                  <td>{{ data.letter_name }}</td>
+                  <td align="center">{{ data.letter_number }}</td>
+                  <td align="center">{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
+                  <td align="center">{{ data.request_letter_total }}</td>
+                  <td align="center">
+                    <span v-if="data.file" class="green--text">{{ $t('label.outgoing_mail_ready') }}</span>
+                    <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
+                  </td>
+                  <td align="center">
+                    <v-card-actions class="justify-center">
+                      <v-menu
+                        :close-on-content-click="false"
+                        :nudge-width="0"
+                        :nudge-left="0"
+                        :nudge-top="0"
+                        offset-y
+                      >
+                        <template v-slot:activator="{ on }">
+                          <v-btn
+                            class="ma-1"
+                            color="#828282"
+                            style="text-transform: none; height: 30px; min-width: 50px;"
+                            tile
+                            outlined
+                            v-on="on"
+                          >
+                            {{ $t('label.action_options') }}<v-icon style="color: #009D57;font-size: 2rem;" right>mdi-menu-down</v-icon>
+                          </v-btn>
+                        </template>
+                        <v-card>
+                          <v-list-item @click="uploadLetter(data)">
+                            <span class="blue--text"><v-icon class="blue--text" left>mdi-upload</v-icon> {{ $t('label.outgoing_mail_upload') }}</span>
+                          </v-list-item>
+                          <v-list-item v-if="data.file" @click="download(data.file)">
+                            <span class="green--text"><v-icon class="green--text" left>mdi-download</v-icon> {{ $t('label.download') }}</span>
+                          </v-list-item>
+                          <v-list-item @click="toDetail(data)">
+                            <span class="black--text"><v-icon class="black--text" left>mdi-view-list</v-icon> {{ $t('label.detail') }}</span>
+                          </v-list-item>
+                        </v-card>
+                      </v-menu>
+                    </v-card-actions>
+                  </td>
                 </tr>
                 <tr v-if="listOutgoingMail.length === 0">
                   <td colspan="6" class="text-center">{{ $t('label.no_data') }}</td>
@@ -109,22 +150,29 @@
     <CreateLetter
       :show="showForm"
     />
+    <UploadLetter
+      ref="uploadLetter"
+      :show="uploadForm"
+    />
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import CreateLetter from './Create'
+import UploadLetter from './Upload'
 import EventBus from '@/utils/eventBus'
 
 export default {
   components: {
-    CreateLetter
+    CreateLetter,
+    UploadLetter
   },
   data() {
     return {
       list: null,
       showFilter: false,
       showForm: false,
+      uploadForm: false,
       sortOption: [
         { value: 'asc', label: 'A-Z' },
         { value: 'desc', label: 'Z-A' }
@@ -153,13 +201,26 @@ export default {
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
     })
+    EventBus.$on('dialogUploadHide', (value) => {
+      this.uploadForm = false
+      if (value) {
+        this.getList()
+      }
+    })
   },
   methods: {
     toDetail(data) {
       this.$router.push(`/letter/outgoing/detail/${data.id}`)
     },
+    download(data) {
+      window.open(data)
+    },
     addLetter() {
       this.showForm = true
+    },
+    uploadLetter(data) {
+      this.uploadForm = true
+      this.$refs.uploadLetter.setDialog(data)
     },
     async getList() {
       await this.$store.dispatch('letter/getListOutgoingMail', this.listQuery)
