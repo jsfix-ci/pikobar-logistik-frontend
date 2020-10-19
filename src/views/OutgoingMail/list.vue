@@ -198,8 +198,11 @@ export default {
 
   async created() {
     this.getList()
-    EventBus.$on('dialogHide', (value) => {
-      this.showForm = value
+    EventBus.$on('createDialogHide', (value) => {
+      this.showForm = false
+      if (value) {
+        this.getList()
+      }
     })
     EventBus.$on('dialogUploadHide', (value) => {
       this.uploadForm = false
