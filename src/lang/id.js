@@ -223,6 +223,7 @@ export default {
     upload: 'Upload',
     reupload: 'Upload Ulang',
     upload_error_message: 'Ukuran foto tidak boleh lebih dari 10MB',
+    upload_letter_error_message: 'Ukuran file tidak boleh lebih dari 10MB',
     apd_name_spec: 'Nama Barang',
     description: 'Deskripsi',
     input_description: 'Deskripsi (Jika ada)',
