@@ -118,14 +118,14 @@ export default {
     show: {
       type: Boolean,
       default: null
-    },
-    outgoingLetter: {
-      type: File,
-      default: null
     }
   },
   data() {
     return {
+      outgoingLetter: {
+        type: File,
+        default: null
+      },
       isSuccess: false,
       isFail: false,
       data: {
@@ -176,6 +176,7 @@ export default {
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         this.uploadAlert = true
+        this.processRequest = true
         return
       }
       const formUploadOutgoingMail = new FormData()
