@@ -47,7 +47,7 @@
                     @change="onFileChanged"
                   >
                   <v-btn
-                    v-if="!isUpload"
+                    v-if="!isUpload && processRequest"
                     color="#2E7D32"
                     outlined
                     @click="onButtonClick"
@@ -55,7 +55,7 @@
                     {{ $t('label.upload') }}
                   </v-btn>
                   <v-btn
-                    v-if="isUpload"
+                    v-if="isUpload && processRequest"
                     color="#2E7D32"
                     class="margin-10"
                     depressed
@@ -69,7 +69,13 @@
                     v-if="uploadAlert"
                     type="error"
                   >
-                    {{ $t('label.upload_error_message') }}
+                    {{ $t('label.not_yet_upload_file') }}
+                  </v-alert>
+                  <v-alert
+                    v-if="uploadFileMaxSizeAlert"
+                    type="error"
+                  >
+                    {{ $t('label.upload_letter_error_message') }}
                   </v-alert>
                 </v-row>
               </v-col>
@@ -137,6 +143,7 @@ export default {
       selectedFile: null,
       selectedFileName: '',
       uploadAlert: false,
+      uploadFileMaxSizeAlert: false,
       letterNumber: null,
       processRequest: true
     }
@@ -158,25 +165,27 @@ export default {
       this.$refs.uploader.click()
     },
     onFileChanged(e) {
+      this.isFileValid = true
+      this.uploadFileMaxSizeAlert = false
       this.selectedFile = e.target.files[0]
-      if (this.selectedFile.size <= 10000000) {
-        this.isFileValid = true
-        this.uploadAlert = false
-      } else {
+      this.selectedFileName = this.selectedFile.name
+      this.outgoingLetter = this.selectedFile
+      if (this.selectedFile.size > 10000000) {
         this.isFileValid = false
-        this.uploadAlert = true
+        this.uploadFileMaxSizeAlert = true
         return
       }
-      this.selectedFileName = this.selectedFile.name
       this.isUpload = true
-      this.outgoingLetter = this.selectedFile
+      this.uploadAlert = !this.isUpload
     },
     async submitData() {
       this.processRequest = false
       const valid = await this.$refs.observer.validate()
-      if (!valid) {
-        this.uploadAlert = true
+      this.uploadAlert = !this.isUpload
+      this.selectedFileName = this.outgoingLetter.name
+      if (!valid || !this.isUpload) {
         this.processRequest = true
+        this.uploadFileMaxSizeAlert = false
         return
       }
       const formUploadOutgoingMail = new FormData()
@@ -206,6 +215,9 @@ export default {
       this.selectedFileName = ''
       this.uploadAlert = false
       this.letterNumber = null
+    },
+    checkFileValid() {
+      return this.isFileValid
     }
   }
 }
