@@ -48,7 +48,7 @@
                 <a v-else class="blue--text letter-class" @click="printLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
               </v-col>
               <v-col>
-                <v-btn v-if="isFileExists" small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="download(isFileExists)">
+                <v-btn v-if="isFileExists" small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="download(filePath)">
                   {{ $t('label.download') }}
                 </v-btn>
                 <v-btn v-else small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="printLetter('download')">
