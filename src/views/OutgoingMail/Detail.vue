@@ -38,17 +38,17 @@
               </v-col>
               <v-col>
                 <span><b>: </b></span>
-                <span v-if="detailLetter.outgoing_letter.file" class="green--text">{{ $t('label.outgoing_mail_ready') }}</span>
+                <span v-if="isFileExists" class="green--text">{{ $t('label.outgoing_mail_ready') }}</span>
                 <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="6">
-                <a v-if="detailLetter.outgoing_letter.file" :href="detailLetter.outgoing_letter.file" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
+                <a v-if="isFileExists" :href="filePath" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
                 <a v-else class="blue--text letter-class" @click="printLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
               </v-col>
               <v-col>
-                <v-btn v-if="detailLetter.outgoing_letter.file" small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="download(detailLetter.outgoing_letter.file)">
+                <v-btn v-if="isFileExists" small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="download(isFileExists)">
                   {{ $t('label.download') }}
                 </v-btn>
                 <v-btn v-else small outlined color="success" width="130px" height="50px" absolute right class="margin-top-min-15" @click="printLetter('download')">
@@ -84,7 +84,7 @@
           />
         </v-card>
       </v-col>
-      <v-col v-if="!detailLetter.outgoing_letter.file">
+      <v-col v-if="!isFileExists">
         <v-btn outlined color="success" height="50px" absolute right @click.stop="openForm('add')">
           <v-icon dark>mdi-plus</v-icon>
           {{ $t('label.outgoing_mail_add_number_letter') }}
@@ -105,7 +105,7 @@
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.realization_amount').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.realization_date').toUpperCase() }}</th>
-                  <th v-if="!detailLetter.outgoing_letter.file" class="text-center">{{ $t('label.action').toUpperCase() }}</th>
+                  <th v-if="!isFileExists" class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -120,7 +120,7 @@
                   <td>{{ item.applicant_name || '-' }}</td>
                   <td>{{ item.realization_total }}</td>
                   <td>{{ $moment.utc(item.realization_date).tz('Asia/Jakarta').format('LL') || '-' }}</td>
-                  <td v-if="!detailLetter.outgoing_letter.file">
+                  <td v-if="!isFileExists">
                     <v-card-actions>
                       <v-menu
                         :close-on-content-click="false"
@@ -221,7 +221,9 @@ export default {
         limit: 3,
         outgoing_letter_id: null,
         application_letter_number: null
-      }
+      },
+      isFileExists: false,
+      filePath: ''
     }
   },
   computed: {
@@ -472,6 +474,10 @@ export default {
     },
     async getDetailData() {
       await this.$store.dispatch('letter/getDetailLetter', this.$route.params.id)
+      if (this.detailLetter.outgoing_letter.file) {
+        this.isFileExists = true
+        this.filePath = this.detailLetter.outgoing_letter.file
+      }
     },
     async getDetailApplication() {
       this.listQuery.outgoing_letter_id = this.$route.params.id
