@@ -295,7 +295,7 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col class="margin-20" cols="12" sm="4" md="4">
+              <v-col class="margin-20" cols="12" sm="3" md="3">
                 <v-row>
                   <span
                     class="text-title-green"
@@ -308,6 +308,9 @@
                     {{ detailLogisticRequest.location_address }}
                   </v-label>
                 </v-row>
+              </v-col>
+              <v-col class="margin-20" cols="12" sm="1" md="1">
+                <v-btn small outlined color="success" style="padding:20px;" @click="showAgencyIdentityDialog(detailLogisticRequest)"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
           </v-card>
@@ -382,13 +385,16 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col class="margin-20" cols="12" sm="4" md="4">
+              <v-col class="margin-20" cols="12" sm="3" md="3">
                 <v-row><span class="text-title-green">{{ $t('label.applicant_ktp') }}</span></v-row>
                 <v-row>
                   <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
                   <a v-else-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</a>
                   <img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-'">
                 </v-row>
+              </v-col>
+              <v-col class="margin-20" cols="12" sm="1" md="1">
+                <v-btn small outlined color="success" style="padding:20px;" @click="showApplicantIdentityDialog(detailLogisticRequest)"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
           </v-card>
@@ -409,15 +415,14 @@
         <v-card outlined>
           <v-card-text>
             <v-row class="ml-2">
-              <v-col cols="6" md="6">
+              <v-col cols="9" md="9">
                 <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.application_letter_number : '-' }}</u></a>
               </v-col>
-              <v-col cols="6" md="6">
-                <div class="margin-top-min-15">
-                  <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
-                    {{ $t('label.download') }}
-                  </v-btn>
-                </div>
+              <v-col cols="3" md="3">
+                <v-btn small outlined color="success" style="padding:20px;" @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
+                  <v-icon small dark style="padding-left:5px;">mdi-download</v-icon> <span>{{ $t('label.download') }}</span>
+                </v-btn>
+                <v-btn small outlined color="success" style="margin-left:15px; padding:20px;" @click="updateLetter(detailLogisticRequest)"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
           </v-card-text>
@@ -715,6 +720,10 @@
       ref="updateForm"
       :show="showForm"
     />
+    <dialogUrgency
+      ref="dialogUrgencyForm"
+      :show="showUrgencyForm"
+    />
     <DialogDelete
       :dialog="dialogDelete"
       :data-deleted="dataDelete"
@@ -729,11 +738,6 @@
       :pic-date.sync="dataPic"
       :store-path-pic="`logistics/deleteRealization`"
     />
-    <DialogUrgencyConfirmation
-      ref="urgencyConfirmation"
-      :dialog-show="showDialogUrgency"
-      :data-dialog="dataUrgencyConfirmation"
-    />
   </div>
 </template>
 
@@ -741,7 +745,7 @@
 import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
-import DialogUrgencyConfirmation from './dialogUrgency'
+import dialogUrgency from './dialogUrgency'
 import PicInfo from '@/components/PicInfo'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
@@ -757,7 +761,7 @@ export default {
     CheckStockDialog,
     DialogDelete,
     PicInfo,
-    DialogUrgencyConfirmation
+    dialogUrgency
   },
   data() {
     return {
@@ -792,7 +796,7 @@ export default {
           applicant_name: '-'
         }
       },
-      showDialogUrgency: false,
+      showUrgencyForm: false,
       isUrgent: false
     }
   },
@@ -823,7 +827,7 @@ export default {
       this.showDialogReasonReject = value
     })
     EventBus.$on('dialogUrgencyConfirmation', (value) => {
-      this.showDialogUrgency = false
+      this.showUrgencyForm = false
       if (value) {
         this.getListDetail()
       }
@@ -862,9 +866,9 @@ export default {
       }
     },
     urgencyChange(id, value) {
-      this.showDialogUrgency = true
+      this.showUrgencyForm = true
       this.dataUrgencyConfirmation = this.detailLogisticRequest
-      this.$refs.urgencyConfirmation.setData(id, value, this.dataUrgencyConfirmation)
+      this.$refs.dialogUrgencyForm.setData(id, value, this.dataUrgencyConfirmation)
     },
     async deleteRealization(item, recommendation, realization) {
       this.dialogDelete = true
