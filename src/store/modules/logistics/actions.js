@@ -83,6 +83,14 @@ export default {
       return e
     }
   },
+  async updateApplicant({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/logistic-request/' + params.id, 'PUT', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getListLogisticRequest({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/logistic-request', 'GET', params)

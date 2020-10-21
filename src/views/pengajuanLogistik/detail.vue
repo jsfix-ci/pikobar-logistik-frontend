@@ -310,7 +310,7 @@
                 </v-row>
               </v-col>
               <v-col class="margin-20" cols="12" sm="1" md="1">
-                <v-btn small outlined color="success" style="padding:20px;" @click="showAgencyIdentityDialog(detailLogisticRequest)"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
+                <v-btn small outlined color="success" style="padding:20px;" @click="showAgencyIdentityDialog"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
           </v-card>
@@ -724,6 +724,10 @@
       ref="dialogUrgencyForm"
       :show="showUrgencyForm"
     />
+    <agencyIdentity
+      ref="agencyIdentityForm"
+      :show="showAgencyIdentity"
+    />
     <DialogDelete
       :dialog="dialogDelete"
       :data-deleted="dataDelete"
@@ -746,6 +750,7 @@ import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
 import dialogUrgency from './dialogUrgency'
+import agencyIdentity from './agencyIdentity'
 import PicInfo from '@/components/PicInfo'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
@@ -761,7 +766,8 @@ export default {
     CheckStockDialog,
     DialogDelete,
     PicInfo,
-    dialogUrgency
+    dialogUrgency,
+    agencyIdentity
   },
   data() {
     return {
@@ -797,7 +803,10 @@ export default {
         }
       },
       showUrgencyForm: false,
-      isUrgent: false
+      isUrgent: false,
+      showAgencyIdentity: false,
+      showApplicantIdentity: false,
+      updateLetterForm: false
     }
   },
   computed: {
@@ -828,6 +837,24 @@ export default {
     })
     EventBus.$on('dialogUrgencyConfirmation', (value) => {
       this.showUrgencyForm = false
+      if (value) {
+        this.getListDetail()
+      }
+    })
+    EventBus.$on('hideAgencyIdentity', (value) => {
+      this.showAgencyIdentity = false
+      if (value) {
+        this.getListDetail()
+      }
+    })
+    EventBus.$on('hideApplicantIdentity', (value) => {
+      this.showApplicantIdentity = false
+      if (value) {
+        this.getListDetail()
+      }
+    })
+    EventBus.$on('hideUpdateLetter', (value) => {
+      this.updateLetterForm = false
       if (value) {
         this.getListDetail()
       }
@@ -869,6 +896,18 @@ export default {
       this.showUrgencyForm = true
       this.dataUrgencyConfirmation = this.detailLogisticRequest
       this.$refs.dialogUrgencyForm.setData(id, value, this.dataUrgencyConfirmation)
+    },
+    showAgencyIdentityDialog() {
+      this.$refs.agencyIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
+      this.showAgencyIdentity = true
+    },
+    showApplicantIdentityDialog(data) {
+      this.showApplicantIdentity = true
+      this.$refs.dialogApplicantIdentityForm.setData(data.id, data)
+    },
+    updateLetter(data) {
+      this.updateLetterForm = true
+      this.$refs.dialogUpdateLetterForm.setData(data.id, data)
     },
     async deleteRealization(item, recommendation, realization) {
       this.dialogDelete = true
