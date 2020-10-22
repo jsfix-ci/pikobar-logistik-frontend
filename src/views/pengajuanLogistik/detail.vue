@@ -390,7 +390,7 @@
                 <v-row>
                   <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
                   <a v-else-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</a>
-                  <img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-'">
+                  <v-img v-else class="image-style" :src="detailLogisticRequest.applicant.file" width="400px" @error="errorHandler" />
                 </v-row>
               </v-col>
               <v-col class="margin-20" cols="12" sm="1" md="1">
@@ -806,7 +806,8 @@ export default {
       isUrgent: false,
       showAgencyIdentity: false,
       showApplicantIdentity: false,
-      updateLetterForm: false
+      updateLetterForm: false,
+      noImage: './img/noimage.gif'
     }
   },
   computed: {
@@ -1143,6 +1144,10 @@ export default {
       } else {
         return '0'
       }
+    },
+    errorHandler(url) {
+      this.detailLogisticRequest.applicant.file = this.noImage
+      this.$forceUpdate()
     }
   }
 }
