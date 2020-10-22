@@ -334,8 +334,13 @@ export default {
             style: 'headerLetter'
           },
           {
-            text: this.$t('label.print_mail_nomor').toUpperCase() + ': ' + this.detailLetter.outgoing_letter.letter_number,
-            style: 'headerLetter'
+            columns: [
+              {
+                width: this.letterNumberConfig() ? 500 : 380,
+                text: this.$t('label.print_mail_nomor').toUpperCase() + ': ' + (this.letterNumberConfig() ? this.detailLetter.outgoing_letter.letter_number : ''),
+                style: 'headerLetter'
+              }
+            ]
           },
           {
             text: '\n'
@@ -421,6 +426,11 @@ export default {
             fontSize: 11,
             alignment: 'center'
           },
+          headerLetterBlank: {
+            fontSize: 11,
+            alignment: 'center',
+            color: 'white'
+          },
           website: {
             fontSize: 9,
             alignment: 'center'
@@ -498,6 +508,9 @@ export default {
     },
     async onNext() {
       await this.getDetailApplication()
+    },
+    letterNumberConfig() {
+      return (this.detailLetter.outgoing_letter.letter_number !== null)
     }
   }
 }
