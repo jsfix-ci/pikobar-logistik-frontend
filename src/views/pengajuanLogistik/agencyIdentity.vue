@@ -17,7 +17,7 @@
               <ValidationProvider v-slot="{ errors }" rules="requiredInstanceType">
                 <span><b>{{ $t('label.instance_type') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
                 <v-autocomplete
-                  v-model="data.agency_type"
+                  v-model="queryUpdateData.agency_type"
                   :items="faskesTypeList"
                   outlined
                   solo-inverted
@@ -35,7 +35,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.instance_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                 <v-autocomplete
-                  v-model="data.master_faskes_id"
+                  v-model="queryUpdateData.master_faskes_id"
                   :items="faskesList"
                   outlined
                   solo-inverted
@@ -54,7 +54,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.instance_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                 <v-text-field
-                  v-model="data.agency_name"
+                  v-model="queryUpdateData.agency_name"
                   outlined
                   :error-messages="errors"
                   :placeholder="instanceNamePlaceholder"
@@ -67,7 +67,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.instance_phone_number') }}</b></v-label>
                 <v-text-field
-                  v-model="data.phone_number"
+                  v-model="queryUpdateData.phone_number"
                   outlined
                   :error-messages="errors"
                   :placeholder="$t('label.example_phone_number')"
@@ -82,7 +82,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.city_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                 <v-autocomplete
-                  v-model="data.location_district_code"
+                  v-model="queryUpdateData.location_district_code"
                   :items="applicantListCity"
                   outlined
                   solo-inverted
@@ -99,7 +99,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.district_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                 <v-autocomplete
-                  v-model="data.location_subdistrict_code"
+                  v-model="queryUpdateData.location_subdistrict_code"
                   :items="applicantListDistrict"
                   outlined
                   solo-inverted
@@ -116,7 +116,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.village_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                 <v-autocomplete
-                  v-model="data.location_village_code"
+                  v-model="queryUpdateData.location_village_code"
                   :items="applicantListVillage"
                   outlined
                   solo-inverted
@@ -133,7 +133,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.full_address') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                 <v-textarea
-                  v-model="data.location_address"
+                  v-model="queryUpdateData.location_address"
                   outlined
                   :height="100"
                   :no-resize="true"
@@ -148,7 +148,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.full_address') }}</b></v-label>
                 <v-textarea
-                  v-model="data.location_address"
+                  v-model="queryUpdateData.location_address"
                   outlined
                   :height="100"
                   :no-resize="true"
@@ -219,7 +219,19 @@ export default {
       showForm: false,
       isEtc: false,
       instanceNamePlaceholder: this.$t('label.example_instance_name'),
-      id: null
+      id: null,
+      queryUpdateData: {
+        id: null,
+        master_faskes_id: null,
+        agency_name: null,
+        phone_number: null,
+        location_district_code: null,
+        location_subdistrict_code: null,
+        location_village_code: null,
+        location_address: null,
+        agency_type: null,
+        update_type: 1
+      }
     }
   },
   computed: {
@@ -250,7 +262,7 @@ export default {
       this.listQueryFaskes.id_tipe_faskes = id
       this.listQueryFaskes.nama_faskes = ''
       if (id === this.agency_type) {
-        this.listQueryFaskes.nama_faskes = this.data.agency_name
+        this.listQueryFaskes.nama_faskes = this.queryUpdateData.agency_name
       }
       this.isEtc = false
       if (id === 4 || id === 5) {
@@ -306,12 +318,22 @@ export default {
       }
       this.getListCity()
       this.id = id
-      this.data = value
       this.agency_type = parseInt(value.agency_type)
-      this.data.agency_type = parseInt(value.agency_type)
-      this.onSelectFaskesType(this.data.agency_type)
-      this.getListDistrict(this.data.location_district_code)
-      this.getListVillage(this.data.location_subdistrict_code)
+      this.queryUpdateData = {
+        id: value.id,
+        master_faskes_id: value.master_faskes_id,
+        agency_name: value.agency_name,
+        phone_number: value.phone_number,
+        location_district_code: value.location_district_code,
+        location_subdistrict_code: value.location_subdistrict_code,
+        location_village_code: value.location_village_code,
+        location_address: value.location_address,
+        agency_type: parseInt(value.agency_type),
+        update_type: 1
+      }
+      this.onSelectFaskesType(this.queryUpdateData.agency_type)
+      this.getListDistrict(this.queryUpdateData.location_district_code)
+      this.getListVillage(this.queryUpdateData.location_subdistrict_code)
     },
     closeDialog() {
       this.$refs.observer.reset()
@@ -322,19 +344,7 @@ export default {
       if (!valid) {
         return
       }
-      const queryData = {
-        id: this.id,
-        master_faskes_id: this.data.master_faskes_id,
-        agency_name: this.data.agency_name,
-        phone_number: this.data.phone_number,
-        location_district_code: this.data.location_district_code,
-        location_subdistrict_code: this.data.location_subdistrict_code,
-        location_village_code: this.data.location_village_code,
-        location_address: this.data.location_address,
-        agency_type: this.data.agency_type,
-        update_type: 1
-      }
-      const response = await this.$store.dispatch('logistics/updateApplicant', queryData)
+      const response = await this.$store.dispatch('logistics/updateApplicant', this.queryUpdateData)
       if (response.status === 200) {
         EventBus.$emit('hideAgencyIdentity', true)
       }
