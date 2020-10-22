@@ -394,7 +394,7 @@
                 </v-row>
               </v-col>
               <v-col class="margin-20" cols="12" sm="1" md="1">
-                <v-btn small outlined color="success" style="padding:20px;" @click="showApplicantIdentityDialog(detailLogisticRequest)"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
+                <v-btn small outlined color="success" style="padding:20px;" @click="showApplicantIdentityDialog"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
           </v-card>
@@ -728,6 +728,10 @@
       ref="agencyIdentityForm"
       :show="showAgencyIdentity"
     />
+    <applicantIdentity
+      ref="dialogApplicantIdentityForm"
+      :show="showApplicantIdentity"
+    />
     <DialogDelete
       :dialog="dialogDelete"
       :data-deleted="dataDelete"
@@ -751,6 +755,7 @@ import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
 import dialogUrgency from './dialogUrgency'
 import agencyIdentity from './agencyIdentity'
+import applicantIdentity from './applicantIdentity'
 import PicInfo from '@/components/PicInfo'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
@@ -767,7 +772,8 @@ export default {
     DialogDelete,
     PicInfo,
     dialogUrgency,
-    agencyIdentity
+    agencyIdentity,
+    applicantIdentity
   },
   data() {
     return {
@@ -902,9 +908,9 @@ export default {
       this.$refs.agencyIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
       this.showAgencyIdentity = true
     },
-    showApplicantIdentityDialog(data) {
+    showApplicantIdentityDialog() {
+      this.$refs.dialogApplicantIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
       this.showApplicantIdentity = true
-      this.$refs.dialogApplicantIdentityForm.setData(data.id, data)
     },
     updateLetter(data) {
       this.updateLetterForm = true
