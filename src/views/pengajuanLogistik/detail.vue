@@ -422,7 +422,7 @@
                 <v-btn small outlined color="success" style="padding:20px;" @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
                   <v-icon small dark style="padding-left:5px;">mdi-download</v-icon> <span>{{ $t('label.download') }}</span>
                 </v-btn>
-                <v-btn small outlined color="success" style="margin-left:15px; padding:20px;" @click="updateLetter(detailLogisticRequest)"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
+                <v-btn small outlined color="success" style="margin-left:15px; padding:20px;" @click="updateLetter"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
           </v-card-text>
@@ -732,6 +732,10 @@
       ref="dialogApplicantIdentityForm"
       :show="showApplicantIdentity"
     />
+    <updateLetter
+      ref="dialogUpdateLetterForm"
+      :show="updateLetterForm"
+    />
     <DialogDelete
       :dialog="dialogDelete"
       :data-deleted="dataDelete"
@@ -756,6 +760,7 @@ import DialogDelete from '@/components/DialogDelete'
 import dialogUrgency from './dialogUrgency'
 import agencyIdentity from './agencyIdentity'
 import applicantIdentity from './applicantIdentity'
+import updateLetter from './updateLetter'
 import PicInfo from '@/components/PicInfo'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
@@ -773,7 +778,8 @@ export default {
     PicInfo,
     dialogUrgency,
     agencyIdentity,
-    applicantIdentity
+    applicantIdentity,
+    updateLetter
   },
   data() {
     return {
@@ -912,9 +918,9 @@ export default {
       this.$refs.dialogApplicantIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
       this.showApplicantIdentity = true
     },
-    updateLetter(data) {
+    updateLetter() {
+      this.$refs.dialogUpdateLetterForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
       this.updateLetterForm = true
-      this.$refs.dialogUpdateLetterForm.setData(data.id, data)
     },
     async deleteRealization(item, recommendation, realization) {
       this.dialogDelete = true

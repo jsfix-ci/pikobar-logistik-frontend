@@ -284,7 +284,7 @@ export default {
       formData.append('update_type', this.queryUpdateData.update_type)
       const response = await this.$store.dispatch('logistics/updateApplicantIdentity', formData)
       if (response.status === 200) {
-        EventBus.$emit('hideAgencyIdentity', true)
+        EventBus.$emit('hideApplicantIdentity', true)
       }
     }
   }
