@@ -17,7 +17,7 @@
               <ValidationProvider v-slot="{ errors }" rules="requiredApplicantName">
                 <span><b>{{ $t('label.contact_person') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
                 <v-text-field
-                  v-model="data.applicant.applicant_name"
+                  v-model="queryUpdateData.applicant_name"
                   outlined
                   :error-messages="errors"
                   :placeholder="$t('label.input_full_name')"
@@ -29,7 +29,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.applicant_position') }}</b></v-label>
                 <v-text-field
-                  v-model="data.applicant.applicants_office"
+                  v-model="queryUpdateData.applicants_office"
                   outlined
                   :error-messages="errors"
                   :placeholder="$t('label.applicant_position_placeholder')"
@@ -38,7 +38,7 @@
               </ValidationProvider>
               <ValidationProvider>
                 <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b></v-label>
-                <v-img v-if="isExists" class="image-style" :src="data.applicant.file" width="400px" @error="errorHandler" />
+                <v-img class="image-style" :src="queryUpdateData.urlFile" @error="errorHandler" />
                 <br>
                 <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
                 <div>
@@ -101,7 +101,7 @@
                     v-if="isExists"
                     class="margin-10"
                     style="margin-left: 10px;"
-                    :href="data.applicant.file"
+                    :href="queryUpdateData.urlFile"
                     target="_blank"
                   >
                     {{ $t('label.download') }}
@@ -121,7 +121,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.applicant_email') }}</b></v-label>
                 <v-text-field
-                  v-model="data.applicant.email"
+                  v-model="queryUpdateData.email"
                   outlined
                   solo-inverted
                   :error-messages="errors"
@@ -134,7 +134,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.applicant_phone_number') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                 <v-text-field
-                  v-model="data.applicant.primary_phone_number"
+                  v-model="queryUpdateData.primary_phone_number"
                   outlined
                   solo-inverted
                   :error-messages="errors"
@@ -190,6 +190,16 @@ export default {
     return {
       id: null,
       data: {},
+      queryUpdateData: {
+        id: null,
+        applicant_name: null,
+        applicants_office: null,
+        email: null,
+        primary_phone_number: null,
+        dataFile: null,
+        urlFile: './img/noimage.gif',
+        update_type: 2
+      },
       // Other Params
       isSelecting: false,
       selectedFile: null,
@@ -221,31 +231,38 @@ export default {
         return
       }
       this.url = URL.createObjectURL(this.selectedFile)
-      this.data.applicant.file = this.url
+      this.queryUpdateData.urlFile = this.url
       this.isSelecting = false
       this.isUpload = true
       this.uploadAlert = false
       this.selectedFileName = this.selectedFile.name
       this.isUpload = true
-      const formData = new FormData()
-      formData.append('file', this.selectedFile)
-      this.data.dataFile = this.selectedFile
     },
     deleteFile() {
       this.selectedFileName = ''
       this.isUpload = false
-      this.data.applicant.file = ''
+      this.queryUpdateData.urlFile = this.defaultIdentity
+      this.queryUpdateData.dataFile = null
     },
     errorHandler(url) {
-      this.data.applicant.file = this.noImage
+      this.queryUpdateData.urlFile = this.noImage
       this.$forceUpdate()
+      this.isExists = false
     },
     // Default Method
     setData(id, value) {
       this.id = id
-      this.data = value
-      this.isExists = (this.data.applicant.file !== null)
       this.defaultIdentity = value.applicant.file
+      this.queryUpdateData = {
+        id: value.id,
+        applicant_name: value.applicant.applicant_name,
+        applicants_office: value.applicant.applicants_office,
+        email: value.email,
+        primary_phone_number: value.applicant.primary_phone_number,
+        dataFile: null,
+        urlFile: value.applicant.file,
+        update_type: 2
+      }
     },
     closeDialog() {
       this.$refs.observer.reset()
@@ -256,16 +273,16 @@ export default {
       if (!valid) {
         return
       }
-      const queryData = {
-        id: this.id,
-        applicant_name: this.data.applicant.applicant_name,
-        applicants_office: this.data.applicant.applicants_office,
-        email: this.data.applicant.email,
-        primary_phone_number: this.data.applicant.primary_phone_number,
-        dataFile: this.data.dataFile,
-        update_type: 2
-      }
-      const response = await this.$store.dispatch('logistics/updateApplicant', queryData)
+      const formData = new FormData()
+      formData.append('applicant_file', this.selectedFile)
+      formData.append('id', this.queryUpdateData.id)
+      formData.append('applicant_id', this.queryUpdateData.id)
+      formData.append('applicant_name', this.queryUpdateData.applicant_name)
+      formData.append('applicants_office', this.queryUpdateData.applicants_office)
+      formData.append('email', this.queryUpdateData.email)
+      formData.append('primary_phone_number', this.queryUpdateData.primary_phone_number)
+      formData.append('update_type', this.queryUpdateData.update_type)
+      const response = await this.$store.dispatch('logistics/updateApplicantIdentity', formData)
       if (response.status === 200) {
         EventBus.$emit('hideAgencyIdentity', true)
       }
@@ -314,5 +331,9 @@ export default {
     margin-top: -15px;
     padding-left: -15px;
     border-bottom: 1px solid rgb(214, 214, 214);
+  }
+  .image-style {
+    max-width: 100%;
+    max-height: 500px;
   }
 </style>
