@@ -3,6 +3,7 @@
     <v-dialog
       v-model="dialogShow"
       width="70%"
+      :persistent="true"
     >
       <v-card>
         <v-card-title

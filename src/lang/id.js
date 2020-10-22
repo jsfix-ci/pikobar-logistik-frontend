@@ -11,6 +11,7 @@ export default {
     applicant_medical_tools_title: 'Permohonan',
     applicant_medical_tools_list_title: 'Daftar Permohonan',
     applicant_form: 'Form Pemohon',
+    applicant_form_edit: 'Edit Permohonan',
     medical_facility_title: 'Fasilitas Kesehatan',
     not_registered_title: 'Belum Terdaftar',
     registered_title: 'Terdaftar',
