@@ -257,7 +257,7 @@ export default {
         id: value.id,
         applicant_name: value.applicant.applicant_name,
         applicants_office: value.applicant.applicants_office,
-        email: value.email,
+        email: value.applicant.email,
         primary_phone_number: value.applicant.primary_phone_number,
         dataFile: null,
         urlFile: value.applicant.file,
