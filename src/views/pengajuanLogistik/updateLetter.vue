@@ -15,19 +15,19 @@
           <div class="row">
             <div class="col-sm-12">
               <ValidationProvider v-slot="{ errors }" rules="requiredApplicantLetterNumber">
-                <span><b>{{ $t('label.application_letter_number') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+                <span><b>{{ $t('label.applicant_letter_number') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
                 <v-text-field
                   v-model="queryUpdateData.application_letter_number"
                   outlined
                   :error-messages="errors"
-                  :placeholder="$t('label.application_letter_number_placeholder')"
+                  :placeholder="$t('label.applicant_letter_number_placeholder')"
                   solo-inverted
                   class="col-sm-6"
                 />
               </ValidationProvider>
             </div>
             <div class="col-sm-12" style="margin-top:-40px;">
-              <v-label class="title"><b>{{ $t('label.application_letter_number_upload') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><b>{{ $t('label.applicant_letter_number_upload') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <br>
               <v-row>
                 <v-col cols="2" sm="6" md="2">

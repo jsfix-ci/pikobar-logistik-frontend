@@ -127,23 +127,6 @@
                 />
               </ValidationProvider>
               <ValidationProvider
-                v-if="!isAdmin"
-                v-slot="{ errors }"
-                rules="requiredFullAddress"
-              >
-                <v-label class="title"><b>{{ $t('label.full_address') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-                <v-textarea
-                  v-model="queryUpdateData.location_address"
-                  outlined
-                  :height="100"
-                  :no-resize="true"
-                  :error-messages="errors"
-                  :placeholder="$t('label.example_full_address')"
-                  solo-inverted
-                />
-              </ValidationProvider>
-              <ValidationProvider
-                v-else
                 v-slot="{ errors }"
               >
                 <v-label class="title"><b>{{ $t('label.full_address') }}</b></v-label>
@@ -199,10 +182,6 @@ export default {
   },
   props: {
     show: {
-      type: Boolean,
-      default: null
-    },
-    isAdmin: {
       type: Boolean,
       default: null
     }
@@ -293,12 +272,7 @@ export default {
       }
     },
     async getListFaskes() {
-      if (this.isAdmin) {
-        await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
-      } else {
-        this.listQueryFaskes.is_imported = 0
-        await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
-      }
+      await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
     },
     async querySearchFaskes(event) {
       this.listQueryFaskes.nama_faskes = event.target.value
@@ -311,11 +285,7 @@ export default {
     },
     // Default Method
     setData(id, value) {
-      if (this.isAdmin) {
-        this.$store.dispatch('faskesType/getListFaskesType', { non_public: 1 })
-      } else {
-        this.$store.dispatch('faskesType/getListFaskesType')
-      }
+      this.$store.dispatch('faskesType/getListFaskesType')
       this.getListCity()
       this.id = id
       this.agency_type = parseInt(value.agency_type)
