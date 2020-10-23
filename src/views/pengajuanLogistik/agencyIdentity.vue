@@ -293,12 +293,7 @@ export default {
       }
     },
     async getListFaskes() {
-      if (this.isAdmin) {
-        await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
-      } else {
-        this.listQueryFaskes.is_imported = 0
-        await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
-      }
+      await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
     },
     async querySearchFaskes(event) {
       this.listQueryFaskes.nama_faskes = event.target.value
