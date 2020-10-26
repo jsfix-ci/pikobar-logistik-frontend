@@ -8,7 +8,7 @@
       <ValidationObserver ref="observer">
         <div class="col-sm-12">
           <v-card-text class="headerSection">
-            <span><h4><b>{{ $t('route.applicant_form_edit') + ' - ' + $t('label.step_title_2') }}</b></h4></span>
+            <span><h4><b>{{ $t('route.applicant_form_edit') + ' - ' + $t('label.applicant_letter') }}</b></h4></span>
           </v-card-text>
         </div>
         <div class="container">
@@ -31,13 +31,13 @@
               <br>
               <v-row>
                 <v-col cols="2" sm="6" md="2">
-                  <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
-                  <img v-if="isUpload" height="100" src="../../static/upload_dokumen.svg">
+                  <img v-if="!isUpload && !isLetterExists" height="100" src="../../static/upload_no_dokumen.svg">
+                  <img v-if="isUpload || isLetterExists" height="100" src="../../static/upload_dokumen.svg">
                 </v-col>
-                <v-col cols="2" sm="6" md="3">
+                <v-col cols="3" sm="7" md="4">
                   <v-row>
-                    <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
-                    <v-label v-if="isUpload">{{ selectedFileName }}</v-label>
+                    <v-label v-if="!isUpload && !isLetterExists">{{ $t('label.not_yet_upload_file') }}</v-label>
+                    <v-label v-if="isUpload || isLetterExists">{{ selectedFileName }}</v-label>
                   </v-row>
                   <br>
                   <v-row>
@@ -67,6 +67,7 @@
                     >
                       {{ $t('label.reupload') }}
                     </v-btn>
+                    <a :href="defaultFile" target="_blank" class="blue--text btn-download">{{ $t('label.download_letter') }}</a>
                     <v-alert
                       v-if="uploadAlert"
                       type="error"
@@ -146,8 +147,9 @@ export default {
       isFileValid: false,
       isExists: false,
       url: '',
-      defaultIdentity: '',
-      noImage: './img/noimage.gif'
+      defaultFile: '',
+      noImage: './img/noimage.gif',
+      isLetterExists: false
     }
   },
   methods: {
@@ -175,7 +177,7 @@ export default {
     deleteFile() {
       this.selectedFileName = ''
       this.isUpload = false
-      this.queryUpdateData.urlFile = this.defaultIdentity
+      this.queryUpdateData.urlFile = this.defaultFile
       this.queryUpdateData.dataFile = null
     },
     errorHandler(url) {
@@ -185,29 +187,50 @@ export default {
     },
     // Default Method
     setData(id, value) {
+      this.resetDialog()
       this.id = id
-      this.defaultIdentity = value.applicant.file
+      this.defaultFile = value.letter.letter
       this.queryUpdateData = {
         id: value.id,
         application_letter_number: value.applicant.application_letter_number,
         update_type: 3
       }
+      this.selectedFileName = value.applicant.application_letter_number + '.pdf'
+      if (value.letter !== null) this.isLetterExists = true
     },
     closeDialog() {
       this.$refs.observer.reset()
+      this.resetDialog()
       EventBus.$emit('hideUpdateLetter', false)
+    },
+    resetDialog() {
+      this.id = null
+      this.data = {}
+      this.queryUpdateData = {
+        id: null,
+        application_letter_number: null,
+        update_type: 3
+      }
+      // Other Params
+      this.isSelecting = false
+      this.selectedFile = null
+      this.selectedFileName = ''
+      this.isUpload = false
+      this.uploadAlert = false
+      this.uploadFileMaxSizeAlert = false
+      this.isFileValid = false
+      this.isExists = false
+      this.url = ''
+      this.defaultFile = ''
+      this.noImage = './img/noimage.gif'
+      this.isLetterExists = false
     },
     async updateForm() {
       const valid = await this.$refs.observer.validate()
-      this.uploadAlert = !this.isUpload
-      if (!valid || !this.isUpload) {
+      this.uploadAlert = !this.isUpload && !this.isLetterExists
+      if (!valid || (!this.isUpload && !this.isLetterExists)) {
         this.processRequest = true
         this.uploadFileMaxSizeAlert = false
-        return
-      }
-      if (this.selectedFile.size >= 10000000) {
-        this.isFileValid = false
-        this.uploadFileMaxSizeAlert = true
         return
       }
       const formData = new FormData()
@@ -269,5 +292,9 @@ export default {
   .image-style {
     max-width: 100%;
     max-height: 500px;
+  }
+  .btn-download {
+    margin-top: 15px;
+    margin-left: 20px;
   }
 </style>
