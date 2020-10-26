@@ -8,7 +8,7 @@
       <ValidationObserver ref="observer">
         <div class="col-sm-12">
           <v-card-text class="headerSection">
-            <span><h4><b>{{ $t('route.applicant_form_edit') + ' - ' + $t('label.step_title_2') }}</b></h4></span>
+            <span><h4><b>{{ $t('route.applicant_form_edit') + ' - ' + $t('label.applicant_letter') }}</b></h4></span>
           </v-card-text>
         </div>
         <div class="container">
