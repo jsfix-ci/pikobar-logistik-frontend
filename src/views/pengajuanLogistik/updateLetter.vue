@@ -187,6 +187,7 @@ export default {
     },
     // Default Method
     setData(id, value) {
+      this.resetDialog()
       this.id = id
       this.defaultFile = value.letter.letter
       this.queryUpdateData = {
@@ -199,7 +200,30 @@ export default {
     },
     closeDialog() {
       this.$refs.observer.reset()
+      this.resetDialog()
       EventBus.$emit('hideUpdateLetter', false)
+    },
+    resetDialog() {
+      this.id = null
+      this.data = {}
+      this.queryUpdateData = {
+        id: null,
+        application_letter_number: null,
+        update_type: 3
+      }
+      // Other Params
+      this.isSelecting = false
+      this.selectedFile = null
+      this.selectedFileName = ''
+      this.isUpload = false
+      this.uploadAlert = false
+      this.uploadFileMaxSizeAlert = false
+      this.isFileValid = false
+      this.isExists = false
+      this.url = ''
+      this.defaultFile = ''
+      this.noImage = './img/noimage.gif'
+      this.isLetterExists = false
     },
     async updateForm() {
       const valid = await this.$refs.observer.validate()
