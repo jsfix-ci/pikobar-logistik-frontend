@@ -401,6 +401,7 @@ export default {
     applicant_letter_number_placeholder: 'Masukkan Nomor Surat Permohonan',
     applicant_letter_number_upload: 'Upload Surat Permohonan',
     download: 'Unduh',
+    download_letter: 'Unduh Surat',
     outgoing_mail_data: 'Data Surat Perintah',
     incoming_mail_data: 'Data Surat Masuk',
     outgoing_mail_number: 'No. Surat Perintah',
