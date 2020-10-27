@@ -116,20 +116,24 @@
         <v-col v-if="type === 'create'" class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-if="processRequest" outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-else disabled outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
-              <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
+              <v-btn v-if="processRequest" small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
+              <v-btn v-else disabled small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.add') }}</v-btn>
             </v-col>
           </v-row>
         </v-col>
         <v-col v-else-if="type === 'update'" class="margin-top-min-10-update-logistic-needs">
           <v-row>
             <v-col>
-              <v-btn outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-if="processRequest" outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
+              <v-btn v-else disabled outlined small width="150px" height="50px" style="float: right" @click="hideDialog(false)">{{ $t('label.cancel') }}</v-btn>
             </v-col>
             <v-col>
-              <v-btn small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.save_update') }}</v-btn>
+              <v-btn v-if="processRequest" small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.save_update') }}</v-btn>
+              <v-btn v-else disabled small width="150px" height="50px" color="success" @click="submitData()">{{ $t('label.save_update') }}</v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -241,6 +245,7 @@ export default {
       this.processRequest = false
       const valid = await this.$refs.observer.validate()
       if (!valid) {
+        this.processRequest = true
         return
       }
       this.data.letter_request = JSON.stringify(this.letter_request)
@@ -269,6 +274,7 @@ export default {
     },
     hideDialog(value) {
       this.$refs.observer.reset()
+      this.reset()
       EventBus.$emit('createDialogHide', value)
     },
     handleSelectedDate(value) {
@@ -276,6 +282,32 @@ export default {
     },
     changeDate(value) {
       this.data.letter_date = value
+    },
+    reset() {
+      this.$refs.observer.reset()
+      this.data = {
+        letter_name: null,
+        letter_number: null,
+        letter_date: null,
+        letter_request: null
+      }
+      this.letter_request = [{
+        'applicant_id': null
+      }]
+      this.item = [{
+        'applicant_id': null
+      }]
+      this.updateName = false
+      this.isCreate = false
+      this.isUpdate = false
+      this.dialog = false
+      this.date = null
+      this.agency_id = null
+      this.labelDate = this.$t('label.input_date')
+      this.listQuery = {
+        request_letter_id: null
+      }
+      this.processRequest = true
     }
   }
 }
