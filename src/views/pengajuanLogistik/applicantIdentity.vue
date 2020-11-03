@@ -141,6 +141,18 @@
                   :placeholder="$t('label.applicant_phone_number_placeholder')"
                 />
               </ValidationProvider>
+              <ValidationProvider
+                v-slot="{ errors }"
+              >
+                <v-label class="title"><b>{{ $t('label.applicant_phone_sub') }}</b></v-label>
+                <v-text-field
+                  v-model="queryUpdateData.secondary_phone_number"
+                  outlined
+                  solo-inverted
+                  :error-messages="errors"
+                  :placeholder="$t('label.applicant_phone_number_placeholder')"
+                />
+              </ValidationProvider>
             </div>
           </div>
         </div>
@@ -196,6 +208,7 @@ export default {
         applicants_office: null,
         email: null,
         primary_phone_number: null,
+        secondary_phone_number: null,
         dataFile: null,
         urlFile: './img/noimage.gif',
         update_type: 2
@@ -259,6 +272,7 @@ export default {
         applicants_office: value.applicant.applicants_office,
         email: value.applicant.email,
         primary_phone_number: value.applicant.primary_phone_number,
+        secondary_phone_number: value.applicant.secondary_phone_number,
         dataFile: null,
         urlFile: value.applicant.file,
         update_type: 2
@@ -281,6 +295,8 @@ export default {
       formData.append('applicants_office', this.queryUpdateData.applicants_office)
       formData.append('email', this.queryUpdateData.email)
       formData.append('primary_phone_number', this.queryUpdateData.primary_phone_number)
+      const secondaryNumber = this.queryUpdateData.secondary_phone_number ? this.queryUpdateData.secondary_phone_number : '-'
+      formData.append('secondary_phone_number', secondaryNumber)
       formData.append('update_type', this.queryUpdateData.update_type)
       const response = await this.$store.dispatch('logistics/updateApplicantIdentity', formData)
       if (response.status === 200) {
