@@ -10,7 +10,6 @@
           <span><h4><b>{{ $t('label.completeness_header') }}</b></h4></span>
         </v-card-text>
       </div>
-      <hr class="thin">
       <div class="col-sm-12">
         <v-card-text>
           <span>{{ $t('label.not_complete_description') + data.id + ':' }}</span>
@@ -39,8 +38,8 @@
           <span>{{ $t('label.not_complete_applicant_file') }}</span>
           <span class="red--text">{{ $t('label.completeness_fail') }}</span>
         </v-card-text>
+        <hr class="thin">
       </div>
-      <hr class="thin">
       <v-col class="d-flex justify-center">
         <v-btn
           small
