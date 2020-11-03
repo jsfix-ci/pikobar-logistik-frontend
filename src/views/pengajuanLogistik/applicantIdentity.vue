@@ -38,7 +38,7 @@
               </ValidationProvider>
               <ValidationProvider>
                 <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b></v-label>
-                <v-img class="image-style" :src="queryUpdateData.urlFile" @error="errorHandler" />
+                <v-img class="image-style-fit" :src="queryUpdateData.urlFile" @error="errorHandler" />
                 <br>
                 <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
                 <div>
@@ -348,8 +348,7 @@ export default {
     padding-left: -15px;
     border-bottom: 1px solid rgb(214, 214, 214);
   }
-  .image-style {
-    max-width: 100%;
-    max-height: 500px;
+  .image-style-fit {
+    max-width: 80%;
   }
 </style>
