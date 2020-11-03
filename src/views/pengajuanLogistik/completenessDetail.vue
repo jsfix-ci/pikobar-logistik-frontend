@@ -72,7 +72,16 @@ export default {
   },
   data() {
     return {
-      data: {}
+      data: {
+        agency_name: null,
+        location_address: null,
+        applicant: {
+          applicant_name: null,
+          letter: null,
+          file: null,
+          primary_phone_number: null
+        }
+      }
     }
   },
   methods: {
