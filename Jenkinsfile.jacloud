@@ -5,7 +5,7 @@ def secretsProd = [
     [envVar: 'VUE_APP_PORT', vaultKey: 'VUE_APP_PORT']]],
 ]
 
-def configuration = [vaultUrl: 'https://vault.jacloud.digitalservice.id/',  vaultCredentialId: 'vault-logistik', engineVersion: 2]
+def configuration = [vaultUrl: 'https://vault.jacloud.digitalservice.id/',  vaultCredentialId: 'approle-logistik', engineVersion: 2]
 
 pipeline {
 
