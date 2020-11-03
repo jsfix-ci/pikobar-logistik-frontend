@@ -295,7 +295,7 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col v-if="!isFinalized" class="margin-20" cols="12" sm="3" md="3">
+              <v-col class="margin-20" cols="12" sm="3" md="3">
                 <v-row>
                   <span
                     class="text-title-green"
@@ -309,21 +309,7 @@
                   </v-label>
                 </v-row>
               </v-col>
-              <v-col v-else class="margin-20" cols="12" sm="4" md="4">
-                <v-row>
-                  <span
-                    class="text-title-green"
-                  >
-                    {{ $t('label.full_address') }}
-                  </span>
-                </v-row>
-                <v-row>
-                  <v-label>
-                    {{ detailLogisticRequest.location_address }}
-                  </v-label>
-                </v-row>
-              </v-col>
-              <v-col v-if="!isFinalized" class="margin-20" cols="12" sm="1" md="1">
+              <v-col class="margin-20" cols="12" sm="1" md="1">
                 <v-btn small outlined color="success" style="padding:20px;" @click="showAgencyIdentityDialog"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
@@ -399,7 +385,7 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col v-if="!isFinalized" class="margin-20" cols="12" sm="3" md="3">
+              <v-col class="margin-20" cols="12" sm="3" md="3">
                 <v-row><span class="text-title-green">{{ $t('label.applicant_ktp') }}</span></v-row>
                 <v-row>
                   <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
@@ -407,15 +393,7 @@
                   <v-img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : noImage" @error="errorHandler" />
                 </v-row>
               </v-col>
-              <v-col v-else class="margin-20" cols="12" sm="4" md="4">
-                <v-row><span class="text-title-green">{{ $t('label.applicant_ktp') }}</span></v-row>
-                <v-row>
-                  <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
-                  <a v-else-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</a>
-                  <v-img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : noImage" @error="errorHandler" />
-                </v-row>
-              </v-col>
-              <v-col v-if="!isFinalized" class="margin-20" cols="12" sm="1" md="1">
+              <v-col class="margin-20" cols="12" sm="1" md="1">
                 <v-btn small outlined color="success" style="padding:20px;" @click="showApplicantIdentityDialog"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
@@ -441,13 +419,10 @@
                 <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.application_letter_number : '-' }}</u></a>
               </v-col>
               <v-col cols="3" md="3">
-                <v-btn v-if="!isFinalized" small outlined color="success" style="padding:20px;" @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
+                <v-btn small outlined color="success" style="padding:20px;" @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
                   <v-icon small dark style="padding-left:5px;">mdi-download</v-icon> <span>{{ $t('label.download') }}</span>
                 </v-btn>
-                <v-btn v-else absolute right small outlined color="success" style="padding:20px; margin-top: -10px;" @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
-                  <v-icon small dark style="padding-left:5px;">mdi-download</v-icon> <span>{{ $t('label.download') }}</span>
-                </v-btn>
-                <v-btn v-if="!isFinalized" small outlined color="success" style="margin-left:15px; padding:20px;" @click="updateLetter"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
+                <v-btn small outlined color="success" style="margin-left:15px; padding:20px;" @click="updateLetter"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
           </v-card-text>

@@ -6,11 +6,11 @@
   >
     <v-card>
       <div class="col-sm-12">
-        <v-card-text class="headerSection">
+        <v-card-text class="headerSection headerMargin">
           <span><h4><b>{{ $t('label.completeness_header') }}</b></h4></span>
         </v-card-text>
       </div>
-      <div v-if="data" class="col-sm-12 contentDialog">
+      <div class="col-sm-12">
         <v-card-text>
           <span>{{ $t('label.not_complete_description') + data.id + ':' }}</span>
         </v-card-text>
@@ -30,10 +30,6 @@
           <span>{{ $t('label.not_complete_applicant_primary_phone_number') }}</span>
           <span class="red--text">{{ $t('label.completeness_fail') }}</span>
         </v-card-text>
-        <v-card-text v-if="!data.applicant.secondary_phone_number" class="contentMargin">
-          <span>{{ $t('label.not_complete_applicant_secondary_phone_number') }}</span>
-          <span class="red--text">{{ $t('label.completeness_fail') }}</span>
-        </v-card-text>
         <v-card-text v-if="!data.applicant.letter" class="contentMargin">
           <span>{{ $t('label.not_complete_applicant_letter') }}</span>
           <span class="red--text">{{ $t('label.completeness_fail') }}</span>
@@ -42,7 +38,7 @@
           <span>{{ $t('label.not_complete_applicant_file') }}</span>
           <span class="red--text">{{ $t('label.completeness_fail') }}</span>
         </v-card-text>
-        <hr>
+        <hr class="thin">
       </div>
       <v-col class="d-flex justify-center">
         <v-btn
@@ -72,7 +68,16 @@ export default {
   },
   data() {
     return {
-      data: {}
+      data: {
+        agency_name: null,
+        location_address: null,
+        applicant: {
+          applicant_name: null,
+          letter: null,
+          file: null,
+          primary_phone_number: null
+        }
+      }
     }
   },
   methods: {
@@ -90,6 +95,9 @@ export default {
 <style>
   .contentDialog {
     margin-top: -50px;
+  }
+  .headerMargin {
+    margin-bottom: -20px;
   }
   .contentMargin {
     margin-top: -20px;
