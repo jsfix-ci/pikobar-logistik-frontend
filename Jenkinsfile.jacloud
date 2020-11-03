@@ -35,11 +35,14 @@ pipeline {
         stage('stage build logistik production'){
 
             steps {
-                sh 'docker --version'
-                sh 'echo ${VERSION}'
-                sh 'echo $VERSION > version.txt'
-                sh 'echo $VUE_APP_SECURE'
-                sh 'echo $VUE_APP_URL'
+
+                withVault([configuration: configuration, vaultSecrets: secretsProd]) { 
+                        sh 'docker --version'
+                        sh 'echo ${VERSION}'
+                        sh 'echo $VERSION > version.txt'
+                        sh 'echo $VUE_APP_SECURE'
+                        sh 'echo $VUE_APP_URL'
+                    }
                 stash includes: 'version.txt', name: 'version'
             }
 
