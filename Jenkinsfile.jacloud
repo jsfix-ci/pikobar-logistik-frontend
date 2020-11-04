@@ -12,7 +12,7 @@ pipeline {
     agent any
 
     environment {
-        appNameProduction = 'frontend-logistik-production'
+        appName = 'frontend-logistik-production'
         PROJECT_REGISTRY ='logistik'
         VERSION = "${BUILD_TAG}"
         URL_REGISTRY = "${env.URL_REGISTRY_JACLOUD}"
