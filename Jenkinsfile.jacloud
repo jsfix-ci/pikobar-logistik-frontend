@@ -13,7 +13,7 @@ pipeline {
 
     environment {
         appName = 'frontend-logistik-production'
-        PROJECT_REGISTRY ='logistik'
+        PROJECT_REGISTRY ='logistik-pikobar'
         VERSION = "${BUILD_TAG}"
         URL_REGISTRY = "${env.URL_REGISTRY_JACLOUD}"
 
