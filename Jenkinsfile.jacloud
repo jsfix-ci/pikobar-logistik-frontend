@@ -1,0 +1,60 @@
+def secretsProd = [
+  [path: 'kv-logistik-frontend/production/app', engineVersion: 2, secretValues: [
+    [envVar: 'VUE_APP_SECURE', vaultKey: 'VUE_APP_SECURE'],
+    [envVar: 'VUE_APP_URL', vaultKey: 'VUE_APP_URL'],
+    [envVar: 'VUE_APP_PORT', vaultKey: 'VUE_APP_PORT']]],
+]
+
+def configuration = [vaultUrl: 'https://vault.jacloud.digitalservice.id/',  vaultCredentialId: 'vault-logistik', engineVersion: 2]
+
+pipeline {
+
+    agent any
+
+    environment {
+        appNameProduction = 'frontend-logistik-production'
+        PROJECT_REGISTRY ='logistik'
+        VERSION = "${BUILD_TAG}"
+        URL_REGISTRY = "${env.URL_REGISTRY_JACLOUD}"
+
+        KUBECONFIG_LOGISTIK_STAGING = "${env.KUBECONFIG_LOGISTIK_STAGING}"
+        CLIENT_KEY_LOGISTIK_STAGING = "${env.CLIENT_KEY_LOGISTIK_STAGING}"
+        CLUSTER_NAME_JACLOUD = "k8s-jacloud001-JDS-RANCHER-NODE-03"        
+    }
+
+    options {
+        timeout(time: 1, unit: 'HOURS')
+    }
+
+     triggers {
+                githubPush()
+     }
+
+    stages{
+
+        stage('stage build logistik production'){
+
+            steps {
+
+                withVault([configuration: configuration, vaultSecrets: secretsProd]) { 
+                        sh 'docker --version'
+                        sh 'echo ${VERSION}'
+                        sh 'echo $VERSION > version.txt'
+                        sh 'echo $VUE_APP_SECURE'
+                        sh 'echo $VUE_APP_URL'
+                    }
+                stash includes: 'version.txt', name: 'version'
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: 'version.txt', fingerprint: true
+                    cleanWs()
+                }
+            }
+        }
+
+        
+    } 
+
+}

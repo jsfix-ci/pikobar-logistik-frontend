@@ -104,6 +104,7 @@
                   <th v-if="isApproved" class="text-center">{{ $t('label.finalized_by').toUpperCase() }}</th>
                   <th v-else class="text-center">{{ $t('label.status').toUpperCase() }}</th>
                   <th v-if="isVerified" class="text-center">{{ $t('label.verified_by').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.urgency').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
@@ -129,6 +130,10 @@
                   <td v-if="isVerified" class="text-center">
                     <span v-if="data.applicant.verified_by" class="green--text">{{ data.applicant.verified_by.name }}</span>
                     <span v-else class="red--text">{{ 'Belum Diverifikasi' }}</span>
+                  </td>
+                  <td align="center">
+                    <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
+                    <v-btn v-else outlined small color="error" @click="completenessDetail(data)">{{ $t('label.not_complete') }}</v-btn>
                   </td>
                   <td align="center">
                     <v-btn v-if="data.applicant.is_urgency === 1" outlined small color="warning">{{ $t('label.important') }}</v-btn>
@@ -163,15 +168,24 @@
         :on-next="onNext"
       />
     </v-row>
+    <completenessDetail
+      ref="completenessDetailForm"
+      :show="showcompletenessDetail"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import FileSaver from 'file-saver'
+import EventBus from '@/utils/eventBus'
+import completenessDetail from './completenessDetail'
 
 export default {
   name: 'ListPengajuanLogistik',
+  components: {
+    completenessDetail
+  },
   data() {
     return {
       sortOption: [
@@ -210,7 +224,8 @@ export default {
       date: null,
       showFilter: false,
       isVerified: false,
-      isApproved: false
+      isApproved: false,
+      showcompletenessDetail: false
     }
   },
   computed: {
@@ -239,6 +254,9 @@ export default {
     }
     await this.$store.dispatch('faskesType/getListFaskesType')
     this.getLogisticRequestList()
+    EventBus.$on('hideCompletenessDetail', (value) => {
+      this.showcompletenessDetail = false
+    })
   },
   methods: {
     async changeDate(value) {
@@ -268,6 +286,10 @@ export default {
       const response = await this.$store.dispatch('logistics/logisticRequestExportData', this.listQuery)
       const fileName = `${this.$t('label.export_file_name')}-${this.$moment(Date.now()).format('YYYY-MM-DD-h:mm:ss')}.xlsx`
       await FileSaver.saveAs(response, fileName)
+    },
+    completenessDetail(data) {
+      this.$refs.completenessDetailForm.setData(data.id, data)
+      this.showcompletenessDetail = true
     }
   }
 }
