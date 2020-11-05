@@ -89,28 +89,26 @@ pipeline {
 
             steps {
                     // deploy kubernetes cluster staging
+                    sh 'sed -i "s/%VERSION%/${VERSION}/g" kubernetes/deployment-logistik.yaml'
                     sh '''
                         set +x
                         echo $KUBECONFIG_LOGISTIK_STAGING | base64 -d > kubeconfig
                         export KUBECONFIG=./kubeconfig
                         echo $CLIENT_KEY_LOGISTIK_STAGING | base64 -d > client.key
                         set -x
+                        kubectl config set-credentials logistik-dev --client-key=client.key --embed-certs=true
+                        kubectl config set-cluster $CLUSTER_NAME_JACLOUD --insecure-skip-tls-verify=true
+
+
+                        kubectl apply -f kubernetes/deployment-logistik.yaml --dry-run=client --validate
+                        kubectl apply -f kubernetes/service-logistik.yaml --dry-run=client --validate
+
+
+                        kubectl apply -f kubernetes/deployment-logistik.yaml
+                        kubectl apply -f kubernetes/service-logistik.yaml
                         kubectl get pods --namespace logistik
                     '''
               }
-
-              /*
-                kubectl config set-credentials logistik-dev --client-key=client.key --embed-certs=true
-                kubectl config set-cluster $CLUSTER_NAME_JACLOUD --insecure-skip-tls-verify=true
-
-                kubectl apply -f kubernetes/deployment-logistik.yaml --dry-run=client --validate
-                kubectl apply -f kubernetes/service-logistik.yaml --dry-run=client --validate
-
-
-                kubectl apply -f kubernetes/deployment-logistik.yaml
-                kubectl apply -f kubernetes/service-logistik.yaml
-
-              */
 
               post {
                   always{
