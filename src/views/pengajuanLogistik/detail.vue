@@ -877,7 +877,7 @@ export default {
     rejectData(value) {
       const formData = new FormData()
       this.showDialogReject = false
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       if (this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi') {
         formData.append('approval_status', 'rejected')
         formData.append('approval_note', value)
@@ -1089,7 +1089,7 @@ export default {
     },
     async postVerification() {
       const formData = new FormData()
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('verification_status', 'verified')
       formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postVerificationStatus', formData)
@@ -1117,7 +1117,7 @@ export default {
     },
     async submitApprove() {
       const formData = new FormData()
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('approval_status', 'approved')
       formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
@@ -1129,7 +1129,7 @@ export default {
     },
     async submitFinal() {
       const formData = new FormData()
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('approval_status', 'approved')
       formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postFinalStatus', formData)

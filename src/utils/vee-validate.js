@@ -180,6 +180,13 @@ extend('notMinus', {
   }
 })
 
+extend('notDecimal', {
+  message: (_, values) => i18n.t('errors.not_decimal', values),
+  validate: value => {
+    return !value.includes('.')
+  }
+})
+
 extend('atLeastOne', {
   message: 'At least one item must be selected.',
   validate: (value) => {
