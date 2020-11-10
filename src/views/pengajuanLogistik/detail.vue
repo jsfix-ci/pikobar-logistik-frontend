@@ -1091,16 +1091,23 @@ export default {
       const formData = new FormData()
       formData.append('applicant_id', this.detailLogisticRequest.id)
       formData.append('verification_status', 'verified')
-      await this.$store.dispatch('logistics/postVerificationStatus', formData)
-      window.location.reload()
+      formData.append('url', location.host + '/#')
+      const response = await this.$store.dispatch('logistics/postVerificationStatus', formData)
+      if (response.status === 200) {
+        await this.getListDetail()
+      }
     },
     async postReject(formData) {
-      await this.$store.dispatch('logistics/postVerificationStatus', formData)
-      window.location.reload()
+      const response = await this.$store.dispatch('logistics/postVerificationStatus', formData)
+      if (response.status === 200) {
+        await this.getListDetail()
+      }
     },
     async postRejectApproval(formData) {
-      await this.$store.dispatch('logistics/postApprovalStatus', formData)
-      window.location.reload()
+      const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
+      if (response.status === 200) {
+        await this.getListDetail()
+      }
     },
     setTotal() {
       this.totalAPD = 0
@@ -1112,9 +1119,10 @@ export default {
       const formData = new FormData()
       formData.append('applicant_id', this.detailLogisticRequest.id)
       formData.append('approval_status', 'approved')
+      formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
       if (response.status === 200) {
-        window.location.reload()
+        await this.getListDetail()
       } else if (response.response.status === 422) {
         this.scrollToElement()
       }
@@ -1123,9 +1131,10 @@ export default {
       const formData = new FormData()
       formData.append('applicant_id', this.detailLogisticRequest.id)
       formData.append('approval_status', 'approved')
+      formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postFinalStatus', formData)
       if (response.status === 200) {
-        window.location.reload()
+        await this.getListDetail()
       } else if (response.response.status === 422) {
         this.scrollToElement()
       }

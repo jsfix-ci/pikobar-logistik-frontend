@@ -295,6 +295,7 @@ export default {
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'dinkes_provinsi')
       formData.append('created_by', this.user.id)
+      formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postApplicantFormAdmin', formData)
       if (response.status === 200) {
         this.isDone = true
