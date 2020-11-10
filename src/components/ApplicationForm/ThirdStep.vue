@@ -99,7 +99,7 @@
           >
             <ValidationProvider
               v-slot="{ errors }"
-              rules="requiredTotal|notMinus"
+              rules="requiredTotal|notMinus|notDecimal"
             >
               <v-label class="title"><b>{{ $t('label.total') }}</b></v-label>
               <v-text-field
