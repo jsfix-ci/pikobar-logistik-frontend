@@ -877,7 +877,7 @@ export default {
     rejectData(value) {
       const formData = new FormData()
       this.showDialogReject = false
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       if (this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi') {
         formData.append('approval_status', 'rejected')
         formData.append('approval_note', value)
@@ -1089,18 +1089,25 @@ export default {
     },
     async postVerification() {
       const formData = new FormData()
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('verification_status', 'verified')
-      await this.$store.dispatch('logistics/postVerificationStatus', formData)
-      window.location.reload()
+      formData.append('url', location.host + '/#')
+      const response = await this.$store.dispatch('logistics/postVerificationStatus', formData)
+      if (response.status === 200) {
+        await this.getListDetail()
+      }
     },
     async postReject(formData) {
-      await this.$store.dispatch('logistics/postVerificationStatus', formData)
-      window.location.reload()
+      const response = await this.$store.dispatch('logistics/postVerificationStatus', formData)
+      if (response.status === 200) {
+        await this.getListDetail()
+      }
     },
     async postRejectApproval(formData) {
-      await this.$store.dispatch('logistics/postApprovalStatus', formData)
-      window.location.reload()
+      const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
+      if (response.status === 200) {
+        await this.getListDetail()
+      }
     },
     setTotal() {
       this.totalAPD = 0
@@ -1110,22 +1117,24 @@ export default {
     },
     async submitApprove() {
       const formData = new FormData()
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('approval_status', 'approved')
+      formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
       if (response.status === 200) {
-        window.location.reload()
+        await this.getListDetail()
       } else if (response.response.status === 422) {
         this.scrollToElement()
       }
     },
     async submitFinal() {
       const formData = new FormData()
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('approval_status', 'approved')
+      formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postFinalStatus', formData)
       if (response.status === 200) {
-        window.location.reload()
+        await this.getListDetail()
       } else if (response.response.status === 422) {
         this.scrollToElement()
       }

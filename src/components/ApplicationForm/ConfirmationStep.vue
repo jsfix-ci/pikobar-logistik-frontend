@@ -535,6 +535,7 @@ export default {
       formData.append('application_letter_number', this.formApplicant.letterNumber)
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'pikobar')
+      formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postApplicantForm', formData)
       if (response.status === 200) {
         this.isDone = true

@@ -579,6 +579,7 @@ export default {
     field_unauthorized_characters: 'Bidang mengandung karakter yang tidak diizinkan.',
     field_unauthorized_characters_realization_amount: 'Jumlah realisasi mengandung karakter yang tidak diizinkan.',
     not_minus: 'Nilai tidak boleh 0 atau kurang',
+    not_decimal: 'Nilai tidak boleh desimal',
     field_phone_number_not_valid: 'Nomor telepon tidak valid',
     server_error_occurred: 'Terjadi kesalahan pada server',
     feature_under_development: 'Fitur dalam pengembangan',
