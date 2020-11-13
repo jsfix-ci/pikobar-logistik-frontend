@@ -139,7 +139,7 @@
             </v-btn>
           </span>
           <span
-            v-if="isVerified|isRejected|isRejectedApproval"
+            v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')"
             style="margin-left: 20px"
           >
             <v-btn
@@ -847,6 +847,9 @@ export default {
       'totalListRealization',
       'totalDataRealization',
       'listStock'
+    ]),
+    ...mapGetters('user', [
+      'phase'
     ])
   },
   async created() {

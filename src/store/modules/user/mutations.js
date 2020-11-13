@@ -13,5 +13,8 @@ export default {
   },
   SET_FULLNAME: (state, fullname) => {
     state.fullname = fullname
+  },
+  SET_PHASE: (state, phase) => {
+    state.phase = phase
   }
 }

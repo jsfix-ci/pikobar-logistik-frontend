@@ -86,7 +86,7 @@ export default {
     getUndoStepTitle() {
       switch (this.dataDialog.step) {
         case 'ditolak rekomendasi':
-          this.titleReturn = this.$t('label.return_to_administration_step_dialog')
+          this.titleReturn = this.$t('label.return_to_recommendation_step_dialog')
           break
         case 'ditolak verifikasi':
           this.titleReturn = this.$t('label.return_to_administration_step_dialog')
@@ -108,7 +108,8 @@ export default {
     async updateReturn(value) {
       const param = {
         id: this.id,
-        step: this.dataDialog.step
+        step: this.dataDialog.step,
+        url: location.host + '/#'
       }
       const response = await this.$store.dispatch('logistics/postReturnChange', param)
       if (response.status === 200) {
