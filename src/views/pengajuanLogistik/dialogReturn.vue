@@ -42,7 +42,7 @@
         <v-btn
           color="success"
           class="margin-btn-update-logistic-needs"
-          @click="updateReturn(isReturn)"
+          @click="updateReturn"
         >
           {{ $t('label.action_button_urgency') }}
         </v-btn>
@@ -65,10 +65,10 @@ export default {
   data() {
     return {
       id: null,
-      titleReturn: this.$t('label.return_dialog'),
-      isReturn: 0,
+      titleReturn: this.$t('label.return_to_administration_step_dialog'),
       dataDialog: {
         id: null,
+        step: null,
         agency_name: '-',
         applicant: {
           application_letter_number: '-',
@@ -78,10 +78,29 @@ export default {
     }
   },
   methods: {
-    async setData(id, value, dataDialog) {
+    async setData(id, dataDialog) {
       this.id = id
-      this.isReturn = value
       this.dataDialog = dataDialog
+      this.getUndoStepTitle()
+    },
+    getUndoStepTitle() {
+      switch (this.dataDialog.step) {
+        case 'ditolak rekomendasi':
+          this.titleReturn = this.$t('label.return_to_administration_step_dialog')
+          break
+        case 'ditolak verifikasi':
+          this.titleReturn = this.$t('label.return_to_administration_step_dialog')
+          break
+        case 'final':
+          this.titleReturn = this.$t('label.return_to_final_step_dialog')
+          break
+        case 'realisasi':
+          this.titleReturn = this.$t('label.return_to_recommendation_step_dialog')
+          break
+        case 'rekomendasi':
+          this.titleReturn = this.$t('label.return_to_administration_step_dialog')
+          break
+      }
     },
     closeDialogStock() {
       EventBus.$emit('dialogReturnConfirmation', false)
@@ -89,7 +108,7 @@ export default {
     async updateReturn(value) {
       const param = {
         id: this.id,
-        is_return: this.isReturn
+        step: this.dataDialog.step
       }
       const response = await this.$store.dispatch('logistics/postReturnChange', param)
       if (response.status === 200) {
