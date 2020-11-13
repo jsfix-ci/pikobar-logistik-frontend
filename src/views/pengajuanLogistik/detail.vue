@@ -138,12 +138,15 @@
               {{ $t('route.rejected_title') }}
             </v-btn>
           </span>
-          <span style="margin-left: 20px">
+          <span
+            v-if="isVerified|isRejected|isRejectedApproval"
+            style="margin-left: 20px"
+          >
             <v-btn
               outlined
               color="info"
               class="margin-btn"
-              @click="returnChange(detailLogisticRequest.applicant.id, 0)"
+              @click="returnChange(detailLogisticRequest.applicant.id)"
             >
               {{ $t('label.return') }}
             </v-btn>
@@ -929,10 +932,10 @@ export default {
       this.dataUrgencyConfirmation = this.detailLogisticRequest
       this.$refs.dialogUrgencyForm.setData(id, value, this.dataUrgencyConfirmation)
     },
-    returnChange(id, value) {
+    returnChange(id) {
       this.showReturnForm = true
       this.dataReturnConfirmation = this.detailLogisticRequest
-      this.$refs.dialogReturnForm.setData(id, value, this.dataReturnConfirmation)
+      this.$refs.dialogReturnForm.setData(id, this.dataReturnConfirmation)
     },
     showAgencyIdentityDialog() {
       this.$refs.agencyIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
@@ -1034,12 +1037,21 @@ export default {
       this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
       this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
       this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
-      if (this.isVerified && !this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.verified_by.handphone ?? '-'
-      } else if (this.isVerified && this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.approved_by.handphone ?? '-'
+      // Cek Step Permohonan
+      this.detailLogisticRequest.step = 'verifikasi'
+      if (this.isRejectedApproval) {
+        this.detailLogisticRequest.step = 'ditolak rekomendasi'
+      } else if (this.isRejected) {
+        this.detailLogisticRequest.step = 'ditolak verifikasi'
       } else if (this.isFinalized) {
         this.picHandphone = this.detailLogisticRequest.applicant.finalized_by.handphone ?? '-'
+        this.detailLogisticRequest.step = 'final'
+      } else if (this.isVerified && this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.approved_by.handphone ?? '-'
+        this.detailLogisticRequest.step = 'realisasi'
+      } else if (this.isVerified && !this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.verified_by.handphone ?? '-'
+        this.detailLogisticRequest.step = 'rekomendasi'
       }
       this.picHandphone = ' (' + this.picHandphone + ')'
       this.isUrgent = this.detailLogisticRequest.applicant.is_urgency === 1
