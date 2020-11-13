@@ -324,6 +324,14 @@ export default {
       return e
     }
   },
+  async postReturnChange({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/logistic-request/return', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async postApprovalStatus({ commit }, params) {
     try {
       const response = await doPostUpdate('/api/v1/logistic-request/approval', 'POST', params)

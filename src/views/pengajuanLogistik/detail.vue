@@ -77,19 +77,6 @@
           <br>
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
         </v-col>
-        <v-col cols="9" sm="10">
-          <span style="margin-left: 20px">
-            <v-btn
-              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
-              outlined
-              color="#2E7D32"
-              class="margin-btn"
-              @click="submitFinal()"
-            >
-              {{ $t('label.final') }}
-            </v-btn>
-          </span>
-        </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="12">
@@ -120,6 +107,15 @@
             >
               {{ $t('label.approve') }}
             </v-btn>
+            <v-btn
+              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
+              outlined
+              color="#2E7D32"
+              class="margin-btn"
+              @click="submitFinal()"
+            >
+              {{ $t('label.final') }}
+            </v-btn>
           </span>
           <span style="margin-left: 20px">
             <v-btn
@@ -140,6 +136,16 @@
               @click="setTotal()"
             >
               {{ $t('route.rejected_title') }}
+            </v-btn>
+          </span>
+          <span style="margin-left: 20px">
+            <v-btn
+              outlined
+              color="info"
+              class="margin-btn"
+              @click="returnChange(detailLogisticRequest.applicant.id, 0)"
+            >
+              {{ $t('label.return') }}
             </v-btn>
           </span>
         </v-col>
@@ -720,6 +726,10 @@
       ref="updateForm"
       :show="showForm"
     />
+    <dialogReturn
+      ref="dialogReturnForm"
+      :show="showReturnForm"
+    />
     <dialogUrgency
       ref="dialogUrgencyForm"
       :show="showUrgencyForm"
@@ -758,6 +768,7 @@ import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
 import dialogUrgency from './dialogUrgency'
+import dialogReturn from './dialogReturn'
 import agencyIdentity from './agencyIdentity'
 import applicantIdentity from './applicantIdentity'
 import updateLetter from './updateLetter'
@@ -777,6 +788,7 @@ export default {
     DialogDelete,
     PicInfo,
     dialogUrgency,
+    dialogReturn,
     agencyIdentity,
     applicantIdentity,
     updateLetter
@@ -815,6 +827,7 @@ export default {
         }
       },
       showUrgencyForm: false,
+      showReturnForm: false,
       isUrgent: false,
       showAgencyIdentity: false,
       showApplicantIdentity: false,
@@ -850,6 +863,12 @@ export default {
     })
     EventBus.$on('dialogUrgencyConfirmation', (value) => {
       this.showUrgencyForm = false
+      if (value) {
+        this.getListDetail()
+      }
+    })
+    EventBus.$on('dialogReturnConfirmation', (value) => {
+      this.showReturnForm = false
       if (value) {
         this.getListDetail()
       }
@@ -909,6 +928,11 @@ export default {
       this.showUrgencyForm = true
       this.dataUrgencyConfirmation = this.detailLogisticRequest
       this.$refs.dialogUrgencyForm.setData(id, value, this.dataUrgencyConfirmation)
+    },
+    returnChange(id, value) {
+      this.showReturnForm = true
+      this.dataReturnConfirmation = this.detailLogisticRequest
+      this.$refs.dialogReturnForm.setData(id, value, this.dataReturnConfirmation)
     },
     showAgencyIdentityDialog() {
       this.$refs.agencyIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
