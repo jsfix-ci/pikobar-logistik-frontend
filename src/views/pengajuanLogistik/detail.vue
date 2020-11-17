@@ -138,19 +138,6 @@
               {{ $t('route.rejected_title') }}
             </v-btn>
           </span>
-          <span
-            v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')"
-            style="margin-left: 20px"
-          >
-            <v-btn
-              outlined
-              color="info"
-              class="margin-btn"
-              @click="returnChange(detailLogisticRequest.applicant.id)"
-            >
-              {{ $t('label.return') }}
-            </v-btn>
-          </span>
         </v-col>
       </v-row>
       <rejectKebutuhanLogistik
@@ -217,6 +204,45 @@
                       @click="urgencyChange(detailLogisticRequest.applicant.id, 1)"
                     >
                       {{ $t('label.button_applicant_urgency_important') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')">
+        <v-col>
+          <span class="text-data-green">
+            {{ $t('label.applicant_status') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')">
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="margin-20" cols="12" sm="12" md="12">
+                <v-row class="margin-top-min-15">
+                  <v-col>
+                    <span>
+                      {{ $t('label.applicant_status_description') }} <b>{{ detailLogisticRequest.step_label }}</b>
+                    </span>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      outlined
+                      absolute
+                      right
+                      color="info"
+                      class="margin-btn margin-top-min-15"
+                      @click="returnChange(detailLogisticRequest.applicant.id)"
+                    >
+                      {{ $t('label.return') }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -725,30 +751,12 @@
     </div>
     <br>
     <CheckStockDialog :dialog-show="dialogStock" />
-    <updateKebutuhanLogistik
-      ref="updateForm"
-      :show="showForm"
-    />
-    <dialogReturn
-      ref="dialogReturnForm"
-      :show="showReturnForm"
-    />
-    <dialogUrgency
-      ref="dialogUrgencyForm"
-      :show="showUrgencyForm"
-    />
-    <agencyIdentity
-      ref="agencyIdentityForm"
-      :show="showAgencyIdentity"
-    />
-    <applicantIdentity
-      ref="dialogApplicantIdentityForm"
-      :show="showApplicantIdentity"
-    />
-    <updateLetter
-      ref="dialogUpdateLetterForm"
-      :show="updateLetterForm"
-    />
+    <updateKebutuhanLogistik ref="updateForm" :show="showForm" />
+    <dialogReturn ref="dialogReturnForm" :show="showReturnForm" />
+    <dialogUrgency ref="dialogUrgencyForm" :show="showUrgencyForm" />
+    <agencyIdentity ref="agencyIdentityForm" :show="showAgencyIdentity" />
+    <applicantIdentity ref="dialogApplicantIdentityForm" :show="showApplicantIdentity" />
+    <updateLetter ref="dialogUpdateLetterForm" :show="updateLetterForm" />
     <DialogDelete
       :dialog="dialogDelete"
       :data-deleted="dataDelete"
@@ -1042,19 +1050,25 @@ export default {
       this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
       // Cek Step Permohonan
       this.detailLogisticRequest.step = 'verifikasi'
+      this.detailLogisticRequest.step_label = 'Verifikasi Administrasi'
       if (this.isRejectedApproval) {
         this.detailLogisticRequest.step = 'ditolak rekomendasi'
+        this.detailLogisticRequest.step_label = 'Ditolak pada Rekomendasi salur'
       } else if (this.isRejected) {
         this.detailLogisticRequest.step = 'ditolak verifikasi'
+        this.detailLogisticRequest.step_label = 'Ditolak pada Verifikasi Administrasi'
       } else if (this.isFinalized) {
         this.picHandphone = this.detailLogisticRequest.applicant.finalized_by.handphone ?? '-'
         this.detailLogisticRequest.step = 'final'
+        this.detailLogisticRequest.step_label = 'Selesai Realisasi Salur'
       } else if (this.isVerified && this.isApproved) {
         this.picHandphone = this.detailLogisticRequest.applicant.approved_by.handphone ?? '-'
         this.detailLogisticRequest.step = 'realisasi'
+        this.detailLogisticRequest.step_label = 'Realisasi Salur'
       } else if (this.isVerified && !this.isApproved) {
         this.picHandphone = this.detailLogisticRequest.applicant.verified_by.handphone ?? '-'
         this.detailLogisticRequest.step = 'rekomendasi'
+        this.detailLogisticRequest.step_label = 'Rekomendasi Salur'
       }
       this.picHandphone = ' (' + this.picHandphone + ')'
       this.isUrgent = this.detailLogisticRequest.applicant.is_urgency === 1

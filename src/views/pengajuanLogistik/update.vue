@@ -224,7 +224,6 @@ export default {
     ])
   },
   async created() {
-    await this.getListAPD()
     EventBus.$on('closeDialogStock', (value) => {
       this.dialogStock = value
     })
