@@ -240,7 +240,7 @@
                       right
                       color="info"
                       class="margin-btn margin-top-min-15"
-                      @click="returnChange(detailLogisticRequest.applicant.id)"
+                      @click="returnChange(detailLogisticRequest.id)"
                     >
                       {{ $t('label.return') }}
                     </v-btn>

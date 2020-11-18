@@ -6,7 +6,7 @@ export default {
     laporan_title: 'Laporan Kasus',
     distribusi_title: 'Distribusi RDT Kit',
     monitoring_rdt_title: 'Monitoring RDT Kit',
-    logistic_request_title: 'Pengajuan Logisitk',
+    logistic_request_title: 'Pengajuan Logistik',
     master_data_title: 'Master Data',
     applicant_medical_tools_title: 'Permohonan',
     applicant_medical_tools_list_title: 'Daftar Permohonan',
