@@ -107,9 +107,6 @@
             <v-col class="total_applicant">
               <p> {{ $t('label.total_applicant') }} <span class="pl-1"> <b> {{ letter_request.length }} {{ $t('route.applicant_medical_tools_title') }} </b></span></p>
             </v-col>
-            <v-col>
-              <v-btn class="ma-2 add_more" width="130px" height="40px" small outlined color="success" @click="addApplicant">{{ $t('label.add_more') }}</v-btn>
-            </v-col>
           </v-row>
         </v-col>
         <hr class="margin-top-min-10-update-logistic-needs">
