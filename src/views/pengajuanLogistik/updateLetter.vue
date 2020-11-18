@@ -134,6 +134,7 @@ export default {
       data: {},
       queryUpdateData: {
         id: null,
+        applicant_id: null,
         application_letter_number: null,
         update_type: 3
       },
@@ -192,6 +193,7 @@ export default {
       this.defaultFile = value.letter.letter
       this.queryUpdateData = {
         id: value.id,
+        applicant_id: value.applicant.id,
         application_letter_number: value.applicant.application_letter_number,
         update_type: 3
       }
@@ -236,7 +238,7 @@ export default {
       const formData = new FormData()
       formData.append('letter_file', this.selectedFile)
       formData.append('id', this.queryUpdateData.id)
-      formData.append('applicant_id', this.queryUpdateData.id)
+      formData.append('applicant_id', this.queryUpdateData.applicant_id)
       formData.append('application_letter_number', this.queryUpdateData.application_letter_number)
       formData.append('update_type', this.queryUpdateData.update_type)
       const response = await this.$store.dispatch('logistics/updateApplicantLetter', formData)
