@@ -84,12 +84,6 @@
           />
         </v-card>
       </v-col>
-      <v-col v-if="!isFileExists">
-        <v-btn outlined color="success" height="50px" absolute right @click.stop="openForm('add')">
-          <v-icon dark>mdi-plus</v-icon>
-          {{ $t('label.outgoing_mail_add_number_letter') }}
-        </v-btn>
-      </v-col>
     </v-row>
     <v-row>
       <v-col>
@@ -199,7 +193,6 @@ import { mapGetters } from 'vuex'
 import CreateLetter from './Create'
 import DialogDelete from '@/components/DialogDelete'
 import pdfMake from 'pdfmake/build/pdfmake'
-import EventBus from '@/utils/eventBus'
 
 export default {
   components: {
@@ -238,12 +231,6 @@ export default {
   async created() {
     await this.getDetailData()
     await this.getDetailApplication()
-    EventBus.$on('createDialogHide', (value) => {
-      this.showForm = false
-      if (value) {
-        this.getDetailApplication()
-      }
-    })
   },
   methods: {
     async printLetter(openType) {
