@@ -27,7 +27,9 @@
             <v-btn color="green" large text outlined @click="exportData()"><v-icon left>mdi-upload</v-icon> {{ $t('label.export_data') }}</v-btn>
           </v-col>
           <v-col cols="12" sm="2" md="2">
-            <v-btn class="primary" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }} <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon><v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
+            <v-btn class="primary" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }}
+              <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon>
+              <v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
           </v-col>
         </v-row>
       </v-card-text>

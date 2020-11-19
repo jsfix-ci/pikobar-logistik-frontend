@@ -13,5 +13,8 @@ export default {
   },
   fullname: (state, getters) => {
     return state.fullname
+  },
+  phase: (state, getters) => {
+    return state.phase
   }
 }

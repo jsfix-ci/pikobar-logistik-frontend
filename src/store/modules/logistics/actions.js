@@ -93,7 +93,7 @@ export default {
   },
   async updateApplicantIdentity({ commit }, params) {
     try {
-      const response = await doPostUpdate('/api/v1/logistic-request/applicant-identity/' + params.get('id'), 'POST', params)
+      const response = await doPostUpdate('/api/v1/logistic-request/applicant-identity/' + params.get('applicant_id'), 'POST', params)
       return response
     } catch (e) {
       return e
@@ -101,7 +101,7 @@ export default {
   },
   async updateApplicantLetter({ commit }, params) {
     try {
-      const response = await doPostUpdate('/api/v1/logistic-request/applicant-letter/' + params.get('id'), 'POST', params)
+      const response = await doPostUpdate('/api/v1/logistic-request/applicant-letter/' + params.get('applicant_id'), 'POST', params)
       return response
     } catch (e) {
       return e
@@ -319,6 +319,14 @@ export default {
   async postUrgencyChange({ commit }, params) {
     try {
       const response = await doPostUpdate('/api/v1/logistic-request/urgency', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async postReturnChange({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/logistic-request/return', 'POST', params)
       return response
     } catch (e) {
       return e

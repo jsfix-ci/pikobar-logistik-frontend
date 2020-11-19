@@ -77,19 +77,6 @@
           <br>
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
         </v-col>
-        <v-col cols="9" sm="10">
-          <span style="margin-left: 20px">
-            <v-btn
-              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
-              outlined
-              color="#2E7D32"
-              class="margin-btn"
-              @click="submitFinal()"
-            >
-              {{ $t('label.final') }}
-            </v-btn>
-          </span>
-        </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="12">
@@ -119,6 +106,15 @@
               @click="submitApprove()"
             >
               {{ $t('label.approve') }}
+            </v-btn>
+            <v-btn
+              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
+              outlined
+              color="#2E7D32"
+              class="margin-btn"
+              @click="submitFinal()"
+            >
+              {{ $t('label.final') }}
             </v-btn>
           </span>
           <span style="margin-left: 20px">
@@ -208,6 +204,45 @@
                       @click="urgencyChange(detailLogisticRequest.applicant.id, 1)"
                     >
                       {{ $t('label.button_applicant_urgency_important') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')">
+        <v-col>
+          <span class="text-data-green">
+            {{ $t('label.applicant_status') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')">
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="margin-20" cols="12" sm="12" md="12">
+                <v-row class="margin-top-min-15">
+                  <v-col>
+                    <span>
+                      {{ $t('label.applicant_status_description') }} <b>{{ detailLogisticRequest.step_label }}</b>
+                    </span>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      outlined
+                      absolute
+                      right
+                      color="info"
+                      class="margin-btn margin-top-min-15"
+                      @click="returnChange(detailLogisticRequest.id)"
+                    >
+                      {{ $t('label.return') }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -716,26 +751,12 @@
     </div>
     <br>
     <CheckStockDialog :dialog-show="dialogStock" />
-    <updateKebutuhanLogistik
-      ref="updateForm"
-      :show="showForm"
-    />
-    <dialogUrgency
-      ref="dialogUrgencyForm"
-      :show="showUrgencyForm"
-    />
-    <agencyIdentity
-      ref="agencyIdentityForm"
-      :show="showAgencyIdentity"
-    />
-    <applicantIdentity
-      ref="dialogApplicantIdentityForm"
-      :show="showApplicantIdentity"
-    />
-    <updateLetter
-      ref="dialogUpdateLetterForm"
-      :show="updateLetterForm"
-    />
+    <updateKebutuhanLogistik ref="updateForm" :show="showForm" />
+    <dialogReturn ref="dialogReturnForm" :show="showReturnForm" />
+    <dialogUrgency ref="dialogUrgencyForm" :show="showUrgencyForm" />
+    <agencyIdentity ref="agencyIdentityForm" :show="showAgencyIdentity" />
+    <applicantIdentity ref="dialogApplicantIdentityForm" :show="showApplicantIdentity" />
+    <updateLetter ref="dialogUpdateLetterForm" :show="updateLetterForm" />
     <DialogDelete
       :dialog="dialogDelete"
       :data-deleted="dataDelete"
@@ -758,6 +779,7 @@ import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
 import dialogUrgency from './dialogUrgency'
+import dialogReturn from './dialogReturn'
 import agencyIdentity from './agencyIdentity'
 import applicantIdentity from './applicantIdentity'
 import updateLetter from './updateLetter'
@@ -777,6 +799,7 @@ export default {
     DialogDelete,
     PicInfo,
     dialogUrgency,
+    dialogReturn,
     agencyIdentity,
     applicantIdentity,
     updateLetter
@@ -815,6 +838,7 @@ export default {
         }
       },
       showUrgencyForm: false,
+      showReturnForm: false,
       isUrgent: false,
       showAgencyIdentity: false,
       showApplicantIdentity: false,
@@ -831,6 +855,9 @@ export default {
       'totalListRealization',
       'totalDataRealization',
       'listStock'
+    ]),
+    ...mapGetters('user', [
+      'phase'
     ])
   },
   async created() {
@@ -850,6 +877,12 @@ export default {
     })
     EventBus.$on('dialogUrgencyConfirmation', (value) => {
       this.showUrgencyForm = false
+      if (value) {
+        this.getListDetail()
+      }
+    })
+    EventBus.$on('dialogReturnConfirmation', (value) => {
+      this.showReturnForm = false
       if (value) {
         this.getListDetail()
       }
@@ -909,6 +942,11 @@ export default {
       this.showUrgencyForm = true
       this.dataUrgencyConfirmation = this.detailLogisticRequest
       this.$refs.dialogUrgencyForm.setData(id, value, this.dataUrgencyConfirmation)
+    },
+    returnChange(id) {
+      this.showReturnForm = true
+      this.dataReturnConfirmation = this.detailLogisticRequest
+      this.$refs.dialogReturnForm.setData(id, this.dataReturnConfirmation)
     },
     showAgencyIdentityDialog() {
       this.$refs.agencyIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
@@ -1010,12 +1048,27 @@ export default {
       this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
       this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
       this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
-      if (this.isVerified && !this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.verified_by.handphone ?? '-'
-      } else if (this.isVerified && this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.approved_by.handphone ?? '-'
+      // Cek Step Permohonan
+      this.detailLogisticRequest.step = 'verifikasi'
+      this.detailLogisticRequest.step_label = 'Verifikasi Administrasi'
+      if (this.isRejectedApproval) {
+        this.detailLogisticRequest.step = 'ditolak rekomendasi'
+        this.detailLogisticRequest.step_label = 'Ditolak pada Rekomendasi salur'
+      } else if (this.isRejected) {
+        this.detailLogisticRequest.step = 'ditolak verifikasi'
+        this.detailLogisticRequest.step_label = 'Ditolak pada Verifikasi Administrasi'
       } else if (this.isFinalized) {
         this.picHandphone = this.detailLogisticRequest.applicant.finalized_by.handphone ?? '-'
+        this.detailLogisticRequest.step = 'final'
+        this.detailLogisticRequest.step_label = 'Selesai Realisasi Salur'
+      } else if (this.isVerified && this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.approved_by.handphone ?? '-'
+        this.detailLogisticRequest.step = 'realisasi'
+        this.detailLogisticRequest.step_label = 'Realisasi Salur'
+      } else if (this.isVerified && !this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.verified_by.handphone ?? '-'
+        this.detailLogisticRequest.step = 'rekomendasi'
+        this.detailLogisticRequest.step_label = 'Rekomendasi Salur'
       }
       this.picHandphone = ' (' + this.picHandphone + ')'
       this.isUrgent = this.detailLogisticRequest.applicant.is_urgency === 1
