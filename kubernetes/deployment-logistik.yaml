@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: logistik-frontend-app
-  namespace: logistik
+  namespace: pikobar-logistik
   labels:
     app: logistik-frontend-app
 spec:
@@ -54,8 +54,10 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - staging-worker-sw01
-                - staging-worker-sw02
+                - jds-rancher-node-01
+                - jds-rancher-node-02
+                - jds-rancher-node-03
+                - jds-rancher-node-04
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
