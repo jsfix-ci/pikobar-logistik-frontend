@@ -16,6 +16,15 @@
                 lazy-validation
               >
                 <v-text-field
+                  v-model="changePasswordForm.password_old"
+                  :rules="passwordOldRules"
+                  :append-icon="typePassword ? 'visibility' : 'visibility_off'"
+                  :type="typePassword ? 'password' : 'text'"
+                  label="Password lama"
+                  name="password"
+                  @click:append="() => (typePassword = !typePassword)"
+                />
+                <v-text-field
                   v-model="changePasswordForm.password"
                   :rules="passwordRules"
                   :append-icon="typePassword ? 'visibility' : 'visibility_off'"
@@ -62,9 +71,14 @@ export default {
       typeRepeatPassword: String,
       loading: false,
       changePasswordForm: {
+        password_old: '',
         password: '',
         repeat_password: ''
       },
+      passwordOldRules: [
+        v => !!v || 'Password lama harus diisi',
+        v => (v && v.length >= 5) || 'Password lama harus lebih dari 5 karakter'
+      ],
       passwordRules: [
         v => !!v || 'Password baru harus diisi',
         v => (v && v.length >= 5) || 'Password baru harus lebih dari 5 karakter'
@@ -77,20 +91,24 @@ export default {
     }
   },
   methods: {
-    handleChangePassword() {
+    async handleChangePassword() {
       if (this.$refs.form.validate()) {
         this.loading = true
-        this.$store.dispatch('user/changePasswordUser', { password: this.changePasswordForm.password })
-          .then(() => {
-            this.$store.dispatch('toast/successToast', 'Password berhasil dirubah')
-            this.$store.dispatch('user/resetToken')
-            this.$router.push({ path: '/login' })
-            this.loading = false
-          })
-          .catch(() => {
-            this.loading = false
-            this.$refs.form.reset()
-          })
+        const query = {
+          password: this.changePasswordForm.password_old,
+          password_new: this.changePasswordForm.password
+        }
+        const response = await this.$store.dispatch('user/changePasswordUser', query)
+        console.log('response: ', response)
+        console.log('status: ', response.status)
+        if (response.status === 200) {
+          this.$store.dispatch('toast/successToast', 'Password berhasil dirubah')
+          this.$store.dispatch('user/resetToken')
+          this.$router.push({ path: '/login' })
+          this.loading = false
+        } else {
+          this.loading = false
+        }
       }
     }
   }
