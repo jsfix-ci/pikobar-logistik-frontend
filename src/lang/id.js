@@ -167,6 +167,8 @@ export default {
     select_applicant_origin: 'Pilih asal permohonan',
     city_name: 'Nama Kabupaten/Kota',
     instance_name: 'Nama Instansi',
+    instance_reference: 'Tipe Instansi',
+    instance_is_reference: 'RS Rujukan',
     autocomplete_instance_placeholder: 'Masukkan jenis instansi',
     autocomplete_city_placeholder: 'Masukkan Kabupaten/Kota',
     example_instance_name: 'Masukkan nama Rumah Sakit, contoh: Hasan Sadikin',

@@ -99,6 +99,7 @@
                   <th class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.instance_type').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.instance_name').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.instance_reference').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
@@ -117,6 +118,9 @@
                   <td>{{ data.applicant.application_letter_number }}</td>
                   <td>{{ data.master_faskes_type.name }}</td>
                   <td>{{ data.agency_name }}</td>
+                  <td>
+                    <v-btn v-if="data.is_reference === 1" outlined small color="success">{{ $t('label.instance_is_reference') }}</v-btn>
+                  </td>
                   <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
                   <td>{{ data.applicant.applicant_name }}</td>
                   <td>{{ data.created_at === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
@@ -267,6 +271,11 @@ export default {
     },
     async getLogisticRequestList() {
       await this.$store.dispatch('logistics/getListLogisticRequest', this.listQuery)
+      this.listLogisticRequest.forEach(element => {
+        if (element.master_faskes) {
+          element.is_reference = element.master_faskes.is_reference
+        }
+      })
     },
     async handleSearch() {
       await this.getLogisticRequestList()
