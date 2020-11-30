@@ -168,6 +168,7 @@ export default {
     city_name: 'Nama Kabupaten/Kota',
     instance_name: 'Nama Instansi',
     instance_reference: 'Tipe Instansi',
+    instance_reference_dialog_title: 'Tipe Instansi Rumah Sakit Rujukan',
     instance_is_reference: 'RS Rujukan',
     autocomplete_instance_placeholder: 'Masukkan jenis instansi',
     autocomplete_city_placeholder: 'Masukkan Kabupaten/Kota',
