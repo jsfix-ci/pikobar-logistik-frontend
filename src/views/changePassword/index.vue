@@ -18,11 +18,11 @@
                 <v-text-field
                   v-model="changePasswordForm.password_old"
                   :rules="passwordOldRules"
-                  :append-icon="typePassword ? 'visibility' : 'visibility_off'"
-                  :type="typePassword ? 'password' : 'text'"
+                  :append-icon="typePasswordOld ? 'visibility' : 'visibility_off'"
+                  :type="typePasswordOld ? 'password' : 'text'"
                   label="Password lama"
                   name="password"
-                  @click:append="() => (typePassword = !typePassword)"
+                  @click:append="() => (typePasswordOld = !typePasswordOld)"
                 />
                 <v-text-field
                   v-model="changePasswordForm.password"
@@ -67,6 +67,7 @@ export default {
   data() {
     return {
       valid: true,
+      typePasswordOld: String,
       typePassword: String,
       typeRepeatPassword: String,
       loading: false,
