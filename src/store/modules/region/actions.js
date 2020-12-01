@@ -20,7 +20,7 @@ export default {
   },
   async getListSubDistrict({ commit }, codeDistrict) {
     try {
-      const response = await fetchList(`/api/v1/areas/subdistricts?city_code=${codeDistrict}`, 'GET')
+      const response = await fetchList(`/api/v1/areas/subarea?city_code=${codeDistrict}&area_type=subdistricts`, 'GET')
       return response
     } catch (e) {
       return e
@@ -28,7 +28,7 @@ export default {
   },
   async getListVillage({ commit }, codeSubDistrict) {
     try {
-      const response = await fetchList(`/api/v1/areas/villages?subdistrict_code=${codeSubDistrict}`, 'GET')
+      const response = await fetchList(`/api/v1/areas/subarea?subdistrict_code=${codeSubDistrict}&area_type=village`, 'GET')
       return response
     } catch (e) {
       return e
@@ -54,7 +54,7 @@ export default {
   },
   async getApplicantFormListDistrict({ commit }, params) {
     try {
-      const response = await fetchList('/api/v1/landing-page-registration/areas/subdistricts', 'GET', params)
+      const response = await fetchList('/api/v1/landing-page-registration/areas/subarea', 'GET', params)
       commit('SET_APPLICANT_LIST_DISTRICT', response.data)
       return response
     } catch (e) {
@@ -63,7 +63,7 @@ export default {
   },
   async getApplicantFormListVillage({ commit }, params) {
     try {
-      const response = await fetchList('/api/v1/landing-page-registration/areas/villages', 'GET', params)
+      const response = await fetchList('/api/v1/landing-page-registration/areas/subarea', 'GET', params)
       commit('SET_APPLICANT_LIST_VILLAGE', response.data)
       return response
     } catch (e) {
