@@ -3,6 +3,25 @@
     <v-row>
       <center><v-label>{{ $t('label.applicant_letter_title') }}</v-label></center>
     </v-row>
+    <br><br>
+    <div style="padding: 15px;">
+      <v-row>
+        <v-label><b>{{ $t('label.applicant_letter_note') }}</b></v-label>
+      </v-row>
+      <v-row>
+        <v-label>{{ $t('label.applicant_letter_note_description') }}</v-label>
+      </v-row>
+      <v-row>
+        <v-label>{{ $t('label.applicant_letter_note_point_1') }}</v-label>
+      </v-row>
+      <v-row>
+        <v-label>{{ $t('label.applicant_letter_note_point_2') }}</v-label>
+      </v-row>
+      <v-row>
+        <v-label>{{ $t('label.applicant_letter_note_point_3') }}</v-label>
+      </v-row>
+    </div>
+    <br>
     <ValidationObserver ref="observer">
       <v-form
         ref="form"
