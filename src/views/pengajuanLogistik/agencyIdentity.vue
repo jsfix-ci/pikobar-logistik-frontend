@@ -41,7 +41,7 @@
                   solo-inverted
                   :error-messages="errors"
                   item-value="id"
-                  item-text="name"
+                  item-text="nama_faskes"
                   :placeholder="instanceNamePlaceholder"
                   @input.native="querySearchFaskes"
                   @change="onSelectFaskes"
