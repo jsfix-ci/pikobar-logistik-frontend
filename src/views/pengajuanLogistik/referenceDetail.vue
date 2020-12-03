@@ -10,6 +10,11 @@
           <span style="text-align:center"><h4><b>{{ $t('label.instance_reference_dialog_title') }}</b></h4></span>
         </v-card-text>
       </div>
+      <div class="col-sm-12">
+        <v-card-text>
+          <span>{{ data.agency_name + $t('label.instance_reference_dialog_description') }}</span>
+        </v-card-text>
+      </div>
       <v-col class="d-flex justify-center">
         <v-btn
           small

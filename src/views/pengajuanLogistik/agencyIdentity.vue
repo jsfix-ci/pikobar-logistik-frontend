@@ -41,7 +41,7 @@
                   solo-inverted
                   :error-messages="errors"
                   item-value="id"
-                  item-text="name"
+                  item-text="nama_faskes"
                   :placeholder="instanceNamePlaceholder"
                   @input.native="querySearchFaskes"
                   @change="onSelectFaskes"
@@ -233,10 +233,10 @@ export default {
       await this.$store.dispatch('region/getApplicantFormListCity')
     },
     async getListDistrict(id) {
-      await this.$store.dispatch('region/getApplicantFormListDistrict', { city_code: id })
+      await this.$store.dispatch('region/getApplicantFormListDistrict', { city_code: id, area_type: 'subdistricts' })
     },
     async getListVillage(id) {
-      await this.$store.dispatch('region/getApplicantFormListVillage', { subdistrict_code: id })
+      await this.$store.dispatch('region/getApplicantFormListVillage', { subdistrict_code: id, area_type: 'village' })
     },
     async onSelectFaskesType(id) {
       this.listQueryFaskes.id_tipe_faskes = id
