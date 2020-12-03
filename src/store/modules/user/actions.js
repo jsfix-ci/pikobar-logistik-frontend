@@ -37,7 +37,7 @@ export default {
 
   async changePasswordUser({ commit }, data) {
     try {
-      const response = await doPostUpdate('/api/users/change-password', 'PUT', data)
+      const response = await doPostUpdate('/api/v1/users/change-password', 'PUT', data)
       return response
     } catch (e) {
       return e

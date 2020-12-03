@@ -216,7 +216,8 @@ export default {
         application_letter_number: null
       },
       isFileExists: false,
-      filePath: ''
+      filePath: '',
+      downloadFileName: ''
     }
   },
   computed: {
@@ -451,7 +452,8 @@ export default {
         }
       }
       if (openType === 'download') {
-        pdfMake.createPdf(docDefinition).download(this.detailLetter.outgoing_letter.letter_number)
+        this.downloadFileName = this.$moment.utc(this.detailLetterPrint.outgoing_letter.letter_date).tz('Asia/Jakarta').format('YYYYMMDD') + ' - ' + this.detailLetter.outgoing_letter.letter_name + '.pdf'
+        pdfMake.createPdf(docDefinition).download(this.downloadFileName)
       } else {
         pdfMake.createPdf(docDefinition).open()
       }

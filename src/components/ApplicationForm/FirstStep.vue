@@ -304,7 +304,7 @@ export default {
       })
     },
     async getListVillage() {
-      await this.$store.dispatch('region/getApplicantFormListVillage', { subdistrict_code: this.formApplicant.districtNameId.id })
+      await this.$store.dispatch('region/getApplicantFormListVillage', { subdistrict_code: this.formApplicant.districtNameId.id, area_type: 'village' })
       this.applicantListVillage.forEach(element => {
         element.value = {
           id: element.kemendagri_desa_kode,
