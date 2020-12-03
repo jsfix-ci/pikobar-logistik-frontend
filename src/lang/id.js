@@ -273,7 +273,7 @@ export default {
     apply_now: 'Ajukan Sekarang',
     applicant_popup_warning: 'Data permohonan logistik yang diterima via PIKOBAR ini bersifat pengajuan.',
     applicant_popup_warning_verification: 'Selanjutnya, permohonan ini akan diverifikasi dan diproses lebih lanjut oleh Divisi Logistik GTPP COVID-19 Jawa Barat. Persetujuan permohonan akan disesuaikan dengan kedaruratan wilayah dan ketersediaan stok logistik. Hanya permohonan yang disetujui yang akan mendapatkan konfirmasi proses penyaluran barang logistik yang diajukan. Terima kasih.',
-    applicant_letter_title: 'Silahkan unggah surat pemohonan logistik dari institusi kesehatan/faskes yang anda wakili, yang memiliki tanda tangan dan cap resmi dalam bentuk PDF/JPG/JPEG/PNG (maks. 10MB).',
+    applicant_letter_title: 'Silakan unggah surat pengajuan pemohonan logistik Anda dalam format PDF/JPG/JPEG/PNG (maks. 10MB). Bagi fasyankes kab/kota, surat permohonan harap ditembuskan kepada Dinas Kesehatan Kab/Kota setempat untuk keperluan pendataan.',
     applicant_letter_note: 'Catatan:',
     applicant_letter_note_description: 'Permohonan dari Fasyankes (Rumah Sakit, Klinik, Puskesmas) harap melengkapi surat dengan lampiran yang berisikan informasi mengenai:',
     applicant_letter_note_point_1: '1) Jumlah Pasien COVID-19 yang ditangani',
