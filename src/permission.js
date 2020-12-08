@@ -52,7 +52,7 @@ router.beforeEach(async(to, from, next) => {
       await next()
     } else {
       // other pages that do not have permission to access are redirected to the landing page.
-      await next(`/landing-page`)
+      await next(`/login?redirect=${to.path}`)
       await NProgress.done()
     }
   }

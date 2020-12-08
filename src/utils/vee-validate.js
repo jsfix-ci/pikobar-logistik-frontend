@@ -119,6 +119,11 @@ extend('requiredTrackingField', {
   message: (_, values) => i18n.t('errors.field_must_be_filled_tracking', values)
 })
 
+extend('requiredApplicantCode', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_applicant_code', values)
+})
+
 extend('numericRealizationAmount', {
   ...numeric,
   message: (_, values) => i18n.t('errors.field_unauthorized_characters_realization_amount', values)
