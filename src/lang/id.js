@@ -228,6 +228,10 @@ export default {
     logistic_acceptance_report_button: 'Laporkan Sekarang',
     logistic_acceptance_report_header: 'Laporan Penerimaan Barang',
     logistic_acceptance_report_subheader: 'Formulir ini diperuntukkan bagi penerima bantuan logistik COVID-19 Pemdaprov Jabar di 27 kab/kota di Jawa Barat. Penerima dapat mengisi form ini satu kali saja setelah menerima barang logistik bantuan dari pemprov. Melalui ketersediaan formulir ini, kami harap dapat menjadi media monitoring dan evaluasi penyaluran logistik COVID-19 bagi kami, Pemdaprov Jabar, untuk mengevaluasi sistem kerja manajemen logistik baik di level provinsi maupun kab/kota.',
+    logistic_acceptance_report_applicant_find_description: 'Kode permohonan logistik dapat ditemukan di email pada saat selesai melakukan permohonan di Pikobar pada laman ',
+    verification_code: 'Kode Verifikasi',
+    verification_code_description: 'Sebelum melanjutkan, harap masukkan kode verifikasi terlebih dahulu.',
+    resend_verification_code: 'Kirim ulang kode',
     logistic_usability_report_title: 'Laporan Penggunaan Barang',
     logistic_usability_report_description: 'Fitur ini memudahkan Anda sebagai pemohon untuk melakukan pelaporan penggunaan barang logistik yang diterima dari Pemdaprov Jawa Barat. Untuk info lebih lanjut, Anda dapat mengklik tombol dibawah ini.',
     logistic_tracking_title: 'Lacak Pengajuan Logistik',
@@ -627,6 +631,16 @@ export default {
       select_sub_district: 'Kecamatan harus diisi',
       letter_name: 'Nama Surat harus diisi',
       letter_number: 'Nomor Surat harus diisi'
+    },
+    acceptance_report: {
+      fullname: 'Nama Lengkap Penerima Barang wajib diisi',
+      position: 'Jabatan Penerima Barang wajib diisi',
+      phone: 'Nomot Telepon Penerima Barang wajib diisi',
+      date: 'Tanggal Barang Diterima wajib diisi',
+      proof_pic: 'Foto Bukti Penerimaan Barang wajib diisi',
+      officer_fullname: 'Nama Petugas Pemprov yang Menyerahkan Barang wajib diisi',
+      bast_proof: 'Foto BAST Sebagai Bukti Penerimaan Barang wajib diisi',
+      item_proof: 'Foto Barang yang Diterima wajib diisi',
     }
   },
 }

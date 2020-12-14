@@ -42,36 +42,625 @@
           </v-col>
         </v-row>
         <v-row>
-          <div class="form mt-10 col-sm-6 offset-md-3">
-            <v-form ref="form">
-              <ValidationObserver ref="observer">
-                <v-label><b>{{ $t('label.applicant_code') }}</b></v-label>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  rules="requiredApplicantCode"
-                >
-                  <v-text-field
-                    v-model="listQuery.search"
-                    outlined
-                    solo-inverted
-                    :error-messages="errors"
-                    :placeholder="$t('label.applicant_code_placeholder')"
-                    @keyup.enter.native="findApplicantCode"
-                  />
-                </ValidationProvider>
-                <div class="button-action">
-                  <div class="body-text">
-                    <p>Kode permohonan logistik dapat ditemukan di email pada saat selesai melakukan permohonan di Pikobar pada laman <a href="#/landing-page">{{ landingPage }}</a></p>
-                  </div>
-                  <v-btn class="button-style" min-width="150px" color="success" @click="findApplicantCode">{{ $t('label.tracking_cek') + ' ' + $t('label.applicant_code') }} <img src="../../static/arrow-right.png" alt=""></v-btn>
+          <div v-if="!showVerificationForm && !acceptanceLogisticFormShow" class="form mt-10 col-sm-6 offset-md-3">
+            <ValidationObserver ref="observer">
+              <v-label><b>{{ $t('label.applicant_code') }}</b></v-label>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="requiredApplicantCode"
+              >
+                <v-text-field
+                  v-model="listQuery.register_id"
+                  outlined
+                  solo-inverted
+                  :error-messages="errors"
+                  :placeholder="$t('label.applicant_code_placeholder')"
+                  @keyup.enter.native="findApplicantCode"
+                />
+              </ValidationProvider>
+              <div class="button-action">
+                <div class="body-text">
+                  <p>{{ $t('label.logistic_acceptance_report_applicant_find_description') }}<a href="#/landing-page">{{ landingPage }}</a></p>
                 </div>
-              </ValidationObserver>
-            </v-form>
+                <v-btn class="button-style" min-width="150px" color="success" @click="findApplicantCode">{{ $t('label.tracking_cek') + ' ' + $t('label.applicant_code') }} <img src="../../static/arrow-right.png" alt=""></v-btn>
+              </div>
+            </ValidationObserver>
           </div>
+          <!-- Form Verification -->
+          <div v-if="showVerificationForm && !acceptanceLogisticFormShow" class="form mt-10 col-sm-6 offset-md-3">
+            <ValidationObserver ref="observer2">
+              <v-form ref="form">
+                <v-label><b>{{ $t('label.verification_code') }}</b></v-label>
+                <div class="body-text">
+                  <p class="grey--text">{{ $t('label.verification_code_description') }}</p>
+                </div>
+                <v-row class="body-text">
+                  <v-col class="col-sm-2">
+                    <img src="../../static/carbon_email.png" alt="">
+                  </v-col>
+                  <v-col class="col-sm-6">
+                    Kami telah mengirimkan kode ke email <span class="blue--text"><b><u>{{ email }}</u></b></span>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="2" md="2">
+                    <ValidationProvider
+                      rules="requiredApplicantCode"
+                    >
+                      <v-text-field
+                        v-model="listQuery.verification_code1"
+                        outlined
+                        solo-inverted
+                        maxlength="1"
+                        @change="verCode"
+                      />
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col cols="2" md="2">
+                    <ValidationProvider
+                      rules="requiredApplicantCode"
+                    >
+                      <v-text-field
+                        v-model="listQuery.verification_code2"
+                        outlined
+                        solo-inverted
+                        maxlength="1"
+                        @change="verCode"
+                      />
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col cols="2" md="2">
+                    <ValidationProvider
+                      rules="requiredApplicantCode"
+                    >
+                      <v-text-field
+                        v-model="listQuery.verification_code3"
+                        outlined
+                        solo-inverted
+                        maxlength="1"
+                        @change="verCode"
+                      />
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col cols="2" md="2">
+                    <ValidationProvider
+                      rules="requiredApplicantCode"
+                    >
+                      <v-text-field
+                        v-model="listQuery.verification_code4"
+                        outlined
+                        solo-inverted
+                        maxlength="1"
+                        @change="verCode"
+                      />
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col cols="2" md="2">
+                    <ValidationProvider
+                      rules="requiredApplicantCode"
+                    >
+                      <v-text-field
+                        v-model="listQuery.verification_code5"
+                        outlined
+                        solo-inverted
+                        maxlength="1"
+                        @change="verCode"
+                      />
+                    </ValidationProvider>
+                  </v-col>
+                </v-row>
+                <div class="button-action">
+                  <v-btn v-if="verCodeComplete" class="button-style" min-width="150px" color="success" @click="confirmVerCode">{{ $t('label.continue') }}</v-btn>
+                  <v-btn v-else class="button-style" min-width="150px" color="success" disabled>{{ $t('label.continue') }}</v-btn>
+                  <a class="button-style green--text" min-width="150px" @click="resendCode">{{ $t('label.resend_verification_code') }}</a>
+                </div>
+              </v-form>
+            </ValidationObserver>
+          </div>
+          <div v-if="showVerificationForm && acceptanceLogisticFormShow"><!-- Form Acceptance Logistic Report -->
+            <ValidationObserver ref="observer3">
+              <div id="form-body">
+                <div><!-- Informasi Penerima Barang -->
+                  <v-row id="form-title">
+                    <v-col sm="12" md="8" class="left-side">
+                      <div class="title">
+                        <h3><span class="logistic">Informasi Penerima Barang</span></h3>
+                      </div>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>Nama Lengkap Penerima Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <div class="body-text">
+                        <p class="grey--text">Diisi dengan nama pengambil barang perwakilan dari pemohon</p>
+                      </div>
+                      <ValidationProvider
+                        v-slot="{ errors }"
+                        rules="acceptanceReportFullName"
+                      >
+                        <v-text-field
+                          v-model="recipient.fullname"
+                          outlined
+                          solo-inverted
+                          placeholder="Masukan Nama Penerima"
+                          :error-messages="errors"
+                        />
+                      </ValidationProvider>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>Jabatan Penerima Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <ValidationProvider
+                        v-slot="{ errors }"
+                        rules="acceptanceReportPosition"
+                      >
+                        <v-text-field
+                          v-model="recipient.position"
+                          outlined
+                          solo-inverted
+                          placeholder="Masukan Jabatan"
+                          :error-messages="errors"
+                        />
+                      </ValidationProvider>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>Nomor Telepon Penerima Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <ValidationProvider
+                        v-slot="{ errors }"
+                        rules="acceptanceReportPhone|isPhoneNumber"
+                      >
+                        <v-text-field
+                          v-model="recipient.phone"
+                          outlined
+                          solo-inverted
+                          placeholder="Masukkan Nomor Telepon"
+                          :error-messages="errors"
+                        />
+                      </ValidationProvider>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>Tanggal Barang Diterima</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <date-picker-input
+                        v-model="recipient.date"
+                        value="2020-12-10"
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>Foto Bukti Penerimaan Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <div class="body-text">
+                        <p class="grey--text">Ukuran maksimal tiap satu file adalah 5 Mb.<br>File yang didukung adalah .jpg dan .png</p>
+                      </div>
+                      <v-btn class="button-style" small color="success" @click="addProofPicDialogShow">Tambah File +</v-btn>
+                    </v-col>
+                    <v-col v-if="proofPicRequiredError" cols="12">
+                      <v-alert type="error">Belum ada file Foto Bukti Penerimaan Barang yang diupload</v-alert>
+                    </v-col>
+                  </v-row>
+                  <v-row v-for="(val, index) in recipient.proof_pic" :key="'pic' + index">
+                    <v-col cols="7" class="left-side">
+                      <v-alert v-if="index === 0" dense outlined text max-height="30px">
+                        <v-row align="center" style="margin-top:-18px">
+                          <v-col class="grow">{{ val.name.length > 25 ? val.name.substring(0, 25) + '...' : val.name }}</v-col>
+                          <v-col class="shrink">
+                            <v-icon @click="deleteDataProofPic(index)">mdi-close-circle</v-icon>
+                          </v-col>
+                        </v-row>
+                      </v-alert>
+                      <v-alert v-else dense outlined text max-height="30px" style="margin-top:-30px">
+                        <v-row align="center" style="margin-top:-18px">
+                          <v-col class="grow">{{ val.name.length > 25 ? val.name.substring(0, 25) + '...' : val.name }}</v-col>
+                          <v-col class="shrink">
+                            <v-icon @click="deleteDataProofPic(index)">mdi-close-circle</v-icon>
+                          </v-col>
+                        </v-row>
+                      </v-alert>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-dialog
+                      v-model="dialogProofPic"
+                      max-width="50%"
+                    >
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline">Tambah file Foto Bukti Penerimaan Barang</span>
+                        </v-card-title>
+                        <v-card-text>
+                          <v-container>
+                            <v-row>
+                              <v-col
+                                cols="12"
+                                sm="6"
+                                md="6"
+                              >
+                                <ValidationObserver ref="uploadDialog">
+                                  <ValidationProvider
+                                    v-slot="{ errors }"
+                                    rules="acceptanceReportProofPic"
+                                  >
+                                    <v-file-input
+                                      v-model="selectedFile"
+                                      counter
+                                      :error-messages="errors"
+                                      placeholder="Klik untuk upload..."
+                                      prepend-icon="mdi-camera"
+                                      accept="image/png, image/jpg"
+                                      outlined
+                                      show-size
+                                    >
+                                      <template v-slot:selection="{ text }">
+                                        <v-chip
+                                          label
+                                          small
+                                        >
+                                          {{ text }}
+                                        </v-chip>
+                                      </template>
+                                    </v-file-input>
+                                  </ValidationProvider>
+                                </ValidationObserver>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer />
+                          <v-btn class="button-style" outlined text @click="closeProofPic">{{ $t('label.cancel') }}</v-btn>
+                          <v-btn class="button-style" min-width="150px" color="success" @click="saveProofPic">{{ $t('label.edit') }}</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>Nama Petugas Pemprov yang Menyerahkan Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <div class="body-text">
+                        <p class="grey--text">Diisi dengan nama petugas yang menyerahkan ke pemohon</p>
+                      </div>
+                      <ValidationProvider
+                        v-slot="{ errors }"
+                        rules="acceptanceReportOfficerFullname"
+                      >
+                        <v-text-field
+                          v-model="recipient.officer_fullname"
+                          outlined
+                          solo-inverted
+                          placeholder="Masukkan Nama Petugas"
+                          :error-messages="errors"
+                        />
+                      </ValidationProvider>
+                    </v-col>
+                  </v-row>
+                </div><!-- End Informasi Penerima Barang -->
+                <div><!-- Detail Informasi Penerimaan Barang -->
+                  <v-row id="form-title">
+                    <v-col cols="12" sm="12" md="12" class="left-side">
+                      <div class="title">
+                        <h3><span class="logistic">Detail Informasi Penerimaan Barang</span></h3>
+                      </div>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <template>
+                      <v-data-table
+                        :headers="headers"
+                        :items="recipient.items"
+                        sort-by="name"
+                        class="elevation-1"
+                        color="success"
+                        :footer-props="{
+                          'items-per-page-options':[3, 10, 50, 100],
+                          'itemsPerPageText': 'Tampilkan'
+                        }"
+                        :items-per-page="3"
+                      >
+                        <template v-slot:top>
+                          <v-toolbar
+                            flat
+                          >
+                            <v-toolbar-title><span class="text-green">Daftar Item Barang yang Diterima</span></v-toolbar-title>
+                            <v-dialog
+                              v-model="dialog"
+                              max-width="50%"
+                            >
+                              <v-card>
+                                <v-card-title>
+                                  <span class="headline">Ubah Keterangan Barang</span>
+                                </v-card-title>
+
+                                <v-card-text>
+                                  <v-container>
+                                    <v-row>
+                                      <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="6"
+                                      >
+                                        <v-text-field
+                                          v-model="editedItem.name"
+                                          label="Nama Barang/Item"
+                                          disabled
+                                          dense
+                                          outlined
+                                        />
+                                      </v-col>
+                                      <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="6"
+                                      >
+                                        <v-text-field
+                                          v-model="editedItem.qty"
+                                          label="Jumlah Barang"
+                                          disabled
+                                          dense
+                                          outlined
+                                        />
+                                      </v-col>
+                                      <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="4"
+                                      >
+                                        <v-text-field
+                                          v-model="editedItem.qty_ok"
+                                          label="Jmlh Barang Sesuai"
+                                          type="number"
+                                          dense
+                                          outlined
+                                          @input="setQtyNok(editedItem.qty_ok)"
+                                        />
+                                      </v-col>
+                                      <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="4"
+                                      >
+                                        <v-text-field
+                                          v-model="editedItem.qty_nok"
+                                          label="Jmlh Barang Tdk Sesuai"
+                                          type="number"
+                                          dense
+                                          outlined
+                                          @input="setQtyOk(editedItem.qty_nok)"
+                                        />
+                                      </v-col>
+                                      <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="4"
+                                      >
+                                        <v-select
+                                          v-model="editedItem.quality"
+                                          :items="qualityList"
+                                          label="Kualitas/Mutu"
+                                          dense
+                                          outlined
+                                        />
+                                      </v-col>
+                                    </v-row>
+                                  </v-container>
+                                </v-card-text>
+
+                                <v-card-actions>
+                                  <v-spacer />
+                                  <v-btn class="button-style" outlined text @click="close">{{ $t('label.cancel') }}</v-btn>
+                                  <v-btn class="button-style" min-width="150px" color="success" @click="save">{{ $t('label.edit') }}</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-toolbar>
+                        </template>
+                        <template v-slot:[`item.actions`]="{ item }">
+                          <v-btn small @click="editItem(item)">
+                            <v-icon small class="mr-2">mdi-pencil</v-icon>
+                            {{ $t('label.edit') }}
+                          </v-btn>
+                        </template>
+                        <template v-slot:[`footer.page-text`]="props">
+                          Barang dari total {{ props.itemsLength }}
+                        </template>
+                      </v-data-table>
+                    </template>
+                    <v-col v-if="itemsRequiredError" cols="12">
+                      <v-alert type="error">Beri keterangan terlebih dahulu daftar item barang yang diterima</v-alert>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>Foto BAST Sebagai Bukti Penerimaan Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <div class="body-text">
+                        <p class="grey--text">Ukuran maksimal tiap satu file adalah 5 Mb.<br>File yang didukung adalah .jpg dan .png</p>
+                      </div>
+                      <v-btn class="button-style" small color="success" @click="addBastProofDialogShow">Tambah File +</v-btn>
+                    </v-col>
+                    <v-col v-if="bastProofRequiredError" cols="12">
+                      <v-alert type="error">Belum ada file Foto BAST yang diupload</v-alert>
+                    </v-col>
+                  </v-row>
+                  <v-row v-for="(val, index) in recipient.bast_proof" :key="'bast' + index">
+                    <v-col cols="7" class="left-side">
+                      <v-alert v-if="index === 0" dense outlined text max-height="30px">
+                        <v-row align="center" style="margin-top:-18px">
+                          <v-col class="grow">{{ val.name.length > 25 ? val.name.substring(0, 25) + '...' : val.name }}</v-col>
+                          <v-col class="shrink">
+                            <v-icon @click="deleteDataBastProof(index)">mdi-close-circle</v-icon>
+                          </v-col>
+                        </v-row>
+                      </v-alert>
+                      <v-alert v-else dense outlined text max-height="30px" style="margin-top:-30px">
+                        <v-row align="center" style="margin-top:-18px">
+                          <v-col class="grow">{{ val.name.length > 25 ? val.name.substring(0, 25) + '...' : val.name }}</v-col>
+                          <v-col class="shrink">
+                            <v-icon @click="deleteDataBastProof(index)">mdi-close-circle</v-icon>
+                          </v-col>
+                        </v-row>
+                      </v-alert>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-dialog
+                      v-model="dialogBastProof"
+                      max-width="50%"
+                    >
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline">Tambah file Foto BAST</span>
+                        </v-card-title>
+                        <v-card-text>
+                          <v-container>
+                            <v-row>
+                              <v-col
+                                cols="12"
+                                sm="6"
+                                md="6"
+                              >
+                                <ValidationObserver ref="uploadDialog">
+                                  <ValidationProvider
+                                    v-slot="{ errors }"
+                                    rules="acceptanceReportBastProof"
+                                  >
+                                    <v-file-input
+                                      v-model="selectedFile"
+                                      counter
+                                      :error-messages="errors"
+                                      placeholder="Klik untuk upload..."
+                                      prepend-icon="mdi-camera"
+                                      accept="image/png, image/jpg"
+                                      outlined
+                                      show-size
+                                    >
+                                      <template v-slot:selection="{ text }">
+                                        <v-chip
+                                          label
+                                          small
+                                        >
+                                          {{ text }}
+                                        </v-chip>
+                                      </template>
+                                    </v-file-input>
+                                  </ValidationProvider>
+                                </ValidationObserver>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer />
+                          <v-btn class="button-style" outlined text @click="closeBastProof">{{ $t('label.cancel') }}</v-btn>
+                          <v-btn class="button-style" min-width="150px" color="success" @click="saveBastProof">{{ $t('label.edit') }}</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>Foto Barang yang Diterima</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <div class="body-text">
+                        <p class="grey--text">Ukuran maksimal tiap satu file adalah 5 Mb.<br>File yang didukung adalah .jpg dan .png</p>
+                      </div>
+                      <v-btn class="button-style" small color="success" @click="addItemProofDialogShow">Tambah File +</v-btn>
+                    </v-col>
+                    <v-col v-if="itemProofRequiredError" cols="12">
+                      <v-alert type="error">Belum ada file Foto Barang yang diupload</v-alert>
+                    </v-col>
+                  </v-row>
+                  <v-row v-for="(val, index) in recipient.item_proof" :key="'item' + index">
+                    <v-col cols="7" class="left-side">
+                      <v-alert v-if="index === 0" dense outlined text max-height="30px">
+                        <v-row align="center" style="margin-top:-18px">
+                          <v-col class="grow">{{ val.name.length > 25 ? val.name.substring(0, 25) + '...' : val.name }}</v-col>
+                          <v-col class="shrink">
+                            <v-icon @click="deleteDataItemProof(index)">mdi-close-circle</v-icon>
+                          </v-col>
+                        </v-row>
+                      </v-alert>
+                      <v-alert v-else dense outlined text max-height="30px" style="margin-top:-30px">
+                        <v-row align="center" style="margin-top:-18px">
+                          <v-col class="grow">{{ val.name.length > 25 ? val.name.substring(0, 25) + '...' : val.name }}</v-col>
+                          <v-col class="shrink">
+                            <v-icon @click="deleteDataItemProof(index)">mdi-close-circle</v-icon>
+                          </v-col>
+                        </v-row>
+                      </v-alert>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-dialog
+                      v-model="dialogItemProof"
+                      max-width="50%"
+                    >
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline">Tambah Foto Barang yang Diterima</span>
+                        </v-card-title>
+                        <v-card-text>
+                          <v-container>
+                            <v-row>
+                              <v-col
+                                cols="12"
+                                sm="6"
+                                md="6"
+                              >
+                                <ValidationObserver ref="uploadDialog">
+                                  <ValidationProvider
+                                    v-slot="{ errors }"
+                                    rules="acceptanceReportItemProof"
+                                  >
+                                    <v-file-input
+                                      v-model="selectedFile"
+                                      counter
+                                      label="Foto bukti bisa lebih dari satu"
+                                      :error-messages="errors"
+                                      placeholder="Klik untuk upload..."
+                                      prepend-icon="mdi-camera"
+                                      accept="image/png, image/jpg"
+                                      outlined
+                                      show-size
+                                    >
+                                      <template v-slot:selection="{ text }">
+                                        <v-chip
+                                          label
+                                          small
+                                        >
+                                          {{ text }}
+                                        </v-chip>
+                                      </template>
+                                    </v-file-input>
+                                  </ValidationProvider>
+                                </ValidationObserver>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer />
+                          <v-btn class="button-style" outlined text @click="closeItemProof">{{ $t('label.cancel') }}</v-btn>
+                          <v-btn class="button-style" min-width="150px" color="success" @click="saveItemProof">{{ $t('label.edit') }}</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
+                </div>
+                <!-- End Detail Informasi Penerimaan Barang -->
+              </div>
+              <div class="button-action text-right">
+                <v-btn class="button-style" outlined text>{{ $t('label.cancel') }}</v-btn>
+                <v-btn class="button-style" min-width="150px" color="success" @click="saveRecipient">Selesai</v-btn>
+                <v-btn class="button-style" min-width="150px" color="success" @click="defaultValueForm">Isi Form Default</v-btn>
+              </div>
+            </ValidationObserver>
+          </div><!-- End Form Acceptance Logistic Report -->
         </v-row>
       </v-card>
-      <!-- footer -->
-      <div class="text-card-main">
+      <div class="text-card-main"><!-- footer -->
         <v-row style="margin-top: -20px">
           <v-col cols="6" md="6">
             <img class="landing-page-logo-jds" src="../../static/jds-logo.png">
@@ -95,7 +684,7 @@ import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'LandingPage',
+  name: 'AcceptanceReport',
   components: {
     ValidationProvider,
     ValidationObserver
@@ -103,66 +692,324 @@ export default {
   data() {
     return {
       id: null,
-      tab: null,
-      clicked: false,
       listQuery: {
-        search: null
+        register_id: null,
+        verification_code1: null,
+        verification_code2: null,
+        verification_code3: null,
+        verification_code4: null,
+        verification_code5: null
       },
+      landingPage: location.host + '/#/landing-page',
+      nextPage: location.host,
+      showVerificationForm: false,
+      email: null,
+      verCodeComplete: false,
+      acceptanceLogisticFormShow: false,
       listQueryTable: {
         page: 1,
         limit: 3
       },
-      landingPage: location.host + '/#/landing-page'
+      qualityList: [
+        'Dapat Dipakai',
+        'Tidak Dapat Dipakai'
+      ],
+      recipient: {
+        fullname: null,
+        position: null,
+        phone: null,
+        date: null,
+        officer_fullname: null,
+        items: [],
+        proof_pic: [],
+        bast_proof: [],
+        item_proof: [],
+        note: null,
+        selectedFile: null
+      },
+      selectedFile: null,
+      PicProofId: 0,
+      ItemProofId: 0,
+      bastProofId: 0,
+      dialogProofPic: false,
+      dialogBastProof: false,
+      dialogItemProof: false,
+      itemsRequiredError: false,
+      proofPicRequiredError: false,
+      bastProofRequiredError: false,
+      itemProofRequiredError: false,
+      isValid: false,
+      /** Data Tabel Barang */
+      dialog: false,
+      dialogDelete: false,
+      headers: [
+        { text: 'Nama Barang/Item', align: 'start', value: 'name', class: 'success white--text' },
+        { text: 'Jumlah Barang', align: 'center', value: 'qty', class: 'success white--text' },
+        { text: 'Satuan', align: 'center', value: 'unit', class: 'success white--text' },
+        { text: 'Jmlh Barang Sesuai', align: 'center', value: 'qty_ok', class: 'success white--text' },
+        { text: 'Jmlh Barang Tdk Sesuai', align: 'center', value: 'qty_nok', class: 'success white--text' },
+        { text: 'Kualitas Mutu', value: 'quality', class: 'success white--text' },
+        { text: 'Aksi', align: 'center', value: 'actions', sortable: false, class: 'success white--text' }
+      ],
+      options: {
+        itemsPerPage: 3
+      },
+      editedIndex: -1,
+      editedItem: {
+        product_id: '',
+        name: '',
+        qty: 0,
+        unit: 'PCS',
+        qty_ok: 0,
+        qty_nok: 0,
+        quality: ''
+      },
+      defaultItem: {
+        product_id: '',
+        name: '',
+        qty: 0,
+        unit: 'PCS',
+        qty_ok: 0,
+        qty_nok: 0,
+        quality: ''
+      }
     }
   },
   computed: {
+    // CRUD Table
     ...mapGetters('logistics', [
-      'dataTracking',
+      'detailLogisticRequest',
       'listLogisticRequest',
       'totalListLogisticRequest',
       'totalDataLogisticRequest'
     ])
   },
+  // CRUD Table
+  watch: {
+    dialogItemProof(val) {
+      val || this.close()
+    },
+    dialog(val) {
+      val || this.close()
+    },
+    dialogDelete(val) {
+      val || this.closeDelete()
+    }
+  },
+  // CRUD Table
   methods: {
+    // CRUD Table Method
+    editItem(item) {
+      this.editedIndex = this.recipient.items.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      if (this.editedItem.qty_ok === undefined || this.editedItem.qty_ok === 0) {
+        this.editedItem.qty_ok = this.editedItem.qty
+        this.editedItem.qty_nok = this.editedItem.qty - this.editedItem.qty_ok
+      }
+      this.editedItem.quality = this.editedItem.quality === '' ? this.qualityList[0] : this.editedItem.quality
+      this.dialog = true
+    },
+    setQtyOk(qty) {
+      this.editedItem.qty_ok = this.editedItem.qty - qty
+    },
+    setQtyNok(qty) {
+      this.editedItem.qty_nok = this.editedItem.qty - qty
+    },
+    close() {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+    closeDelete() {
+      this.dialogDelete = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+    save() {
+      Object.assign(this.recipient.items[this.editedIndex], this.editedItem)
+      this.itemsRequiredError = false
+      this.recipient.items.forEach(item => {
+        if (item.quality === undefined) {
+          this.itemsRequiredError = true
+        }
+      })
+      this.close()
+    },
+    // End CRUD Table Method
     async findApplicantCode() {
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
       }
-      await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
-      if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
-      this.clicked = true
+      const response = await this.$store.dispatch('logistics/postRegisterVerification', this.listQuery)
+      if (response.status === 200) {
+        this.id = response.data.agency_id
+        this.email = response.data.email
+        this.showVerificationForm = true
+      }
+    },
+    async verCode() {
+      this.verCodeComplete = false
+      const valid = await this.$refs.observer2.validate()
+      if (!valid) {
+        return
+      }
+      this.verCodeComplete = true
+    },
+    async confirmVerCode() {
+      this.acceptanceLogisticFormShow = false
+      const response = await this.$store.dispatch('logistics/postConfirmVerificationCode', this.listQuery)
+      if (response.status === 200) this.acceptanceLogisticFormShow = true
+      await this.getTrackingLogisticNeedList(this.id)
+    },
+    async resendCode() {
+      // Resend Verification Code
+      alert('sent!')
     },
     async getTrackingLogisticNeedList(id) {
       this.id = id
       this.listQueryTable.id = id
-      await this.$store.dispatch('logistics/getTrackingLogisticNeedList', this.listQueryTable)
+      this.listQueryTable.limit = 100
+      this.listQueryTable.final_status = 'approved'
+      const response = await this.$store.dispatch('logistics/getLogisticReportRealizationItem', this.listQueryTable)
+      this.recipient.items = response.data
     },
-    changeStatus(value) {
-      switch (value) {
-        case 'approved':
-          return this.$t('label.approved')
-        case 'not_delivered':
-          return this.$t('label.not_delivered')
-        case 'delivered':
-          return this.$t('label.delivered')
-        case 'not_available':
-          return this.$t('label.not_available')
-        case 'replaced':
-          return this.$t('label.replaced')
-        default:
-          return this.$t('label.not_approved')
+    // Method untuk Upload Bukti Penerimaan Barang
+    deleteDataProofPic(index) {
+      this.recipient.proof_pic.splice(index, 1)
+    },
+    addProofPicDialogShow() {
+      this.selectedFile = null
+      this.dialogProofPic = true
+    },
+    closeProofPic() {
+      this.dialogProofPic = false
+    },
+    async saveProofPic() {
+      const valid = await this.$refs.uploadDialog.validate()
+      if (!valid) {
+        return
+      }
+      this.recipient.proof_pic.push(this.selectedFile)
+      this.proofPicRequiredError = false
+      this.dialogProofPic = false
+    }, // End Method untuk Upload Bukti Penerimaan Barang
+    // Method untuk Upload BAST
+    deleteDataBastProof(index) {
+      this.recipient.bast_proof.splice(index, 1)
+    },
+    addBastProofDialogShow() {
+      this.selectedFile = null
+      this.dialogBastProof = true
+    },
+    closeBastProof() {
+      this.dialogBastProof = false
+    },
+    async saveBastProof() {
+      const valid = await this.$refs.uploadDialog.validate()
+      if (!valid) {
+        return
+      }
+      this.recipient.bast_proof.push(this.selectedFile)
+      this.bastProofRequiredError = false
+      this.dialogBastProof = false
+    }, // End Method untuk Upload BAST
+    // Method untuk Upload Foto Barang
+    deleteDataItemProof(index) {
+      this.recipient.item_proof.splice(index, 1)
+    },
+    addItemProofDialogShow() {
+      this.selectedFile = null
+      this.dialogItemProof = true
+    },
+    closeItemProof() {
+      this.dialogItemProof = false
+    },
+    async saveItemProof() {
+      const valid = await this.$refs.uploadDialog.validate()
+      if (!valid) {
+        return
+      }
+      this.recipient.item_proof.push(this.selectedFile)
+      this.itemProofRequiredError = false
+      this.dialogItemProof = false
+    }, // End Method untuk Upload Foto Barang
+    async saveRecipient() {
+      this.isValid = true
+      this.itemsRequiredError = false
+      this.proofPicRequiredError = false
+      this.bastProofRequiredError = false
+      this.itemProofRequiredError = false
+      const valid = await this.$refs.observer3.validate()
+      if (!valid) {
+        this.isValid = false
+      }
+      this.recipient.items.forEach(item => {
+        if (item.quality === undefined) {
+          this.itemsRequiredError = true
+          this.isValid = false
+        }
+      })
+
+      if (this.recipient.proof_pic.length === 0) {
+        this.proofPicRequiredError = true
+        this.isValid = false
+      }
+
+      if (this.recipient.bast_proof.length === 0) {
+        this.bastProofRequiredError = true
+        this.isValid = false
+      }
+
+      if (this.recipient.item_proof.length === 0) {
+        this.itemProofRequiredError = true
+        this.isValid = false
+      }
+
+      if (!this.isValid) return
+      const formData = new FormData()
+      formData.append('fullname', this.recipient.fullname)
+      formData.append('position', this.recipient.position)
+      formData.append('phone', this.recipient.phone)
+      formData.append('date', this.recipient.date)
+      formData.append('officer_fullname', this.recipient.officer_fullname)
+      formData.append('items', JSON.stringify(this.recipient.items))
+      var i = 0
+      this.recipient.proof_pic.forEach(element => {
+        formData.append('proof_pic' + i, this.recipient.proof_pic[i])
+        i++
+      })
+      formData.append('proof_pic_length', this.recipient.proof_pic.length)
+      i = 0
+      this.recipient.bast_proof.forEach(element => {
+        formData.append('bast_proof' + i, this.recipient.bast_proof[i])
+        i++
+      })
+      formData.append('bast_proof_length', this.recipient.bast_proof.length)
+      i = 0
+      this.recipient.item_proof.forEach(element => {
+        formData.append('item_proof' + i, this.recipient.item_proof[i])
+        i++
+      })
+      formData.append('item_proof_length', this.recipient.item_proof.length)
+      formData.append('note', this.recipient.note)
+      formData.append('agency_id', this.id)
+      const response = await this.$store.dispatch('logistics/postRecipientReport', formData)
+      if (response.status === 200) {
+        this.$router.push({ path: '/landing-page' })
       }
     },
-    async onNext() {
-      await this.getTrackingLogisticNeedList(this.id)
-    },
-    getTableRowNumbering(index) {
-      return ((parseInt(this.listQueryTable.page) - 1) * parseInt(this.listQueryTable.limit)) + (parseInt(index) + 1)
-    },
-    async resetData() {
-      this.$refs.form.reset()
-      this.clicked = false
+    defaultValueForm() {
+      this.recipient.fullname = 'Rindi Budiaramdhan'
+      this.recipient.position = 'Ketua RT'
+      this.recipient.phone = '081809556334'
+      this.recipient.date = '2020-12-11'
+      this.recipient.officer_fullname = 'Rizie Advista'
+      this.recipient.note = 'Tidak ada catatan'
     }
   }
 }
@@ -230,6 +1077,9 @@ export default {
       color: #16A75C
     }
    }
+ }
+ .text-green {
+   color: #16A75C
  }
  .color-step {
    color: white;
