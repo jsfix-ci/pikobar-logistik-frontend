@@ -79,7 +79,7 @@
                     <img src="../../static/carbon_email.png" alt="">
                   </v-col>
                   <v-col class="col-sm-6">
-                    Kami telah mengirimkan kode ke email <span class="blue--text"><b><u>{{ email }}</u></b></span>
+                    {{ $t('label.acceptance_report.already_sent_code_to_email') }} <span class="blue--text"><b><u>{{ email }}</u></b></span>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -164,15 +164,15 @@
                   <v-row id="form-title">
                     <v-col sm="12" md="8" class="left-side">
                       <div class="title">
-                        <h3><span class="logistic">Informasi Penerima Barang</span></h3>
+                        <h3><span class="logistic">{{ $t('label.acceptance_report.logistic_acceptance_report_title') }}</span></h3>
                       </div>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><b>Nama Lengkap Penerima Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><b>{{ $t('label.acceptance_report.fullname') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
-                        <p class="grey--text">Diisi dengan nama pengambil barang perwakilan dari pemohon</p>
+                        <p class="grey--text">{{ $t('label.acceptance_report.fullname_description') }}</p>
                       </div>
                       <ValidationProvider
                         v-slot="{ errors }"
@@ -190,7 +190,7 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><b>Jabatan Penerima Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><b>{{ $t('label.acceptance_report.position') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <ValidationProvider
                         v-slot="{ errors }"
                         rules="acceptanceReportPosition"
@@ -207,7 +207,7 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><b>Nomor Telepon Penerima Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><b>{{ $t('label.acceptance_report.phone') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <ValidationProvider
                         v-slot="{ errors }"
                         rules="acceptanceReportPhone|isPhoneNumber"
@@ -224,7 +224,7 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><b>Tanggal Barang Diterima</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><b>{{ $t('label.acceptance_report.date') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <date-picker-input
                         v-model="recipient.date"
                         value="2020-12-10"
@@ -233,14 +233,14 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><b>Foto Bukti Penerimaan Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><b>{{ $t('label.acceptance_report.proof_pic') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
-                        <p class="grey--text">Ukuran maksimal tiap satu file adalah 5 Mb.<br>File yang didukung adalah .jpg dan .png</p>
+                        <p class="grey--text">{{ $t('label.acceptance_report.upload_description') }}<br>{{ $t('label.acceptance_report.upload_description_type') }}</p>
                       </div>
-                      <v-btn class="button-style" small color="success" @click="addProofPicDialogShow">Tambah File +</v-btn>
+                      <v-btn class="button-style" small color="success" @click="addProofPicDialogShow">{{ $t('label.add_file') }}</v-btn>
                     </v-col>
                     <v-col v-if="proofPicRequiredError" cols="12">
-                      <v-alert type="error">Belum ada file Foto Bukti Penerimaan Barang yang diupload</v-alert>
+                      <v-alert type="error">{{ $t('label.acceptance_report.error.proof_pic') }}</v-alert>
                     </v-col>
                   </v-row>
                   <v-row v-for="(val, index) in recipient.proof_pic" :key="'pic' + index">
@@ -270,7 +270,7 @@
                     >
                       <v-card>
                         <v-card-title>
-                          <span class="headline">Tambah file Foto Bukti Penerimaan Barang</span>
+                          <span class="headline">{{ $t('label.acceptance_report.dialog_title.proof_pic') }}</span>
                         </v-card-title>
                         <v-card-text>
                           <v-container>
@@ -320,9 +320,9 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><b>Nama Petugas Pemprov yang Menyerahkan Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><b>{{ $t('label.acceptance_report.officer_fullname') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
-                        <p class="grey--text">Diisi dengan nama petugas yang menyerahkan ke pemohon</p>
+                        <p class="grey--text">{{ $t('label.acceptance_report.officer_fullname_description') }}</p>
                       </div>
                       <ValidationProvider
                         v-slot="{ errors }"
@@ -343,7 +343,7 @@
                   <v-row id="form-title">
                     <v-col cols="12" sm="12" md="12" class="left-side">
                       <div class="title">
-                        <h3><span class="logistic">Detail Informasi Penerimaan Barang</span></h3>
+                        <h3><span class="logistic">{{ $t('label.acceptance_report.items_title') }}</span></h3>
                       </div>
                     </v-col>
                   </v-row>
@@ -365,14 +365,14 @@
                           <v-toolbar
                             flat
                           >
-                            <v-toolbar-title><span class="text-green">Daftar Item Barang yang Diterima</span></v-toolbar-title>
+                            <v-toolbar-title><span class="text-green">{{ $t('label.acceptance_report.items_table_title') }}</span></v-toolbar-title>
                             <v-dialog
                               v-model="dialog"
                               max-width="50%"
                             >
                               <v-card>
                                 <v-card-title>
-                                  <span class="headline">Ubah Keterangan Barang</span>
+                                  <span class="headline">{{ $t('label.acceptance_report.dialog_title.items') }}</span>
                                 </v-card-title>
 
                                 <v-card-text>
@@ -465,17 +465,17 @@
                           </v-btn>
                         </template>
                         <template v-slot:[`footer.page-text`]="props">
-                          Barang dari total {{ props.itemsLength }}
+                          {{ $t('label.acceptance_report.table_footer_page_text') + props.itemsLength }}
                         </template>
                       </v-data-table>
                     </template>
                     <v-col v-if="itemsRequiredError" cols="12">
-                      <v-alert type="error">Beri keterangan terlebih dahulu daftar item barang yang diterima</v-alert>
+                      <v-alert type="error">{{ $t('label.acceptance_report.error.item_proof') }}</v-alert>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><b>Foto BAST Sebagai Bukti Penerimaan Barang</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><b>{{ $t('label.acceptance_report.bast_proof') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
                         <p class="grey--text">Ukuran maksimal tiap satu file adalah 5 Mb.<br>File yang didukung adalah .jpg dan .png</p>
                       </div>

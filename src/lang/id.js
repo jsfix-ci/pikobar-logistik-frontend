@@ -59,6 +59,7 @@ export default {
     check_stock: 'Cek Stok',
     location_stock: 'Lokasi',
     add_choice: 'Tambah pilihan',
+    add_file: 'Tambah File +',
     sort_by: 'Urutkan Berdasarkan',
     target: 'Capaian / Target',
     address: 'Alamat Tempat Tinggal',
@@ -570,6 +571,32 @@ export default {
     request: 'Permohonan',
     recommendation: 'Rekomendasi Salur',
     realization: 'Realisasi',
+    acceptance_report: {
+      already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
+      logistic_acceptance_report_title: 'Informasi Penerima Barang',
+      fullname: 'Nama Lengkap Penerima Barang',
+      fullname_description: 'Diisi dengan nama pengambil barang perwakilan dari pemohon',
+      position: 'Jabatan Penerima Barang',
+      phone: 'Nomor Telepon Penerima Barang',
+      date: 'Tanggal Barang Diterima',
+      officer_fullname: 'Nama Petugas Pemprov yang Menyerahkan Barang',
+      officer_fullname_description: 'Diisi dengan nama petugas yang menyerahkan ke pemohon',
+      proof_pic: 'Foto Bukti Penerimaan Barang',
+      bast_proof: 'Foto BAST Sebagai Bukti Penerimaan Barang',
+      items_title: 'Detail Informasi Penerimaan Barang',
+      items_table_title: 'Daftar Item Barang yang Diterima',
+      table_footer_page_text: 'Barang dari total ',
+      upload_description: 'Ukuran maksimal tiap satu file adalah 5 Mb.',
+      upload_description_type: 'File yang didukung adalah .jpg dan .png',
+      dialog_title: {
+        proof_pic: 'Tambah file Foto Bukti Penerimaan Barang',
+        items: 'Ubah Keterangan Barang',
+      },
+      error: {
+        proof_pic: 'Belum ada file Foto Bukti Penerimaan Barang yang diupload',
+        item_proof: 'Beri keterangan terlebih dahulu daftar item barang yang diterima',
+      }
+    }
   },
   success: {
     login_success: 'Login Berhasil',
@@ -640,7 +667,7 @@ export default {
       proof_pic: 'Foto Bukti Penerimaan Barang wajib diisi',
       officer_fullname: 'Nama Petugas Pemprov yang Menyerahkan Barang wajib diisi',
       bast_proof: 'Foto BAST Sebagai Bukti Penerimaan Barang wajib diisi',
-      item_proof: 'Foto Barang yang Diterima wajib diisi',
+      item_proof: 'Foto Barang yang Diterima wajib diisi'
     }
   },
 }
