@@ -1,15 +1,19 @@
 <template>
   <div class="login">
     <div class="column-left">
-      <div class="logo-js" />
+      <a href="/#/landing-page">
+        <div class="logo-js" />
+      </a>
       <div class="icon-bottom" />
       <div class="pic-login" />
     </div>
     <div class="column-right">
       <v-row>
-        <div class="logo-js">
-          <div class="logo-js-right" />
-        </div>
+        <a href="/#/landing-page">
+          <div class="logo-js">
+            <div class="logo-js-right" />
+          </div>
+        </a>
         <div class="icon" />
       </v-row>
       <v-row>
