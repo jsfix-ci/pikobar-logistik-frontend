@@ -369,6 +369,7 @@ export default {
     deleteFile() {
       this.selectedFileName = ''
       this.isUpload = false
+      this.isFileValid = false
     }
   }
 }
