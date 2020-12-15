@@ -123,7 +123,7 @@
               </div>
               <p class="ml-10 font-text card-text-landing-page text-center">{{ $t('label.logistic_usability_report_description') }}</p>
               <div class="text-center">
-                <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" href="#/usability-report">
+                <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" href="http://bit.ly/LaporPenggunaanLogistik">
                   {{ $t('label.logistic_acceptance_report_button') }} <img class="button-icon" src="../../static/linkicon.png">
                 </v-btn>
               </div>
