@@ -64,7 +64,7 @@
                     ref="uploader"
                     type="file"
                     class="d-none"
-                    accept=".pdf, .jpg, .jpeg, .png"
+                    accept=".pdf"
                     @change="onFileChanged"
                   >
                   <v-btn
