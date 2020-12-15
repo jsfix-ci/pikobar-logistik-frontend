@@ -326,13 +326,11 @@ export default {
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         this.isValid = false
-      }
-      
-      if (!this.isFileValid) {
+      }      
+      if (!this.isAdmin && !this.isFileValid) {
         this.requiredAlert = true
         this.isValid = false
       }
-
       if (!this.isValid) {
         return
       }
@@ -368,8 +366,9 @@ export default {
     },
     deleteFile() {
       this.selectedFileName = ''
+      this.formIdentityApplicant.dataFile = null
       this.isUpload = false
-      this.isFileValid = false
+      if (!this.isAdmin) this.isFileValid = false
     }
   }
 }
