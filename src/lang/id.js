@@ -620,6 +620,7 @@ export default {
     field_must_be_filled_full_address: 'Alamat lengkap tidak boleh kosong',
     field_must_be_filled_applicant_name: 'Nama pemohon tidak boleh kosong',
     field_must_be_filled_applicant_position: 'Jabatan Pemohon tidak boleh kosong',
+    field_must_be_filled_identity_file: 'Foto E-KTP/Kartu Pegawai/Surat Tugas Harus diupload',
     field_must_be_filled_applicant_email: 'Email pemohon tidak boleh kosong',
     field_must_be_filled_applicant_phone_number: 'No. HP/Whatsapp pemohon tidak boleh kosong',
     field_must_be_filled_apd_name: 'Nama Barang tidak boleh kosong',

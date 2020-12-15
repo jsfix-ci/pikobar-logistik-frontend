@@ -54,7 +54,7 @@
               v-if="!isAdmin"
               rules="required"
             >
-              <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b></v-label>
+              <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
               <br>
               <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
               <div>
@@ -108,6 +108,12 @@
                   type="error"
                 >
                   {{ $t('label.upload_error_message') }}
+                </v-alert>
+                <v-alert
+                  v-if="requiredAlert"
+                  type="error"
+                >
+                  {{ $t('errors.field_must_be_filled_identity_file') }}
                 </v-alert>
               </div>
             </ValidationProvider>
@@ -308,18 +314,26 @@ export default {
       selectedFileName: '',
       isUpload: false,
       uploadAlert: false,
-      isFileValid: false
+      requiredAlert: false,
+      isFileValid: false,
+      isValid: false
     }
   },
   methods: {
     async onNext() {
+      this.isValid = true
+      this.requiredAlert = false
       const valid = await this.$refs.observer.validate()
-      if (this.isAdmin) {
-        if (!valid) {
-          return
-        }
-      } else if (!valid || !this.isFileValid) {
-        this.uploadAlert = true
+      if (!valid) {
+        this.isValid = false
+      }
+      
+      if (!this.isFileValid) {
+        this.requiredAlert = true
+        this.isValid = false
+      }
+
+      if (!this.isValid) {
         return
       }
       EventBus.$emit('nextStep', this.step)
@@ -329,7 +343,6 @@ export default {
     },
     onButtonClick() {
       this.isSelecting = false
-      this.isUpload = true
       this.uploadAlert = false
       this.$refs.uploader.click()
     },
@@ -351,6 +364,7 @@ export default {
       const formData = new FormData()
       formData.append('file', this.selectedFile)
       this.formIdentityApplicant.dataFile = this.selectedFile
+      this.requiredAlert = false
     },
     deleteFile() {
       this.selectedFileName = ''
