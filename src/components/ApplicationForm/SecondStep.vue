@@ -319,14 +319,25 @@ export default {
       isValid: false
     }
   },
+  created() {
+    this.reloadData()
+  },
   methods: {
+    async reloadData() {
+      if (this.formIdentityApplicant.dataFile) {
+        this.selectedFile = this.formIdentityApplicant.dataFile
+        this.selectedFileName = this.selectedFile.name
+        this.isUpload = true
+        this.requiredAlert = false
+      }
+    },
     async onNext() {
       this.isValid = true
       this.requiredAlert = false
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         this.isValid = false
-      }      
+      }
       if (!this.isAdmin && !this.isFileValid) {
         this.requiredAlert = true
         this.isValid = false
