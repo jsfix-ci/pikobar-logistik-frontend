@@ -86,7 +86,9 @@
               />
             </v-stepper-content>
             <v-stepper-content step="4">
-              <surat-permohonan />
+              <surat-permohonan
+                :applicant-letter="applicantLetter"
+              />
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -114,7 +116,8 @@ export default {
       formApplicant: {},
       formIdentityApplicant: {},
       logisticNeeds: [],
-      applicantLetter: null,
+      // applicantLetter: null,
+      applicantLetter: {},
       isConfirm: false,
       isAdmin: false
     }
@@ -131,8 +134,10 @@ export default {
       this.step = value - 1
     })
     EventBus.$on('confirmStep', (value) => {
-      this.applicantLetter = value.file
-      this.formApplicant.letterNumber = value.letter
+      // this.applicantLetter = value.file
+      this.applicantLetter = value
+      // this.formApplicant.letterNumber = value.letter
+      this.formApplicant.letterNumber = value.name
       this.isConfirm = true
       this.step = 5
     })
