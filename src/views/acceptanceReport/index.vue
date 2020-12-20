@@ -227,7 +227,6 @@
                       <v-label><b>{{ $t('label.acceptance_report.date') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <date-picker-input
                         v-model="recipient.date"
-                        value="2020-12-10"
                       />
                     </v-col>
                   </v-row>
@@ -654,7 +653,7 @@
               <div class="button-action text-right">
                 <v-btn class="button-style" outlined text>{{ $t('label.cancel') }}</v-btn>
                 <v-btn class="button-style" min-width="150px" color="success" @click="saveRecipient">Selesai</v-btn>
-                <v-btn class="button-style" min-width="150px" color="success" @click="defaultValueForm">Isi Form Default</v-btn>
+                <v-btn v-if="isLocalhost" class="button-style" min-width="150px" color="success" @click="defaultValueForm">Isi Form Default</v-btn>
               </div>
             </ValidationObserver>
           </div><!-- End Form Acceptance Logistic Report -->
@@ -691,6 +690,7 @@ export default {
   },
   data() {
     return {
+      isLocalhost: false,
       id: null,
       listQuery: {
         register_id: null,
@@ -863,8 +863,11 @@ export default {
     async confirmVerCode() {
       this.acceptanceLogisticFormShow = false
       const response = await this.$store.dispatch('logistics/postConfirmVerificationCode', this.listQuery)
-      if (response.status === 200) this.acceptanceLogisticFormShow = true
-      await this.getTrackingLogisticNeedList(this.id)
+      if (response.status === 200) {
+        this.acceptanceLogisticFormShow = true
+        await this.getTrackingLogisticNeedList(this.id)
+        if (location.host === 'localhost:8080') this.isLocalhost = true
+      }
     },
     async resendCode() {
       // Resend Verification Code
