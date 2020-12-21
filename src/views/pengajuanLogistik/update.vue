@@ -247,9 +247,7 @@ export default {
     },
     async getListAPD() {
       this.hideException = false
-      this.listQueryAPD.status = null
-      this.listQueryAPD.id = null
-      this.listQueryAPD.poslog_id = null
+      this.resetQueryAPD()
       if (this.data.status === 'approved') {
         this.listQueryAPD.status = 'approved'
         this.listQueryAPD.id = this.item.product !== undefined ? this.item.product.id : null
@@ -280,7 +278,14 @@ export default {
         this.totalLogistic = this.totalLogistic + parseInt(element.total)
       })
     },
+    resetQueryAPD() {
+      this.listQueryAPD.status = null
+      this.listQueryAPD.id = null
+      this.listQueryAPD.poslog_id = null
+    },
     async setDialog(type, data, value, recommendation, realization) {
+      this.listQueryAPD.material_name = null
+      this.resetQueryAPD()
       this.isCreate = type
       this.updateName = type
       this.isUpdate = false
@@ -297,10 +302,12 @@ export default {
           this.data.status = this.data.recommendation_status
           this.setUnit(data.recommendation_product_id)
           this.data.product_id = data.recommendation_product_id
+          this.listQueryAPD.material_name = data.recommendation_product_name
         } else if (this.isVerified && this.isApproved) {
           this.data.status = this.data.realization_status
           this.setUnit(data.realization_product_id)
           this.data.product_id = data.realization_product_id
+          this.listQueryAPD.material_name = data.realization_product_name
         }
       } else if (type === true) {
         this.agency_id = data
