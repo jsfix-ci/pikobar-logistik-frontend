@@ -226,7 +226,8 @@
                     <v-col sm="12" md="8" class="left-side">
                       <v-label><b>{{ $t('label.acceptance_report.date') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <date-picker-input
-                        v-model="recipient.date"
+                        :value="recipient.date"
+                        @selected="changeDate"
                       />
                     </v-col>
                   </v-row>
@@ -647,6 +648,17 @@
                       </v-card>
                     </v-dialog>
                   </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>{{ $t('label.acceptance_report.note') }}</b></v-label>
+                      <v-textarea
+                        v-model="recipient.note"
+                        outlined
+                        solo-inverted
+                        placeholder="Tambahkan catatan lainnya..."
+                      />
+                    </v-col>
+                  </v-row>
                 </div>
                 <!-- End Detail Informasi Penerimaan Barang -->
               </div>
@@ -1010,9 +1022,12 @@ export default {
       this.recipient.fullname = 'Rindi Budiaramdhan'
       this.recipient.position = 'Ketua RT'
       this.recipient.phone = '081809556334'
-      this.recipient.date = '2020-12-11'
+      // this.recipient.date = '2020-12-11'
       this.recipient.officer_fullname = 'Rizie Advista'
       this.recipient.note = 'Tidak ada catatan'
+    },
+    changeDate(value) {
+      this.recipient.date = value
     }
   }
 }

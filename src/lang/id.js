@@ -577,6 +577,7 @@ export default {
       fullname: 'Nama Lengkap Penerima Barang',
       fullname_description: 'Diisi dengan nama pengambil barang perwakilan dari pemohon',
       position: 'Jabatan Penerima Barang',
+      note: 'Catatan Lainnya',
       phone: 'Nomor Telepon Penerima Barang',
       date: 'Tanggal Barang Diterima',
       officer_fullname: 'Nama Petugas Pemprov yang Menyerahkan Barang',
