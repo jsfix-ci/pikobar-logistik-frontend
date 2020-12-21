@@ -59,6 +59,7 @@
               solo-inverted
               item-text="name"
               item-value="material_id"
+              @input.native="querySearchPoslogItems"
               @change="setUnit(data.product_id)"
             />
           </ValidationProvider>
@@ -196,7 +197,8 @@ export default {
       labelDate: this.$t('label.input_date'),
       listQueryAPD: {
         id: null,
-        status: null
+        status: null,
+        material_name: null
       },
       status: [
         {
@@ -239,10 +241,15 @@ export default {
       }
       await this.$store.dispatch('logistics/getStock', param)
     },
+    async querySearchPoslogItems(event) {
+      this.listQueryAPD.material_name = event.target.value
+      await this.getListAPD()
+    },
     async getListAPD() {
       this.hideException = false
       this.listQueryAPD.status = null
       this.listQueryAPD.id = null
+      this.listQueryAPD.poslog_id = null
       if (this.data.status === 'approved') {
         this.listQueryAPD.status = 'approved'
         this.listQueryAPD.id = this.item.product !== undefined ? this.item.product.id : null
@@ -253,6 +260,11 @@ export default {
       } else {
         this.listQueryAPD.status = null
         this.listQueryAPD.id = null
+      }
+      if (this.isVerified && !this.isApproved && this.listQueryAPD.material_name === null) {
+        this.listQueryAPD.poslog_id = this.data.recommendation_product_id
+      } else if (this.isVerified && this.isApproved && this.listQueryAPD.material_name === null) {
+        this.listQueryAPD.poslog_id = this.data.realization_product_id
       }
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
