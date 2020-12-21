@@ -442,8 +442,12 @@ export default {
       type: Array,
       default: null
     },
+    // applicantLetter: {
+    //   type: File,
+    //   default: null
+    // }
     applicantLetter: {
-      type: File,
+      type: Object,
       default: null
     }
   },
@@ -466,7 +470,8 @@ export default {
   mounted() {
     this.letterName = this.applicantLetter.name
     this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
-    this.urlLetter = URL.createObjectURL(this.applicantLetter)
+    // this.urlLetter = URL.createObjectURL(this.applicantLetter)
+    this.urlLetter = URL.createObjectURL(this.applicantLetter.dataFile)
     this.total = Math.ceil(this.logisticNeeds.length / 3)
     if (this.total === 1) {
       for (let index = 0; index < this.logisticNeeds.length; index++) {
@@ -531,7 +536,8 @@ export default {
       formData.append('email', this.formIdentityApplicant.applicantEmail)
       formData.append('primary_phone_number', this.formIdentityApplicant.applicantPhoneNumber)
       formData.append('secondary_phone_number', this.formIdentityApplicant.applicantPhoneNumber2)
-      formData.append('letter_file', this.applicantLetter)
+      // formData.append('letter_file', this.applicantLetter)
+      formData.append('letter_file', this.applicantLetter.dataFile)
       formData.append('application_letter_number', this.formApplicant.letterNumber)
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'pikobar')

@@ -247,7 +247,6 @@ export default {
   },
   async created() {
     await this.setShowDialog()
-    await this.$store.dispatch('faskesType/getListFaskesType')
     this.isAdmin = false
   },
   methods: {
