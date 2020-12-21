@@ -963,7 +963,7 @@ export default {
     async deleteRealization(item, recommendation, realization) {
       this.dialogDelete = true
       if (realization) {
-        item.product_name = item.realization_product_name
+        item.product_name = item.realization_product_name ?? item.recommendation_product_name
       } else {
         item.product_name = item.recommendation_product_name
       }
