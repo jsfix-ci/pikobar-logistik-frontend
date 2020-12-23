@@ -37,6 +37,7 @@ export default {
     incoming_mail_detail: 'Detail Surat Masuk'
   },
   label: {
+    loading: 'Mohon ditunggu sedang proses...',
     username: 'Username',
     password: 'Password',
     description: 'Deskripsi',

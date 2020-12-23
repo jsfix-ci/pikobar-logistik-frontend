@@ -158,6 +158,8 @@
         </div>
         <v-col class="d-flex justify-center">
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -167,6 +169,8 @@
             {{ $t('label.cancel') }}
           </v-btn>
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -176,6 +180,26 @@
           >
             {{ $t('label.save_update') }}
           </v-btn>
+          <v-dialog
+            v-model="isLoading"
+            hide-overlay
+            persistent
+            width="300"
+          >
+            <v-card
+              color="primary"
+              dark
+            >
+              <v-card-text>
+                {{ $t('label.loading') }}
+                <v-progress-linear
+                  indeterminate
+                  color="white"
+                  class="mb-0"
+                />
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-col>
       </ValidationObserver>
     </v-card>
@@ -225,7 +249,8 @@ export default {
       isExists: false,
       url: '',
       defaultIdentity: '',
-      noImage: './img/noimage.gif'
+      noImage: './img/noimage.gif',
+      isLoading: false
     }
   },
   methods: {
@@ -287,6 +312,7 @@ export default {
       EventBus.$emit('hideApplicantIdentity', false)
     },
     async updateForm() {
+      this.isLoading = true
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
@@ -307,6 +333,7 @@ export default {
       if (response.status === 200) {
         EventBus.$emit('hideApplicantIdentity', true)
       }
+      this.isLoading = false
     }
   }
 }

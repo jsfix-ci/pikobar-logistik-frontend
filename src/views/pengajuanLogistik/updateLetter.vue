@@ -88,6 +88,8 @@
         </div>
         <v-col class="d-flex justify-center">
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -97,6 +99,8 @@
             {{ $t('label.cancel') }}
           </v-btn>
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -106,6 +110,26 @@
           >
             {{ $t('label.save_update') }}
           </v-btn>
+          <v-dialog
+            v-model="isLoading"
+            hide-overlay
+            persistent
+            width="300"
+          >
+            <v-card
+              color="primary"
+              dark
+            >
+              <v-card-text>
+                {{ $t('label.loading') }}
+                <v-progress-linear
+                  indeterminate
+                  color="white"
+                  class="mb-0"
+                />
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-col>
       </ValidationObserver>
     </v-card>
@@ -151,7 +175,8 @@ export default {
       url: '',
       defaultFile: '',
       noImage: './img/noimage.gif',
-      isLetterExists: false
+      isLetterExists: false,
+      isLoading: false
     }
   },
   methods: {
@@ -230,6 +255,7 @@ export default {
       this.isLetterExists = false
     },
     async updateForm() {
+      this.isLoading = true
       const valid = await this.$refs.observer.validate()
       this.uploadAlert = !this.isUpload && !this.isLetterExists
       if (!valid || (!this.isUpload && !this.isLetterExists)) {
@@ -248,6 +274,7 @@ export default {
       if (response.status === 200) {
         EventBus.$emit('hideUpdateLetter', true)
       }
+      this.isLoading = false
     }
   }
 }
