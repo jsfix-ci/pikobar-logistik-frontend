@@ -1172,6 +1172,7 @@ export default {
     },
     async submitApprove() {
       const formData = new FormData()
+      formData.append('agency_id', this.detailLogisticRequest.id)
       formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('approval_status', 'approved')
       formData.append('url', location.host + '/#')
