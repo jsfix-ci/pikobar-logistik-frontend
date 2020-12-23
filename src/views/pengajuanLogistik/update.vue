@@ -18,9 +18,11 @@
           <div v-else class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</div>
         </v-col>
         <v-col v-if="updateName === false" class="mb-30">
-          <span class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
+          <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
+          <span v-else class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name_recommended') }}</span>
           <br>
-          <span class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
+          <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
+          <span v-else class="value-sub-title-update-logistic-needs">{{ item.recommendation_product_name || '-' }}</span>
         </v-col>
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
           <ValidationProvider
