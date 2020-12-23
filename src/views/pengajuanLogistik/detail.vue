@@ -1142,6 +1142,7 @@ export default {
     },
     async postVerification() {
       const formData = new FormData()
+      formData.append('agency_id', this.detailLogisticRequest.id)
       formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('verification_status', 'verified')
       formData.append('url', location.host + '/#')
