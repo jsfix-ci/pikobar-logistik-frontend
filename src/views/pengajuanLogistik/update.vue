@@ -18,9 +18,11 @@
           <div v-else class="title-update-logistic-needs">{{ $t('label.update_logistic_needs_title') }}</div>
         </v-col>
         <v-col v-if="updateName === false" class="mb-30">
-          <span class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
+          <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
+          <span v-else class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name_recommended') }}</span>
           <br>
-          <span class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
+          <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
+          <span v-else class="value-sub-title-update-logistic-needs">{{ item.recommendation_product_name || '-' }}</span>
         </v-col>
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
           <ValidationProvider
@@ -148,10 +150,31 @@
           />
         </v-col>
         <v-col>
-          <v-btn class="margin-btn-update-logistic-needs" outlined @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
-          <v-btn v-if="isUpdate === true" class="margin-btn-update-logistic-needs" color="success" @click="submitData()">{{ $t('label.update') }}</v-btn>
-          <v-btn v-else-if="isCreate === true" class="margin-btn-update-logistic-needs" color="success" @click="submitData(true)">{{ $t('label.add') }}</v-btn>
-          <v-btn v-else class="margin-btn-update-logistic-needs" color="success" @click="submitData(false)">{{ $t('label.update') }}</v-btn>
+          <v-btn :disabled="isLoading" :loading="isLoading" class="margin-btn-update-logistic-needs" outlined @click="hideDialog">{{ $t('label.cancel') }}</v-btn>
+          <v-btn v-if="isUpdate === true" :disabled="isLoading" :loading="isLoading" class="margin-btn-update-logistic-needs" color="success" @click="submitData()">{{ $t('label.update') }}</v-btn>
+          <v-btn v-else-if="isCreate === true" :disabled="isLoading" :loading="isLoading" class="margin-btn-update-logistic-needs" color="success" @click="submitData(true)">{{ $t('label.add') }}</v-btn>
+          <v-btn v-else class="margin-btn-update-logistic-needs" :disabled="isLoading" :loading="isLoading" color="success" @click="submitData(false)">{{ $t('label.update') }}</v-btn>
+          <!-- dialog process -->
+          <v-dialog
+            v-model="isLoading"
+            hide-overlay
+            persistent
+            width="300"
+          >
+            <v-card
+              color="primary"
+              dark
+            >
+              <v-card-text>
+                {{ $t('label.loading') }}
+                <v-progress-linear
+                  indeterminate
+                  color="white"
+                  class="mb-0"
+                />
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-col>
       </ValidationObserver>
     </v-card>
@@ -217,7 +240,8 @@ export default {
           text: this.$t('label.not_yet_fulfilled'),
           value: 'not_yet_fulfilled'
         }
-      ]
+      ],
+      isLoading: false
     }
   },
   computed: {
@@ -236,10 +260,12 @@ export default {
       this.getStock(this.data.product_id)
     },
     async getStock(value) {
+      this.isLoading = true
       const param = {
         poslog_id: await value
       }
       await this.$store.dispatch('logistics/getStock', param)
+      this.isLoading = false
     },
     async querySearchPoslogItems(event) {
       this.listQueryAPD.material_name = event.target.value
@@ -261,8 +287,10 @@ export default {
       }
       if (this.isVerified && !this.isApproved && this.listQueryAPD.material_name === null) {
         this.listQueryAPD.poslog_id = this.data.recommendation_product_id
+        this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
       } else if (this.isVerified && this.isApproved && this.listQueryAPD.material_name === null) {
         this.listQueryAPD.poslog_id = this.data.realization_product_id
+        this.data.realization_unit_id === null ? this.data.realization_unit : 'PCS'
       }
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
@@ -284,6 +312,7 @@ export default {
       this.listQueryAPD.poslog_id = null
     },
     async setDialog(type, data, value, recommendation, realization) {
+      this.isLoading = true
       this.listQueryAPD.material_name = null
       this.resetQueryAPD()
       this.isCreate = type
@@ -303,11 +332,13 @@ export default {
           this.setUnit(data.recommendation_product_id)
           this.data.product_id = data.recommendation_product_id
           this.listQueryAPD.material_name = data.recommendation_product_name
+          this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
         } else if (this.isVerified && this.isApproved) {
           this.data.status = this.data.realization_status
           this.setUnit(data.realization_product_id)
           this.data.product_id = data.realization_product_id
           this.listQueryAPD.material_name = data.realization_product_name
+          this.data.realization_unit_id = data.realization_unit
         }
       } else if (type === true) {
         this.agency_id = data
@@ -321,14 +352,18 @@ export default {
         if (this.isVerified && !this.isApproved) {
           this.data.status = this.data.recommendation_status
           this.data.product_id = this.data.recommendation_product_id
+          this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
         } else if (this.isVerified && this.isApproved) {
           this.data.status = this.data.realization_status
           this.data.product_id = this.data.realization_product_id
+          this.data.realization_unit_id = data.realization_unit
         }
       }
       await this.getListAPD()
+      this.isLoading = false
     },
     async setUnit(id) {
+      this.isLoading = true
       await this.$store.dispatch('logistics/getListApdUnit', id)
       this.listApdUnit.forEach(element => {
         element.value = {
@@ -336,14 +371,17 @@ export default {
           name: element.name
         }
       })
+      this.isLoading = false
     },
     async submitData(value) {
+      this.isLoading = true
       this.data.store_type = 'recommendation'
       if (this.isApproved) {
         this.data.store_type = 'realization'
       }
       const valid = await this.$refs.observer.validate()
       if (!valid) {
+        this.isLoading = false
         return
       }
       if (this.isUpdate) {
@@ -366,6 +404,7 @@ export default {
         }
       }
       await this.hideDialog()
+      this.isLoading = false
     },
     hideDialog() {
       this.$refs.observer.reset()

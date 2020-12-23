@@ -37,6 +37,7 @@ export default {
     incoming_mail_detail: 'Detail Surat Masuk'
   },
   label: {
+    loading: 'Mohon ditunggu sedang proses...',
     username: 'Username',
     password: 'Password',
     description: 'Deskripsi',
@@ -379,6 +380,7 @@ export default {
     update: 'Update',
     update_logistic_needs_title: 'Update Daftar Kebutuhan Logistik',
     apd_spec_name: 'Nama Barang',
+    apd_spec_name_recommended: 'Nama Barang Rekomendasi',
     total_needs: 'Jumlah Kebutuhan',
     recommendation_date: 'Tanggal Rekomendasi Salur',
     realization_date: 'Tanggal Realisasi',
