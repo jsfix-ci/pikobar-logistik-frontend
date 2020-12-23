@@ -266,13 +266,10 @@ export default {
       this.isLoading = false
     },
     async querySearchPoslogItems(event) {
-      this.isLoading = true
       this.listQueryAPD.material_name = event.target.value
       await this.getListAPD()
-      this.isLoading = false
     },
     async getListAPD() {
-      this.isLoading = true
       this.hideException = false
       this.resetQueryAPD()
       if (this.data.status === 'approved') {
@@ -300,7 +297,6 @@ export default {
           name: element.name
         }
       })
-      this.isLoading = false
     },
     setTotalAPD() {
       this.totalLogistic = 0
@@ -314,6 +310,7 @@ export default {
       this.listQueryAPD.poslog_id = null
     },
     async setDialog(type, data, value, recommendation, realization) {
+      this.isLoading = true
       this.listQueryAPD.material_name = null
       this.resetQueryAPD()
       this.isCreate = type
@@ -361,6 +358,7 @@ export default {
         }
       }
       await this.getListAPD()
+      this.isLoading = false
     },
     async setUnit(id) {
       this.isLoading = true
