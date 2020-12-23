@@ -71,6 +71,7 @@ export default {
         step: null,
         agency_name: '-',
         applicant: {
+          id: null,
           application_letter_number: '-',
           applicant_name: '-'
         }
@@ -107,7 +108,8 @@ export default {
     },
     async updateReturn(value) {
       const param = {
-        id: this.id,
+        agency_id: this.id,
+        applicant_id: this.dataDialog.applicant.id,
         step: this.dataDialog.step,
         url: location.host + '/#'
       }
