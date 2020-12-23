@@ -201,6 +201,7 @@ export default {
       id: null,
       queryUpdateData: {
         id: null,
+        agency_id: null,
         applicant_id: null,
         master_faskes_id: null,
         agency_name: null,
@@ -292,6 +293,7 @@ export default {
       this.agency_type = parseInt(value.agency_type)
       this.queryUpdateData = {
         id: value.id,
+        agency_id: value.id,
         applicant_id: value.applicant.id,
         master_faskes_id: value.master_faskes_id,
         agency_name: value.agency_name,
