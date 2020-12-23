@@ -288,8 +288,10 @@ export default {
       }
       if (this.isVerified && !this.isApproved && this.listQueryAPD.material_name === null) {
         this.listQueryAPD.poslog_id = this.data.recommendation_product_id
+        this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
       } else if (this.isVerified && this.isApproved && this.listQueryAPD.material_name === null) {
         this.listQueryAPD.poslog_id = this.data.realization_product_id
+        this.data.realization_unit_id === null ? this.data.realization_unit : 'PCS'
       }
       await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
       this.listAPD.forEach(element => {
@@ -331,11 +333,13 @@ export default {
           this.setUnit(data.recommendation_product_id)
           this.data.product_id = data.recommendation_product_id
           this.listQueryAPD.material_name = data.recommendation_product_name
+          this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
         } else if (this.isVerified && this.isApproved) {
           this.data.status = this.data.realization_status
           this.setUnit(data.realization_product_id)
           this.data.product_id = data.realization_product_id
           this.listQueryAPD.material_name = data.realization_product_name
+          this.data.realization_unit_id = data.realization_unit
         }
       } else if (type === true) {
         this.agency_id = data
@@ -349,9 +353,11 @@ export default {
         if (this.isVerified && !this.isApproved) {
           this.data.status = this.data.recommendation_status
           this.data.product_id = this.data.recommendation_product_id
+          this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
         } else if (this.isVerified && this.isApproved) {
           this.data.status = this.data.realization_status
           this.data.product_id = this.data.realization_product_id
+          this.data.realization_unit_id = data.realization_unit
         }
       }
       await this.getListAPD()
