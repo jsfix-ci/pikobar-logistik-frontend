@@ -204,6 +204,7 @@ export default {
       data: {},
       queryUpdateData: {
         id: null,
+        agency_id: null,
         applicant_id: null,
         applicant_name: null,
         applicants_office: null,
@@ -269,6 +270,7 @@ export default {
       this.defaultIdentity = value.applicant.file
       this.queryUpdateData = {
         id: value.id,
+        agency_id: value.id,
         applicant_id: value.applicant.id,
         applicant_name: value.applicant.applicant_name,
         applicants_office: value.applicant.applicants_office,
@@ -292,6 +294,7 @@ export default {
       const formData = new FormData()
       formData.append('applicant_file', this.selectedFile)
       formData.append('id', this.queryUpdateData.id)
+      formData.append('agency_id', this.queryUpdateData.agency_id)
       formData.append('applicant_id', this.queryUpdateData.applicant_id)
       formData.append('applicant_name', this.queryUpdateData.applicant_name)
       formData.append('applicants_office', this.queryUpdateData.applicants_office)
