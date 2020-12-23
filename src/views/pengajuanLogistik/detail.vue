@@ -910,6 +910,7 @@ export default {
     rejectData(value) {
       const formData = new FormData()
       this.showDialogReject = false
+      formData.append('agency_id', this.detailLogisticRequest.id)
       formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       if (this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi') {
         formData.append('approval_status', 'rejected')
