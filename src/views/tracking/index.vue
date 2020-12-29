@@ -176,7 +176,7 @@
                 <v-row>
                   <v-col cols="12">
                     <v-stepper value="1" :alt-labels="true" :dark="true" :light="false">
-                      <v-stepper-header v-if="item.tracking.reject_note === null" class="tracking-status">
+                      <v-stepper-header v-if="!item.tracking.approval.is_reject && !item.tracking.verification.is_reject" class="tracking-status">
                         <v-row>
                           <v-col cols="12">
                             <div class="tracking-status-text">
@@ -261,7 +261,7 @@
                         </v-stepper-step>
                       </v-stepper-header>
                     </v-stepper>
-                    <v-card v-if="item.tracking.reject_note !== null" class="tracking-status-reject tracking-reject-reason">
+                    <v-card v-if="item.tracking.verification.is_reject || item.tracking.approval.is_reject" class="tracking-status-reject tracking-reject-reason">
                       <div class="tracking-status-reject-note">
                         <p class="reject-reason-title">{{ $t('label.tracking_reason_reject') }}</p>
                         <p class="reject-reason-data">{{ item.tracking.reject_note }}</p>

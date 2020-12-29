@@ -150,7 +150,7 @@
           <span class="grey--text">{{ formApplicant.letterNumber }}</span>
         </v-col>
         <v-col cols="4" md="4">
-          <a :href="urlLetter" target="_blank" class="blue--text"><u>{{ letterName }}</u></a>
+          <a :href="urlLetter" target="_blank" class="blue--text"><u>{{ applicantLetter.name }}</u></a>
         </v-col>
         <v-col>
           <span class="main-color-data-confirmation-admin">{{ $t('label.download') }}</span>
@@ -183,8 +183,12 @@ export default {
       type: Array,
       default: null
     },
+    // applicantLetter: {
+    //   type: File,
+    //   default: null
+    // },
     applicantLetter: {
-      type: File,
+      type: Object,
       default: null
     },
     isAdmin: {
@@ -224,7 +228,8 @@ export default {
     } else {
       this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
     }
-    this.urlLetter = URL.createObjectURL(this.applicantLetter)
+    // this.urlLetter = URL.createObjectURL(this.applicantLetter)
+    this.urlLetter = URL.createObjectURL(this.applicantLetter.dataFile)
     this.total = Math.ceil(this.logisticNeeds.length / 3)
     if (this.total === 1) {
       for (let index = 0; index < this.logisticNeeds.length; index++) {
@@ -290,7 +295,8 @@ export default {
       formData.append('email', this.formIdentityApplicant.applicantEmail)
       formData.append('primary_phone_number', this.formIdentityApplicant.applicantPhoneNumber)
       formData.append('secondary_phone_number', this.formIdentityApplicant.applicantPhoneNumber2)
-      formData.append('letter_file', this.applicantLetter)
+      // formData.append('letter_file', this.applicantLetter)
+      formData.append('letter_file', this.applicantLetter.dataFile)
       formData.append('application_letter_number', this.formApplicant.letterNumber)
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'dinkes_provinsi')

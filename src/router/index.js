@@ -69,6 +69,11 @@ export const constantRoutes = [
     path: '/form-pemohon',
     component: () => import('@/views/permohonan/formPemohon'),
     hidden: true
+  },
+  {
+    path: '/acceptance-report',
+    component: () => import('@/views/acceptanceReport/index'),
+    hidden: true
   }
 ]
 

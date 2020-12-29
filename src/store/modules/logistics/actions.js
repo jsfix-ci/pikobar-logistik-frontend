@@ -282,6 +282,48 @@ export default {
       return e
     }
   },
+  async postRegisterVerification({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/verification-registration', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async postResendCode({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/verification-resend', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async postConfirmVerificationCode({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/verification-confirmation', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async postRecipientReport({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/acceptance-report', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getLogisticReportRealizationItem({ commit }, params) {
+    const id = params.id
+    delete params.id
+    try {
+      const response = await fetchList('/api/v1/logistic-report/realization-item/' + id, 'GET', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getTrackingLogisticNeedList({ commit }, params) {
     const id = params.id
     delete params.id

@@ -71,6 +71,7 @@ export default {
         id: null,
         agency_name: '-',
         applicant: {
+          id: null,
           application_letter_number: '-',
           applicant_name: '-'
         }
@@ -88,7 +89,8 @@ export default {
     },
     async updateUrgency(value) {
       const param = {
-        id: this.id,
+        agency_id: this.dataDialog.id,
+        applicant_id: this.dataDialog.applicant.id,
         is_urgency: this.isUrgency
       }
       const response = await this.$store.dispatch('logistics/postUrgencyChange', param)

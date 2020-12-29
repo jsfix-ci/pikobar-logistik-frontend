@@ -88,6 +88,8 @@
         </div>
         <v-col class="d-flex justify-center">
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -97,6 +99,8 @@
             {{ $t('label.cancel') }}
           </v-btn>
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -106,6 +110,26 @@
           >
             {{ $t('label.save_update') }}
           </v-btn>
+          <v-dialog
+            v-model="isLoading"
+            hide-overlay
+            persistent
+            width="300"
+          >
+            <v-card
+              color="primary"
+              dark
+            >
+              <v-card-text>
+                {{ $t('label.loading') }}
+                <v-progress-linear
+                  indeterminate
+                  color="white"
+                  class="mb-0"
+                />
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-col>
       </ValidationObserver>
     </v-card>
@@ -134,6 +158,7 @@ export default {
       data: {},
       queryUpdateData: {
         id: null,
+        agency_id: null,
         applicant_id: null,
         application_letter_number: null,
         update_type: 3
@@ -150,7 +175,8 @@ export default {
       url: '',
       defaultFile: '',
       noImage: './img/noimage.gif',
-      isLetterExists: false
+      isLetterExists: false,
+      isLoading: false
     }
   },
   methods: {
@@ -193,6 +219,7 @@ export default {
       this.defaultFile = value.letter.letter
       this.queryUpdateData = {
         id: value.id,
+        agency_id: value.id,
         applicant_id: value.applicant.id,
         application_letter_number: value.applicant.application_letter_number,
         update_type: 3
@@ -228,6 +255,7 @@ export default {
       this.isLetterExists = false
     },
     async updateForm() {
+      this.isLoading = true
       const valid = await this.$refs.observer.validate()
       this.uploadAlert = !this.isUpload && !this.isLetterExists
       if (!valid || (!this.isUpload && !this.isLetterExists)) {
@@ -238,6 +266,7 @@ export default {
       const formData = new FormData()
       formData.append('letter_file', this.selectedFile)
       formData.append('id', this.queryUpdateData.id)
+      formData.append('agency_id', this.queryUpdateData.agency_id)
       formData.append('applicant_id', this.queryUpdateData.applicant_id)
       formData.append('application_letter_number', this.queryUpdateData.application_letter_number)
       formData.append('update_type', this.queryUpdateData.update_type)
@@ -245,6 +274,7 @@ export default {
       if (response.status === 200) {
         EventBus.$emit('hideUpdateLetter', true)
       }
+      this.isLoading = false
     }
   }
 }

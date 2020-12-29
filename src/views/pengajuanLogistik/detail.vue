@@ -63,9 +63,9 @@
           <span class="text-title">{{ $t('label.approved_by') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by.name + picHandphone }}</span>
+          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.name + picHandphone : '-' }}</span>
           <br>
-          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by.agency_name }}</span>
+          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.agency_name : '-' }}</span>
         </v-col>
       </v-row>
       <v-row v-else-if="isApproved">
@@ -73,9 +73,9 @@
           <span class="text-title">{{ $t('label.approved_by') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by.name + picHandphone }}</span>
+          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.name + picHandphone : '-' }}</span>
           <br>
-          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
+          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.agency_name : '-' }}</span>
         </v-col>
       </v-row>
       <v-row>
@@ -910,6 +910,7 @@ export default {
     rejectData(value) {
       const formData = new FormData()
       this.showDialogReject = false
+      formData.append('agency_id', this.detailLogisticRequest.id)
       formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       if (this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi') {
         formData.append('approval_status', 'rejected')
@@ -963,7 +964,7 @@ export default {
     async deleteRealization(item, recommendation, realization) {
       this.dialogDelete = true
       if (realization) {
-        item.product_name = item.realization_product_name
+        item.product_name = item.realization_product_name ?? item.recommendation_product_name
       } else {
         item.product_name = item.recommendation_product_name
       }
@@ -971,11 +972,11 @@ export default {
     },
     async picPopUp(item, recommendation, realization, name) {
       this.dialogPic = true
-      if (realization) {
+      if (realization && item.realized_by !== null) {
         item.name = item.realized_by.name
         item.agency_name = item.realized_by.agency_name
         item.handphone = item.realized_by.handphone | '-'
-      } else {
+      } else if (item.recommend_by !== null) {
         item.name = item.recommend_by.name
         item.agency_name = item.recommend_by.agency_name
         item.handphone = item.recommend_by.handphone | '-'
@@ -1058,18 +1059,19 @@ export default {
         this.detailLogisticRequest.step = 'ditolak verifikasi'
         this.detailLogisticRequest.step_label = 'Ditolak pada Verifikasi Administrasi'
       } else if (this.isFinalized) {
-        this.picHandphone = this.detailLogisticRequest.applicant.finalized_by.handphone ?? '-'
+        this.picHandphone = this.detailLogisticRequest.applicant.finalized_by !== null ? this.detailLogisticRequest.applicant.finalized_by.handphone : '-'
         this.detailLogisticRequest.step = 'final'
         this.detailLogisticRequest.step_label = 'Selesai Realisasi Salur'
       } else if (this.isVerified && this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.approved_by.handphone ?? '-'
+        this.picHandphone = this.detailLogisticRequest.applicant.approved_by !== null ? this.detailLogisticRequest.applicant.approved_by.handphone : '-'
         this.detailLogisticRequest.step = 'realisasi'
         this.detailLogisticRequest.step_label = 'Realisasi Salur'
       } else if (this.isVerified && !this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.verified_by.handphone ?? '-'
+        this.picHandphone = this.detailLogisticRequest.applicant.verified_by !== null ? this.detailLogisticRequest.applicant.verified_by.handphone : '-'
         this.detailLogisticRequest.step = 'rekomendasi'
         this.detailLogisticRequest.step_label = 'Rekomendasi Salur'
       }
+      this.picHandphone = this.picHandphone !== null ? this.picHandphone : '-'
       this.picHandphone = ' (' + this.picHandphone + ')'
       this.isUrgent = this.detailLogisticRequest.applicant.is_urgency === 1
     },
@@ -1142,6 +1144,7 @@ export default {
     },
     async postVerification() {
       const formData = new FormData()
+      formData.append('agency_id', this.detailLogisticRequest.id)
       formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('verification_status', 'verified')
       formData.append('url', location.host + '/#')
@@ -1170,6 +1173,7 @@ export default {
     },
     async submitApprove() {
       const formData = new FormData()
+      formData.append('agency_id', this.detailLogisticRequest.id)
       formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('approval_status', 'approved')
       formData.append('url', location.host + '/#')
@@ -1182,6 +1186,7 @@ export default {
     },
     async submitFinal() {
       const formData = new FormData()
+      formData.append('agency_id', this.detailLogisticRequest.id)
       formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('approval_status', 'approved')
       formData.append('url', location.host + '/#')
