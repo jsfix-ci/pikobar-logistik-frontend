@@ -864,6 +864,9 @@ export default {
         this.showVerificationForm = true
       }
     },
+    async resendCode() {
+      await this.$store.dispatch('logistics/postResendCode', this.listQuery)
+    },
     async verCode() {
       this.verCodeComplete = false
       const valid = await this.$refs.observer2.validate()
@@ -880,10 +883,6 @@ export default {
         await this.getTrackingLogisticNeedList(this.id)
         if (location.host === 'localhost:8080') this.isLocalhost = true
       }
-    },
-    async resendCode() {
-      // Resend Verification Code
-      alert('sent!')
     },
     async getTrackingLogisticNeedList(id) {
       this.id = id
