@@ -42,6 +42,9 @@
           </v-col>
         </v-row>
         <v-row>
+          <div v-if="infoResendSuccess" class="col-sm-12">
+            <v-alert text type="success" dismissible>{{ resendMessage }}</v-alert>
+          </div>
           <div v-if="!showVerificationForm && !acceptanceLogisticFormShow" class="form mt-10 col-sm-6 offset-md-3">
             <ValidationObserver ref="observer">
               <v-label><b>{{ $t('label.applicant_code') }}</b></v-label>
@@ -751,6 +754,8 @@ export default {
       bastProofRequiredError: false,
       itemProofRequiredError: false,
       isValid: false,
+      infoResendSuccess: false,
+      resendMessage: '',
       /** Data Tabel Barang */
       dialog: false,
       dialogDelete: false,
@@ -865,7 +870,13 @@ export default {
       }
     },
     async resendCode() {
-      await this.$store.dispatch('logistics/postResendCode', this.listQuery)
+      const param = {
+        register_id: this.listQuery.register_id,
+        reset: 1
+      }
+      const response = await this.$store.dispatch('logistics/postResendCode', param)
+      this.infoResendSuccess = response.status === 200
+      this.resendMessage = response.message
     },
     async verCode() {
       this.verCodeComplete = false

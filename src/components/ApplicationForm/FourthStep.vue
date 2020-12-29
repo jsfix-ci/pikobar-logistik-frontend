@@ -67,7 +67,7 @@
                       ref="uploader"
                       type="file"
                       class="d-none"
-                      accept=".pdf"
+                      accept=".jpg, .jpeg, .png, .pdf"
                       @change="onFileChanged"
                     >
                     <v-text-field
