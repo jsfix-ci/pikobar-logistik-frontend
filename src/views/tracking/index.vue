@@ -430,7 +430,7 @@ export default {
         return
       }
 
-      this.listQueryTable.page = page !== undefined ? page : this.listQueryTable.page
+      this.listQueryTable.page = page ?? this.listQueryTable.page
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
       if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
       this.clicked = true
