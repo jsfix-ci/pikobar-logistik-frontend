@@ -442,10 +442,6 @@ export default {
       type: Array,
       default: null
     },
-    // applicantLetter: {
-    //   type: File,
-    //   default: null
-    // }
     applicantLetter: {
       type: Object,
       default: null
@@ -470,7 +466,6 @@ export default {
   mounted() {
     this.letterName = this.applicantLetter.name
     this.url = URL.createObjectURL(this.formIdentityApplicant.dataFile)
-    // this.urlLetter = URL.createObjectURL(this.applicantLetter)
     this.urlLetter = URL.createObjectURL(this.applicantLetter.dataFile)
     this.total = Math.ceil(this.logisticNeeds.length / 3)
     if (this.total === 1) {
@@ -536,9 +531,12 @@ export default {
       formData.append('email', this.formIdentityApplicant.applicantEmail)
       formData.append('primary_phone_number', this.formIdentityApplicant.applicantPhoneNumber)
       formData.append('secondary_phone_number', this.formIdentityApplicant.applicantPhoneNumber2)
-      // formData.append('letter_file', this.applicantLetter)
       formData.append('letter_file', this.applicantLetter.dataFile)
       formData.append('application_letter_number', this.formApplicant.letterNumber)
+      formData.append('total_covid_patients', this.applicantLetter.total_covid_patients ?? 0)
+      formData.append('total_isolation_room', this.applicantLetter.total_isolation_room ?? 0)
+      formData.append('total_bedroom', this.applicantLetter.total_bedroom ?? 0)
+      formData.append('total_health_worker', this.applicantLetter.total_health_worker ?? 0)
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'pikobar')
       formData.append('url', location.host + '/#')
