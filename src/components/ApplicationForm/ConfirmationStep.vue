@@ -47,7 +47,7 @@
     </div>
     <div class="negative-landing-page main-page-data-confirmation">
       <v-card class="main-card-data-confirmation" outlined>
-        <div v-if="isLoading" class="padding-100-data-confirmation">
+        <div v-if="isLoading" class="mt-n5">
           <v-row align="center" justify="center">
             <img height="200" src="../../static/mengirim.svg">
           </v-row>
@@ -61,7 +61,7 @@
             {{ $t('label.loading_step_two') }}
           </v-row>
         </div>
-        <div v-else-if="isDone" class="padding-100-data-confirmation">
+        <div v-else-if="isDone" class="mt-n5">
           <v-row align="center" justify="center">
             <img height="200" src="../../static/berhasil.svg">
           </v-row>
@@ -713,9 +713,6 @@ export default {
   }
   .margin-instance-mobile-data-confirmation {
     margin: -20px 20px 0px 20px
-  }
-  .padding-100-data-confirmation {
-    padding: 0 100px 0 100px;
   }
   .margin-wait-data-confirmation {
     margin-top: 20px;
