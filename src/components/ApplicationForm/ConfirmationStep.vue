@@ -312,33 +312,24 @@
       </div>
     </div>
     <div class="main-page-mobile-data-confirmation bg-mobile-data-confirmation">
-      <div v-if="isLoading" class="padding-100-data-confirmation">
+      <div v-if="isLoading" class="mt-n12">
         <v-row align="center" justify="center">
           <img height="200" src="../../static/mengirim.svg">
         </v-row>
         <v-row align="center" justify="center" class="margin-wait-data-confirmation text-center-data-confirmation">
           {{ $t('label.wait') }}
         </v-row>
-        <v-row align="center" justify="center" class="confirmation-text margin-top-10-data-confirmation text-center-data-confirmation">
-          {{ $t('label.loading_step_one') }}
-        </v-row>
-        <v-row align="center" justify="center" class="confirmation-text text-center-data-confirmation">
-          {{ $t('label.loading_step_two') }}
-        </v-row>
+        <v-row class="text-center mr-1 ml-1">{{ $t('label.loading_step_one') + $t('label.loading_step_two') }}</v-row>
       </div>
-      <div v-else-if="isDone" class="padding-100-data-confirmation">
+      <div v-else-if="isDone" class="mt-n12">
         <v-row align="center" justify="center">
           <img height="200" src="../../static/berhasil.svg">
         </v-row>
         <v-row align="center" justify="center">
           <div class="save-style-data-confirmation text-center-data-confirmation">{{ $t('label.save_success') }}</div>
         </v-row>
-        <v-row align="center" justify="center" class="confirmation-text margin-top-10-data-confirmation text-center-data-confirmation">
-          {{ $t('label.loading_done_one') }}
-        </v-row>
-        <v-row align="center" justify="center" class="confirmation-text text-center-data-confirmation">
-          {{ $t('label.loading_done_two') }}
-        </v-row>
+        <v-row class="text-center mr-1 ml-1">{{ $t('label.loading_done_one') }}</v-row>
+        <v-row class="text-center mr-1 ml-1">{{ $t('label.loading_done_two') }}</v-row>
         <br>
         <v-row align="center" justify="center">
           <v-btn href="/#/landing-page">{{ $t('label.back') }}</v-btn>
@@ -724,7 +715,7 @@ export default {
     margin: -20px 20px 0px 20px
   }
   .padding-100-data-confirmation {
-    padding: 100px 100px;
+    padding: 0 100px 0 100px;
   }
   .margin-wait-data-confirmation {
     margin-top: 20px;
@@ -733,9 +724,6 @@ export default {
   }
   .margin-top-10-data-confirmation {
     margin-top: 10px;
-  }
-  .padding-100-data-confirmation {
-    padding: 100px 100px;
   }
   .save-style-data-confirmation {
     margin-top: 20px;
