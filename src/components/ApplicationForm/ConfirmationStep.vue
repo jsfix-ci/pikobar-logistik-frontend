@@ -137,7 +137,7 @@
               </v-card>
             </v-col>
           </v-row>
-          <div class="main-color-data-confirmation">{{ $t('label.step_title_2') }}</div>         
+          <div class="main-color-data-confirmation">{{ $t('label.step_title_2') }}</div>
           <v-card class="mx-auto" outlined>
             <v-row>
               <v-col cols="8">
@@ -206,7 +206,7 @@
             </v-row>
           </v-card>
           <div v-if="formApplicant.instanceType <= 3">
-            <div class="main-color-data-confirmation">Detail Kondisi Fasilitas Kesehatan</div>            
+            <div class="main-color-data-confirmation">Detail Kondisi Fasilitas Kesehatan</div>
             <v-card class="mx-auto" outlined>
               <v-col>
                 <v-row class="margin-top-min-15">
@@ -286,7 +286,7 @@
           </v-row>
         </div>
       </v-card>
-    </div>    
+    </div>
     <div class="full-landing-page main-page-mobile-data-confirmation ">
       <div class="header-landing-page-mobile">
         <v-row>
@@ -356,37 +356,37 @@
           <v-card class="mx-auto" outlined>
             <v-col>
               <v-row class="margin-top-min-15">
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.instance_type') }}</b></span>
                   <br>
                   <v-label>{{ formApplicant.instanceTypeName }}</v-label>
                 </v-col>
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.city_district') }}</b></span>
                   <br>
                   <v-label>{{ formApplicant.cityNameId.name }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.instance_name') }}</b></span>
                   <br>
                   <v-label v-if="formApplicant.instanceEtc">{{ formApplicant.instanceEtc }}</v-label>
                   <v-label v-else>{{ formApplicant.instanceName }}</v-label>
                 </v-col>
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.select_sub_district_full_name') }}</b></span>
                   <br>
                   <v-label>{{ formApplicant.districtNameId.name }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.number_phone') }}</b></span>
                   <br>
                   <v-label>{{ formApplicant.instancePhoneNumber }}</v-label>
                 </v-col>
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.village') }}</b></span>
                   <br>
                   <v-label>{{ formApplicant.villageNameId.name }}</v-label>
@@ -408,33 +408,33 @@
           <v-card class="mx-auto" outlined>
             <v-col>
               <v-row class="margin-top-min-15">
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.contact_person') }}</b></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantName }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.applicant_position_identity') }}</b></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantPosition }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.email') }}</b></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantEmail }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.applicant_phone') }}</b></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantPhoneNumber }}</v-label>
                 </v-col>
-                <v-col cols="6" sm="6">
+                <v-col>
                   <span class="text-caption green--text"><b>{{ $t('label.applicant_phone_sub') }}</b></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantPhoneNumber2 }}</v-label>
