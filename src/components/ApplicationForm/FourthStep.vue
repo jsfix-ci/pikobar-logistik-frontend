@@ -31,17 +31,17 @@
               <v-label class="title"><b>{{ $t('label.applicant_letter_number_upload') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <br>
               <v-row>
-                <v-col cols="3" sm="12" md="3">
+                <v-col sm="12" md="3">
                   <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
                   <img v-if="isUpload" height="100" src="../../static/upload_dokumen.svg">
                 </v-col>
-                <v-col cols="9" sm="12" md="9">
-                  <v-row>
+                <v-col sm="12" md="9">
+                  <v-row class="mr-1 ml-1">
                     <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
                     <v-label v-if="isUpload">{{ selectedFileName }}</v-label>
                   </v-row>
                   <br>
-                  <v-row>
+                  <v-row class="mr-1 ml-1">
                     <input
                       ref="uploader"
                       type="file"
