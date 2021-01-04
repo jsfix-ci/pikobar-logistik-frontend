@@ -1,27 +1,10 @@
 <template>
   <v-container>
     <v-row>
-      <center><v-label>{{ $t('label.applicant_letter_title') }}</v-label></center>
+      <v-alert v-if="formApplicant.instanceType <= 3" icon="mdi-alert-circle" text outlined type="info">Untuk memudahkan proses rekomendasi logistik yang diajukan oleh pemohon. Permohonan dari Fasyankes (Rumah Sakit, Klinik, Puskesmas) harap melengkapi data berikut:</v-alert>
+      <center v-else><v-label class="title"><b>{{ $t('label.applicant_form_header_step_2') }}</b></v-label></center>
+      <br>
     </v-row>
-    <br><br>
-    <div style="padding: 15px;">
-      <v-row>
-        <v-label><b>{{ $t('label.applicant_letter_note') }}</b></v-label>
-      </v-row>
-      <v-row>
-        <v-label>{{ $t('label.applicant_letter_note_description') }}</v-label>
-      </v-row>
-      <v-row>
-        <v-label>{{ $t('label.applicant_letter_note_point_1') }}</v-label>
-      </v-row>
-      <v-row>
-        <v-label>{{ $t('label.applicant_letter_note_point_2') }}</v-label>
-      </v-row>
-      <v-row>
-        <v-label>{{ $t('label.applicant_letter_note_point_3') }}</v-label>
-      </v-row>
-    </div>
-    <br>
     <ValidationObserver ref="observer">
       <v-form
         ref="form"
@@ -42,27 +25,23 @@
                 solo-inverted
               />
             </ValidationProvider>
-          </v-col>
-        </v-row>
-        <v-row class="mt-n8">
-          <v-col cols="12" sm="12" md="12">
             <ValidationProvider
               rules="required"
             >
               <v-label class="title"><b>{{ $t('label.applicant_letter_number_upload') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <br>
               <v-row>
-                <v-col cols="2" sm="6" md="2">
+                <v-col sm="12" md="3">
                   <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
                   <img v-if="isUpload" height="100" src="../../static/upload_dokumen.svg">
                 </v-col>
-                <v-col cols="2" sm="6" md="3">
-                  <v-row>
+                <v-col sm="12" md="9">
+                  <v-row class="mr-1 ml-1">
                     <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
                     <v-label v-if="isUpload">{{ selectedFileName }}</v-label>
                   </v-row>
                   <br>
-                  <v-row>
+                  <v-row class="mr-1 ml-1">
                     <input
                       ref="uploader"
                       type="file"
@@ -111,40 +90,75 @@
               </v-row>
             </ValidationProvider>
           </v-col>
+          <v-col v-if="formApplicant.instanceType <= 3" cols="12" sm="12" md="6">
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="required|numeric"
+            >
+              <v-label class="title"><b>Jumlah Pasien COVID-19 yang ditangani</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-text-field
+                v-model="applicantLetter.total_covid_patients"
+                outlined
+                :error-messages="errors"
+                placeholder="Masukkan jumlah pasien"
+                solo-inverted
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="required|numeric"
+            >
+              <v-label class="title"><b>Jumlah ruang isolasi</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-text-field
+                v-model="applicantLetter.total_isolation_room"
+                outlined
+                :error-messages="errors"
+                placeholder="Masukkan jumlah ruang isolasi"
+                solo-inverted
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="required|numeric"
+            >
+              <v-label class="title"><b>Jumlah ruang tidur</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-text-field
+                v-model="applicantLetter.total_bedroom"
+                outlined
+                :error-messages="errors"
+                placeholder="Masukkan jumlah ruang tidur"
+                solo-inverted
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="required|numeric"
+            >
+              <v-label class="title"><b>Jumlah tenaga kesehatan yang menangani</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-text-field
+                v-model="applicantLetter.total_health_worker"
+                outlined
+                :error-messages="errors"
+                placeholder="Masukkan jumlah tenaga kesehatan"
+                solo-inverted
+              />
+            </ValidationProvider>
+          </v-col>
         </v-row>
         <v-container fluid>
-          <div class="btn-desktop">
-            <v-col cols="6" sm="6" md="6" class="float-right-fourth-step">
-              <v-btn
-                class="btn-margin-positive"
-                color="primary"
-                @click="onNext"
-              >{{ $t('label.next') }}</v-btn>
-              <v-btn
-                class="btn-margin-positive"
-                outlined
-                text
-                @click="onPrev"
-              >{{ $t('label.cancel') }}</v-btn>
-            </v-col>
-          </div>
-          <div class="btn-mobile">
-            <v-col cols="12" sm="12" md="6" class="float-right-fourth-step">
-              <v-btn
-                class="btn-margin-positive"
-                color="primary"
-                @click="onNext"
-              >{{ $t('label.next') }}</v-btn>
-            </v-col>
-            <v-col cols="12" sm="12" md="6" class="float-right-fourth-step">
-              <v-btn
-                class="btn-margin-positive"
-                outlined
-                text
-                @click="onPrev"
-              >{{ $t('label.cancel') }}</v-btn>
-            </v-col>
-          </div>
+          <v-col cols="12" sm="12" md="6" class="float-right-fourth-step">
+            <v-btn
+              class="btn-margin-positive"
+              color="primary"
+              @click="onNext"
+            >{{ $t('label.next') }}</v-btn>
+            <v-btn
+              class="btn-margin-positive"
+              outlined
+              text
+              @click="onPrev"
+            >{{ $t('label.cancel') }}</v-btn>
+          </v-col>
         </v-container>
       </v-form>
     </ValidationObserver>
@@ -161,9 +175,11 @@ export default {
     ValidationObserver
   },
   props: {
+    formApplicant: {
+      type: Object,
+      default: null
+    },
     applicantLetter: {
-      // type: File,
-      // default: null
       type: Object,
       default: null
     }
@@ -198,18 +214,9 @@ export default {
     },
     onButtonClick() {
       this.isSelecting = false
-      // this.isUpload = true
-      // this.uploadAlert = false
       this.$refs.uploader.click()
     },
     onFileChanged(e) {
-      // this.selectedFile = e.target.files[0]
-      // this.selectedFileName = this.selectedFile.name
-      // this.isUpload = true
-      // this.uploadAlert = false
-      // this.requiredAlert = false
-      // this.applicantLetter = e.target.files[0]
-      // return this.applicantLetter
       this.selectedFile = e.target.files[0]
       if (this.selectedFile.size < 10000000) {
         this.isFileValid = true
@@ -233,14 +240,11 @@ export default {
       }
       const valid = await this.$refs.observer.validate()
       if (!valid) {
-        // this.uploadAlert = true
-        // return
         this.isValid = false
       }
       if (!this.isValid) {
         return
       }
-      // EventBus.$emit('confirmStep', { file: this.applicantLetter.dataFile, letter: this.applicantLetter.name })
       EventBus.$emit('confirmStep', this.applicantLetter)
     },
     onPrev() {

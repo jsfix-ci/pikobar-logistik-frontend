@@ -39,6 +39,7 @@
         </v-stepper-content>
         <v-stepper-content step="4">
           <surat-permohonan
+            :form-applicant="formApplicant"
             :applicant-letter="applicantLetter"
           />
         </v-stepper-content>
