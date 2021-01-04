@@ -77,6 +77,7 @@
                 :show="showForm"
               />
             </div>
+            <br>
             <ValidationProvider
               v-slot="{ errors }"
               rules="isPhoneNumber"
@@ -167,38 +168,19 @@
           </v-col>
         </v-row>
         <v-container fluid>
-          <div class="btn-desktop">
-            <v-col cols="6" sm="6" md="6" class="float-right-first-step">
-              <v-btn
-                class="btn-margin-positive"
-                color="primary"
-                @click="onNext()"
-              >{{ $t('label.next') }}</v-btn>
-              <v-btn
-                class="btn-margin-positive"
-                outlined
-                text
-                href="#/landing-page"
-              >{{ $t('label.cancel') }}</v-btn>
-            </v-col>
-          </div>
-          <div class="btn-mobile">
-            <v-col cols="12" sm="12" md="6" class="float-right-first-step">
-              <v-btn
-                class="btn-margin-positive"
-                color="primary"
-                @click="onNext()"
-              >{{ $t('label.next') }}</v-btn>
-            </v-col>
-            <v-col cols="12" sm="12" md="6" class="float-right-first-step">
-              <v-btn
-                class="btn-margin-positive"
-                outlined
-                text
-                href="#/landing-page"
-              >{{ $t('label.cancel') }}</v-btn>
-            </v-col>
-          </div>
+          <v-col cols="6" sm="6" md="6" class="float-right-first-step">
+            <v-btn
+              class="btn-margin-positive"
+              color="primary"
+              @click="onNext()"
+            >{{ $t('label.next') }}</v-btn>
+            <v-btn
+              class="btn-margin-positive"
+              outlined
+              text
+              href="#/landing-page"
+            >{{ $t('label.cancel') }}</v-btn>
+          </v-col>
         </v-container>
       </v-form>
     </ValidationObserver>
