@@ -35,62 +35,176 @@
     <div class="data-confirmation-text-admin">{{ $t('label.confirm_data') }}</div>
     <hr>
     <div class="main-color-data-confirmation-admin">{{ $t('label.instance_identity') }}</div>
-    <div>
-      <v-row>
-        <v-col>
+    <v-row>
+      <v-col>
+        <v-card class="mx-auto" outlined>
           <v-row>
-            <v-col>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.instance_type') }}</v-row>
-              <v-row>{{ formApplicant.instanceTypeName }}</v-row>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.instance_name') }}</v-row>
-              <v-row v-if="formApplicant.instanceEtc">{{ formApplicant.instanceEtc }}</v-row>
-              <v-row v-else>{{ formApplicant.instanceName }}</v-row>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.number_phone') }}</v-row>
-              <v-row>{{ formApplicant.instancePhoneNumber }}</v-row>
-            </v-col>
-            <v-col>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.city_district') }}</v-row>
-              <v-row>{{ formApplicant.cityNameId.name }}</v-row>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.select_sub_district_full_name') }}</v-row>
-              <v-row>{{ formApplicant.districtNameId.name }}</v-row>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.village') }}</v-row>
-              <v-row>{{ formApplicant.villageNameId.name }}</v-row>
+            <v-col class="margin-20">
+              <v-row class="margin-top-min-15">
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.instance_type') }}</span>
+                  <br>
+                  <v-label>{{ formApplicant.instanceTypeName }}</v-label>
+                </v-col>
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.city_district') }}</span>
+                  <br>
+                  <v-label>{{ formApplicant.cityNameId.name }}</v-label>
+                </v-col>
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.full_address') }}</span>
+                  <br>
+                  <v-label>{{ formApplicant.fullAddress }}</v-label>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.instance_name') }}</span>
+                  <br>
+                  <v-label v-if="formApplicant.instanceEtc">{{ formApplicant.instanceEtc }}</v-label>
+                  <v-label v-else>{{ formApplicant.instanceName }}</v-label>
+                </v-col>
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.select_sub_district_full_name') }}</span>
+                  <br>
+                  <v-label>{{ formApplicant.districtNameId.name }}</v-label>
+                </v-col>
+                <v-col />
+              </v-row>
+              <v-row>
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.number_phone') }}</span>
+                  <br>
+                  <v-label>{{ formApplicant.instancePhoneNumber }}</v-label>
+                </v-col>
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.village') }}</span>
+                  <br>
+                  <v-label>{{ formApplicant.villageNameId.name }}</v-label>
+                </v-col>
+                <v-col />
+              </v-row>
             </v-col>
           </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <div class="main-color-data-confirmation-admin">{{ $t('label.step_title_2') }}</div>
+    <v-row>
+      <v-col cols="12" sm="12">
+        <v-card class="mx-auto" outlined>
+          <v-row>
+            <v-col class="margin-20" cols="12" sm="6" md="6">
+              <v-row class="margin-top-min-15">
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.contact_person') }}</span>
+                  <br>
+                  <v-label>{{ formIdentityApplicant.applicantName }}</v-label>
+                </v-col>
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.capital_email') }}</span>
+                  <br>
+                  <v-label>{{ formIdentityApplicant.applicantEmail }}</v-label>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.applicant_position_identity') }}</span>
+                  <br>
+                  <v-label>{{ formIdentityApplicant.applicantPosition }}</v-label>
+                </v-col>
+                <v-col>
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.applicant_phone') }}</span>
+                  <br>
+                  <v-label>{{ formIdentityApplicant.applicantPhoneNumber }}</v-label>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col offset-md="6" offset-sm="6">
+                  <span class="main-color-data-confirmation-admin">{{ $t('label.applicant_phone_sub') }}</span>
+                  <br>
+                  <v-label>{{ formIdentityApplicant.applicantPhoneNumber2 }}</v-label>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col>
+              <v-row>
+                <span class="main-color-data-confirmation-admin">{{ $t('label.applicant_ktp') }}</span>
+                <br>
+                <img class="image-style-data-confirmation-admin" :src="url">
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <div class="main-color-data-confirmation-admin">{{ $t('label.step_title_4') }}</div>
+    <v-card outlined>
+      <v-row class="ml-2">
+        <v-col cols="1" md="1">
+          <span class="main-color-data-confirmation-admin">#</span>
         </v-col>
-        <v-col>
-          <v-row class="main-color-data-confirmation-admin">{{ $t('label.full_address') }}</v-row>
-          <v-row>{{ formApplicant.fullAddress }}</v-row>
+        <v-col cols="3" md="3">
+          <span class="main-color-data-confirmation-admin">{{ $t('label.letter_number') }}</span>
         </v-col>
       </v-row>
-    </div>
-    <hr>
-    <div class="main-color-data-confirmation-admin">{{ $t('label.step_title_2') }}</div>
-    <div>
-      <v-row>
-        <v-col>
-          <v-row>
-            <v-col>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.contact_person') }}</v-row>
-              <v-row>{{ formIdentityApplicant.applicantName }}</v-row>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.applicant_position_identity') }}</v-row>
-              <v-row>{{ formIdentityApplicant.applicantPosition }}</v-row>
-            </v-col>
-            <v-col>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.email') }}</v-row>
-              <v-row>{{ formIdentityApplicant.applicantEmail }}</v-row>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.applicant_phone') }}</v-row>
-              <v-row>{{ formIdentityApplicant.applicantPhoneNumber }}</v-row>
-              <v-row class="main-color-data-confirmation-admin">{{ $t('label.applicant_phone_sub') }}</v-row>
-              <v-row>{{ formIdentityApplicant.applicantPhoneNumber2 }}</v-row>
-            </v-col>
-          </v-row>
+      <v-row class="ml-2">
+        <v-col cols="1" md="1">
+          <span>1</span>
+        </v-col>
+        <v-col cols="3" md="3">
+          <span class="grey--text">{{ formApplicant.letterNumber }}</span>
+        </v-col>
+        <v-col cols="4" md="4">
+          <a :href="urlLetter" target="_blank" class="blue--text"><u>{{ applicantLetter.name }}</u></a>
         </v-col>
         <v-col>
-          <v-row class="main-color-data-confirmation-admin">{{ $t('label.applicant_ktp') }}</v-row>
-          <v-row>
-            <img class="image-style-data-confirmation-admin" :src="url">
-          </v-row>
+          <span class="main-color-data-confirmation-admin">{{ $t('label.download') }}</span>
+        </v-col>
+      </v-row>
+    </v-card>
+    <div v-if="formApplicant.instanceType <= 3">
+      <div class="main-color-data-confirmation-admin">Detail Kondisi Fasilitas Kesehatan</div>
+      <v-row>
+        <v-col>
+          <v-card class="mx-auto" outlined>
+            <v-row>
+              <v-col class="margin-20">
+                <v-row class="margin-top-min-15">
+                  <v-col>
+                    <span class="main-color-data-confirmation-admin">Jumlah Pasien COVID-19 yang ditangani</span>
+                    <br>
+                    <v-label>
+                      {{ applicantLetter.total_covid_patients | '-' }} Orang
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="main-color-data-confirmation-admin">Jumlah Tempat Tidur</span>
+                    <br>
+                    <v-label>
+                      {{ applicantLetter.total_bedroom | '-' }} Tempat Tidur
+                    </v-label>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <span class="main-color-data-confirmation-admin">Jumlah Ruang Isolasi</span>
+                    <br>
+                    <v-label>
+                      {{ applicantLetter.total_isolation_room | '-' }} Ruangan
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="main-color-data-confirmation-admin">Jumlah Tenaga Kesehatan</span>
+                    <br>
+                    <v-label>
+                      {{ applicantLetter.total_health_worker | '-' }} Orang
+                    </v-label>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
         </v-col>
       </v-row>
     </div>
@@ -131,32 +245,6 @@
       :total-visible="3"
       @input="onNext"
     />
-    <hr>
-    <div class="main-color-data-confirmation-admin">{{ $t('label.step_title_4') }}</div>
-    <v-card outlined>
-      <v-row class="ml-2">
-        <v-col cols="1" md="1">
-          <span class="main-color-data-confirmation-admin">#</span>
-        </v-col>
-        <v-col cols="3" md="3">
-          <span class="main-color-data-confirmation-admin">{{ $t('label.letter_number') }}</span>
-        </v-col>
-      </v-row>
-      <v-row class="ml-2">
-        <v-col cols="1" md="1">
-          <span>1</span>
-        </v-col>
-        <v-col cols="3" md="3">
-          <span class="grey--text">{{ formApplicant.letterNumber }}</span>
-        </v-col>
-        <v-col cols="4" md="4">
-          <a :href="urlLetter" target="_blank" class="blue--text"><u>{{ applicantLetter.name }}</u></a>
-        </v-col>
-        <v-col>
-          <span class="main-color-data-confirmation-admin">{{ $t('label.download') }}</span>
-        </v-col>
-      </v-row>
-    </v-card>
     <hr>
     <v-row justify="end">
       <v-btn class="ml-5 white--text" min-width="140px" color="success" outlined @click="onPrev()">{{ $t('label.back') }}</v-btn>
