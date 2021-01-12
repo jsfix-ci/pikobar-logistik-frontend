@@ -343,7 +343,7 @@ export default {
     verif_now: 'Verifikasi Sekarang',
     capital_email: 'Email',
     applicant_letter: 'Surat Permohonan',
-    list_applicant_logistic_medic: 'Daftar Pengajuan Logistik',
+    list_applicant_logistic_medic: 'Daftar Fasilitas Kesehatan',
     registration_number: 'No. Registrasi',
     regis_number: 'Nomor Registrasi',
     regis_number_placeholder: 'Masukkan Nomor Registrasi Faskes',
