@@ -90,82 +90,58 @@
             <img style="margin-left: -20px" src="../../static/bgFlat_kotak.png">
           </v-col>
         </v-row>
-        <div class="text-card-main">
+        <div>
           <v-row align="center">
-            <v-col cols="2" md="2" />
-            <v-col cols="8" md="8">
-              <div class="font-product-sans-landing-page card-title-landing-page ml-10 mb-5 font-weight-bold text-center">
+            <v-col cols="12" md="2" />
+            <v-col cols="12" md="8">
+              <div class="font-product-sans-landing-page card-title-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.landing_page_first_title') }} <span class="title-logistic">{{ $t('label.feature') }}</span> <span>{{ $t('label.landing_page_last_title') }}</span>
               </div>
-              <p class="ml-10 font-text card-text-landing-page text-center">{{ $t('label.landing_page_feature_description') }}</p>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.landing_page_feature_description') }}</p>
             </v-col>
-            <v-col cols="2" md="2" />
+            <v-col cols="12" md="2" />
           </v-row>
         </div>
-        <div class="text-card-main">
+        <div>
           <v-row>
-            <v-col cols="4" md="4">
+            <v-col>
               <img src="../../static/logistic_acceptance_report.png" width="100%">
-              <div class="ml-10 font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
+              <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_acceptance_report_title') }}
               </div>
-              <p class="ml-10 font-text card-text-landing-page text-center">{{ $t('label.logistic_acceptance_report_description') }}</p>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.logistic_acceptance_report_description') }}</p>
               <div class="text-center">
-                <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" href="#/acceptance-report">
+                <v-btn class="white--text" min-width="140px" color="#16A75C" href="#/acceptance-report">
                   {{ $t('label.logistic_acceptance_report_button') }} <img class="button-icon" src="../../static/linkicon.png">
                 </v-btn>
               </div>
             </v-col>
-            <v-col cols="4" md="4">
+            <v-col>
               <img src="../../static/logistic_usability_report.png" width="100%">
-              <div class="ml-10 font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
+              <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_usability_report_title') }}
               </div>
-              <p class="ml-10 font-text card-text-landing-page text-center">{{ $t('label.logistic_usability_report_description') }}</p>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.logistic_usability_report_description') }}</p>
               <div class="text-center">
-                <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" href="http://bit.ly/LaporPenggunaanLogistik">
+                <v-btn class="white--text" min-width="140px" color="#16A75C" href="http://bit.ly/LaporPenggunaanLogistik">
                   {{ $t('label.logistic_acceptance_report_button') }} <img class="button-icon" src="../../static/linkicon.png">
                 </v-btn>
               </div>
             </v-col>
-            <v-col cols="4" md="4">
+            <v-col>
               <img src="../../static/tracking_logistik_1.png" width="100%">
-              <div class="ml-10 font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
+              <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_tracking_title') }}
               </div>
-              <p class="ml-10 font-text card-text-landing-page text-center">{{ $t('label.landing_page_text_tracking') }}</p>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.landing_page_text_tracking') }}</p>
               <div class="text-center">
-                <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" href="#/tracking">
+                <v-btn class="white--text" min-width="140px" color="#16A75C" href="#/tracking">
                   {{ $t('label.landing_page_tracking_title') }} <img class="button-icon" src="../../static/linkicon.png">
                 </v-btn>
               </div>
             </v-col>
           </v-row>
         </div>
-        <!-- Mobile Alur Part -->
-        <div class="text-card-main-mobile">
-          <v-row>
-            <v-col sm="12" cols="12">
-              <div class="font-product-sans-landing-page card-title-landing-page mb-5 font-weight-bold text-center">
-                {{ $t('label.landing_page_alur_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}.</span>
-              </div>
-              <p class="font-text card-text-landing-page text-center card-text-layout">{{ $t('label.landing_page_text_alur') }}</p>
-              <center>
-                <a href="https://bit.ly/alurpermohonanlogistik" target="_blank" rel="noopener noreferrer">
-                  <v-btn class="white--text" min-width="140px" color="#16A75C">{{ $t('label.landing_page_alur_button') }}
-                    <img class="button-icon" src="../../static/linkicon.png">
-                  </v-btn>
-                </a>
-              </center>
-            </v-col>
-            <v-col sm="12" cols="12">
-              <center>
-                <img src="../../static/group.png" width="350px">
-              </center>
-            </v-col>
-          </v-row>
-        </div>
-        <!-- End -->
         <div class="text-card-main">
           <v-row>
             <v-col>
