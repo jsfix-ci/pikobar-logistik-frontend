@@ -443,7 +443,7 @@
                                         <v-select
                                           v-model="editedItem.quality"
                                           :items="qualityList"
-                                          label="Kualitas/Mutu"
+                                          label="Kualitas/ Mutu Barang yang diterima"
                                           dense
                                           outlined
                                         />
