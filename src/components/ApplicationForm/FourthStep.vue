@@ -93,7 +93,7 @@
           <v-col v-if="formApplicant.instanceType <= 3" cols="12" sm="12" md="6">
             <ValidationProvider
               v-slot="{ errors }"
-              rules="required|numeric"
+              rules="requiredCovidPatientTotal"
             >
               <v-label class="title"><b>Jumlah Pasien COVID-19 yang ditangani</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <v-text-field
@@ -102,11 +102,12 @@
                 :error-messages="errors"
                 placeholder="Masukkan jumlah pasien"
                 solo-inverted
+                type="number"
               />
             </ValidationProvider>
             <ValidationProvider
               v-slot="{ errors }"
-              rules="required|numeric"
+              rules="requiredIsolationRoomTotal"
             >
               <v-label class="title"><b>Jumlah ruang isolasi</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <v-text-field
@@ -115,11 +116,12 @@
                 :error-messages="errors"
                 placeholder="Masukkan jumlah ruang isolasi"
                 solo-inverted
+                type="number"
               />
             </ValidationProvider>
             <ValidationProvider
               v-slot="{ errors }"
-              rules="required|numeric"
+              rules="requiredBedroomTotal"
             >
               <v-label class="title"><b>Jumlah ruang tidur</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <v-text-field
@@ -128,11 +130,12 @@
                 :error-messages="errors"
                 placeholder="Masukkan jumlah ruang tidur"
                 solo-inverted
+                type="number"
               />
             </ValidationProvider>
             <ValidationProvider
               v-slot="{ errors }"
-              rules="required|numeric"
+              rules="requiredHealthWorkerTotal"
             >
               <v-label class="title"><b>Jumlah tenaga kesehatan yang menangani</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <v-text-field
@@ -141,6 +144,7 @@
                 :error-messages="errors"
                 placeholder="Masukkan jumlah tenaga kesehatan"
                 solo-inverted
+                type="number"
               />
             </ValidationProvider>
           </v-col>
