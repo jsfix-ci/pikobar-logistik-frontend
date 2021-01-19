@@ -301,21 +301,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scope>
-  .header-landing-page {
-    padding: 66px;
-    margin-left: 80px;
-    margin-right: 80px;
-    margin-top: -25px;
-    margin-bottom: 10px;
-  }
-  .margin-top-15 {
-    margin-top: 15px;
-  }
-  .shadow-box {
-    box-shadow: 0px 0px 15px 5px #d8d8d8;
-    border-radius: 10px;
-    margin: 5px;
-  }
-</style>
