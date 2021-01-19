@@ -9,6 +9,7 @@
       <v-form
         ref="form"
         lazy-validation
+        class="mt-5"
       >
         <v-row>
           <v-col cols="12" sm="12" md="6">
