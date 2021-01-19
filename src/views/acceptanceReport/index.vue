@@ -160,7 +160,7 @@
               </v-form>
             </ValidationObserver>
           </div>
-          <div v-if="showVerificationForm && acceptanceLogisticFormShow"><!-- Form Acceptance Logistic Report -->
+          <div v-if="showVerificationForm && acceptanceLogisticFormShow" class="mt-5"><!-- Form Acceptance Logistic Report -->
             <ValidationObserver ref="observer3">
               <div id="form-body">
                 <div><!-- Informasi Penerima Barang -->
@@ -321,7 +321,7 @@
                       </v-card>
                     </v-dialog>
                   </v-row>
-                  <v-row>
+                  <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
                       <v-label><b>{{ $t('label.acceptance_report.officer_fullname') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
@@ -410,7 +410,7 @@
                                       <v-col
                                         cols="12"
                                         sm="6"
-                                        md="4"
+                                        md="3"
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty_ok"
@@ -424,7 +424,7 @@
                                       <v-col
                                         cols="12"
                                         sm="6"
-                                        md="4"
+                                        md="3"
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty_nok"
@@ -438,7 +438,7 @@
                                       <v-col
                                         cols="12"
                                         sm="6"
-                                        md="4"
+                                        md="6"
                                       >
                                         <v-select
                                           v-model="editedItem.quality"
@@ -476,7 +476,7 @@
                       <v-alert type="error">{{ $t('label.acceptance_report.error.item_proof') }}</v-alert>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
                       <v-label><b>{{ $t('label.acceptance_report.bast_proof') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
@@ -563,7 +563,7 @@
                       </v-card>
                     </v-dialog>
                   </v-row>
-                  <v-row>
+                  <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
                       <v-label><b>Foto Barang yang Diterima</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
@@ -651,14 +651,14 @@
                       </v-card>
                     </v-dialog>
                   </v-row>
-                  <v-row>
+                  <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
                       <v-label><b>{{ $t('label.acceptance_report.note') }}</b></v-label>
                       <v-textarea
                         v-model="recipient.note"
                         outlined
                         solo-inverted
-                        placeholder="Tambahkan catatan lainnya..."
+                        placeholder="Tambahkan catatan lainnya terhadap barang yang tidak sesuai..."
                       />
                     </v-col>
                   </v-row>
@@ -1043,6 +1043,21 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+ .header-landing-page {
+   padding: 66px;
+   margin-left: 80px;
+   margin-right: 80px;
+   margin-top: -25px;
+   margin-bottom: 10px;
+ }
+ .margin-top-15 {
+   margin-top: 15px;
+ }
+ .shadow-box {
+   box-shadow: 0px 0px 15px 5px #d8d8d8;
+   border-radius: 10px;
+   margin: 5px;
+ }
  .main-card-landing-page {
    padding: 50px;
  }
