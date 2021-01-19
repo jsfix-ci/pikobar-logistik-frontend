@@ -1,9 +1,10 @@
 <template>
   <div class="background-landing-page">
     <div class="full-landing-page">
+      <!-- <div class="header-landing-page"> -->
       <div class="header-landing-page">
         <v-row align="center">
-          <v-col cols="12" md="9" xs="12">
+          <v-col>
             <v-row>
               <img height="40" src="../../static/logistik_logo_lingkar.svg">
               <div class="title-page-landing-page">{{ $t('label.logistics_medical_device') }}</div>
@@ -22,10 +23,10 @@
         <v-row>
           <v-col cols="10">
             <v-row>
-              <v-col class="margin-left-20" cols="2">
+              <v-col class="margin-left-20 margin-top-15" cols="2">
                 <img height="40" src="../../static/logistik_logo_lingkar.svg">
               </v-col>
-              <v-col cols="10">
+              <v-col cols="6">
                 <div class="title-page-landing-page-mobile margin-left-title-mobile-landing-page">
                   {{ $t('label.logistics_medical_device') }}
                 </div>
@@ -104,7 +105,7 @@
         </div>
         <div>
           <v-row>
-            <v-col>
+            <v-col class="shadow-box">
               <img src="../../static/logistic_acceptance_report.png" width="100%">
               <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_acceptance_report_title') }}
@@ -116,7 +117,7 @@
                 </v-btn>
               </div>
             </v-col>
-            <v-col>
+            <v-col class="shadow-box">
               <img src="../../static/logistic_usability_report.png" width="100%">
               <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_usability_report_title') }}
@@ -128,7 +129,7 @@
                 </v-btn>
               </div>
             </v-col>
-            <v-col>
+            <v-col class="shadow-box">
               <img src="../../static/tracking_logistik_1.png" width="100%">
               <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_tracking_title') }}
