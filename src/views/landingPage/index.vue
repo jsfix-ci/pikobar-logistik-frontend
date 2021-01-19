@@ -104,7 +104,7 @@
         </div>
         <div>
           <v-row>
-            <v-col>
+            <v-col class="shadow-box">
               <img src="../../static/logistic_acceptance_report.png" width="100%">
               <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_acceptance_report_title') }}
@@ -116,7 +116,7 @@
                 </v-btn>
               </div>
             </v-col>
-            <v-col>
+            <v-col class="shadow-box">
               <img src="../../static/logistic_usability_report.png" width="100%">
               <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_usability_report_title') }}
@@ -128,7 +128,7 @@
                 </v-btn>
               </div>
             </v-col>
-            <v-col>
+            <v-col class="shadow-box">
               <img src="../../static/tracking_logistik_1.png" width="100%">
               <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_tracking_title') }}
@@ -304,5 +304,10 @@ export default {
 <style lang="scss" scope>
   .margin-top-15 {
     margin-top: 15px;
+  }
+  .shadow-box {
+    box-shadow: 0px 0px 15px 5px #d8d8d8;
+    border-radius: 10px;
+    margin: 5px;
   }
 </style>
