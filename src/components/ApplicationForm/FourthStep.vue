@@ -30,7 +30,7 @@
             >
               <v-label class="title"><b>{{ $t('label.applicant_letter_number_upload') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <br>
-              <v-row>
+              <v-row class="mt-1">
                 <v-col sm="12" md="3">
                   <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
                   <img v-if="isUpload" height="100" src="../../static/upload_dokumen.svg">
@@ -41,7 +41,7 @@
                     <v-label v-if="isUpload">{{ selectedFileName }}</v-label>
                   </v-row>
                   <br>
-                  <v-row class="mr-1 ml-1">
+                  <v-row class="mr-1 ml-1 mt-1">
                     <input
                       ref="uploader"
                       type="file"
