@@ -1,9 +1,10 @@
 <template>
   <div class="background-landing-page">
     <div class="full-landing-page">
+      <!-- <div class="header-landing-page"> -->
       <div class="header-landing-page">
         <v-row align="center">
-          <v-col cols="12" md="9" xs="12">
+          <v-col>
             <v-row>
               <img height="40" src="../../static/logistik_logo_lingkar.svg">
               <div class="title-page-landing-page">{{ $t('label.logistics_medical_device') }}</div>
@@ -302,6 +303,13 @@ export default {
 </script>
 
 <style lang="scss" scope>
+  .header-landing-page {
+    padding: 66px;
+    margin-left: 80px;
+    margin-right: 80px;
+    margin-top: -25px;
+    margin-bottom: 10px;
+  }
   .margin-top-15 {
     margin-top: 15px;
   }
