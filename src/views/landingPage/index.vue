@@ -22,10 +22,10 @@
         <v-row>
           <v-col cols="10">
             <v-row>
-              <v-col class="margin-left-20" cols="2">
+              <v-col class="margin-left-20 margin-top-15" cols="2">
                 <img height="40" src="../../static/logistik_logo_lingkar.svg">
               </v-col>
-              <v-col cols="10">
+              <v-col cols="6">
                 <div class="title-page-landing-page-mobile margin-left-title-mobile-landing-page">
                   {{ $t('label.logistics_medical_device') }}
                 </div>
@@ -300,3 +300,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scope>
+  .margin-top-15 {
+    margin-top: 15px;
+  }
+</style>
