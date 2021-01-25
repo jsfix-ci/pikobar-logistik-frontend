@@ -580,7 +580,7 @@ export default {
       urlLetter: null,
       letterName: '',
       isLoading: false,
-      isDone: true
+      isDone: false
     }
   },
   mounted() {
