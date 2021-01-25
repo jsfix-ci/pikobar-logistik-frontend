@@ -68,14 +68,14 @@
           <v-row align="center" justify="center">
             <div class="save-style-data-confirmation">{{ $t('label.save_success') }}</div>
           </v-row>
-          <v-row align="center" justify="center" class="confirmation-text margin-top-10-data-confirmation">
+          <v-row align="center" justify="center" class="confirmation-text margin-top-10-data-confirmation mt-5">
             {{ $t('label.loading_done_one') }}
           </v-row>
-          <v-row align="center" justify="center" class="confirmation-text">
+          <v-row align="center" justify="center" class="confirmation-text mt-3">
             {{ $t('label.loading_done_two') }}
           </v-row>
           <br>
-          <v-row align="center" justify="center">
+          <v-row align="center" justify="center" class="mt-3 mb-15">
             <v-btn href="/#/landing-page">{{ $t('label.back') }}</v-btn>
           </v-row>
         </div>
@@ -140,7 +140,7 @@
           <div class="main-color-data-confirmation">{{ $t('label.step_title_2') }}</div>
           <v-card class="mx-auto" outlined>
             <v-row>
-              <v-col cols="8">
+              <v-col cols="7" class="margin-20">
                 <v-row class="margin-top-min-15">
                   <v-col>
                     <span class="main-color-data-confirmation">{{ $t('label.contact_person') }}</span>
@@ -173,7 +173,7 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col cols="4">
+              <v-col cols="4" class="margin-20">
                 <span class="main-color-data-confirmation">{{ $t('label.applicant_ktp') }}</span>
                 <br>
                 <img class="image-style-data-confirmation" :src="url">
@@ -319,7 +319,7 @@
         <v-row align="center" justify="center" class="margin-wait-data-confirmation text-center-data-confirmation">
           {{ $t('label.wait') }}
         </v-row>
-        <v-row class="text-center mr-1 ml-1">{{ $t('label.loading_step_one') + $t('label.loading_step_two') }}</v-row>
+        <v-row class="text-center mr-1 ml-1 mt-3">{{ $t('label.loading_step_one') + $t('label.loading_step_two') }}</v-row>
       </div>
       <div v-else-if="isDone" class="mt-n12">
         <v-row align="center" justify="center">
@@ -328,10 +328,10 @@
         <v-row align="center" justify="center">
           <div class="save-style-data-confirmation text-center-data-confirmation">{{ $t('label.save_success') }}</div>
         </v-row>
-        <v-row class="text-center mr-1 ml-1">{{ $t('label.loading_done_one') }}</v-row>
-        <v-row class="text-center mr-1 ml-1">{{ $t('label.loading_done_two') }}</v-row>
+        <v-row class="text-center mr-1 ml-1 mt-5">{{ $t('label.loading_done_one') }}</v-row>
+        <v-row class="text-center mr-1 ml-1 mt-3">{{ $t('label.loading_done_two') }}</v-row>
         <br>
-        <v-row align="center" justify="center">
+        <v-row align="center" justify="center" class="mt-3">
           <v-btn href="/#/landing-page">{{ $t('label.back') }}</v-btn>
         </v-row>
       </div>
@@ -580,7 +580,7 @@ export default {
       urlLetter: null,
       letterName: '',
       isLoading: false,
-      isDone: false
+      isDone: true
     }
   },
   mounted() {
