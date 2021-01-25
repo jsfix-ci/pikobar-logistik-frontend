@@ -135,11 +135,11 @@
         </v-col>
       </v-row>
     </v-card>
-    <v-row>
+    <v-row class="mt-4">
       <v-card
         outlined
         height="80%"
-        style="margin: 13px"
+        class="mr-2"
       >
         <v-list-item>
           <v-list-item-content>
