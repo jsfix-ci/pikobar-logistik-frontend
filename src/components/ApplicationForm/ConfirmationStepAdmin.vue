@@ -6,10 +6,10 @@
     <v-row align="center" justify="center" class="margin-wait-data-confirmation-admin">
       {{ $t('label.wait') }}
     </v-row>
-    <v-row align="center" justify="center" class="margin-top-10-data-confirmation-admin">
+    <v-row align="center" justify="center" class="mt-7">
       {{ $t('label.loading_step_one') }}
     </v-row>
-    <v-row align="center" justify="center">
+    <v-row align="center" justify="center" class="mt-3">
       {{ $t('label.loading_step_two') }}
     </v-row>
   </div>
@@ -20,14 +20,14 @@
     <v-row align="center" justify="center">
       <div class="save-style-data-confirmation-admin">{{ $t('label.save_success') }}</div>
     </v-row>
-    <v-row align="center" justify="center" class="confirmation-text margin-top-10-data-confirmation-admin">
+    <v-row align="center" justify="center" class="confirmation-text mt-7">
       {{ $t('label.loading_done_one') }}
     </v-row>
-    <v-row align="center" justify="center" class="confirmation-text">
+    <v-row align="center" justify="center" class="confirmation-text mt-3">
       {{ $t('label.loading_done_two') }}
     </v-row>
     <br>
-    <v-row align="center" justify="center">
+    <v-row align="center" justify="center" class="mt-3 mb-15">
       <v-btn @click="refreshPage()">{{ $t('label.back') }}</v-btn>
     </v-row>
   </div>
@@ -427,9 +427,6 @@ export default {
     margin-top: 20px;
     font-size: 20px;
     font-weight: bold;
-  }
-  .margin-top-10-data-confirmation-admin {
-    margin-top: 10px;
   }
   .save-style-data-confirmation-admin {
     margin-top: 20px;

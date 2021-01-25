@@ -10,7 +10,7 @@
         @change="changePageSize"
       />
     </v-col>
-    <v-col cols="auto">
+    <v-col>
       <div style="float: right;padding-bottom: 40px;">
         <v-pagination
           v-model="currentPage"
