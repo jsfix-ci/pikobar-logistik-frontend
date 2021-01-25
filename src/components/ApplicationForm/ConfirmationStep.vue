@@ -54,7 +54,7 @@
           <v-row align="center" justify="center" class="margin-wait-data-confirmation">
             {{ $t('label.wait') }}
           </v-row>
-          <v-row align="center" justify="center" class="margin-top-10-data-confirmation">
+          <v-row align="center" justify="center" class="mt-5">
             {{ $t('label.loading_step_one') }}
           </v-row>
           <v-row align="center" justify="center">
@@ -68,7 +68,7 @@
           <v-row align="center" justify="center">
             <div class="save-style-data-confirmation">{{ $t('label.save_success') }}</div>
           </v-row>
-          <v-row align="center" justify="center" class="confirmation-text margin-top-10-data-confirmation mt-5">
+          <v-row align="center" justify="center" class="confirmation-text mt-7">
             {{ $t('label.loading_done_one') }}
           </v-row>
           <v-row align="center" justify="center" class="confirmation-text mt-3">
@@ -718,9 +718,6 @@ export default {
     margin-top: 20px;
     font-size: 20px;
     font-weight: bold;
-  }
-  .margin-top-10-data-confirmation {
-    margin-top: 10px;
   }
   .save-style-data-confirmation {
     margin-top: 20px;
