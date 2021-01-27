@@ -160,7 +160,7 @@
               </v-form>
             </ValidationObserver>
           </div>
-          <div v-if="showVerificationForm && acceptanceLogisticFormShow"><!-- Form Acceptance Logistic Report -->
+          <div v-if="showVerificationForm && acceptanceLogisticFormShow" class="mt-5"><!-- Form Acceptance Logistic Report -->
             <ValidationObserver ref="observer3">
               <div id="form-body">
                 <div><!-- Informasi Penerima Barang -->
@@ -321,7 +321,7 @@
                       </v-card>
                     </v-dialog>
                   </v-row>
-                  <v-row>
+                  <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
                       <v-label><b>{{ $t('label.acceptance_report.officer_fullname') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
@@ -410,7 +410,7 @@
                                       <v-col
                                         cols="12"
                                         sm="6"
-                                        md="4"
+                                        md="3"
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty_ok"
@@ -424,7 +424,7 @@
                                       <v-col
                                         cols="12"
                                         sm="6"
-                                        md="4"
+                                        md="3"
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty_nok"
@@ -438,12 +438,12 @@
                                       <v-col
                                         cols="12"
                                         sm="6"
-                                        md="4"
+                                        md="6"
                                       >
                                         <v-select
                                           v-model="editedItem.quality"
                                           :items="qualityList"
-                                          label="Kualitas/Mutu"
+                                          label="Kualitas/ Mutu Barang yang diterima"
                                           dense
                                           outlined
                                         />
@@ -476,7 +476,7 @@
                       <v-alert type="error">{{ $t('label.acceptance_report.error.item_proof') }}</v-alert>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
                       <v-label><b>{{ $t('label.acceptance_report.bast_proof') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
@@ -563,7 +563,7 @@
                       </v-card>
                     </v-dialog>
                   </v-row>
-                  <v-row>
+                  <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
                       <v-label><b>Foto Barang yang Diterima</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                       <div class="body-text">
@@ -651,14 +651,14 @@
                       </v-card>
                     </v-dialog>
                   </v-row>
-                  <v-row>
+                  <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
                       <v-label><b>{{ $t('label.acceptance_report.note') }}</b></v-label>
                       <v-textarea
                         v-model="recipient.note"
                         outlined
                         solo-inverted
-                        placeholder="Tambahkan catatan lainnya..."
+                        placeholder="Tambahkan catatan lainnya terhadap barang yang tidak sesuai..."
                       />
                     </v-col>
                   </v-row>

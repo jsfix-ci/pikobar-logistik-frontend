@@ -73,12 +73,12 @@
                       solo-inverted
                       :error-messages="errors"
                       :placeholder="$t('label.tracking_search_placeholder')"
-                      @keyup.enter.native="getDataTracking"
+                      @keyup.enter.native="getDataTracking(1)"
                     />
                   </ValidationProvider>
                   <div class="button-action">
                     <v-btn class="button-style" min-width="150px" outlined text @click="resetData">{{ $t('label.cancel') }}</v-btn>
-                    <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking">{{ $t('label.tracking_cek') }}</v-btn>
+                    <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking(1)">{{ $t('label.tracking_cek') }}</v-btn>
                   </div>
                 </ValidationObserver>
               </v-form>
@@ -424,11 +424,13 @@ export default {
     ])
   },
   methods: {
-    async getDataTracking() {
+    async getDataTracking(page) {
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
       }
+
+      this.listQueryTable.page = page ?? this.listQueryTable.page
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
       if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
       this.clicked = true

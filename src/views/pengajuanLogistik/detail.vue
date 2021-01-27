@@ -167,7 +167,7 @@
             class="mx-auto"
             outlined
           >
-            <v-row>
+            <v-row class="mt-3 mb-3">
               <v-col class="margin-20" cols="12" sm="12" md="12">
                 <v-row v-if="isUrgent" class="margin-top-min-15">
                   <v-col>
@@ -330,15 +330,13 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col class="margin-20" cols="12" sm="3" md="3">
-                <v-row>
-                  <span
-                    class="text-title-green"
-                  >
+              <v-col cols="12" sm="3" md="3">
+                <v-row class="mt-5">
+                  <span class="text-title-green">
                     {{ $t('label.full_address') }}
                   </span>
                 </v-row>
-                <v-row>
+                <v-row class="mt-4">
                   <v-label>
                     {{ detailLogisticRequest.location_address }}
                   </v-label>
@@ -362,11 +360,8 @@
       </v-row>
       <v-row>
         <v-col cols="12" sm="12">
-          <v-card
-            class="mx-auto"
-            outlined
-          >
-            <v-row>
+          <v-card class="mx-auto" outlined>
+            <v-row class="mb-5">
               <v-col class="margin-20" cols="12" sm="6" md="6">
                 <v-row class="margin-top-min-15">
                   <v-col>
@@ -420,9 +415,11 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col class="margin-20" cols="12" sm="3" md="3">
-                <v-row><span class="text-title-green">{{ $t('label.applicant_ktp') }}</span></v-row>
-                <v-row>
+              <v-col cols="12" sm="3" md="3">
+                <v-row class="mt-5">
+                  <span class="text-title-green">{{ $t('label.applicant_ktp') }}</span>
+                </v-row>
+                <v-row class="mt-4">
                   <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
                   <a v-else-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</a>
                   <v-img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : noImage" @error="errorHandler" />
@@ -464,6 +461,58 @@
         </v-card>
       </v-col>
     </v-row>
+    <div v-if="detailLogisticRequest.agency_type <= 3">
+      <v-row>
+        <v-col>
+          <span class="text-data-green">Detail Kondisi Fasilitas Kesehatan</span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="margin-20">
+                <v-row class="margin-top-min-15">
+                  <v-col>
+                    <span class="text-title-green">Jumlah Pasien COVID-19 yang ditangani</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_covid_patients | '-' }} Orang
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">Jumlah Tempat Tidur</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_bedroom | '-' }} Tempat Tidur
+                    </v-label>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <span class="text-title-green">Jumlah Ruang Isolasi</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_isolation_room | '-' }} Ruangan
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">Jumlah Tenaga Kesehatan</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_health_worker | '-' }} Orang
+                    </v-label>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
     <div> <!-- Daftar Barang Permohonan -->
       <v-row>
         <v-col>

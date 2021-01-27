@@ -9,6 +9,31 @@ extend('required', {
   message: (_, values) => i18n.t('errors.field_must_be_filled', values)
 })
 
+extend('requiredNumericTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_total', values)
+})
+
+extend('requiredCovidPatientTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_covid_patient_total', values)
+})
+
+extend('requiredIsolationRoomTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_isolation_room_total', values)
+})
+
+extend('requiredBedroomTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_bedroom_total', values)
+})
+
+extend('requiredHealthWorkerTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_health_worker_total', values)
+})
+
 extend('requiredInstanceType', {
   ...required,
   message: (_, values) => i18n.t('errors.field_must_be_filled_instance_type', values)
