@@ -1,17 +1,19 @@
 <template>
-  <v-row v-if="total > 0" justify="space-between">
-    <v-col cols="12" md="2" sm="2">
+  <v-row v-if="total > 0" justify="space-between" class="mt-auto pb-6">
+    <v-col cols="12" md="1" sm="1">
       <v-select
         v-model="pageSize"
+        class="text-body-2"
         :items="pageSizes"
         filled
         solo
+        dense
         label="Baris"
         @change="changePageSize"
       />
     </v-col>
     <v-col>
-      <div style="float: right;padding-bottom: 40px;">
+      <div class="float-right mr-n2">
         <v-pagination
           v-model="currentPage"
           :length="total"
