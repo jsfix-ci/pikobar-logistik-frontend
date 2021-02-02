@@ -42,7 +42,7 @@
                 <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
               </v-col>
             </v-row>
-            <v-row>
+            <v-row class="mb-1">
               <v-col cols="6">
                 <a v-if="isFileExists" :href="filePath" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
                 <a v-else class="blue--text letter-class" @click="printLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
