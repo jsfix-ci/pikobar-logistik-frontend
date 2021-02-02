@@ -162,7 +162,9 @@
       </v-row>
     </v-card>
     <pagination
-      ref="pagination"
+      :total="totalListLogisticRequest"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
       :on-next="onNext"
     />
     <completenessDetail
@@ -277,7 +279,6 @@ export default {
           element.is_reference = element.master_faskes.is_reference
         }
       })
-      this.$refs.pagination.setPagination(this.totalListLogisticRequest, this.listQuery.page, this.listQuery.limit)
     },
     async handleSearch() {
       await this.getLogisticRequestList()

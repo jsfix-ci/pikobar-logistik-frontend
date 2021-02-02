@@ -1,26 +1,25 @@
 <template>
-  <v-row v-if="total > 0" justify="space-between" class="mt-auto pb-6">
-    <v-col cols="12" md="1" sm="1">
+  <v-row v-if="total > 0" class="pb-6">
+    <v-col>
       <v-select
         v-model="pageSize"
-        class="text-body-2"
         :items="pageSizes"
         filled
         solo
         dense
         label="Baris"
         @change="changePageSize"
+        class="col-md-3 col-sm-4 mt-1"
       />
     </v-col>
-    <v-col>
-      <div class="float-right mr-n2">
-        <v-pagination
-          v-model="currentPage"
-          :length="currentTotal"
-          :total-visible="6"
-          @input="onNext"
-        />
-      </div>
+    <v-col cols="8">
+      <v-pagination
+        v-model="currentPage"
+        :length="total"
+        :total-visible="6"
+        @input="onNext"
+        class="float-right mr-n2"
+      />
     </v-col>
   </v-row>
 </template>
@@ -30,8 +29,8 @@ export default {
   name: 'Pagination',
   props: {
     total: {
-      type: Number,
-      default: 1
+      required: true,
+      type: Number
     },
     page: {
       type: Number,
@@ -39,7 +38,7 @@ export default {
     },
     limit: {
       type: Number,
-      default: 10
+      default: 20
     },
     pageSizes: {
       type: Array,
@@ -53,14 +52,6 @@ export default {
     }
   },
   computed: {
-    currentTotal: {
-      get() {
-        return this.total
-      },
-      set(val) {
-        this.$emit('update:total', val)
-      }
-    },
     currentPage: {
       get() {
         return this.page
@@ -79,15 +70,7 @@ export default {
     }
   },
   methods: {
-    setPagination(total, page, limit) {
-      this.currentPage = page
-      this.pageSize = limit
-      this.currentTotal = total
-      console.log(total + ' ' + page + ' ' + limit)
-      console.log(this.currentTotal + ' ' + this.currentPage + ' ' + this.pageSize)
-    },
     changePageSize(value) {
-      console.log('changePageSize', value)
       this.pageSize = value
       this.currentPage = 1
       this.onNext()
