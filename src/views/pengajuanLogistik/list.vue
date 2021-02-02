@@ -51,8 +51,8 @@
           </v-col>
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.request_date') }}</v-label>
-            <date-picker
-              :value="date"
+            <date-picker-dashboard
+              :date="listQuery.start_date"
               @selected="changeDate"
             />
           </v-col>
@@ -88,6 +88,12 @@
           </v-col>
         </v-row>
       </v-card-text>
+      <hr class="thin">
+      <v-row class="mx-auto">
+        <v-col auto>
+          <small>{{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}</small>
+        </v-col>
+      </v-row>
       <hr class="thin">
       <v-row>
         <v-col auto>
@@ -155,25 +161,12 @@
         </v-col>
       </v-row>
     </v-card>
-    <v-row class="mt-4">
-      <v-card
-        outlined
-        height="80%"
-        class="mr-2"
-      >
-        <v-list-item>
-          <v-list-item-content>
-            {{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
-      <pagination
-        :total="totalListLogisticRequest"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        :on-next="onNext"
-      />
-    </v-row>
+    <pagination
+      :total="totalListLogisticRequest"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      :on-next="onNext"
+    />
     <completenessDetail
       ref="completenessDetailForm"
       :show="showcompletenessDetail"
@@ -211,7 +204,8 @@ export default {
         city_code: '',
         verification_status: '',
         agency_name: '',
-        date: ''
+        start_date: null,
+        end_date: null
       },
       status: [
         {
@@ -276,7 +270,8 @@ export default {
   },
   methods: {
     async changeDate(value) {
-      this.listQuery.date = value
+      this.listQuery.start_date = value.startDate
+      this.listQuery.end_date = value.endDate
       await this.getLogisticRequestList()
     },
     async getLogisticRequestList() {

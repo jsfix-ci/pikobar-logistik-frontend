@@ -1,24 +1,25 @@
 <template>
-  <v-row v-if="total > 0" justify="space-between">
-    <v-col cols="12" md="2" sm="2">
+  <v-row v-if="total > 0" class="pb-6">
+    <v-col>
       <v-select
         v-model="pageSize"
         :items="pageSizes"
         filled
         solo
+        dense
         label="Baris"
+        class="col-md-3 col-sm-4 mt-1"
         @change="changePageSize"
       />
     </v-col>
-    <v-col>
-      <div style="float: right;padding-bottom: 40px;">
-        <v-pagination
-          v-model="currentPage"
-          :length="total"
-          :total-visible="6"
-          @input="onNext"
-        />
-      </div>
+    <v-col cols="8">
+      <v-pagination
+        v-model="currentPage"
+        :length="total"
+        :total-visible="6"
+        class="float-right mr-n2"
+        @input="onNext"
+      />
     </v-col>
   </v-row>
 </template>

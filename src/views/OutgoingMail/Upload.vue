@@ -27,18 +27,18 @@
             <v-label class="title"><b>{{ $t('route.outgoing_mail') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
             <br>
             <v-label><i class="text-small-second-step">({{ $t('label.max_type_file_upload_letter') }})</i></v-label>
-            <v-row>
+            <v-row class="mt-1">
               <v-col cols="3" sm="6" md="3">
                 <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
                 <img v-if="isUpload" height="100" src="../../static/upload_dokumen.svg">
               </v-col>
               <v-col>
-                <v-row>
+                <v-row class="mt-1">
                   <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
                   <v-label v-if="isUpload">{{ selectedFileName }}</v-label>
                 </v-row>
                 <br>
-                <v-row>
+                <v-row class="mt-1">
                   <input
                     ref="uploader"
                     type="file"

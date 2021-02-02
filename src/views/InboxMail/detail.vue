@@ -78,17 +78,6 @@
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
         </v-col>
       </v-row>
-      <rejectKebutuhanLogistik
-        :show="showDialogReject"
-        :item="detailLogisticRequest"
-        :total="listLogisticNeeds.length > 0 ? listLogisticNeeds[0].logistic_item_summary : null"
-        @submitReject="rejectData"
-      />
-      <reasonDeniedLogisticNeeds
-        :show="showDialogReasonReject"
-        :item="detailLogisticRequest"
-        :total="listLogisticNeeds.length > 0 ? listLogisticNeeds[0].logistic_item_summary : null"
-      />
     </div>
     <div>
       <br>
@@ -154,7 +143,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.phone_number || '-' }}
+                      {{ detailLogisticRequest.phone_number }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -168,15 +157,13 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col class="margin-20" cols="12" sm="4" md="4">
-                <v-row>
-                  <span
-                    class="text-title-green"
-                  >
+              <v-col cols="12" sm="3" md="3">
+                <v-row class="mt-5">
+                  <span class="text-title-green">
                     {{ $t('label.full_address') }}
                   </span>
                 </v-row>
-                <v-row>
+                <v-row class="mt-4">
                   <v-label>
                     {{ detailLogisticRequest.location_address }}
                   </v-label>
@@ -197,11 +184,8 @@
       </v-row>
       <v-row>
         <v-col cols="12" sm="12">
-          <v-card
-            class="mx-auto"
-            outlined
-          >
-            <v-row>
+          <v-card class="mx-auto" outlined>
+            <v-row class="mb-5">
               <v-col class="margin-20" cols="12" sm="6" md="6">
                 <v-row class="margin-top-min-15">
                   <v-col>
@@ -255,12 +239,14 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col class="margin-20" cols="12" sm="4" md="4">
-                <v-row><span class="text-title-green">{{ $t('label.applicant_ktp') }}</span></v-row>
-                <v-row>
+              <v-col cols="12" sm="3" md="3">
+                <v-row class="mt-5">
+                  <span class="text-title-green">{{ $t('label.applicant_ktp') }}</span>
+                </v-row>
+                <v-row class="mt-4">
                   <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
                   <a v-else-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</a>
-                  <img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-'">
+                  <v-img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : noImage" @error="errorHandler" />
                 </v-row>
               </v-col>
             </v-row>
@@ -282,21 +268,71 @@
         <v-card outlined>
           <v-card-text>
             <v-row class="ml-2">
-              <v-col cols="6" md="6">
+              <v-col cols="9" md="9">
                 <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.application_letter_number : '-' }}</u></a>
               </v-col>
-              <v-col cols="6" md="6">
-                <div class="margin-top-min-15">
-                  <v-btn small outlined color="success" width="130px" height="50px" absolute right @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
-                    {{ $t('label.download') }}
-                  </v-btn>
-                </div>
+              <v-col cols="3" md="3">
+                <v-btn small outlined color="success" class="mx-3 float-right" @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
+                  <v-icon small dark class="ml-1">mdi-download</v-icon> <span>{{ $t('label.download') }}</span>
+                </v-btn>
               </v-col>
             </v-row>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
+    <div v-if="detailLogisticRequest.agency_type <= 3">
+      <v-row>
+        <v-col>
+          <span class="text-data-green">Detail Kondisi Fasilitas Kesehatan</span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="margin-20">
+                <v-row class="margin-top-min-15">
+                  <v-col>
+                    <span class="text-title-green">Jumlah Pasien COVID-19 yang ditangani</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_covid_patients }} Orang
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">Jumlah Tempat Tidur</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_bedroom }} Tempat Tidur
+                    </v-label>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <span class="text-title-green">Jumlah Ruang Isolasi</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_isolation_room }} Ruangan
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">Jumlah Tenaga Kesehatan</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_health_worker }} Orang
+                    </v-label>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
     <div>
       <v-row>
         <v-col>
@@ -345,25 +381,25 @@
                   <tr v-for="(item, index) in listLogisticNeeds" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
                     <td>{{ item.product ? item.product.name : '-' }}</td>
-                    <td>{{ item.brand || '-' }}</td>
-                    <td class="text-right">{{ item.quantity || '-' }}</td>
-                    <td>{{ item.unit.unit || '-' }}</td>
-                    <td>{{ item.usage || '-' }}</td>
+                    <td>{{ item.brand }}</td>
+                    <td class="text-right">{{ item.quantity }}</td>
+                    <td>{{ item.unit.unit }}</td>
+                    <td>{{ item.usage }}</td>
                     <td>{{ item.product ? item.product.category : '-' }}</td>
-                    <td v-if="isVerified">{{ item.recommendation_product_name || '-' }}</td>
-                    <td v-if="isVerified" class="text-right">{{ item.recommendation_quantity || '-' }}</td>
+                    <td v-if="isVerified">{{ item.recommendation_product_name }}</td>
+                    <td v-if="isVerified" class="text-right">{{ item.recommendation_quantity }}</td>
                     <td v-if="isVerified">{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
-                    <td v-if="isVerified">{{ item.recommendation_date || '-' }}</td>
+                    <td v-if="isVerified">{{ item.recommendation_date }}</td>
                     <td v-if="isVerified">
                       <span v-if="item.recommendationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
-                        {{ item.recommendationStatusLabel || '-' }}
+                        {{ item.recommendationStatusLabel }}
                       </span>
                       <span v-else class="green--text text--lighten-1">
-                        {{ item.recommendationStatusLabel || '-' }}
+                        {{ item.recommendationStatusLabel }}
                       </span>
                     </td>
                     <td v-if="isVerified">
-                      <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
+                      <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy }}</a>
                       <span v-else>-</span>
                     </td>
                     <td v-if="isVerified && !isApproved">
@@ -371,20 +407,20 @@
                         {{ $t('label.update') }}
                       </v-btn>
                     </td>
-                    <td v-if="isApproved">{{ item.realization_product_name || '-' }}</td>
-                    <td v-if="isApproved" class="text-right">{{ item.realization_quantity || '-' }}</td>
+                    <td v-if="isApproved">{{ item.realization_product_name }}</td>
+                    <td v-if="isApproved" class="text-right">{{ item.realization_quantity }}</td>
                     <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
-                    <td v-if="isApproved">{{ item.realization_date || '-' }}</td>
+                    <td v-if="isApproved">{{ item.realization_date }}</td>
                     <td v-if="isApproved">
                       <span v-if="item.realizationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
-                        {{ item.realizationStatusLabel || '-' }}
+                        {{ item.realizationStatusLabel }}
                       </span>
                       <span v-else class="green--text text--lighten-1">
-                        {{ item.realizationStatusLabel || '-' }}
+                        {{ item.realizationStatusLabel }}
                       </span>
                     </td>
                     <td v-if="isApproved">
-                      <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
+                      <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy }}</a>
                       <span v-else>-</span>
                     </td>
                   </tr>
@@ -396,6 +432,7 @@
               v-model="listQuery.page"
               :length="totalLogisticNeeds"
               :total-visible="3"
+              class="mb-2"
               @input="onNext"
             />
           </v-card>
@@ -446,28 +483,28 @@
                         <tr v-for="(item, index) in listRealization" v-else :key="item.index">
                           <td>{{ getTableRowNumbering(index) }}</td>
                           <td>{{ item.recommendation_product_name ? item.recommendation_product_name : '-' }}</td>
-                          <td class="text-right">{{ item.recommendation_quantity || '-' }}</td>
+                          <td class="text-right">{{ item.recommendation_quantity }}</td>
                           <td>{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
-                          <td>{{ item.recommendation_date || '-' }}</td>
-                          <td>{{ item.recommendationStatusLabel || '-' }}</td>
+                          <td>{{ item.recommendation_date }}</td>
+                          <td>{{ item.recommendationStatusLabel }}</td>
                           <td>
-                            <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
+                            <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy }}</a>
                             <span v-else>-</span>
                           </td>
                           <td v-if="isApproved">{{ item.realization_product_name ? item.realization_product_name : '-' }}</td>
-                          <td v-if="isApproved" class="text-right">{{ item.realization_quantity || '-' }}</td>
+                          <td v-if="isApproved" class="text-right">{{ item.realization_quantity }}</td>
                           <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
-                          <td v-if="isApproved">{{ item.realization_date || '-' }}</td>
+                          <td v-if="isApproved">{{ item.realization_date }}</td>
                           <td v-if="isApproved">
                             <span v-if="item.realizationStatusLabel === $t('label.not_approved')" class="red--text text--lighten-1">
-                              {{ item.realizationStatusLabel || '-' }}
+                              {{ item.realizationStatusLabel }}
                             </span>
                             <span v-else class="green--text text--lighten-1">
-                              {{ item.realizationStatusLabel || '-' }}
+                              {{ item.realizationStatusLabel }}
                             </span>
                           </td>
                           <td v-if="isApproved">
-                            <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
+                            <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy }}</a>
                             <span v-else>-</span>
                           </td>
                         </tr>
@@ -487,27 +524,15 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row class="mb-15">
+      <v-row class="mt-1 mb-15">
         <v-col>
-          <v-btn small color="success" width="114px" height="46px" absolute right @click="back()">
+          <v-btn small color="success" dense width="114px" height="46px" absolute right @click="back()">
             {{ $t('label.back') }}
           </v-btn>
         </v-col>
       </v-row>
     </div>
     <br>
-    <CheckStockDialog :dialog-show="dialogStock" />
-    <updateKebutuhanLogistik
-      ref="updateForm"
-      :show="showForm"
-    />
-    <DialogDelete
-      :dialog="dialogDelete"
-      :data-deleted="dataDelete"
-      :dialog-delete.sync="dialogDelete"
-      :delete-date.sync="dataDelete"
-      :store-path-delete="`logistics/deleteRealization`"
-    />
     <PicInfo
       :dialog="dialogPic"
       :data-pic="dataPic"
@@ -551,7 +576,23 @@ export default {
       dataDelete: null,
       dialogPic: false,
       dataPic: null,
-      logisticNeeds: []
+      logisticNeeds: [],
+      picHandphone: '',
+      dataUrgencyConfirmation: {
+        id: null,
+        agency_name: null,
+        applicant: {
+          application_letter_number: null,
+          applicant_name: null
+        }
+      },
+      showUrgencyForm: false,
+      showReturnForm: false,
+      isUrgent: false,
+      showAgencyIdentity: false,
+      showApplicantIdentity: false,
+      updateLetterForm: false,
+      noImage: './img/noimage.gif'
     }
   },
   computed: {
@@ -817,6 +858,27 @@ export default {
     },
     back() {
       this.$router.go(-1)
+    },
+    formatCurrency(value) {
+      if (value) {
+        const number_string = value.toString()
+        const split = number_string.split(',')
+        const modulo = split[0].length % 3
+        let result = split[0].substr(0, modulo)
+        const thousand = split[0].substr(modulo).match(/\d{3}/gi)
+        if (thousand) {
+          const separator = modulo ? '.' : ''
+          result += separator + thousand.join('.')
+        }
+        result = split[1] !== undefined ? result + ',' + split[1] : result
+        return result
+      } else {
+        return '0'
+      }
+    },
+    errorHandler(url) {
+      this.detailLogisticRequest.applicant.file = this.noImage
+      this.$forceUpdate()
     }
   }
 }
