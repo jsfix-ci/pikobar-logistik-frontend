@@ -8,8 +8,8 @@
         solo
         dense
         label="Baris"
-        @change="changePageSize"
         class="col-md-3 col-sm-4 mt-1"
+        @change="changePageSize"
       />
     </v-col>
     <v-col cols="8">
@@ -17,8 +17,8 @@
         v-model="currentPage"
         :length="total"
         :total-visible="6"
-        @input="onNext"
         class="float-right mr-n2"
+        @input="onNext"
       />
     </v-col>
   </v-row>
