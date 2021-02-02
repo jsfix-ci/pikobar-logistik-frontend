@@ -51,8 +51,12 @@
           </v-col>
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.request_date') }}</v-label>
-            <date-picker
+            <!-- <date-picker
               :value="date"
+              @selected="changeDate"
+            /> -->
+            <date-picker-dashboard
+              :date="listQuery.start_date"
               @selected="changeDate"
             />
           </v-col>
@@ -204,7 +208,9 @@ export default {
         city_code: '',
         verification_status: '',
         agency_name: '',
-        date: ''
+        // date: ''
+        start_date: null,
+        end_date: null
       },
       status: [
         {
@@ -269,7 +275,10 @@ export default {
   },
   methods: {
     async changeDate(value) {
-      this.listQuery.date = value
+    //   this.listQuery.date = value
+    //   await this.getLogisticRequestList()
+      this.listQuery.start_date = value.startDate
+      this.listQuery.end_date = value.endDate
       await this.getLogisticRequestList()
     },
     async getLogisticRequestList() {
