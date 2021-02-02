@@ -16,7 +16,7 @@
       <div class="float-right mr-n2">
         <v-pagination
           v-model="currentPage"
-          :length="total"
+          :length="currentTotal"
           :total-visible="6"
           @input="onNext"
         />
@@ -30,8 +30,8 @@ export default {
   name: 'Pagination',
   props: {
     total: {
-      required: true,
-      type: Number
+      type: Number,
+      default: 1
     },
     page: {
       type: Number,
@@ -39,7 +39,7 @@ export default {
     },
     limit: {
       type: Number,
-      default: 20
+      default: 10
     },
     pageSizes: {
       type: Array,
@@ -53,6 +53,14 @@ export default {
     }
   },
   computed: {
+    currentTotal: {
+      get() {
+        return this.total
+      },
+      set(val) {
+        this.$emit('update:total', val)
+      }
+    },
     currentPage: {
       get() {
         return this.page
@@ -71,7 +79,15 @@ export default {
     }
   },
   methods: {
+    setPagination(total, page, limit) {
+      this.currentPage = page
+      this.pageSize = limit
+      this.currentTotal = total
+      console.log(total + ' ' + page + ' ' + limit)
+      console.log(this.currentTotal + ' ' + this.currentPage + ' ' + this.pageSize)
+    },
     changePageSize(value) {
+      console.log('changePageSize', value)
       this.pageSize = value
       this.currentPage = 1
       this.onNext()
