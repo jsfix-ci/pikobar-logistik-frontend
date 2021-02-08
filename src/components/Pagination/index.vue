@@ -51,7 +51,8 @@ export default {
       type: Number
     },
     totalData: {
-      type: Number
+      type: Number,
+      default: null
     },
     page: {
       type: Number,
