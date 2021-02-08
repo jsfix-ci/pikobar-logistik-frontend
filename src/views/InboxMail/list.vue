@@ -93,12 +93,6 @@
         </v-row>
       </v-card-text>
       <hr class="thin">
-      <v-row class="mx-auto">
-        <v-col auto>
-          <small>{{ $t('label.total_data') }} : {{ totalDataIncomingMail }}</small>
-        </v-col>
-      </v-row>
-      <hr class="thin">
       <v-row>
         <v-col auto>
           <v-simple-table>
@@ -143,6 +137,7 @@
     </v-card>
     <pagination
       :total="totalListIncomingMail"
+      :total-data="totalDataIncomingMail"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
       :on-next="onNext"
