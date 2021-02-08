@@ -86,14 +86,21 @@
               @change="handleSearch()"
             />
           </v-col>
+          <v-col cols="12" sm="3" class="mt-n8">
+            <v-label class="title">Status Rujukan</v-label>
+            <v-select
+              v-model="listQuery.is_reference"
+              :items="referenceFaskes"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              placeholder="Pilih Status Rujukan"
+              @change="handleSearch()"
+            />
+          </v-col>
         </v-row>
       </v-card-text>
-      <hr class="thin">
-      <v-row class="mx-auto">
-        <v-col auto>
-          <small>{{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}</small>
-        </v-col>
-      </v-row>
       <hr class="thin">
       <v-row>
         <v-col auto>
@@ -163,6 +170,7 @@
     </v-card>
     <pagination
       :total="totalListLogisticRequest"
+      :total-data="totalDataLogisticRequest"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
       :on-next="onNext"
@@ -205,7 +213,8 @@ export default {
         verification_status: '',
         agency_name: '',
         start_date: null,
-        end_date: null
+        end_date: null,
+        is_reference: null
       },
       status: [
         {
@@ -225,6 +234,16 @@ export default {
         {
           text: this.$t('label.pikobar'),
           value: 'pikobar'
+        }
+      ],
+      referenceFaskes: [
+        {
+          text: 'Rujukan',
+          value: 1
+        },
+        {
+          text: 'Bukan Rujukan',
+          value: 0
         }
       ],
       date: null,
