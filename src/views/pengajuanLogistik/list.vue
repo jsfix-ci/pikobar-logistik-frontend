@@ -168,12 +168,6 @@
         </v-col>
       </v-row>
     </v-card>
-    <!-- <hr class="thin">
-    <v-row class="mx-auto">
-      <v-col auto>
-        <small>{{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}</small>
-      </v-col>
-    </v-row> -->
     <pagination
       :total="totalListLogisticRequest"
       :total-data="totalDataLogisticRequest"
