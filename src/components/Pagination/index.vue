@@ -2,7 +2,7 @@
   <v-row v-if="total > 0" class="pb-6 mt-1">
     <v-col>
       <v-row>
-        <v-col cols="6">
+        <v-col v-if="totalData" cols="6">
           <v-text-field
             :value="'Total Data: ' + totalData"
             outlined
