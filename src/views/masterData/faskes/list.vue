@@ -9,7 +9,7 @@
           solo
           item-text="label"
           item-value="value"
-          clearable="true"
+          :clearable="true"
           :placeholder="$t('label.sort')"
           @change="handleSearch"
         />
