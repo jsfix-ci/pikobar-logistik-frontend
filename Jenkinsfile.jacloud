@@ -5,15 +5,15 @@ def secretsProd = [
     [envVar: 'VUE_APP_PORT', vaultKey: 'VUE_APP_PORT']]],
 ]
 
-def configuration = [vaultUrl: 'https://vault.jacloud.digitalservice.id/',  vaultCredentialId: 'vault-logistik', engineVersion: 2]
+def configuration = [vaultUrl: 'https://vault.jacloud.digitalservice.id/',  vaultCredentialId: 'approle-logistik', engineVersion: 2]
 
 pipeline {
 
     agent any
 
     environment {
-        appNameProduction = 'frontend-logistik-production'
-        PROJECT_REGISTRY ='logistik'
+        appName = 'frontend-logistik-production'
+        PROJECT_REGISTRY ='logistik-pikobar'
         VERSION = "${BUILD_TAG}"
         URL_REGISTRY = "${env.URL_REGISTRY_JACLOUD}"
 
@@ -42,6 +42,7 @@ pipeline {
                         sh 'echo $VERSION > version.txt'
                         sh 'echo $VUE_APP_SECURE'
                         sh 'echo $VUE_APP_URL'
+                        sh 'DOCKER_BUILDKIT=1 docker build --build-arg VUE_APP_SECURE=$VUE_APP_SECURE --build-arg VUE_APP_URL=$VUE_APP_URL --tag $appName:$VERSION -f Dockerfile . --no-cache'
                     }
                 stash includes: 'version.txt', name: 'version'
             }
@@ -53,6 +54,70 @@ pipeline {
                 }
             }
         }
+
+        stage('push to registry logistik jabarcloud'){
+
+            steps {
+                script {
+                    withDockerRegistry([credentialsId: '1d7c4e03-7bbb-44d4-8202-0612c5b2bc45', url: "https://${URL_REGISTRY}"]) {
+                    // code block
+                    unstash 'version'
+                    sh 'cat version.txt'
+                    sh 'export REGISTRY_HTTP_RELATIVEURLS=true \
+                        && docker tag $appName:$VERSION $URL_REGISTRY/$PROJECT_REGISTRY/$appName:$VERSION \
+                        && docker push $URL_REGISTRY/$PROJECT_REGISTRY/$appName:$VERSION \
+                        && docker rmi $appName:$VERSION \
+                        && docker rmi $URL_REGISTRY/$PROJECT_REGISTRY/$appName:$VERSION'
+                        }
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'version.txt', fingerprint: true
+                    cleanWs()
+                }
+            }
+        }
+
+         stage ('deploy to kubernetes jabarcloud'){
+            agent {
+                docker { 
+                    image 'dtzar/helm-kubectl:3.3.1'
+                    args '-u root'
+                }
+            }
+
+            steps {
+                    // deploy kubernetes cluster staging
+                    sh 'sed -i "s/%VERSION%/${VERSION}/g" kubernetes/deployment-logistik.yaml'
+                    sh '''
+                        set +x
+                        echo $KUBECONFIG_LOGISTIK_STAGING | base64 -d > kubeconfig
+                        export KUBECONFIG=./kubeconfig
+                        echo $CLIENT_KEY_LOGISTIK_STAGING | base64 -d > client.key
+                        set -x
+                        kubectl config set-credentials logistik-dev --client-key=client.key --embed-certs=true
+                        kubectl config set-cluster $CLUSTER_NAME_JACLOUD --insecure-skip-tls-verify=true
+
+
+                        kubectl apply -f kubernetes/deployment-logistik.yaml --dry-run=client --validate
+                        kubectl apply -f kubernetes/service-logistik.yaml --dry-run=client --validate
+
+
+                        kubectl apply -f kubernetes/deployment-logistik.yaml
+                        kubectl apply -f kubernetes/service-logistik.yaml
+                        kubectl get pods --namespace pikobar-logistik
+                    '''
+              }
+
+              post {
+                  always{
+                    cleanWs()
+                  }
+              }
+        }
+
+
 
         
     } 
