@@ -90,7 +90,8 @@ export default {
     },
     resetDate() {
       this.startDate = null
-      window.location.reload()
+      this.endDate = null
+      this.handleSelectedDate()
     }
   }
 }

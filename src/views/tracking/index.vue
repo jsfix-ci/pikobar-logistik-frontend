@@ -73,12 +73,12 @@
                       solo-inverted
                       :error-messages="errors"
                       :placeholder="$t('label.tracking_search_placeholder')"
-                      @keyup.enter.native="getDataTracking"
+                      @keyup.enter.native="getDataTracking(1)"
                     />
                   </ValidationProvider>
                   <div class="button-action">
                     <v-btn class="button-style" min-width="150px" outlined text @click="resetData">{{ $t('label.cancel') }}</v-btn>
-                    <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking">{{ $t('label.tracking_cek') }}</v-btn>
+                    <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking(1)">{{ $t('label.tracking_cek') }}</v-btn>
                   </div>
                 </ValidationObserver>
               </v-form>
@@ -176,7 +176,7 @@
                 <v-row>
                   <v-col cols="12">
                     <v-stepper value="1" :alt-labels="true" :dark="true" :light="false">
-                      <v-stepper-header v-if="item.tracking.reject_note === null" class="tracking-status">
+                      <v-stepper-header v-if="!item.tracking.approval.is_reject && !item.tracking.verification.is_reject" class="tracking-status">
                         <v-row>
                           <v-col cols="12">
                             <div class="tracking-status-text">
@@ -261,7 +261,7 @@
                         </v-stepper-step>
                       </v-stepper-header>
                     </v-stepper>
-                    <v-card v-if="item.tracking.reject_note !== null" class="tracking-status-reject tracking-reject-reason">
+                    <v-card v-if="item.tracking.verification.is_reject || item.tracking.approval.is_reject" class="tracking-status-reject tracking-reject-reason">
                       <div class="tracking-status-reject-note">
                         <p class="reject-reason-title">{{ $t('label.tracking_reason_reject') }}</p>
                         <p class="reject-reason-data">{{ item.tracking.reject_note }}</p>
@@ -424,11 +424,13 @@ export default {
     ])
   },
   methods: {
-    async getDataTracking() {
+    async getDataTracking(page) {
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
       }
+
+      this.listQueryTable.page = page ?? this.listQueryTable.page
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
       if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
       this.clicked = true

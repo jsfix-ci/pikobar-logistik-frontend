@@ -41,7 +41,7 @@
                   solo-inverted
                   :error-messages="errors"
                   item-value="id"
-                  item-text="name"
+                  item-text="nama_faskes"
                   :placeholder="instanceNamePlaceholder"
                   @input.native="querySearchFaskes"
                   @change="onSelectFaskes"
@@ -145,6 +145,8 @@
         </div>
         <v-col class="d-flex justify-center">
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -154,6 +156,8 @@
             {{ $t('label.cancel') }}
           </v-btn>
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -163,6 +167,26 @@
           >
             {{ $t('label.save_update') }}
           </v-btn>
+          <v-dialog
+            v-model="isLoading"
+            hide-overlay
+            persistent
+            width="300"
+          >
+            <v-card
+              color="primary"
+              dark
+            >
+              <v-card-text>
+                {{ $t('label.loading') }}
+                <v-progress-linear
+                  indeterminate
+                  color="white"
+                  class="mb-0"
+                />
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-col>
       </ValidationObserver>
     </v-card>
@@ -201,6 +225,8 @@ export default {
       id: null,
       queryUpdateData: {
         id: null,
+        agency_id: null,
+        applicant_id: null,
         master_faskes_id: null,
         agency_name: null,
         phone_number: null,
@@ -210,7 +236,8 @@ export default {
         location_address: null,
         agency_type: null,
         update_type: 1
-      }
+      },
+      isLoading: false
     }
   },
   computed: {
@@ -232,10 +259,10 @@ export default {
       await this.$store.dispatch('region/getApplicantFormListCity')
     },
     async getListDistrict(id) {
-      await this.$store.dispatch('region/getApplicantFormListDistrict', { city_code: id })
+      await this.$store.dispatch('region/getApplicantFormListDistrict', { city_code: id, area_type: 'subdistricts' })
     },
     async getListVillage(id) {
-      await this.$store.dispatch('region/getApplicantFormListVillage', { subdistrict_code: id })
+      await this.$store.dispatch('region/getApplicantFormListVillage', { subdistrict_code: id, area_type: 'village' })
     },
     async onSelectFaskesType(id) {
       this.listQueryFaskes.id_tipe_faskes = id
@@ -291,6 +318,8 @@ export default {
       this.agency_type = parseInt(value.agency_type)
       this.queryUpdateData = {
         id: value.id,
+        agency_id: value.id,
+        applicant_id: value.applicant.id,
         master_faskes_id: value.master_faskes_id,
         agency_name: value.agency_name,
         phone_number: value.phone_number,
@@ -310,6 +339,7 @@ export default {
       EventBus.$emit('hideAgencyIdentity', false)
     },
     async updateForm() {
+      this.isLoading = true
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
@@ -318,6 +348,7 @@ export default {
       if (response.status === 200) {
         EventBus.$emit('hideAgencyIdentity', true)
       }
+      this.isLoading = false
     }
   }
 }

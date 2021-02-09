@@ -6,7 +6,7 @@ import { getToken } from '@/utils/cookies' // get token from cookie
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/auth-redirect', '/form-pemohon', '/landing-page', '/tracking'] // no redirect whitelist
+const whiteList = ['/login', '/auth-redirect', '/form-pemohon', '/landing-page', '/tracking', '/acceptance-report', '/usability-report'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -51,7 +51,7 @@ router.beforeEach(async(to, from, next) => {
       // in the free login whitelist, go directly
       await next()
     } else {
-      // other pages that do not have permission to access are redirected to the login page.
+      // other pages that do not have permission to access are redirected to the landing page.
       await next(`/login?redirect=${to.path}`)
       await NProgress.done()
     }

@@ -23,11 +23,13 @@
               />
             </v-card>
           </v-col>
-          <v-col cols="12" offset-sm="2" offset-md="5" sm="2" md="2">
+          <v-col cols="12" offset-sm="4" offset-md="4" sm="2" md="2">
             <v-btn color="green" large text outlined style="float: right" @click="addLetter"><v-icon left>mdi-plus</v-icon> {{ $t('label.outgoing_mail_add') }}</v-btn>
           </v-col>
           <v-col cols="12" sm="2" md="2">
-            <v-btn class="primary" large max-width="100px" style="margin-left: 65px" @click="showFilter = !showFilter">{{ $t('label.filter') }} <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon><v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
+            <v-btn class="primary" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }}
+              <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon>
+              <v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
           </v-col>
         </v-row>
       </v-card-text>
@@ -128,25 +130,13 @@
         </v-col>
       </v-row>
     </v-card>
-    <v-row>
-      <v-card
-        outlined
-        height="80%"
-        style="margin: 13px"
-      >
-        <v-list-item>
-          <v-list-item-content>
-            {{ $t('label.total_data') }} : {{ totalDataOutgoingMail }}
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
-      <pagination
-        :total="totalListOutgoingMail"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        :on-next="onNext"
-      />
-    </v-row>
+    <pagination
+      :total="totalListOutgoingMail"
+      :total-data="totalDataOutgoingMail"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      :on-next="onNext"
+    />
     <CreateLetter
       :show="showForm"
     />

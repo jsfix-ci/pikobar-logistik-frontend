@@ -23,7 +23,7 @@
               <v-icon v-text="item.meta.icon" />
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title v-text="generateTitle(item.meta.title)" />
+              {{ generateTitle(item.meta.title) }}
             </v-list-item-content>
           </template>
           <sidebar-item

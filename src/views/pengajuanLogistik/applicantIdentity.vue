@@ -158,6 +158,8 @@
         </div>
         <v-col class="d-flex justify-center">
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -167,6 +169,8 @@
             {{ $t('label.cancel') }}
           </v-btn>
           <v-btn
+            :disabled="isLoading"
+            :loading="isLoading"
             small
             width="180px"
             height="40px"
@@ -176,6 +180,26 @@
           >
             {{ $t('label.save_update') }}
           </v-btn>
+          <v-dialog
+            v-model="isLoading"
+            hide-overlay
+            persistent
+            width="300"
+          >
+            <v-card
+              color="primary"
+              dark
+            >
+              <v-card-text>
+                {{ $t('label.loading') }}
+                <v-progress-linear
+                  indeterminate
+                  color="white"
+                  class="mb-0"
+                />
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-col>
       </ValidationObserver>
     </v-card>
@@ -204,6 +228,8 @@ export default {
       data: {},
       queryUpdateData: {
         id: null,
+        agency_id: null,
+        applicant_id: null,
         applicant_name: null,
         applicants_office: null,
         email: null,
@@ -223,7 +249,8 @@ export default {
       isExists: false,
       url: '',
       defaultIdentity: '',
-      noImage: './img/noimage.gif'
+      noImage: './img/noimage.gif',
+      isLoading: false
     }
   },
   methods: {
@@ -268,6 +295,8 @@ export default {
       this.defaultIdentity = value.applicant.file
       this.queryUpdateData = {
         id: value.id,
+        agency_id: value.id,
+        applicant_id: value.applicant.id,
         applicant_name: value.applicant.applicant_name,
         applicants_office: value.applicant.applicants_office,
         email: value.applicant.email,
@@ -283,6 +312,7 @@ export default {
       EventBus.$emit('hideApplicantIdentity', false)
     },
     async updateForm() {
+      this.isLoading = true
       const valid = await this.$refs.observer.validate()
       if (!valid) {
         return
@@ -290,7 +320,8 @@ export default {
       const formData = new FormData()
       formData.append('applicant_file', this.selectedFile)
       formData.append('id', this.queryUpdateData.id)
-      formData.append('applicant_id', this.queryUpdateData.id)
+      formData.append('agency_id', this.queryUpdateData.agency_id)
+      formData.append('applicant_id', this.queryUpdateData.applicant_id)
       formData.append('applicant_name', this.queryUpdateData.applicant_name)
       formData.append('applicants_office', this.queryUpdateData.applicants_office)
       formData.append('email', this.queryUpdateData.email)
@@ -302,6 +333,7 @@ export default {
       if (response.status === 200) {
         EventBus.$emit('hideApplicantIdentity', true)
       }
+      this.isLoading = false
     }
   }
 }

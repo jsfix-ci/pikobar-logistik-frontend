@@ -42,7 +42,7 @@
                 <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
               </v-col>
             </v-row>
-            <v-row>
+            <v-row class="mb-1">
               <v-col cols="6">
                 <a v-if="isFileExists" :href="filePath" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
                 <a v-else class="blue--text letter-class" @click="printLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
@@ -83,12 +83,6 @@
             @change="handleSearch"
           />
         </v-card>
-      </v-col>
-      <v-col v-if="!isFileExists">
-        <v-btn outlined color="success" height="50px" absolute right @click.stop="openForm('add')">
-          <v-icon dark>mdi-plus</v-icon>
-          {{ $t('label.outgoing_mail_add_number_letter') }}
-        </v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -196,10 +190,10 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import EventBus from '@/utils/eventBus'
 import CreateLetter from './Create'
 import DialogDelete from '@/components/DialogDelete'
 import pdfMake from 'pdfmake/build/pdfmake'
-import EventBus from '@/utils/eventBus'
 
 export default {
   components: {
@@ -223,7 +217,8 @@ export default {
         application_letter_number: null
       },
       isFileExists: false,
-      filePath: ''
+      filePath: '',
+      downloadFileName: ''
     }
   },
   computed: {
@@ -241,7 +236,7 @@ export default {
     EventBus.$on('createDialogHide', (value) => {
       this.showForm = false
       if (value) {
-        this.getDetailApplication()
+        this.getList()
       }
     })
   },
@@ -464,7 +459,8 @@ export default {
         }
       }
       if (openType === 'download') {
-        pdfMake.createPdf(docDefinition).download(this.detailLetter.outgoing_letter.letter_number)
+        this.downloadFileName = this.$moment.utc(this.detailLetterPrint.outgoing_letter.letter_date).tz('Asia/Jakarta').format('YYYYMMDD') + ' - ' + this.detailLetter.outgoing_letter.letter_name + '.pdf'
+        pdfMake.createPdf(docDefinition).download(this.downloadFileName)
       } else {
         pdfMake.createPdf(docDefinition).open()
       }

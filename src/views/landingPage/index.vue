@@ -1,9 +1,10 @@
 <template>
   <div class="background-landing-page">
     <div class="full-landing-page">
+      <!-- <div class="header-landing-page"> -->
       <div class="header-landing-page">
         <v-row align="center">
-          <v-col cols="12" md="9" xs="12">
+          <v-col>
             <v-row>
               <img height="40" src="../../static/logistik_logo_lingkar.svg">
               <div class="title-page-landing-page">{{ $t('label.logistics_medical_device') }}</div>
@@ -22,10 +23,10 @@
         <v-row>
           <v-col cols="10">
             <v-row>
-              <v-col class="margin-left-20" cols="2">
+              <v-col class="margin-left-20 margin-top-15" cols="2">
                 <img height="40" src="../../static/logistik_logo_lingkar.svg">
               </v-col>
-              <v-col cols="10">
+              <v-col cols="6">
                 <div class="title-page-landing-page-mobile margin-left-title-mobile-landing-page">
                   {{ $t('label.logistics_medical_device') }}
                 </div>
@@ -90,6 +91,65 @@
             <img style="margin-left: -20px" src="../../static/bgFlat_kotak.png">
           </v-col>
         </v-row>
+        <div>
+          <v-row align="center">
+            <v-col cols="12" md="2" />
+            <v-col cols="12" md="8">
+              <div class="font-product-sans-landing-page card-title-landing-page mb-5 font-weight-bold text-center">
+                {{ $t('label.landing_page_first_title') }} <span class="title-logistic">{{ $t('label.feature') }}</span> <span>{{ $t('label.landing_page_last_title') }}</span>
+              </div>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.landing_page_feature_description') }}</p>
+            </v-col>
+            <v-col cols="12" md="2" />
+          </v-row>
+        </div>
+        <div>
+          <v-row>
+            <v-col class="shadow-box">
+              <img src="../../static/logistic_acceptance_report.png" width="100%">
+              <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
+                {{ $t('label.logistic_acceptance_report_title') }}
+              </div>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.logistic_acceptance_report_description') }}</p>
+              <div class="text-center">
+                <v-btn class="white--text" min-width="140px" color="#16A75C" href="#/acceptance-report">
+                  {{ $t('label.logistic_acceptance_report_button') }} <img class="button-icon" src="../../static/linkicon.png">
+                </v-btn>
+              </div>
+            </v-col>
+            <v-col class="shadow-box">
+              <img src="../../static/logistic_usability_report.png" width="100%">
+              <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
+                {{ $t('label.logistic_usability_report_title') }}
+              </div>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.logistic_usability_report_description') }}</p>
+              <div class="text-center">
+                <v-btn class="white--text" min-width="140px" color="#16A75C" href="http://bit.ly/LaporPenggunaanLogistik">
+                  {{ $t('label.logistic_acceptance_report_button') }} <img class="button-icon" src="../../static/linkicon.png">
+                </v-btn>
+              </div>
+            </v-col>
+            <v-col class="shadow-box">
+              <img src="../../static/tracking_logistik_1.png" width="100%">
+              <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
+                {{ $t('label.logistic_tracking_title') }}
+              </div>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.landing_page_text_tracking') }}</p>
+              <div class="text-center">
+                <v-btn class="white--text" min-width="140px" color="#16A75C" href="#/tracking">
+                  {{ $t('label.landing_page_tracking_title') }} <img class="button-icon" src="../../static/linkicon.png">
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
+        </div>
+        <div class="text-card-main">
+          <v-row>
+            <v-col>
+              <img style="float: right; margin-right: -20px" src="../../static/bgFlat_lingkar.png">
+            </v-col>
+          </v-row>
+        </div>
         <div class="text-card-main">
           <v-row>
             <v-col cols="5" md="5">
@@ -132,50 +192,6 @@
           </v-row>
         </div>
         <!-- End -->
-        <div class="text-card-main">
-          <v-row>
-            <v-col>
-              <img style="float: right; margin-right: -20px" src="../../static/bgFlat_lingkar.png">
-            </v-col>
-          </v-row>
-        </div>
-        <div class="text-card-main">
-          <v-row>
-            <v-col cols="7" md="7">
-              <div class="ml-10 font-product-sans-landing-page card-title-landing-page mb-5 font-weight-bold">
-                {{ $t('label.landing_page_tracking_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}.</span>
-              </div>
-              <p class="ml-10 font-text card-text-landing-page">{{ $t('label.landing_page_text_tracking') }}</p>
-              <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" href="#/tracking">{{ $t('label.landing_page_tracking_button') }}
-                <img class="button-icon" src="../../static/truck.png">
-              </v-btn>
-            </v-col>
-            <v-col cols="5" md="5">
-              <img src="../../static/tracking_logistik_1.png">
-            </v-col>
-          </v-row>
-        </div>
-        <!-- Mobile tracking -->
-        <div class="text-card-main-mobile">
-          <v-row>
-            <v-col cols="12" sm="12">
-              <div class="font-product-sans-landing-page card-title-landing-page mb-5 font-weight-bold text-center">
-                {{ $t('label.landing_page_tracking_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}.</span>
-              </div>
-              <p class="font-text card-text-landing-page text-center card-text-layout">{{ $t('label.landing_page_text_tracking') }}</p>
-              <center>
-                <v-btn class="white--text" min-width="140px" color="#16A75C" href="#/tracking">{{ $t('label.landing_page_tracking_button') }}
-                  <img class="button-icon" src="../../static/truck.png">
-                </v-btn>
-              </center>
-            </v-col>
-            <v-col cols="12" sm="12">
-              <center>
-                <img src="../../static/tracking_logistik_1.png" width="350px">
-              </center>
-            </v-col>
-          </v-row>
-        </div>
       </v-card>
       <div class="text-card-main">
         <v-row style="margin-top: -20px">

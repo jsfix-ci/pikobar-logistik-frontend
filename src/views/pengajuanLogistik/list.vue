@@ -27,7 +27,9 @@
             <v-btn color="green" large text outlined @click="exportData()"><v-icon left>mdi-upload</v-icon> {{ $t('label.export_data') }}</v-btn>
           </v-col>
           <v-col cols="12" sm="2" md="2">
-            <v-btn class="primary" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }} <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon><v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
+            <v-btn class="primary" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }}
+              <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon>
+              <v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
           </v-col>
         </v-row>
       </v-card-text>
@@ -49,8 +51,8 @@
           </v-col>
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.request_date') }}</v-label>
-            <date-picker
-              :value="date"
+            <date-picker-dashboard
+              :date="listQuery.start_date"
               @selected="changeDate"
             />
           </v-col>
@@ -84,6 +86,19 @@
               @change="handleSearch()"
             />
           </v-col>
+          <v-col cols="12" sm="3" class="mt-n8">
+            <v-label class="title">Status Rujukan</v-label>
+            <v-select
+              v-model="listQuery.is_reference"
+              :items="referenceFaskes"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              placeholder="Pilih Status Rujukan"
+              @change="handleSearch()"
+            />
+          </v-col>
         </v-row>
       </v-card-text>
       <hr class="thin">
@@ -97,6 +112,7 @@
                   <th class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.instance_type').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.instance_name').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.instance_reference').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
@@ -115,6 +131,9 @@
                   <td>{{ data.applicant.application_letter_number }}</td>
                   <td>{{ data.master_faskes_type.name }}</td>
                   <td>{{ data.agency_name }}</td>
+                  <td>
+                    <v-btn v-if="data.is_reference === 1" outlined small color="success" @click="referenceDetail(data)">{{ $t('label.instance_is_reference') }}</v-btn>
+                  </td>
                   <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
                   <td>{{ data.applicant.applicant_name }}</td>
                   <td>{{ data.created_at === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
@@ -149,28 +168,20 @@
         </v-col>
       </v-row>
     </v-card>
-    <v-row>
-      <v-card
-        outlined
-        height="80%"
-        style="margin: 13px"
-      >
-        <v-list-item>
-          <v-list-item-content>
-            {{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
-      <pagination
-        :total="totalListLogisticRequest"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        :on-next="onNext"
-      />
-    </v-row>
+    <pagination
+      :total="totalListLogisticRequest"
+      :total-data="totalDataLogisticRequest"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      :on-next="onNext"
+    />
     <completenessDetail
       ref="completenessDetailForm"
       :show="showcompletenessDetail"
+    />
+    <referenceDetail
+      ref="referenceDetailForm"
+      :show="showreferenceDetail"
     />
   </div>
 </template>
@@ -180,11 +191,13 @@ import { mapGetters } from 'vuex'
 import FileSaver from 'file-saver'
 import EventBus from '@/utils/eventBus'
 import completenessDetail from './completenessDetail'
+import referenceDetail from './referenceDetail'
 
 export default {
   name: 'ListPengajuanLogistik',
   components: {
-    completenessDetail
+    completenessDetail,
+    referenceDetail
   },
   data() {
     return {
@@ -199,7 +212,9 @@ export default {
         city_code: '',
         verification_status: '',
         agency_name: '',
-        date: ''
+        start_date: null,
+        end_date: null,
+        is_reference: null
       },
       status: [
         {
@@ -221,11 +236,22 @@ export default {
           value: 'pikobar'
         }
       ],
+      referenceFaskes: [
+        {
+          text: 'Rujukan',
+          value: 1
+        },
+        {
+          text: 'Bukan Rujukan',
+          value: 0
+        }
+      ],
       date: null,
       showFilter: false,
       isVerified: false,
       isApproved: false,
-      showcompletenessDetail: false
+      showcompletenessDetail: false,
+      showreferenceDetail: false
     }
   },
   computed: {
@@ -257,14 +283,23 @@ export default {
     EventBus.$on('hideCompletenessDetail', (value) => {
       this.showcompletenessDetail = false
     })
+    EventBus.$on('hideReferenceDetail', (value) => {
+      this.showreferenceDetail = false
+    })
   },
   methods: {
     async changeDate(value) {
-      this.listQuery.date = value
+      this.listQuery.start_date = value.startDate
+      this.listQuery.end_date = value.endDate
       await this.getLogisticRequestList()
     },
     async getLogisticRequestList() {
       await this.$store.dispatch('logistics/getListLogisticRequest', this.listQuery)
+      this.listLogisticRequest.forEach(element => {
+        if (element.master_faskes) {
+          element.is_reference = element.master_faskes.is_reference
+        }
+      })
     },
     async handleSearch() {
       await this.getLogisticRequestList()
@@ -290,6 +325,10 @@ export default {
     completenessDetail(data) {
       this.$refs.completenessDetailForm.setData(data.id, data)
       this.showcompletenessDetail = true
+    },
+    referenceDetail(data) {
+      this.$refs.referenceDetailForm.setData(data.id, data)
+      this.showreferenceDetail = true
     }
   }
 }

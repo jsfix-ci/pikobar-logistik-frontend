@@ -9,7 +9,8 @@ const state = {
   user: [],
   roles: [],
   district_user: '',
-  fullname: ''
+  fullname: '',
+  phase: ''
 }
 
 export default {

@@ -63,9 +63,9 @@
           <span class="text-title">{{ $t('label.approved_by') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by.name + picHandphone }}</span>
+          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.name + picHandphone : '-' }}</span>
           <br>
-          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by.agency_name }}</span>
+          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.agency_name : '-' }}</span>
         </v-col>
       </v-row>
       <v-row v-else-if="isApproved">
@@ -73,22 +73,9 @@
           <span class="text-title">{{ $t('label.approved_by') }}</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by.name + picHandphone }}</span>
+          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.name + picHandphone : '-' }}</span>
           <br>
-          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by.agency_name }}</span>
-        </v-col>
-        <v-col cols="9" sm="10">
-          <span style="margin-left: 20px">
-            <v-btn
-              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
-              outlined
-              color="#2E7D32"
-              class="margin-btn"
-              @click="submitFinal()"
-            >
-              {{ $t('label.final') }}
-            </v-btn>
-          </span>
+          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.agency_name : '-' }}</span>
         </v-col>
       </v-row>
       <v-row>
@@ -119,6 +106,15 @@
               @click="submitApprove()"
             >
               {{ $t('label.approve') }}
+            </v-btn>
+            <v-btn
+              v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
+              outlined
+              color="#2E7D32"
+              class="margin-btn"
+              @click="submitFinal()"
+            >
+              {{ $t('label.final') }}
             </v-btn>
           </span>
           <span style="margin-left: 20px">
@@ -171,7 +167,7 @@
             class="mx-auto"
             outlined
           >
-            <v-row>
+            <v-row class="mt-3 mb-3">
               <v-col class="margin-20" cols="12" sm="12" md="12">
                 <v-row v-if="isUrgent" class="margin-top-min-15">
                   <v-col>
@@ -208,6 +204,45 @@
                       @click="urgencyChange(detailLogisticRequest.applicant.id, 1)"
                     >
                       {{ $t('label.button_applicant_urgency_important') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')">
+        <v-col>
+          <span class="text-data-green">
+            {{ $t('label.applicant_status') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')">
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="margin-20" cols="12" sm="12" md="12">
+                <v-row class="margin-top-min-15">
+                  <v-col>
+                    <span>
+                      {{ $t('label.applicant_status_description') }} <b>{{ detailLogisticRequest.step_label }}</b>
+                    </span>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      outlined
+                      absolute
+                      right
+                      color="info"
+                      class="margin-btn margin-top-min-15"
+                      @click="returnChange(detailLogisticRequest.id)"
+                    >
+                      {{ $t('label.return') }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -295,15 +330,13 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col class="margin-20" cols="12" sm="3" md="3">
-                <v-row>
-                  <span
-                    class="text-title-green"
-                  >
+              <v-col cols="12" sm="3" md="3">
+                <v-row class="mt-5">
+                  <span class="text-title-green">
                     {{ $t('label.full_address') }}
                   </span>
                 </v-row>
-                <v-row>
+                <v-row class="mt-4">
                   <v-label>
                     {{ detailLogisticRequest.location_address }}
                   </v-label>
@@ -327,11 +360,8 @@
       </v-row>
       <v-row>
         <v-col cols="12" sm="12">
-          <v-card
-            class="mx-auto"
-            outlined
-          >
-            <v-row>
+          <v-card class="mx-auto" outlined>
+            <v-row class="mb-5">
               <v-col class="margin-20" cols="12" sm="6" md="6">
                 <v-row class="margin-top-min-15">
                   <v-col>
@@ -385,9 +415,11 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col class="margin-20" cols="12" sm="3" md="3">
-                <v-row><span class="text-title-green">{{ $t('label.applicant_ktp') }}</span></v-row>
-                <v-row>
+              <v-col cols="12" sm="3" md="3">
+                <v-row class="mt-5">
+                  <span class="text-title-green">{{ $t('label.applicant_ktp') }}</span>
+                </v-row>
+                <v-row class="mt-4">
                   <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
                   <a v-else-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</a>
                   <v-img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : noImage" @error="errorHandler" />
@@ -429,6 +461,58 @@
         </v-card>
       </v-col>
     </v-row>
+    <div v-if="detailLogisticRequest.agency_type <= 3">
+      <v-row>
+        <v-col>
+          <span class="text-data-green">Detail Kondisi Fasilitas Kesehatan</span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="margin-20">
+                <v-row class="margin-top-min-15">
+                  <v-col>
+                    <span class="text-title-green">Jumlah Pasien COVID-19 yang ditangani</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_covid_patients }} Orang
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">Jumlah Tempat Tidur</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_bedroom }} Tempat Tidur
+                    </v-label>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <span class="text-title-green">Jumlah Ruang Isolasi</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_isolation_room }} Ruangan
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">Jumlah Tenaga Kesehatan</span>
+                    <br>
+                    <v-label>
+                      {{ detailLogisticRequest.total_health_worker }} Orang
+                    </v-label>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
     <div> <!-- Daftar Barang Permohonan -->
       <v-row>
         <v-col>
@@ -716,26 +800,12 @@
     </div>
     <br>
     <CheckStockDialog :dialog-show="dialogStock" />
-    <updateKebutuhanLogistik
-      ref="updateForm"
-      :show="showForm"
-    />
-    <dialogUrgency
-      ref="dialogUrgencyForm"
-      :show="showUrgencyForm"
-    />
-    <agencyIdentity
-      ref="agencyIdentityForm"
-      :show="showAgencyIdentity"
-    />
-    <applicantIdentity
-      ref="dialogApplicantIdentityForm"
-      :show="showApplicantIdentity"
-    />
-    <updateLetter
-      ref="dialogUpdateLetterForm"
-      :show="updateLetterForm"
-    />
+    <updateKebutuhanLogistik ref="updateForm" :show="showForm" />
+    <dialogReturn ref="dialogReturnForm" :show="showReturnForm" />
+    <dialogUrgency ref="dialogUrgencyForm" :show="showUrgencyForm" />
+    <agencyIdentity ref="agencyIdentityForm" :show="showAgencyIdentity" />
+    <applicantIdentity ref="dialogApplicantIdentityForm" :show="showApplicantIdentity" />
+    <updateLetter ref="dialogUpdateLetterForm" :show="updateLetterForm" />
     <DialogDelete
       :dialog="dialogDelete"
       :data-deleted="dataDelete"
@@ -758,6 +828,7 @@ import { mapGetters } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
 import dialogUrgency from './dialogUrgency'
+import dialogReturn from './dialogReturn'
 import agencyIdentity from './agencyIdentity'
 import applicantIdentity from './applicantIdentity'
 import updateLetter from './updateLetter'
@@ -777,6 +848,7 @@ export default {
     DialogDelete,
     PicInfo,
     dialogUrgency,
+    dialogReturn,
     agencyIdentity,
     applicantIdentity,
     updateLetter
@@ -815,6 +887,7 @@ export default {
         }
       },
       showUrgencyForm: false,
+      showReturnForm: false,
       isUrgent: false,
       showAgencyIdentity: false,
       showApplicantIdentity: false,
@@ -831,6 +904,9 @@ export default {
       'totalListRealization',
       'totalDataRealization',
       'listStock'
+    ]),
+    ...mapGetters('user', [
+      'phase'
     ])
   },
   async created() {
@@ -850,6 +926,12 @@ export default {
     })
     EventBus.$on('dialogUrgencyConfirmation', (value) => {
       this.showUrgencyForm = false
+      if (value) {
+        this.getListDetail()
+      }
+    })
+    EventBus.$on('dialogReturnConfirmation', (value) => {
+      this.showReturnForm = false
       if (value) {
         this.getListDetail()
       }
@@ -877,7 +959,8 @@ export default {
     rejectData(value) {
       const formData = new FormData()
       this.showDialogReject = false
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('agency_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       if (this.detailLogisticRequest.applicant.verification_status === 'Terverifikasi') {
         formData.append('approval_status', 'rejected')
         formData.append('approval_note', value)
@@ -910,6 +993,11 @@ export default {
       this.dataUrgencyConfirmation = this.detailLogisticRequest
       this.$refs.dialogUrgencyForm.setData(id, value, this.dataUrgencyConfirmation)
     },
+    returnChange(id) {
+      this.showReturnForm = true
+      this.dataReturnConfirmation = this.detailLogisticRequest
+      this.$refs.dialogReturnForm.setData(id, this.dataReturnConfirmation)
+    },
     showAgencyIdentityDialog() {
       this.$refs.agencyIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
       this.showAgencyIdentity = true
@@ -925,7 +1013,7 @@ export default {
     async deleteRealization(item, recommendation, realization) {
       this.dialogDelete = true
       if (realization) {
-        item.product_name = item.realization_product_name
+        item.product_name = item.realization_product_name ?? item.recommendation_product_name
       } else {
         item.product_name = item.recommendation_product_name
       }
@@ -933,11 +1021,11 @@ export default {
     },
     async picPopUp(item, recommendation, realization, name) {
       this.dialogPic = true
-      if (realization) {
+      if (realization && item.realized_by !== null) {
         item.name = item.realized_by.name
         item.agency_name = item.realized_by.agency_name
         item.handphone = item.realized_by.handphone | '-'
-      } else {
+      } else if (item.recommend_by !== null) {
         item.name = item.recommend_by.name
         item.agency_name = item.recommend_by.agency_name
         item.handphone = item.recommend_by.handphone | '-'
@@ -1010,13 +1098,29 @@ export default {
       this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
       this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
       this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
-      if (this.isVerified && !this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.verified_by.handphone ?? '-'
-      } else if (this.isVerified && this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.approved_by.handphone ?? '-'
+      // Cek Step Permohonan
+      this.detailLogisticRequest.step = 'verifikasi'
+      this.detailLogisticRequest.step_label = 'Verifikasi Administrasi'
+      if (this.isRejectedApproval) {
+        this.detailLogisticRequest.step = 'ditolak rekomendasi'
+        this.detailLogisticRequest.step_label = 'Ditolak pada Rekomendasi salur'
+      } else if (this.isRejected) {
+        this.detailLogisticRequest.step = 'ditolak verifikasi'
+        this.detailLogisticRequest.step_label = 'Ditolak pada Verifikasi Administrasi'
       } else if (this.isFinalized) {
-        this.picHandphone = this.detailLogisticRequest.applicant.finalized_by.handphone ?? '-'
+        this.picHandphone = this.detailLogisticRequest.applicant.finalized_by !== null ? this.detailLogisticRequest.applicant.finalized_by.handphone : '-'
+        this.detailLogisticRequest.step = 'final'
+        this.detailLogisticRequest.step_label = 'Selesai Realisasi Salur'
+      } else if (this.isVerified && this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.approved_by !== null ? this.detailLogisticRequest.applicant.approved_by.handphone : '-'
+        this.detailLogisticRequest.step = 'realisasi'
+        this.detailLogisticRequest.step_label = 'Realisasi Salur'
+      } else if (this.isVerified && !this.isApproved) {
+        this.picHandphone = this.detailLogisticRequest.applicant.verified_by !== null ? this.detailLogisticRequest.applicant.verified_by.handphone : '-'
+        this.detailLogisticRequest.step = 'rekomendasi'
+        this.detailLogisticRequest.step_label = 'Rekomendasi Salur'
       }
+      this.picHandphone = this.picHandphone !== null ? this.picHandphone : '-'
       this.picHandphone = ' (' + this.picHandphone + ')'
       this.isUrgent = this.detailLogisticRequest.applicant.is_urgency === 1
     },
@@ -1089,18 +1193,26 @@ export default {
     },
     async postVerification() {
       const formData = new FormData()
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('agency_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('verification_status', 'verified')
-      await this.$store.dispatch('logistics/postVerificationStatus', formData)
-      window.location.reload()
+      formData.append('url', location.host + '/#')
+      const response = await this.$store.dispatch('logistics/postVerificationStatus', formData)
+      if (response.status === 200) {
+        await this.getListDetail()
+      }
     },
     async postReject(formData) {
-      await this.$store.dispatch('logistics/postVerificationStatus', formData)
-      window.location.reload()
+      const response = await this.$store.dispatch('logistics/postVerificationStatus', formData)
+      if (response.status === 200) {
+        await this.getListDetail()
+      }
     },
     async postRejectApproval(formData) {
-      await this.$store.dispatch('logistics/postApprovalStatus', formData)
-      window.location.reload()
+      const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
+      if (response.status === 200) {
+        await this.getListDetail()
+      }
     },
     setTotal() {
       this.totalAPD = 0
@@ -1110,22 +1222,26 @@ export default {
     },
     async submitApprove() {
       const formData = new FormData()
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('agency_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('approval_status', 'approved')
+      formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postApprovalStatus', formData)
       if (response.status === 200) {
-        window.location.reload()
+        await this.getListDetail()
       } else if (response.response.status === 422) {
         this.scrollToElement()
       }
     },
     async submitFinal() {
       const formData = new FormData()
-      formData.append('applicant_id', this.detailLogisticRequest.id)
+      formData.append('agency_id', this.detailLogisticRequest.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
       formData.append('approval_status', 'approved')
+      formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('logistics/postFinalStatus', formData)
       if (response.status === 200) {
-        window.location.reload()
+        await this.getListDetail()
       } else if (response.response.status === 422) {
         this.scrollToElement()
       }

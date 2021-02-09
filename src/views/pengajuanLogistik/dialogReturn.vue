@@ -7,8 +7,7 @@
     <v-card>
       <div class="col-sm-12">
         <v-card-text>
-          <span v-if="isUrgency === 1"><h4><b>{{ $t('label.urgency_dialog') }}</b></h4></span>
-          <span v-else><h4><b>{{ $t('label.not_urgency_dialog') }}</b></h4></span>
+          <span><h4><b>{{ titleReturn }}</b></h4></span>
         </v-card-text>
       </div>
       <div style="margin-left: 10px; margin-top: -20px">
@@ -43,7 +42,7 @@
         <v-btn
           color="success"
           class="margin-btn-update-logistic-needs"
-          @click="updateUrgency(isUrgency)"
+          @click="updateReturn"
         >
           {{ $t('label.action_button_urgency') }}
         </v-btn>
@@ -56,7 +55,7 @@
 import EventBus from '@/utils/eventBus'
 
 export default {
-  name: 'DialogUrgency',
+  name: 'DialogReturn',
   props: {
     show: {
       type: Boolean,
@@ -66,9 +65,10 @@ export default {
   data() {
     return {
       id: null,
-      isUrgency: 0,
+      titleReturn: this.$t('label.return_to_administration_step_dialog'),
       dataDialog: {
         id: null,
+        step: null,
         agency_name: '-',
         applicant: {
           id: null,
@@ -79,23 +79,43 @@ export default {
     }
   },
   methods: {
-    async setData(id, value, dataDialog) {
+    async setData(id, dataDialog) {
       this.id = id
-      this.isUrgency = value
       this.dataDialog = dataDialog
+      this.getUndoStepTitle()
+    },
+    getUndoStepTitle() {
+      switch (this.dataDialog.step) {
+        case 'ditolak rekomendasi':
+          this.titleReturn = this.$t('label.return_to_recommendation_step_dialog')
+          break
+        case 'ditolak verifikasi':
+          this.titleReturn = this.$t('label.return_to_administration_step_dialog')
+          break
+        case 'final':
+          this.titleReturn = this.$t('label.return_to_final_step_dialog')
+          break
+        case 'realisasi':
+          this.titleReturn = this.$t('label.return_to_recommendation_step_dialog')
+          break
+        case 'rekomendasi':
+          this.titleReturn = this.$t('label.return_to_administration_step_dialog')
+          break
+      }
     },
     closeDialogStock() {
-      EventBus.$emit('dialogUrgencyConfirmation', false)
+      EventBus.$emit('dialogReturnConfirmation', false)
     },
-    async updateUrgency(value) {
+    async updateReturn(value) {
       const param = {
-        agency_id: this.dataDialog.id,
+        agency_id: this.id,
         applicant_id: this.dataDialog.applicant.id,
-        is_urgency: this.isUrgency
+        step: this.dataDialog.step,
+        url: location.host + '/#'
       }
-      const response = await this.$store.dispatch('logistics/postUrgencyChange', param)
+      const response = await this.$store.dispatch('logistics/postReturnChange', param)
       if (response.status === 200) {
-        EventBus.$emit('dialogUrgencyConfirmation', true)
+        EventBus.$emit('dialogReturnConfirmation', true)
       }
     }
   }

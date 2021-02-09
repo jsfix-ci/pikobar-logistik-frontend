@@ -9,6 +9,31 @@ extend('required', {
   message: (_, values) => i18n.t('errors.field_must_be_filled', values)
 })
 
+extend('requiredNumericTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_total', values)
+})
+
+extend('requiredCovidPatientTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_covid_patient_total', values)
+})
+
+extend('requiredIsolationRoomTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_isolation_room_total', values)
+})
+
+extend('requiredBedroomTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_bedroom_total', values)
+})
+
+extend('requiredHealthWorkerTotal', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_health_worker_total', values)
+})
+
 extend('requiredInstanceType', {
   ...required,
   message: (_, values) => i18n.t('errors.field_must_be_filled_instance_type', values)
@@ -119,6 +144,11 @@ extend('requiredTrackingField', {
   message: (_, values) => i18n.t('errors.field_must_be_filled_tracking', values)
 })
 
+extend('requiredApplicantCode', {
+  ...required,
+  message: (_, values) => i18n.t('errors.field_must_be_filled_applicant_code', values)
+})
+
 extend('numericRealizationAmount', {
   ...numeric,
   message: (_, values) => i18n.t('errors.field_unauthorized_characters_realization_amount', values)
@@ -180,6 +210,13 @@ extend('notMinus', {
   }
 })
 
+extend('notDecimal', {
+  message: (_, values) => i18n.t('errors.not_decimal', values),
+  validate: value => {
+    return !value.includes('.')
+  }
+})
+
 extend('atLeastOne', {
   message: 'At least one item must be selected.',
   validate: (value) => {
@@ -235,4 +272,41 @@ extend('letterName', {
 extend('letterNumber', {
   ...required,
   message: (_, values) => i18n.t('errors.required_fields.letter_number', values)
+})
+
+// Acceptance Validation
+
+extend('acceptanceReportFullName', {
+  ...required,
+  message: (_, values) => i18n.t('errors.acceptance_report.fullname', values)
+})
+
+extend('acceptanceReportPosition', {
+  ...required,
+  message: (_, values) => i18n.t('errors.acceptance_report.position', values)
+})
+
+extend('acceptanceReportPhone', {
+  ...required,
+  message: (_, values) => i18n.t('errors.acceptance_report.phone', values)
+})
+
+extend('acceptanceReportProofPic', {
+  ...required,
+  message: (_, values) => i18n.t('errors.acceptance_report.proof_pic', values)
+})
+
+extend('acceptanceReportOfficerFullname', {
+  ...required,
+  message: (_, values) => i18n.t('errors.acceptance_report.officer_fullname', values)
+})
+
+extend('acceptanceReportBastProof', {
+  ...required,
+  message: (_, values) => i18n.t('errors.acceptance_report.bast_proof', values)
+})
+
+extend('acceptanceReportItemProof', {
+  ...required,
+  message: (_, values) => i18n.t('errors.acceptance_report.item_proof', values)
 })

@@ -21,12 +21,13 @@ export default {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       doPostUpdate('/api/v1/users/me', 'GET').then((response) => {
-        const { roles, name, code_district_city } = response.data
+        const { roles, name, code_district_city, phase } = response.data
         const role = [roles]
         commit('SET_ROLES', role)
         commit('SET_DISTRICT', code_district_city)
         commit('SET_FULLNAME', name)
         commit('SET_USER', response.data)
+        commit('SET_PHASE', phase)
         resolve(role)
       }).catch((error) => {
         reject(error)
@@ -36,7 +37,7 @@ export default {
 
   async changePasswordUser({ commit }, data) {
     try {
-      const response = await doPostUpdate('/api/users/change-password', 'PUT', data)
+      const response = await doPostUpdate('/api/v1/users/change-password', 'PUT', data)
       return response
     } catch (e) {
       return e
