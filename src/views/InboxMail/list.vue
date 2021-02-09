@@ -135,25 +135,13 @@
         </v-col>
       </v-row>
     </v-card>
-    <v-row class="mt-4">
-      <v-card
-        outlined
-        height="80%"
-        class="mr-2"
-      >
-        <v-list-item>
-          <v-list-item-content>
-            {{ $t('label.total_data') }} : {{ totalDataIncomingMail }}
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
-      <pagination
-        :total="totalListIncomingMail"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        :on-next="onNext"
-      />
-    </v-row>
+    <pagination
+      :total="totalListIncomingMail"
+      :total-data="totalDataIncomingMail"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      :on-next="onNext"
+    />
   </div>
 </template>
 

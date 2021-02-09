@@ -42,7 +42,7 @@
                 <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
               </v-col>
             </v-row>
-            <v-row>
+            <v-row class="mb-1">
               <v-col cols="6">
                 <a v-if="isFileExists" :href="filePath" target="_blank" class="blue--text letter-class"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
                 <a v-else class="blue--text letter-class" @click="printLetter('open')"><u>{{ detailLetter ? detailLetter.outgoing_letter.letter_number : '-' }}</u></a>
@@ -190,6 +190,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import EventBus from '@/utils/eventBus'
 import CreateLetter from './Create'
 import DialogDelete from '@/components/DialogDelete'
 import pdfMake from 'pdfmake/build/pdfmake'
@@ -232,6 +233,12 @@ export default {
   async created() {
     await this.getDetailData()
     await this.getDetailApplication()
+    EventBus.$on('createDialogHide', (value) => {
+      this.showForm = false
+      if (value) {
+        this.getList()
+      }
+    })
   },
   methods: {
     async printLetter(openType) {

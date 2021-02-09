@@ -480,14 +480,14 @@
                     <span class="text-title-green">Jumlah Pasien COVID-19 yang ditangani</span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.total_covid_patients | '-' }} Orang
+                      {{ detailLogisticRequest.total_covid_patients }} Orang
                     </v-label>
                   </v-col>
                   <v-col>
                     <span class="text-title-green">Jumlah Tempat Tidur</span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.total_bedroom | '-' }} Tempat Tidur
+                      {{ detailLogisticRequest.total_bedroom }} Tempat Tidur
                     </v-label>
                   </v-col>
                 </v-row>
@@ -496,14 +496,14 @@
                     <span class="text-title-green">Jumlah Ruang Isolasi</span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.total_isolation_room | '-' }} Ruangan
+                      {{ detailLogisticRequest.total_isolation_room }} Ruangan
                     </v-label>
                   </v-col>
                   <v-col>
                     <span class="text-title-green">Jumlah Tenaga Kesehatan</span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.total_health_worker | '-' }} Orang
+                      {{ detailLogisticRequest.total_health_worker }} Orang
                     </v-label>
                   </v-col>
                 </v-row>

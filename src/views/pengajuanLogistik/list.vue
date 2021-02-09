@@ -51,8 +51,8 @@
           </v-col>
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.request_date') }}</v-label>
-            <date-picker
-              :value="date"
+            <date-picker-dashboard
+              :date="listQuery.start_date"
               @selected="changeDate"
             />
           </v-col>
@@ -83,6 +83,19 @@
               item-value="value"
               :clearable="true"
               :placeholder="$t('label.select_applicant_origin')"
+              @change="handleSearch()"
+            />
+          </v-col>
+          <v-col cols="12" sm="3" class="mt-n8">
+            <v-label class="title">Status Rujukan</v-label>
+            <v-select
+              v-model="listQuery.is_reference"
+              :items="referenceFaskes"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              placeholder="Pilih Status Rujukan"
               @change="handleSearch()"
             />
           </v-col>
@@ -155,25 +168,13 @@
         </v-col>
       </v-row>
     </v-card>
-    <v-row class="mt-4">
-      <v-card
-        outlined
-        height="80%"
-        class="mr-2"
-      >
-        <v-list-item>
-          <v-list-item-content>
-            {{ $t('label.total_data') }} : {{ totalDataLogisticRequest }}
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
-      <pagination
-        :total="totalListLogisticRequest"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        :on-next="onNext"
-      />
-    </v-row>
+    <pagination
+      :total="totalListLogisticRequest"
+      :total-data="totalDataLogisticRequest"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      :on-next="onNext"
+    />
     <completenessDetail
       ref="completenessDetailForm"
       :show="showcompletenessDetail"
@@ -211,7 +212,9 @@ export default {
         city_code: '',
         verification_status: '',
         agency_name: '',
-        date: ''
+        start_date: null,
+        end_date: null,
+        is_reference: null
       },
       status: [
         {
@@ -231,6 +234,16 @@ export default {
         {
           text: this.$t('label.pikobar'),
           value: 'pikobar'
+        }
+      ],
+      referenceFaskes: [
+        {
+          text: 'Rujukan',
+          value: 1
+        },
+        {
+          text: 'Bukan Rujukan',
+          value: 0
         }
       ],
       date: null,
@@ -276,7 +289,8 @@ export default {
   },
   methods: {
     async changeDate(value) {
-      this.listQuery.date = value
+      this.listQuery.start_date = value.startDate
+      this.listQuery.end_date = value.endDate
       await this.getLogisticRequestList()
     },
     async getLogisticRequestList() {

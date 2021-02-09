@@ -1,24 +1,43 @@
 <template>
-  <v-row v-if="total > 0" justify="space-between">
-    <v-col cols="12" md="2" sm="2">
-      <v-select
-        v-model="pageSize"
-        :items="pageSizes"
-        filled
-        solo
-        label="Baris"
-        @change="changePageSize"
-      />
-    </v-col>
+  <v-row v-if="total > 0" class="pb-6 mt-1">
     <v-col>
-      <div style="float: right;padding-bottom: 40px;">
-        <v-pagination
-          v-model="currentPage"
-          :length="total"
-          :total-visible="6"
-          @input="onNext"
-        />
-      </div>
+      <v-row>
+        <v-col v-if="totalData" cols="6">
+          <v-text-field
+            :value="'Total Data: ' + totalData"
+            outlined
+            filled
+            solo
+            dense
+            readonly
+          />
+        </v-col>
+        <v-col cols="4">
+          <v-select
+            v-model="pageSize"
+            :items="pageSizes"
+            outlined
+            filled
+            solo
+            dense
+            label="Baris"
+            @change="changePageSize"
+          />
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col cols="8" class="mr-n2">
+      <v-row>
+        <v-col>
+          <v-pagination
+            v-model="currentPage"
+            :length="total"
+            :total-visible="6"
+            class="float-right"
+            @input="onNext"
+          />
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
 </template>
@@ -30,6 +49,10 @@ export default {
     total: {
       required: true,
       type: Number
+    },
+    totalData: {
+      type: Number,
+      default: null
     },
     page: {
       type: Number,
