@@ -167,12 +167,12 @@ export default {
       },
       status: [
         {
-          text: 'Terverifikasi',
-          value: 'verified'
+          text: this.$t('label.verified'),
+          value: this.$t('label.verified_value')
         },
         {
           text: 'Belum Terverifikasi',
-          value: 'not_verified'
+          value: this.$t('label.not_verified_value')
         }
       ],
       applicantOrigin: [

@@ -87,7 +87,7 @@
             />
           </v-col>
           <v-col cols="12" sm="3" class="mt-n8">
-            <v-label class="title">Status Rujukan</v-label>
+            <v-label class="title">{{ $t('label.instance_reference_status') }}</v-label>
             <v-select
               v-model="listQuery.is_reference"
               :items="referenceFaskes"
@@ -95,12 +95,12 @@
               item-text="text"
               item-value="value"
               :clearable="true"
-              placeholder="Pilih Status Rujukan"
+              :placeholder="$t('label.instance_reference_status_placeholder')"
               @change="handleSearch()"
             />
           </v-col>
           <v-col cols="12" sm="3" class="mt-n8">
-            <v-label class="title">Kelengkapan Data</v-label>
+            <v-label class="title">{{ $t('label.completeness') }}</v-label>
             <v-select
               v-model="listQuery.completeness"
               :items="completeStatus"
@@ -108,12 +108,12 @@
               item-text="text"
               item-value="value"
               :clearable="true"
-              placeholder="Lengkap/Belum Lengkap"
+              :placeholder="$t('label.completeness_placeholder')"
               @change="handleSearch()"
             />
           </v-col>
           <v-col cols="12" sm="3" class="mt-n8">
-            <v-label class="title">Tingkat Urgensi</v-label>
+            <v-label class="title">{{ $t('label.urgency_level') }}</v-label>
             <v-select
               v-model="listQuery.is_urgency"
               :items="urgencyStatus"
@@ -121,12 +121,12 @@
               item-text="text"
               item-value="value"
               :clearable="true"
-              placeholder="Pilih Tingkat Urgensi"
+              :placeholder="$t('label.input_urgency_level')"
               @change="handleSearch()"
             />
           </v-col>
           <v-col v-if="isApproved" cols="12" sm="3" class="mt-n8">
-            <v-label class="title">Selesai/Belum Selesai</v-label>
+            <v-label class="title">{{ $t('label.finalization_status') }}</v-label>
             <v-select
               v-model="listQuery.finalized_by"
               :items="finalizedStatus"
@@ -134,7 +134,7 @@
               item-text="text"
               item-value="value"
               :clearable="true"
-              placeholder="Selesai/Belum Selesai"
+              :placeholder="$t('label.finalization_status')"
               @change="handleSearch()"
             />
           </v-col>
@@ -260,12 +260,12 @@ export default {
       },
       status: [
         {
-          text: 'Terverifikasi',
-          value: 'verified'
+          text: this.$t('label.verified'),
+          value: this.$t('label.verified_value')
         },
         {
-          text: 'Belum Terverifikasi',
-          value: 'not_verified'
+          text: this.$t('label.not_verified'),
+          value: this.$t('label.not_verified_value')
         }
       ],
       applicantOrigin: [
@@ -280,41 +280,41 @@ export default {
       ],
       referenceFaskes: [
         {
-          text: 'Rujukan',
+          text: this.$t('label.is_reference'),
           value: 1
         },
         {
-          text: 'Bukan Rujukan',
+          text: this.$t('label.is_not_reference'),
           value: 0
         }
       ],
       completeStatus: [
         {
-          text: 'Belum Lengkap',
+          text: this.$t('label.not_complete'),
           value: 0
         },
         {
-          text: 'Lengkap',
+          text: this.$t('label.completed'),
           value: 1
         }
       ],
       urgencyStatus: [
         {
-          text: 'Tidak Urgen',
+          text: this.$t('label.not_urgency'),
           value: 0
         },
         {
-          text: 'Urgen (Penting)',
+          text: this.$t('label.urgency'),
           value: 1
         }
       ],
       finalizedStatus: [
         {
-          text: 'Belum Selesai',
+          text: this.$t('label.not_done_yet'),
           value: 0
         },
         {
-          text: 'Selesai',
+          text: this.$t('label.done'),
           value: 1
         }
       ],
