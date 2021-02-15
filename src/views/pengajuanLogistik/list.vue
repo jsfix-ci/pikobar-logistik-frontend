@@ -99,6 +99,32 @@
               @change="handleSearch()"
             />
           </v-col>
+          <v-col cols="12" sm="3" class="mt-n8">
+            <v-label class="title">Kelengkapan Data</v-label>
+            <v-select
+              v-model="listQuery.completeness"
+              :items="completeStatus"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              placeholder="Lengkap/Belum Lengkap"
+              @change="handleSearch()"
+            />
+          </v-col>
+          <v-col cols="12" sm="3" class="mt-n8">
+            <v-label class="title">Tingkat Urgensi</v-label>
+            <v-select
+              v-model="listQuery.is_urgency"
+              :items="urgencyStatus"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              placeholder="Pilih Tingkat Urgensi"
+              @change="handleSearch()"
+            />
+          </v-col>
           <v-col v-if="isApproved" cols="12" sm="3" class="mt-n8">
             <v-label class="title">Selesai/Belum Selesai</v-label>
             <v-select
@@ -109,19 +135,6 @@
               item-value="value"
               :clearable="true"
               placeholder="Selesai/Belum Selesai"
-              @change="handleSearch()"
-            />
-          </v-col>
-          <v-col cols="12" sm="3" class="mt-n8">
-            <v-label class="title">{{ $t('label.completed') }}/{{ $t('label.not_complete') }}</v-label>
-            <v-select
-              v-model="listQuery.completeness"
-              :items="completeStatus"
-              solo
-              item-text="text"
-              item-value="value"
-              :clearable="true"
-              placeholder="Lengkap/Belum Lengkap"
               @change="handleSearch()"
             />
           </v-col>
@@ -242,6 +255,7 @@ export default {
         end_date: null,
         is_reference: null,
         completeness: null,
+        is_urgency: null,
         finalized_by: null
       },
       status: [
@@ -281,6 +295,16 @@ export default {
         },
         {
           text: 'Lengkap',
+          value: 1
+        }
+      ],
+      urgencyStatus: [
+        {
+          text: 'Tidak Urgen',
+          value: 0
+        },
+        {
+          text: 'Urgen (Penting)',
           value: 1
         }
       ],
