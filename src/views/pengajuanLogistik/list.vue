@@ -374,6 +374,7 @@ export default {
       })
     },
     async handleSearch() {
+      this.listQuery.page = 1
       await this.getLogisticRequestList()
     },
     async onNext() {
