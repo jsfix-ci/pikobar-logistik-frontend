@@ -99,6 +99,19 @@
               @change="handleSearch()"
             />
           </v-col>
+          <v-col v-if="isApproved" cols="12" sm="3" class="mt-n8">
+            <v-label class="title">Selesai/Belum Selesai</v-label>
+            <v-select
+              v-model="listQuery.finalized_by"
+              :items="finalizedStatus"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              placeholder="Selesai/Belum Selesai"
+              @change="handleSearch()"
+            />
+          </v-col>
         </v-row>
       </v-card-text>
       <hr class="thin">
@@ -214,7 +227,8 @@ export default {
         agency_name: '',
         start_date: null,
         end_date: null,
-        is_reference: null
+        is_reference: null,
+        finalized_by: null
       },
       status: [
         {
@@ -244,6 +258,16 @@ export default {
         {
           text: 'Bukan Rujukan',
           value: 0
+        }
+      ],
+      finalizedStatus: [
+        {
+          text: 'Belum Selesai',
+          value: 0
+        },
+        {
+          text: 'Selesai',
+          value: 1
         }
       ],
       date: null,
