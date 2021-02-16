@@ -52,7 +52,7 @@
         </v-col>
         <v-col class="margin-left-min-30" cols="2" sm="2">
           <span v-if="isVerified && !isApproved && !isRejectedApproval" class="text-data-green"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}</span>
-          <span v-else-if="isFinalized" class="text-data-green"> : {{ $t('label.finalized_status') }}</span>
+          <span v-else-if="isFinalized" class="text-data-green"> : {{ $t('label.finalized') }}</span>
           <span v-else-if="isApproved" class="text-data-green"> : {{ detailLogisticRequest.applicant.approval_status }}</span>
           <span v-else-if="isRejectedApproval" class="text-data-red"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.approval_status : '-' }}</span>
           <span v-else class="text-data-red"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}</span>
