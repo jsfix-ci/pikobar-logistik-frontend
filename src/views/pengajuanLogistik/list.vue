@@ -300,12 +300,12 @@ export default {
       ],
       urgencyStatus: [
         {
-          text: this.$t('label.not_urgency'),
-          value: 0
-        },
-        {
           text: this.$t('label.urgency'),
           value: 1
+        },
+        {
+          text: this.$t('label.not_urgency'),
+          value: 0
         }
       ],
       finalizedStatus: [
