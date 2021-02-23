@@ -26,8 +26,8 @@
         <v-col>
           <span class="sub-title-reject-reason">{{ $t('label.reason_reject') }}</span>
           <br>
-          <span v-if="item.applicant ? item.applicant.note !== null : null" class="grey--text">{{ item.applicant ? item.applicant.note : '-' }}</span>
-          <span v-else class="grey--text">{{ item.applicant ? item.applicant.approval_note : '-' }}</span>
+          <span v-if="item.applicant.approval_status == 'Permohonan Ditolak'" class="grey--text">{{ item.applicant.approval_note }}</span>
+          <span v-else class="grey--text">{{ item.applicant.note }}</span>
         </v-col>
       </div>
 
