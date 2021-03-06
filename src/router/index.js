@@ -12,6 +12,7 @@ import pengajuanLogistik from './modules/pengajuanLogistik'
 import faskesRouter from './modules/faskes'
 import formPemohonAdmin from './modules/formPemohonAdmin'
 import letterRouter from './modules/letter'
+import reports from './modules/reports'
 
 /**
  * constantRoutes
@@ -85,6 +86,7 @@ export const asyncRoutes = [
   dashboardRouter,
   formPemohonAdmin,
   pengajuanLogistik,
+  reports,
   letterRouter,
   faskesRouter,
   // 404 page must be placed at the end !!!
