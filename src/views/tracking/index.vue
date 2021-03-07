@@ -412,7 +412,8 @@ export default {
       listQueryTable: {
         page: 1,
         limit: 3
-      }
+      },
+      itemStatus: this.$t('label.not_approved')
     }
   },
   computed: {
@@ -444,20 +445,28 @@ export default {
     changeStatus(value) {
       switch (value) {
         case 'approved':
-          return this.$t('label.approved')
+          this.itemStatus = this.$t('label.approved')
+          break
         case 'not_delivered':
-          return this.$t('label.not_delivered')
+          this.itemStatus = this.$t('label.not_delivered')
+          break
         case 'delivered':
-          return this.$t('label.delivered')
+          this.itemStatus = this.$t('label.delivered')
+          break
         case 'not_available':
-          return this.$t('label.not_available')
+          this.itemStatus = this.$t('label.not_available')
+          break
         case 'replaced':
-          return this.$t('label.replaced')
+          this.itemStatus = this.$t('label.replaced')
+          break
         case 'not_yet_fulfilled':
-          return this.$t('label.not_yet_fulfilled')
+          this.itemStatus = this.$t('label.not_yet_fulfilled')
+          break
         default:
-          return this.$t('label.not_approved')
+          this.itemStatus = this.$t('label.not_approved')
+          break
       }
+      return this.itemStatus
     },
     async onNext() {
       await this.getTrackingLogisticNeedList(this.id)
