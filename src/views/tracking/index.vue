@@ -453,6 +453,8 @@ export default {
           return this.$t('label.not_available')
         case 'replaced':
           return this.$t('label.replaced')
+        case 'not_yet_fulfilled':
+          return this.$t('label.not_yet_fulfilled')
         default:
           return this.$t('label.not_approved')
       }
