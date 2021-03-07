@@ -104,7 +104,7 @@
               <v-tab
                 v-for="(item, index) in dataTracking.application"
                 :key="index"
-                @click="getTrackingLogisticNeedList(item.id)"
+                @click="getTrackingLogisticNeedList(item.id, 1)"
               >
                 {{ $t('label.tracking_id') }}{{ item.id }}
               </v-tab>
@@ -435,9 +435,10 @@ export default {
       if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
       this.clicked = true
     },
-    async getTrackingLogisticNeedList(id) {
+    async getTrackingLogisticNeedList(id, page) {
       this.id = id
       this.listQueryTable.id = id
+      this.listQueryTable.page = page ?? this.listQueryTable.page
       await this.$store.dispatch('logistics/getTrackingLogisticNeedList', this.listQueryTable)
     },
     changeStatus(value) {
