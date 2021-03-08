@@ -1,14 +1,391 @@
 <template>
-  <v-card class="main-card-landing-page" outlined>
-    <div class="text-card-main">
-      <v-row>
-        <img src="../../../static/maintenance.jpg" width="100%">
+  <div>
+    <v-card outlined>
+      <v-card-title>
+        <span class="text-h5 font-weight-bold">{{ $t('label.goods_receipt_report_list') }}</span>
+      </v-card-title>
+      <v-row class="mx-2">
+        <v-col cols="4">
+          <v-card color="#E6FFDF" outlined style="border: 1px solid green">
+            <v-card-text>
+              <p class="text-h7 font-weight-bold green--text">{{ $t('label.goods_receipt_report_total') }}</p>
+              <span class="text-h4 font-weight-bold green--text">{{ totalDataLogisticRequest }}</span><br>
+              <span class="text-h7 font-weight-bold green--text">Permohonan</span>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="4">
+          <v-card color="#FFE0E0" outlined style="border: 1px solid red">
+            <v-card-text>
+              <p class="text-h7 font-weight-bold red--text">{{ $t('label.goods_receipt_not_yet_report_total') }}</p>
+              <span class="text-h4 font-weight-bold red--text">{{ totalDataLogisticRequest }}</span><br>
+              <span class="text-h7 font-weight-bold red--text">Permohonan</span>
+            </v-card-text>
+          </v-card>
+        </v-col>
       </v-row>
-    </div>
-  </v-card>
+      <hr class="mt-5 thin">
+      <v-card-title>
+        <span class="font-weight-bold">{{ $t('label.goods_receipt_report_table') }}</span>
+      </v-card-title>
+      <hr class="thin">
+      <v-card-text>
+        <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
+          <v-col cols="12" sm="4" md="4">
+            <v-card
+              outlined
+              class="card-search"
+            >
+              <v-text-field
+                v-model="listQuery.agency_name"
+                solo-inverted
+                flat
+                hide-details
+                :placeholder="$t('label.search_data')"
+                prepend-inner-icon="search"
+                @change="handleSearch"
+              />
+            </v-card>
+          </v-col>
+          <v-col cols="12" offset-sm="4" offset-md="4" sm="2" md="2">
+            <v-btn color="green" large text outlined @click="exportData()"><v-icon left>mdi-upload</v-icon> {{ $t('label.export_data') }}</v-btn>
+          </v-col>
+          <v-col cols="12" sm="2" md="2">
+            <v-btn class="primary" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }}
+              <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon>
+              <v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <hr v-if="showFilter" class="thin">
+      <v-card-text v-if="showFilter">
+        <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
+          <v-col cols="12" sm="1">
+            <v-label class="title">{{ $t('label.sort') }}</v-label>
+            <v-select
+              v-model="listQuery.sort"
+              :items="sortOption"
+              solo
+              item-text="label"
+              item-value="value"
+              :clearable="true"
+              :placeholder="$t('label.sort')"
+              @change="handleSearch"
+            />
+          </v-col>
+          <v-col cols="12" sm="3">
+            <v-label class="title">{{ $t('label.request_date') }}</v-label>
+            <date-picker-dashboard
+              :date="listQuery.start_date"
+              @selected="changeDate"
+            />
+          </v-col>
+          <v-col cols="12" sm="2">
+            <v-label class="title">{{ $t('label.city_district') }}</v-label>
+            <select-area-district-city :on-select-district-city="onSelectDistrictCity" />
+          </v-col>
+          <v-col cols="12" sm="3">
+            <v-label class="title">{{ $t('label.instance_type') }}</v-label>
+            <v-select
+              v-model="listQuery.faskes_type"
+              :items="faskesTypeList"
+              solo
+              item-text="name"
+              item-value="id"
+              :clearable="true"
+              :placeholder="$t('label.select_instance_type')"
+              @change="handleSearch()"
+            />
+          </v-col>
+          <v-col cols="12" sm="3">
+            <v-label class="title">{{ $t('label.applicant_origin') }}</v-label>
+            <v-select
+              v-model="listQuery.source_data"
+              :items="applicantOrigin"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              :placeholder="$t('label.select_applicant_origin')"
+              @change="handleSearch()"
+            />
+          </v-col>
+          <v-col cols="12" sm="3" class="mt-n8">
+            <v-label class="title">{{ $t('label.instance_reference_status') }}</v-label>
+            <v-select
+              v-model="listQuery.is_reference"
+              :items="referenceFaskes"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              :placeholder="$t('label.instance_reference_status_placeholder')"
+              @change="handleSearch()"
+            />
+          </v-col>
+          <v-col cols="12" sm="3" class="mt-n8">
+            <v-label class="title">{{ $t('label.completeness') }}</v-label>
+            <v-select
+              v-model="listQuery.completeness"
+              :items="completeStatus"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              :placeholder="$t('label.completeness_placeholder')"
+              @change="handleSearch()"
+            />
+          </v-col>
+          <v-col cols="12" sm="3" class="mt-n8">
+            <v-label class="title">{{ $t('label.urgency_level') }}</v-label>
+            <v-select
+              v-model="listQuery.is_urgency"
+              :items="urgencyStatus"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              :placeholder="$t('label.input_urgency_level')"
+              @change="handleSearch()"
+            />
+          </v-col>
+          <v-col v-if="isApproved" cols="12" sm="3" class="mt-n8">
+            <v-label class="title">{{ $t('label.finalization_status') }}</v-label>
+            <v-select
+              v-model="listQuery.finalized_by"
+              :items="finalizedStatus"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              :placeholder="$t('label.finalization_status')"
+              @change="handleSearch()"
+            />
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <hr class="thin">
+      <v-row>
+        <v-col auto>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.applicant_code').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.goods_type').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.total').toUpperCase() + ' ' + $t('label.goods').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.date').toUpperCase() + ' ' + $t('label.received').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.received_by').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(data, index) in listLogisticRequest" :key="data.index">
+                  <td>{{ getTableRowNumbering(index) }}</td>
+                  <td>#{{ data.id }}</td>
+                  <td>{{ data.applicant.applicant_name }}</td>
+                  <td>2 Tipe</td>
+                  <td>150</td>
+                  <td>{{ data.created_at === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td class="orange--text">Belum Lapor</td>
+                  <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
+                </tr>
+                <tr v-if="listLogisticRequest.length === 0">
+                  <td colspan="10" class="text-center">{{ $t('label.no_data') }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-col>
+      </v-row>
+    </v-card>
+    <pagination
+      :total="totalListLogisticRequest"
+      :total-data="totalDataLogisticRequest"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      :on-next="onNext"
+    />
+  </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+import FileSaver from 'file-saver'
+import EventBus from '@/utils/eventBus'
+
 export default {
-  name: 'LandingPage'
+  name: 'GoodsReceiptReportList',
+  data() {
+    return {
+      sortOption: [
+        { value: 'asc', label: 'A-Z' },
+        { value: 'desc', label: 'Z-A' }
+      ],
+      listQuery: {
+        page: 1,
+        limit: 10,
+        sort: '',
+        city_code: '',
+        verification_status: '',
+        agency_name: '',
+        start_date: null,
+        end_date: null,
+        is_reference: null,
+        completeness: null,
+        is_urgency: null,
+        finalized_by: null
+      },
+      status: [
+        {
+          text: this.$t('label.verified'),
+          value: this.$t('label.verified_value')
+        },
+        {
+          text: this.$t('label.not_verified'),
+          value: this.$t('label.not_verified_value')
+        }
+      ],
+      applicantOrigin: [
+        {
+          text: this.$t('label.dinkes_province'),
+          value: 'dinkes_provinsi'
+        },
+        {
+          text: this.$t('label.pikobar'),
+          value: 'pikobar'
+        }
+      ],
+      referenceFaskes: [
+        {
+          text: this.$t('label.is_reference'),
+          value: 1
+        },
+        {
+          text: this.$t('label.is_not_reference'),
+          value: 0
+        }
+      ],
+      completeStatus: [
+        {
+          text: this.$t('label.not_complete'),
+          value: 0
+        },
+        {
+          text: this.$t('label.completed'),
+          value: 1
+        }
+      ],
+      urgencyStatus: [
+        {
+          text: this.$t('label.emergency'),
+          value: 1
+        },
+        {
+          text: this.$t('label.not_urgency'),
+          value: 0
+        }
+      ],
+      finalizedStatus: [
+        {
+          text: this.$t('label.not_done_yet'),
+          value: 0
+        },
+        {
+          text: this.$t('label.done'),
+          value: 1
+        }
+      ],
+      date: null,
+      showFilter: false,
+      isVerified: false,
+      isApproved: false,
+      showcompletenessDetail: false,
+      showreferenceDetail: false
+    }
+  },
+  computed: {
+    ...mapGetters('logistics', [
+      'listLogisticRequest',
+      'totalListLogisticRequest',
+      'totalDataLogisticRequest'
+    ]),
+    ...mapGetters('faskesType', [
+      'faskesTypeList'
+    ])
+  },
+  async created() {
+    if (this.$route.name === 'verified') {
+      this.isVerified = true
+      this.listQuery.verification_status = 'verified'
+      this.listQuery.approval_status = 'not_approved'
+    } else if (this.$route.name === 'notVerified') {
+      this.listQuery.verification_status = 'not_verified'
+    } else if (this.$route.name === 'rejected') {
+      this.listQuery.is_rejected = 1
+    } else if (this.$route.name === 'approved') {
+      this.listQuery.verification_status = 'verified'
+      this.listQuery.approval_status = 'approved'
+      this.isApproved = true
+    }
+    await this.$store.dispatch('faskesType/getListFaskesType')
+    this.getLogisticRequestList()
+    EventBus.$on('hideCompletenessDetail', (value) => {
+      this.showcompletenessDetail = false
+    })
+    EventBus.$on('hideReferenceDetail', (value) => {
+      this.showreferenceDetail = false
+    })
+  },
+  methods: {
+    async changeDate(value) {
+      this.listQuery.start_date = value.startDate
+      this.listQuery.end_date = value.endDate
+      await this.getLogisticRequestList()
+    },
+    async getLogisticRequestList() {
+      await this.$store.dispatch('logistics/getListLogisticRequest', this.listQuery)
+      this.listLogisticRequest.forEach(element => {
+        if (element.master_faskes) {
+          element.is_reference = element.master_faskes.is_reference
+        }
+      })
+    },
+    async handleSearch() {
+      this.listQuery.page = 1
+      await this.getLogisticRequestList()
+    },
+    async onNext() {
+      await this.getLogisticRequestList()
+    },
+    getTableRowNumbering(index) {
+      return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
+    },
+    onSelectDistrictCity(value) {
+      this.listQuery.city_code = value ? value.kemendagri_kabupaten_kode : ''
+      this.handleSearch()
+    },
+    toDetail(data) {
+      this.$router.push(`/alat-kesehatan/detail/${data.id}`)
+    },
+    async exportData() {
+      const response = await this.$store.dispatch('logistics/logisticRequestExportData', this.listQuery)
+      const fileName = `${this.$t('label.export_file_name')}-${this.$moment(Date.now()).format('YYYY-MM-DD-h:mm:ss')}.xlsx`
+      await FileSaver.saveAs(response, fileName)
+    },
+    completenessDetail(data) {
+      this.$refs.completenessDetailForm.setData(data.id, data)
+      this.showcompletenessDetail = true
+    },
+    referenceDetail(data) {
+      this.$refs.referenceDetailForm.setData(data.id, data)
+      this.showreferenceDetail = true
+    }
+  }
 }
 </script>
