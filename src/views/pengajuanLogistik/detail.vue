@@ -225,7 +225,7 @@
             class="mx-auto"
             outlined
           >
-            <v-row>
+            <v-row class="mt-3 mb-3">
               <v-col class="margin-20" cols="12" sm="12" md="12">
                 <v-row class="margin-top-min-15">
                   <v-col>

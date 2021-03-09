@@ -104,7 +104,7 @@
               <v-tab
                 v-for="(item, index) in dataTracking.application"
                 :key="index"
-                @click="getTrackingLogisticNeedList(item.id)"
+                @click="getTrackingLogisticNeedList(item.id, 1)"
               >
                 {{ $t('label.tracking_id') }}{{ item.id }}
               </v-tab>
@@ -412,7 +412,8 @@ export default {
       listQueryTable: {
         page: 1,
         limit: 3
-      }
+      },
+      itemStatus: this.$t('label.not_approved')
     }
   },
   computed: {
@@ -435,26 +436,37 @@ export default {
       if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
       this.clicked = true
     },
-    async getTrackingLogisticNeedList(id) {
+    async getTrackingLogisticNeedList(id, page) {
       this.id = id
       this.listQueryTable.id = id
+      this.listQueryTable.page = page ?? this.listQueryTable.page
       await this.$store.dispatch('logistics/getTrackingLogisticNeedList', this.listQueryTable)
     },
     changeStatus(value) {
       switch (value) {
         case 'approved':
-          return this.$t('label.approved')
+          this.itemStatus = this.$t('label.approved')
+          break
         case 'not_delivered':
-          return this.$t('label.not_delivered')
+          this.itemStatus = this.$t('label.not_delivered')
+          break
         case 'delivered':
-          return this.$t('label.delivered')
+          this.itemStatus = this.$t('label.delivered')
+          break
         case 'not_available':
-          return this.$t('label.not_available')
+          this.itemStatus = this.$t('label.not_available')
+          break
         case 'replaced':
-          return this.$t('label.replaced')
+          this.itemStatus = this.$t('label.replaced')
+          break
+        case 'not_yet_fulfilled':
+          this.itemStatus = this.$t('label.not_yet_fulfilled')
+          break
         default:
-          return this.$t('label.not_approved')
+          this.itemStatus = this.$t('label.not_approved')
+          break
       }
+      return this.itemStatus
     },
     async onNext() {
       await this.getTrackingLogisticNeedList(this.id)

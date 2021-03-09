@@ -110,7 +110,7 @@
               <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_acceptance_report_title') }}
               </div>
-              <p class="font-text card-text-landing-page text-center">{{ $t('label.logistic_acceptance_report_description') }}</p>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.logistic_acceptance_report_description') + $t('label.future_info_click_below') }}</p>
               <div class="text-center">
                 <v-btn class="white--text" min-width="140px" color="#16A75C" href="#/acceptance-report">
                   {{ $t('label.logistic_acceptance_report_button') }} <img class="button-icon" src="../../static/linkicon.png">
@@ -122,7 +122,7 @@
               <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_usability_report_title') }}
               </div>
-              <p class="font-text card-text-landing-page text-center">{{ $t('label.logistic_usability_report_description') }}</p>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.logistic_usability_report_description') + $t('label.future_info_click_below') }}</p>
               <div class="text-center">
                 <v-btn class="white--text" min-width="140px" color="#16A75C" href="http://bit.ly/LaporPenggunaanLogistik">
                   {{ $t('label.logistic_acceptance_report_button') }} <img class="button-icon" src="../../static/linkicon.png">
@@ -134,7 +134,7 @@
               <div class="font-product-sans-landing-page card-feature-landing-page mb-5 font-weight-bold text-center">
                 {{ $t('label.logistic_tracking_title') }}
               </div>
-              <p class="font-text card-text-landing-page text-center">{{ $t('label.landing_page_text_tracking') }}</p>
+              <p class="font-text card-text-landing-page text-center">{{ $t('label.landing_page_text_tracking') + $t('label.future_info_click_below') }}</p>
               <div class="text-center">
                 <v-btn class="white--text" min-width="140px" color="#16A75C" href="#/tracking">
                   {{ $t('label.landing_page_tracking_title') }} <img class="button-icon" src="../../static/linkicon.png">
