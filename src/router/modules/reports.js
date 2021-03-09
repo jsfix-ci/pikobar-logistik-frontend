@@ -23,7 +23,7 @@ const reports = {
     },
     {
       path: '/reports/goods_use_report',
-      component: () => import('@/views/exception/underMaintenance'),
+      component: () => import('@/views/reports/goods_use_report/list'),
       name: 'goods_use_report',
       meta: {
         title: 'goods_use_report',
