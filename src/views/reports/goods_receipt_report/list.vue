@@ -4,26 +4,6 @@
       <v-card-title>
         <span class="text-h5 font-weight-bold">{{ $t('label.goods_receipt_report_list') }}</span>
       </v-card-title>
-      <v-row class="mx-2">
-        <v-col cols="4">
-          <v-card color="#E6FFDF" outlined style="border: 1px solid green">
-            <v-card-text>
-              <p class="text-h7 font-weight-bold green--text">{{ $t('label.goods_receipt_report_total') }}</p>
-              <span class="text-h4 font-weight-bold green--text">{{ totalDataLogisticRequest }}</span><br>
-              <span class="text-h7 font-weight-bold green--text">Permohonan</span>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col cols="4">
-          <v-card color="#FFE0E0" outlined style="border: 1px solid red">
-            <v-card-text>
-              <p class="text-h7 font-weight-bold red--text">{{ $t('label.goods_receipt_not_yet_report_total') }}</p>
-              <span class="text-h4 font-weight-bold red--text">{{ totalDataLogisticRequest }}</span><br>
-              <span class="text-h7 font-weight-bold red--text">Permohonan</span>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
       <hr class="mt-5 thin">
       <v-card-title>
         <span class="font-weight-bold">{{ $t('label.goods_receipt_report_table') }}</span>
