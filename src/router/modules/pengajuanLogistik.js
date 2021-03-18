@@ -6,7 +6,7 @@ const pengajuanLogistik = {
   redirect: '/pengajuan-logistik/alat-kesehatan/terverifikasi',
   meta: {
     title: 'logistic_request_title',
-    icon: 'library_books',
+    icon: 'medication',
     roles: ['superadmin', 'dinkesprov']
   },
   active: false,

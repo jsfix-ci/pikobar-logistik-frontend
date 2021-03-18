@@ -5,7 +5,7 @@ def secretsProd = [
     [envVar: 'VUE_APP_PORT', vaultKey: 'VUE_APP_PORT']]],
 ]
 
-def configuration = [vaultUrl: 'https://vault.jacloud.digitalservice.id/',  vaultCredentialId: 'approle-logistik', engineVersion: 2]
+def configuration = [vaultUrl: "${VAULT_JABAR_CLOUD}",  vaultCredentialId: 'approle-logistik', engineVersion: 2]
 
 pipeline {
 
@@ -16,6 +16,8 @@ pipeline {
         PROJECT_REGISTRY ='logistik-pikobar'
         VERSION = "${BUILD_TAG}"
         URL_REGISTRY = "${env.URL_REGISTRY_JACLOUD}"
+
+        VAULT_JABAR_CLOUD = "${VAULT_JABAR_CLOUD}"
 
         KUBECONFIG_LOGISTIK_STAGING = "${env.KUBECONFIG_LOGISTIK_STAGING}"
         CLIENT_KEY_LOGISTIK_STAGING = "${env.CLIENT_KEY_LOGISTIK_STAGING}"
