@@ -117,6 +117,16 @@ export default {
       return e
     }
   },
+  async getListGoodsReceiptReport({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/logistic-request', 'GET', params)
+      commit('SET_LIST_LOGISTIC_REQUEST', response.data.data)
+      commit('SET_TOTAL_LIST_LOGISTIC_REQUEST', response.data.last_page)
+      commit('SET_TOTAL_DATA_LOGISTIC_REQUEST', response.data.total)
+    } catch (e) {
+      return e
+    }
+  },
   async getListDetailLogisticRequest({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/logistic-request/' + params, 'GET')

@@ -329,7 +329,7 @@ export default {
       await this.getLogisticRequestList()
     },
     async getLogisticRequestList() {
-      await this.$store.dispatch('logistics/getListLogisticRequest', this.listQuery)
+      await this.$store.dispatch('logistics/getListGoodsReceiptReport', this.listQuery)
       this.listLogisticRequest.forEach(element => {
         if (element.master_faskes) {
           element.is_reference = element.master_faskes.is_reference
