@@ -119,10 +119,10 @@ export default {
   },
   async getListGoodsReceiptReport({ commit }, params) {
     try {
-      const response = await fetchList('/api/v1/logistic-request', 'GET', params)
-      commit('SET_LIST_LOGISTIC_REQUEST', response.data.data)
-      commit('SET_TOTAL_LIST_LOGISTIC_REQUEST', response.data.last_page)
-      commit('SET_TOTAL_DATA_LOGISTIC_REQUEST', response.data.total)
+      const response = await fetchList('/api/v1/acceptance-report', 'GET', params)
+      commit('SET_LIST_LOGISTIC_REQUEST', response.data)
+      commit('SET_TOTAL_LIST_LOGISTIC_REQUEST', response.last_page)
+      commit('SET_TOTAL_DATA_LOGISTIC_REQUEST', response.total)
     } catch (e) {
       return e
     }
