@@ -308,7 +308,7 @@
                     <tr v-if="listLogisticRequest.length === 0">
                       <td class="text-center" :colspan="12">{{ $t('label.no_data') }}</td>
                     </tr>
-                    <tr v-for="(item, index) in listLogisticRequest" v-else :key="item.index">
+                    <tr v-for="(item, index) in listLogisticRequest" :key="item.index">
                       <td>{{ getTableRowNumbering(index) }}</td>
                       <td>{{ item.need_product_name || '-' }}</td>
                       <td>{{ item.need_description || '-' }}</td>
@@ -319,12 +319,12 @@
                       <td>{{ item.recommendation_product_name || '-' }}</td>
                       <td>{{ item.recommendation_quantity || '-' }}</td>
                       <td>{{ item.recommendation_unit_name || '-' }}</td>
-                      <td>{{ changeStatus(item.recommendation_status) || '-' }}</td>
+                      <td>{{ item.recommendation_status || '-' }}</td>
                       <!-- realization -->
                       <td>{{ item.final_product_name || '-' }}</td>
                       <td>{{ item.final_quantity || '-' }}</td>
                       <td>{{ item.final_unit || '-' }}</td>
-                      <td>{{ changeStatus(item.final_status) || '-' }}</td>
+                      <td>{{ item.final_status || '-' }}</td>
                     </tr>
                   </tbody>
                 </template>
@@ -388,6 +388,7 @@
           </v-col>
         </v-row>
       </div>
+      <!-- End Mobile Footer -->
     </div>
   </div>
 </template>
@@ -441,32 +442,37 @@ export default {
       this.listQueryTable.id = id
       this.listQueryTable.page = page ?? this.listQueryTable.page
       await this.$store.dispatch('logistics/getTrackingLogisticNeedList', this.listQueryTable)
+      this.listLogisticRequest.forEach(element => {
+        element.recommendation_status = this.changeStatus(element.recommendation_status)
+        element.final_status = this.changeStatus(element.final_status)
+      })
     },
     changeStatus(value) {
+      let status = this.$t('label.not_approved')
       switch (value) {
         case 'approved':
-          this.itemStatus = this.$t('label.approved')
+          status = this.$t('label.approved')
           break
         case 'not_delivered':
-          this.itemStatus = this.$t('label.not_delivered')
+          status = this.$t('label.not_delivered')
           break
         case 'delivered':
-          this.itemStatus = this.$t('label.delivered')
+          status = this.$t('label.delivered')
           break
         case 'not_available':
-          this.itemStatus = this.$t('label.not_available')
+          status = this.$t('label.not_available')
           break
         case 'replaced':
-          this.itemStatus = this.$t('label.replaced')
+          status = this.$t('label.replaced')
           break
         case 'not_yet_fulfilled':
-          this.itemStatus = this.$t('label.not_yet_fulfilled')
+          status = this.$t('label.not_yet_fulfilled')
           break
         default:
-          this.itemStatus = this.$t('label.not_approved')
+          status = this.$t('label.not_approved')
           break
       }
-      return this.itemStatus
+      return status
     },
     async onNext() {
       await this.getTrackingLogisticNeedList(this.id)
