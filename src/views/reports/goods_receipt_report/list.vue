@@ -15,16 +15,16 @@
             <template v-slot:default>
               <thead>
                 <tr>
-                  <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.applicant_code').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.goods_type').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.total').toUpperCase() + ' ' + $t('label.goods').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.date').toUpperCase() + ' ' + $t('label.received').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.received_by').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.status').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
+                  <th class="text-left text-uppercase">{{ $t('label.number') }}</th>
+                  <th class="text-left text-uppercase">{{ $t('label.applicant_code') }}</th>
+                  <th class="text-left text-uppercase">{{ $t('label.contact_person') }}</th>
+                  <th class="text-left text-uppercase">{{ $t('label.goods_type') }}</th>
+                  <th class="text-left text-uppercase">{{ $t('label.total') + ' ' + $t('label.goods') }}</th>
+                  <th class="text-left text-uppercase">{{ $t('label.request_date') }}</th>
+                  <th class="text-left text-uppercase">{{ $t('label.date') + ' ' + $t('label.received') }}</th>
+                  <th class="text-left text-uppercase">{{ $t('label.received_by') }}</th>
+                  <th class="text-left text-uppercase">{{ $t('label.status') }}</th>
+                  <th class="text-center text-uppercase">{{ $t('label.action') }}</th>
                 </tr>
               </thead>
               <tbody>
