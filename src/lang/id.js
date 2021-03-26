@@ -175,6 +175,7 @@ export default {
     select_applicant_origin: 'Pilih asal permohonan',
     city_name: 'Nama Kabupaten/Kota',
     instance_name: 'Nama Instansi',
+    type: 'Tipe',
     instance_reference: 'Tipe Instansi',
     goods_type: 'Tipe Barang',
     instance_reference_status: 'Status Rujukan',

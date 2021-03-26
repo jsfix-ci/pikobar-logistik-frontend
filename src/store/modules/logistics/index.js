@@ -9,6 +9,11 @@ const state = {
   dataListLogisticRequest: [],
   totalListLogisticRequest: 0,
   totalDataLogisticRequest: 0,
+  // Acceptance Report
+  listAcceptanceReport: [],
+  totalListAcceptanceReport: 0,
+  totalDataAcceptanceReport: 0,
+  // Detail Logistic Request
   dataDetailLogisticRequest: {},
   totalDetailLogisticNeeds: 0,
   dataListDetailLogisticNeeds: [],
