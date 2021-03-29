@@ -9,6 +9,27 @@
         <span class="font-weight-bold">{{ $t('label.goods_receipt_report_table') }}</span>
       </v-card-title>
       <hr class="thin">
+      <v-card-text>
+        <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
+          <v-col cols="12" sm="4" md="4">
+            <v-card
+              outlined
+              class="card-search"
+            >
+              <v-text-field
+                v-model="listQuery.search"
+                solo-inverted
+                flat
+                hide-details
+                :placeholder="$t('label.search_data')"
+                prepend-inner-icon="search"
+                @change="handleSearch"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <hr class="thin">
       <v-row>
         <v-col auto>
           <v-simple-table>
@@ -78,77 +99,8 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        sort: '',
-        city_code: '',
-        verification_status: '',
-        agency_name: '',
-        start_date: null,
-        end_date: null,
-        is_reference: null,
-        completeness: null,
-        is_urgency: null,
-        finalized_by: null
+        search: null
       },
-      status: [
-        {
-          text: this.$t('label.verified'),
-          value: this.$t('label.verified_value')
-        },
-        {
-          text: this.$t('label.not_verified'),
-          value: this.$t('label.not_verified_value')
-        }
-      ],
-      applicantOrigin: [
-        {
-          text: this.$t('label.dinkes_province'),
-          value: 'dinkes_provinsi'
-        },
-        {
-          text: this.$t('label.pikobar'),
-          value: 'pikobar'
-        }
-      ],
-      referenceFaskes: [
-        {
-          text: this.$t('label.is_reference'),
-          value: 1
-        },
-        {
-          text: this.$t('label.is_not_reference'),
-          value: 0
-        }
-      ],
-      completeStatus: [
-        {
-          text: this.$t('label.not_complete'),
-          value: 0
-        },
-        {
-          text: this.$t('label.completed'),
-          value: 1
-        }
-      ],
-      urgencyStatus: [
-        {
-          text: this.$t('label.emergency'),
-          value: 1
-        },
-        {
-          text: this.$t('label.not_urgency'),
-          value: 0
-        }
-      ],
-      finalizedStatus: [
-        {
-          text: this.$t('label.not_done_yet'),
-          value: 0
-        },
-        {
-          text: this.$t('label.done'),
-          value: 1
-        }
-      ],
       date: null,
       showFilter: false,
       isVerified: false,
@@ -168,21 +120,8 @@ export default {
     ])
   },
   async created() {
-    if (this.$route.name === 'verified') {
-      this.isVerified = true
-      this.listQuery.verification_status = 'verified'
-      this.listQuery.approval_status = 'not_approved'
-    } else if (this.$route.name === 'notVerified') {
-      this.listQuery.verification_status = 'not_verified'
-    } else if (this.$route.name === 'rejected') {
-      this.listQuery.is_rejected = 1
-    } else if (this.$route.name === 'approved') {
-      this.listQuery.verification_status = 'verified'
-      this.listQuery.approval_status = 'approved'
-      this.isApproved = true
-    }
     await this.$store.dispatch('faskesType/getListFaskesType')
-    this.getLogisticRequestList()
+    this.getAcceptanceReportList()
     EventBus.$on('hideCompletenessDetail', (value) => {
       this.showcompletenessDetail = false
     })
@@ -194,9 +133,9 @@ export default {
     async changeDate(value) {
       this.listQuery.start_date = value.startDate
       this.listQuery.end_date = value.endDate
-      await this.getLogisticRequestList()
+      await this.getAcceptanceReportList()
     },
-    async getLogisticRequestList() {
+    async getAcceptanceReportList() {
       await this.$store.dispatch('logistics/getListGoodsReceiptReport', this.listQuery)
       this.listAcceptanceReport.forEach(element => {
         if (element.master_faskes) {
@@ -206,10 +145,10 @@ export default {
     },
     async handleSearch() {
       this.listQuery.page = 1
-      await this.getLogisticRequestList()
+      await this.getAcceptanceReportList()
     },
     async onNext() {
-      await this.getLogisticRequestList()
+      await this.getAcceptanceReportList()
     },
     getTableRowNumbering(index) {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
