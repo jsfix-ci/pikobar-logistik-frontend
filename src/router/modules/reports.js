@@ -30,6 +30,17 @@ const reports = {
         noCache: true,
         roles: ['superadmin', 'dinkesprov']
       }
+    },
+    {
+      path: '/reports/goods_receipt_report/:id',
+      component: () => import('@/views/pengajuanLogistik/detail'),
+      hidden: true,
+      meta: {
+        title: 'applicant_medical_tools_list_title',
+        icon: 'library_books',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov']
+      }
     }
   ]
 }
