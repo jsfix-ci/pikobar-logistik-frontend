@@ -18,13 +18,40 @@
           </v-btn>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="3" sm="2">
+          <span class="text-title">Kode Permohonan</span>
+        </v-col>
+        <v-col class="margin-left-min-30" cols="7" sm="8">
+          : <span class="text-data-green">{{ detailAcceptanceReport.id }}</span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="3" sm="2">
+          <span class="text-title">Nama Pemohon</span>
+        </v-col>
+        <v-col class="margin-left-min-30" cols="7" sm="8">
+          : <span class="text-data-green">{{ detailAcceptanceReport.applicant.applicant_name }}</span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="3" sm="2">
+          <span class="text-title">Status</span>
+        </v-col>
+        <v-col class="margin-left-min-30" cols="7" sm="8">
+          : 
+          <span v-if="detailAcceptanceReport.acceptance_report" class="text-data-green">Sudah Lapor</span>
+          <span v-else class="orange--text">Belum Lapor</span>
+        </v-col>
+      </v-row>
+      <!-- Button Back -->
       <v-row class="mb-15">
         <v-col>
           <v-btn small color="success" width="114px" height="46px" absolute right @click="back()">
             {{ $t('label.back') }}
           </v-btn>
         </v-col>
-      </v-row>
+      </v-row><!-- End Button Back -->
     </div>
     <br>
   </div>
@@ -46,17 +73,19 @@ export default {
   },
   computed: {
     ...mapGetters('logistics', [
-      'listAcceptanceReport',
-      'totalListAcceptanceReport',
-      'totalDataAcceptanceReport'
+      'detailAcceptanceReport'
     ])
   },
   async created() {
     this.listQuery.agency_id = this.$route.params.id
+    await this.getReportDetail()
   },
   methods: {
     toLogisticDetail(id) {
       this.$router.push(`/alat-kesehatan/detail/${id}`)
+    },
+    async getReportDetail() {
+      await this.$store.dispatch('logistics/getGoodsReceiptReportDetail', this.$route.params.id)
     }
   }
 }
