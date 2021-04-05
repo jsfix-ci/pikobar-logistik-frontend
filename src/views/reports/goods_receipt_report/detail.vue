@@ -39,11 +39,86 @@
           <span class="text-title">Status</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="7" sm="8">
-          : 
-          <span v-if="detailAcceptanceReport.acceptance_report" class="text-data-green">Sudah Lapor</span>
+          : <span v-if="detailAcceptanceReport.acceptance_report" class="text-data-green">Sudah Lapor</span>
           <span v-else class="orange--text">Belum Lapor</span>
         </v-col>
       </v-row>
+    </div>
+    <div>
+      <br>
+      <v-row>
+        <v-col>
+          <span class="text-data-green">
+            {{ $t('route.goods_receipt_report_detail') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="mx-3 mt-5" cols="12" sm="12" md="12">
+                <v-row class="margin-top-min-15">
+                  <v-col>
+                    <span class="text-title-green">
+                      {{ $t('label.acceptance_report.fullname') }}
+                    </span>
+                    <br>
+                    <v-label>
+                      {{ detailAcceptanceReport.acceptance_report ? detailAcceptanceReport.acceptance_report.fullname : '-' }}
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">
+                      {{ $t('label.acceptance_report.position') }}
+                    </span>
+                    <br>
+                    <v-label>
+                      {{ detailAcceptanceReport.acceptance_report ? detailAcceptanceReport.acceptance_report.position : '-' }}
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">
+                      {{ $t('label.acceptance_report.phone') }}
+                    </span>
+                    <br>
+                    <v-label>
+                      {{ detailAcceptanceReport.acceptance_report ? detailAcceptanceReport.acceptance_report.phone : '-' }}
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">
+                      {{ $t('label.acceptance_report.date') }}
+                    </span>
+                    <br>
+                    <v-label>
+                      {{ detailAcceptanceReport.acceptance_report ? $moment(detailAcceptanceReport.acceptance_report.date).format('D MMMM YYYY') : '-' }}
+                    </v-label>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col class="mx-3 mb-5" cols="12" sm="12" md="12">
+                <v-row>
+                  <v-col>
+                    <span class="text-title-green">
+                      {{ $t('label.acceptance_report.officer_fullname') }}
+                    </span>
+                    <br>
+                    <v-label>
+                      {{ detailAcceptanceReport.acceptance_report ? detailAcceptanceReport.acceptance_report.officer_fullname : '-' }}
+                    </v-label>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+    <div>
       <!-- Button Back -->
       <v-row class="mb-15">
         <v-col>
@@ -81,6 +156,9 @@ export default {
     await this.getReportDetail()
   },
   methods: {
+    back() {
+      this.$router.go(-1)
+    },
     toLogisticDetail(id) {
       this.$router.push(`/alat-kesehatan/detail/${id}`)
     },
@@ -133,9 +211,6 @@ export default {
 }
 .margin-left-min-30 {
   margin-left: -30px;
-}
-.margin-20 {
-  margin: 20px;
 }
 .margin-top-min-15 {
   margin-top: -15px
