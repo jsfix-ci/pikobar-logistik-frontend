@@ -13,6 +13,7 @@ const state = {
   listAcceptanceReport: [],
   totalListAcceptanceReport: 0,
   totalDataAcceptanceReport: 0,
+  detailAcceptanceReport: [],
   // Detail Logistic Request
   dataDetailLogisticRequest: {},
   totalDetailLogisticNeeds: 0,

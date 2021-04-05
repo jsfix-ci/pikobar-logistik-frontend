@@ -27,6 +27,9 @@ export default {
   totalDataAcceptanceReport: (state, getters) => {
     return state.totalDataAcceptanceReport
   },
+  detailAcceptanceReport: (state, getters) => {
+    return state.detailAcceptanceReport
+  },
   // Detail Logistic Request
   detailLogisticRequest: (state, getters) => {
     return state.dataDetailLogisticRequest
