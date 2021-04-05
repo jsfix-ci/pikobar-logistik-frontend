@@ -624,6 +624,13 @@ export default {
       error: {
         proof_pic: 'Belum ada file Foto Bukti Penerimaan Barang yang diupload',
         item_proof: 'Beri keterangan terlebih dahulu daftar item barang yang diterima',
+      },
+      item : {
+        product_name: 'Nama Barang/Item',
+        qty: 'Jumlah Barang',
+        qty_ok: 'Jmlh Barang Sesuai',
+        qty_nok: 'Jmlh Barang Tdk Sesuai',
+        quality: 'Kualitas/ Mutu Barang yang diterima',
       }
     }
   },

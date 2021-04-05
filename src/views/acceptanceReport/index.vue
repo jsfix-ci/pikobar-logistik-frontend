@@ -388,7 +388,7 @@
                                       >
                                         <v-text-field
                                           v-model="editedItem.name"
-                                          label="Nama Barang/Item"
+                                          :label="$t('label.acceptance_report.item.product_name')"
                                           disabled
                                           dense
                                           outlined
@@ -401,7 +401,7 @@
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty"
-                                          label="Jumlah Barang"
+                                          :label="$t('label.acceptance_report.item.qty')"
                                           disabled
                                           dense
                                           outlined
@@ -414,7 +414,7 @@
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty_ok"
-                                          label="Jmlh Barang Sesuai"
+                                          :label="$t('label.acceptance_report.item.qty_ok')"
                                           type="number"
                                           dense
                                           outlined
@@ -428,7 +428,7 @@
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty_nok"
-                                          label="Jmlh Barang Tdk Sesuai"
+                                          :label="$t('label.acceptance_report.item.qty_nok')"
                                           type="number"
                                           dense
                                           outlined
@@ -443,7 +443,7 @@
                                         <v-select
                                           v-model="editedItem.quality"
                                           :items="qualityList"
-                                          label="Kualitas/ Mutu Barang yang diterima"
+                                          :label="$t('label.acceptance_report.item.quality')"
                                           dense
                                           outlined
                                         />
@@ -761,12 +761,12 @@ export default {
       dialogDelete: false,
       headers: [
         { text: 'Nama Barang/Item', align: 'start', value: 'name', class: 'success white--text' },
-        { text: 'Jumlah Barang', align: 'center', value: 'qty', class: 'success white--text' },
-        { text: 'Satuan', align: 'center', value: 'unit', class: 'success white--text' },
-        { text: 'Jmlh Barang Sesuai', align: 'center', value: 'qty_ok', class: 'success white--text' },
-        { text: 'Jmlh Barang Tdk Sesuai', align: 'center', value: 'qty_nok', class: 'success white--text' },
+        { text: 'Jumlah Barang', value: 'qty', class: 'success white--text' },
+        { text: 'Satuan', value: 'unit', class: 'success white--text' },
+        { text: 'Jmlh Barang Sesuai', value: 'qty_ok', class: 'success white--text' },
+        { text: 'Jmlh Barang Tdk Sesuai', value: 'qty_nok', class: 'success white--text' },
         { text: 'Kualitas Mutu', value: 'quality', class: 'success white--text' },
-        { text: 'Aksi', align: 'center', value: 'actions', sortable: false, class: 'success white--text' }
+        { text: 'Aksi', value: 'actions', sortable: false, class: 'success white--text' }
       ],
       options: {
         itemsPerPage: 3
