@@ -44,6 +44,7 @@
         </v-col>
       </v-row>
     </div>
+    <!-- goods_receipt_report_detail section -->
     <div>
       <br>
       <v-row>
@@ -117,7 +118,7 @@
           </v-card>
         </v-col>
       </v-row>
-    </div>
+    </div><!-- end goods_receipt_report_detail section -->
     <div>
       <!-- Button Back -->
       <v-row class="mb-15">
