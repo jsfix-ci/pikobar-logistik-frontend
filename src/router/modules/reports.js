@@ -33,10 +33,10 @@ const reports = {
     },
     {
       path: '/reports/goods_receipt_report/:id',
-      component: () => import('@/views/pengajuanLogistik/detail'),
+      component: () => import('@/views/reports/goods_receipt_report/detail'),
       hidden: true,
       meta: {
-        title: 'applicant_medical_tools_list_title',
+        title: 'goods_receipt_report',
         icon: 'library_books',
         noCache: true,
         roles: ['superadmin', 'dinkesprov']

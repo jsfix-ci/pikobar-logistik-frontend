@@ -33,6 +33,7 @@ export default {
     letter_manage: 'Manajemen Surat',
     report: 'Pelaporan',
     goods_receipt_report: 'Penerimaan Barang',
+    goods_receipt_report_detail: 'Detail Penerimaan Barang',
     goods_use_report: 'Penggunaan Barang',
     outgoing_mail: 'Surat Perintah',
     incoming_mail: 'Surat Masuk',
