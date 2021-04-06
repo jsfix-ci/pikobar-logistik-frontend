@@ -30,6 +30,9 @@ export default {
   detailAcceptanceReport: (state, getters) => {
     return state.detailAcceptanceReport
   },
+  detailAcceptanceReportItem: (state, getters) => {
+    return state.detailAcceptanceReportItem
+  },
   // Detail Logistic Request
   detailLogisticRequest: (state, getters) => {
     return state.dataDetailLogisticRequest

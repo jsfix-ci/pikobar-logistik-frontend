@@ -117,6 +117,7 @@ export default {
       return e
     }
   },
+  // API Goods Receipt Report
   async getListGoodsReceiptReport({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/acceptance-report', 'GET', params)
@@ -136,6 +137,16 @@ export default {
       return e
     }
   },
+  async getGoodsReceiptReportDetailItems({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/acceptance-report-detail', 'GET', params)
+      commit('SET_DETAIL_ACCEPTANCE_REPORT_ITEM', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  // API Detail Logistic
   async getListDetailLogisticRequest({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/logistic-request/' + params, 'GET')

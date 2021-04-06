@@ -31,7 +31,7 @@
           <span class="text-title">Nama Pemohon</span>
         </v-col>
         <v-col class="margin-left-min-30" cols="7" sm="8">
-          : <span class="text-data-green">{{ detailAcceptanceReport.applicant.applicant_name }}</span>
+          : <span class="text-data-green">{{ detailAcceptanceReport.applicant ? detailAcceptanceReport.applicant.applicant_name : '-' }}</span>
         </v-col>
       </v-row>
       <v-row>
@@ -44,8 +44,8 @@
         </v-col>
       </v-row>
     </div>
-    <!-- goods_receipt_report_detail section -->
-    <div>
+    <!-- goods receipt report detail section -->
+    <div v-if="detailAcceptanceReport.acceptance_report">
       <br>
       <v-row>
         <v-col>
@@ -118,8 +118,61 @@
           </v-card>
         </v-col>
       </v-row>
-    </div><!-- end goods_receipt_report_detail section -->
-    <div>
+    </div><!-- end goods receipt report detail section -->
+    <!-- items table section -->
+    <div v-if="detailAcceptanceReportItem">
+      <br>
+      <v-row>
+        <v-col>
+          <span class="text-data-green">
+            {{ $t('label.acceptance_report.items_title') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card outlined>
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left green darken-2 white--text text-uppercase">{{ $t('label.acceptance_report.item.product_name') }}</th>
+                    <th class="text-left green darken-2 white--text text-uppercase">{{ $t('label.acceptance_report.item.qty') }}</th>
+                    <th class="text-left green darken-2 white--text text-uppercase">{{ $t('label.acceptance_report.item.qty_ok') }}</th>
+                    <th class="text-left green darken-2 white--text text-uppercase">{{ $t('label.acceptance_report.item.qty_nok') }}</th>
+                    <th class="text-left green darken-2 white--text text-uppercase">{{ $t('label.acceptance_report.item.quality') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-if="detailAcceptanceReportItem.total === 0">
+                    <td class="text-center" :colspan="21">{{ $t('label.no_data') }}</td>
+                  </tr>
+                  <tr v-for="(item) in detailAcceptanceReportItem.data" v-else :key="item.index">
+                    <td>{{ item.product_name }}</td>
+                    <td class="text-center">{{ item.qty }}</td>
+                    <td class="text-center">{{ item.qty_ok }}</td>
+                    <td class="text-center">{{ item.qty_nok }}</td>
+                    <td class="text-center">{{ item.quality }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <pagination
+            :total="detailAcceptanceReportItem.last_page"
+            :total-data="detailAcceptanceReportItem.total"
+            :page.sync="listQuery.page"
+            :limit.sync="listQuery.limit"
+            :on-next="onNextItemPage"
+          />
+        </v-col>
+      </v-row>
+    </div>
+    <div><!-- end items table section -->
       <!-- Button Back -->
       <v-row class="mb-15">
         <v-col>
@@ -143,18 +196,21 @@ export default {
       listQuery: {
         page: 1,
         limit: 3,
-        agency_id: null
+        agency_id: null,
+        acceptance_report_id: null
       }
     }
   },
   computed: {
     ...mapGetters('logistics', [
-      'detailAcceptanceReport'
+      'detailAcceptanceReport',
+      'detailAcceptanceReportItem'
     ])
   },
   async created() {
     this.listQuery.agency_id = this.$route.params.id
     await this.getReportDetail()
+    await this.getReportDetailItems()
   },
   methods: {
     back() {
@@ -165,6 +221,13 @@ export default {
     },
     async getReportDetail() {
       await this.$store.dispatch('logistics/getGoodsReceiptReportDetail', this.$route.params.id)
+      this.listQuery.acceptance_report_id = this.detailAcceptanceReport.acceptance_report.id
+    },
+    async getReportDetailItems() {
+      await this.$store.dispatch('logistics/getGoodsReceiptReportDetailItems', this.listQuery)
+    },
+    async onNextItemPage() {
+      await this.getReportDetailItems()
     }
   }
 }
