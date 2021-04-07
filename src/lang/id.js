@@ -41,6 +41,7 @@ export default {
     incoming_mail_detail: 'Detail Surat Masuk'
   },
   label: {
+    other: 'Lainnya',
     loading: 'Mohon ditunggu sedang proses...',
     username: 'Username',
     password: 'Password',
@@ -606,12 +607,14 @@ export default {
       fullname_description: 'Diisi dengan nama pengambil barang perwakilan dari pemohon',
       position: 'Jabatan Penerima Barang',
       note: 'Catatan Lainnya',
+      witnesses: 'Testimoni',
       phone: 'Nomor Telepon Penerima Barang',
       date: 'Tanggal Barang Diterima',
       officer_fullname: 'Nama Petugas Pemprov yang Menyerahkan Barang',
       officer_fullname_description: 'Diisi dengan nama petugas yang menyerahkan ke pemohon',
       proof_pic: 'Foto Bukti Penerimaan Barang',
       bast_proof: 'Foto BAST Sebagai Bukti Penerimaan Barang',
+      item_proof: 'Foto Bukti Item Barang',
       items_title: 'Detail Informasi Penerimaan Barang',
       items_table_title: 'Daftar Item Barang yang Diterima',
       table_footer_page_text: 'Barang dari total ',

@@ -120,7 +120,7 @@
       </v-row>
     </div><!-- end goods receipt report detail section -->
     <!-- items table section -->
-    <div v-if="detailAcceptanceReportItem">
+    <div v-if="detailAcceptanceReportItem.total > 0">
       <br>
       <v-row>
         <v-col>
@@ -172,6 +172,107 @@
         </v-col>
       </v-row>
     </div>
+    <!-- Proof Pic section -->
+    <div v-if="detailAcceptanceReport.acceptance_report">
+      <v-row>
+        <!-- label.acceptance_report.proof_pic section -->
+        <v-col cols="6" sm="6">
+          <span class="text-data-green">
+            {{ $t('label.acceptance_report.proof_pic') }}
+          </span>
+        </v-col>
+        <!-- label.acceptance_report.item_proof section -->
+        <v-col cols="6" sm="6">
+          <span class="text-data-green">
+            {{ $t('label.acceptance_report.item_proof') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <!-- label.acceptance_report.proof_pic section -->
+        <v-col cols="6" sm="6">
+          <v-card class="mx-auto" outlined>
+            <v-row>
+              <v-col class="mx-3 mt-5" cols="12" sm="12" md="12">
+                <!-- carousel here -->
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <!-- label.acceptance_report.item_proof section -->
+        <v-col cols="6" sm="6">
+          <v-card class="mx-auto" outlined>
+            <v-row>
+              <v-col class="mx-3 mt-5" cols="12" sm="12" md="12">
+                <!-- carousel here -->
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+    <!-- label.acceptance_report.bast_proof section -->
+    <div v-if="detailAcceptanceReport.acceptance_report">
+      <v-row>
+        <v-col cols="12" sm="12">
+          <span class="text-data-green">
+            {{ $t('label.acceptance_report.bast_proof') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="12">
+          <v-card class="mx-auto" outlined>
+            <v-row>
+              <v-col class="mx-3 mt-5" cols="12" sm="12" md="12">
+                <!-- carousel -->
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+    <!-- label.acceptance_report.note section -->
+    <div v-if="detailAcceptanceReport.acceptance_report">
+      <v-row>
+        <v-col cols="12" sm="12">
+          <span class="text-data-green">
+            {{ $t('label.other') }}
+          </span>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="12">
+          <v-card
+            class="mx-auto"
+            outlined
+          >
+            <v-row>
+              <v-col class="mx-3 mt-5 mb-5" cols="12" sm="12" md="12">
+                <v-row class="margin-top-min-15">
+                  <v-col>
+                    <span class="text-title-green">
+                      {{ $t('label.acceptance_report.note') }}
+                    </span>
+                    <br>
+                    <v-label>
+                      {{ detailAcceptanceReport.acceptance_report ? detailAcceptanceReport.acceptance_report.note : '-' }}
+                    </v-label>
+                  </v-col>
+                  <v-col>
+                    <span class="text-title-green">
+                      {{ $t('label.acceptance_report.witnesses') }}
+                    </span>
+                    <br>
+                    <v-label>-</v-label>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
     <div><!-- end items table section -->
       <!-- Button Back -->
       <v-row class="mb-15">
@@ -204,13 +305,15 @@ export default {
   computed: {
     ...mapGetters('logistics', [
       'detailAcceptanceReport',
-      'detailAcceptanceReportItem'
+      'detailAcceptanceReportItem',
+      'acceptanceReportEvidence'
     ])
   },
   async created() {
     this.listQuery.agency_id = this.$route.params.id
     await this.getReportDetail()
     await this.getReportDetailItems()
+    await this.getAcceptanceReportEvidence()
   },
   methods: {
     back() {
@@ -225,6 +328,9 @@ export default {
     },
     async getReportDetailItems() {
       await this.$store.dispatch('logistics/getGoodsReceiptReportDetailItems', this.listQuery)
+    },
+    async getAcceptanceReportEvidence() {
+      await this.$store.dispatch('logistics/getAcceptanceReportEvidence', this.listQuery)
     },
     async onNextItemPage() {
       await this.getReportDetailItems()

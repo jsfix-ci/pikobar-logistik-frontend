@@ -146,6 +146,15 @@ export default {
       return e
     }
   },
+  async getAcceptanceReportEvidence({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/acceptance-report-evidence', 'GET', params)
+      commit('SET_ACCEPTANCE_REPORT_EVIDENCE', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   // API Detail Logistic
   async getListDetailLogisticRequest({ commit }, params) {
     try {
