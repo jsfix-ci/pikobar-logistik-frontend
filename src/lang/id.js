@@ -41,6 +41,7 @@ export default {
     incoming_mail_detail: 'Detail Surat Masuk'
   },
   label: {
+    preview: 'Preview',
     other: 'Lainnya',
     loading: 'Mohon ditunggu sedang proses...',
     username: 'Username',

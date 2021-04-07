@@ -193,8 +193,17 @@
         <v-col cols="6" sm="6">
           <v-card class="mx-auto" outlined>
             <v-row>
-              <v-col class="mx-3 mt-5" cols="12" sm="12" md="12">
-                <!-- carousel here -->
+              <v-col cols="12" sm="12" md="12">
+                <template>
+                  <v-carousel height="250">
+                    <v-carousel-item
+                      v-for="(item,i) in evidence.proof_pic"
+                      :key="i"
+                    >
+                      <v-img :src="item.path" contain max-height="200" />
+                    </v-carousel-item>
+                  </v-carousel>
+                </template>
               </v-col>
             </v-row>
           </v-card>
@@ -203,8 +212,17 @@
         <v-col cols="6" sm="6">
           <v-card class="mx-auto" outlined>
             <v-row>
-              <v-col class="mx-3 mt-5" cols="12" sm="12" md="12">
-                <!-- carousel here -->
+              <v-col cols="12" sm="12" md="12">
+                <template>
+                  <v-carousel height="250">
+                    <v-carousel-item
+                      v-for="(item,i) in evidence.item_proof"
+                      :key="i"
+                    >
+                      <v-img :src="item.path" contain max-height="200" />
+                    </v-carousel-item>
+                  </v-carousel>
+                </template>
               </v-col>
             </v-row>
           </v-card>
@@ -224,8 +242,58 @@
         <v-col cols="12" sm="12">
           <v-card class="mx-auto" outlined>
             <v-row>
-              <v-col class="mx-3 mt-5" cols="12" sm="12" md="12">
-                <!-- carousel -->
+              <v-col cols="6" sm="6" md="6">
+                <template>
+                  <v-carousel height="250">
+                    <v-carousel-item
+                      v-for="(item,i) in evidence.bast_proof"
+                      :key="i"
+                    >
+                      <v-img :src="item.path" contain max-height="200" />
+                    </v-carousel-item>
+                  </v-carousel>
+                </template>
+              </v-col>
+              <v-col cols="6" sm="6">
+                <template>
+                  <v-row justify="center">
+                    <v-dialog
+                      v-model="bastDialog"
+                      width="80%"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          color="primary"
+                          dark
+                          absolute
+                          right
+                          outlined
+                          v-bind="attrs"
+                          class="mt-10"
+                          v-on="on"
+                        >
+                          {{ $t('label.preview') }}
+                        </v-btn>
+                      </template>
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline">{{ $t('label.acceptance_report.bast_proof') }}</span>
+                        </v-card-title>
+                        <hr>
+                        <template>
+                          <v-img
+                            v-for="(item,i) in evidence.item_proof"
+                            :key="i"
+                            :src="item.path"
+                            contain
+                            max-width="80%"
+                            class="mx-auto mb-5"
+                          />
+                        </template>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
+                </template>
               </v-col>
             </v-row>
           </v-card>
@@ -293,12 +361,18 @@ export default {
   name: 'GoodsReceiptReportDetail',
   data() {
     return {
+      bastDialog: false,
       noImage: './img/noimage.gif',
       listQuery: {
         page: 1,
         limit: 3,
         agency_id: null,
         acceptance_report_id: null
+      },
+      evidence: {
+        proof_pic: [],
+        bast_proof: [],
+        item_proof: []
       }
     }
   },
@@ -331,6 +405,19 @@ export default {
     },
     async getAcceptanceReportEvidence() {
       await this.$store.dispatch('logistics/getAcceptanceReportEvidence', this.listQuery)
+      this.acceptanceReportEvidence.forEach(element => {
+        switch (element.type) {
+          case 'proof_pic':
+            this.evidence.proof_pic.push(element)
+            break
+          case 'bast_proof':
+            this.evidence.bast_proof.push(element)
+            break
+          case 'item_proof':
+            this.evidence.item_proof.push(element)
+            break
+        }
+      })
     },
     async onNextItemPage() {
       await this.getReportDetailItems()
