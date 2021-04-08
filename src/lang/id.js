@@ -33,6 +33,7 @@ export default {
     letter_manage: 'Manajemen Surat',
     report: 'Pelaporan',
     goods_receipt_report: 'Penerimaan Barang',
+    goods_receipt_report_detail: 'Detail Penerimaan Barang',
     goods_use_report: 'Penggunaan Barang',
     outgoing_mail: 'Surat Perintah',
     incoming_mail: 'Surat Masuk',
@@ -40,6 +41,8 @@ export default {
     incoming_mail_detail: 'Detail Surat Masuk'
   },
   label: {
+    preview: 'Preview',
+    other: 'Lainnya',
     loading: 'Mohon ditunggu sedang proses...',
     username: 'Username',
     password: 'Password',
@@ -605,12 +608,14 @@ export default {
       fullname_description: 'Diisi dengan nama pengambil barang perwakilan dari pemohon',
       position: 'Jabatan Penerima Barang',
       note: 'Catatan Lainnya',
+      witnesses: 'Testimoni',
       phone: 'Nomor Telepon Penerima Barang',
       date: 'Tanggal Barang Diterima',
       officer_fullname: 'Nama Petugas Pemprov yang Menyerahkan Barang',
       officer_fullname_description: 'Diisi dengan nama petugas yang menyerahkan ke pemohon',
       proof_pic: 'Foto Bukti Penerimaan Barang',
       bast_proof: 'Foto BAST Sebagai Bukti Penerimaan Barang',
+      item_proof: 'Foto Bukti Item Barang',
       items_title: 'Detail Informasi Penerimaan Barang',
       items_table_title: 'Daftar Item Barang yang Diterima',
       table_footer_page_text: 'Barang dari total ',
@@ -623,6 +628,13 @@ export default {
       error: {
         proof_pic: 'Belum ada file Foto Bukti Penerimaan Barang yang diupload',
         item_proof: 'Beri keterangan terlebih dahulu daftar item barang yang diterima',
+      },
+      item : {
+        product_name: 'Nama Barang/Item',
+        qty: 'Jumlah Barang',
+        qty_ok: 'Jmlh Barang Sesuai',
+        qty_nok: 'Jmlh Barang Tdk Sesuai',
+        quality: 'Kualitas/ Mutu Barang yang diterima',
       }
     }
   },

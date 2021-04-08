@@ -13,6 +13,9 @@ const state = {
   listAcceptanceReport: [],
   totalListAcceptanceReport: 0,
   totalDataAcceptanceReport: 0,
+  detailAcceptanceReport: [],
+  detailAcceptanceReportItem: [],
+  acceptanceReportEvidence: [],
   // Detail Logistic Request
   dataDetailLogisticRequest: {},
   totalDetailLogisticNeeds: 0,

@@ -27,6 +27,15 @@ export default {
   SET_TOTAL_DATA_ACCEPTANCE_REPORT: (state, data) => {
     state.totalDataAcceptanceReport = data
   },
+  SET_DETAIL_ACCEPTANCE_REPORT: (state, data) => {
+    state.detailAcceptanceReport = data
+  },
+  SET_DETAIL_ACCEPTANCE_REPORT_ITEM: (state, data) => {
+    state.detailAcceptanceReportItem = data
+  },
+  SET_ACCEPTANCE_REPORT_EVIDENCE: (state, data) => {
+    state.acceptanceReportEvidence = data
+  },
   // Detail Logistic Request
   SET_DETAIL_LOGISTIC_REQUEST: (state, data) => {
     state.dataDetailLogisticRequest = data

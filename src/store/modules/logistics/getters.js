@@ -27,6 +27,15 @@ export default {
   totalDataAcceptanceReport: (state, getters) => {
     return state.totalDataAcceptanceReport
   },
+  detailAcceptanceReport: (state, getters) => {
+    return state.detailAcceptanceReport
+  },
+  detailAcceptanceReportItem: (state, getters) => {
+    return state.detailAcceptanceReportItem
+  },
+  acceptanceReportEvidence: (state, getters) => {
+    return state.acceptanceReportEvidence
+  },
   // Detail Logistic Request
   detailLogisticRequest: (state, getters) => {
     return state.dataDetailLogisticRequest
