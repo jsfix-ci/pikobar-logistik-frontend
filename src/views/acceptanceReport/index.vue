@@ -294,7 +294,7 @@
                                       :error-messages="errors"
                                       placeholder="Klik untuk upload..."
                                       prepend-icon="mdi-camera"
-                                      accept="image/png, image/jpg"
+                                      accept=".jpg, .jpeg, .png"
                                       outlined
                                       show-size
                                     >
@@ -536,7 +536,7 @@
                                       :error-messages="errors"
                                       placeholder="Klik untuk upload..."
                                       prepend-icon="mdi-camera"
-                                      accept="image/png, image/jpg"
+                                      accept=".jpg, .jpeg, .png"
                                       outlined
                                       show-size
                                     >
@@ -624,7 +624,7 @@
                                       :error-messages="errors"
                                       placeholder="Klik untuk upload..."
                                       prepend-icon="mdi-camera"
-                                      accept="image/png, image/jpg"
+                                      accept=".jpg, .jpeg, .png"
                                       outlined
                                       show-size
                                     >
