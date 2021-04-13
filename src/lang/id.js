@@ -608,6 +608,7 @@ export default {
       fullname_description: 'Diisi dengan nama pengambil barang perwakilan dari pemohon',
       position: 'Jabatan Penerima Barang',
       note: 'Catatan Lainnya',
+      feedback: 'Testimoni',
       witnesses: 'Testimoni',
       phone: 'Nomor Telepon Penerima Barang',
       date: 'Tanggal Barang Diterima',

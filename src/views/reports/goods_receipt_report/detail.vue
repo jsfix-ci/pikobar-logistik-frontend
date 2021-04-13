@@ -329,10 +329,12 @@
                   </v-col>
                   <v-col>
                     <span class="text-title-green">
-                      {{ $t('label.acceptance_report.witnesses') }}
+                      {{ $t('label.acceptance_report.feedback') }}
                     </span>
                     <br>
-                    <v-label>-</v-label>
+                    <v-label>
+                      {{ detailAcceptanceReport.acceptance_report ? detailAcceptanceReport.acceptance_report.feedback : '-' }}
+                    </v-label>
                   </v-col>
                 </v-row>
               </v-col>
