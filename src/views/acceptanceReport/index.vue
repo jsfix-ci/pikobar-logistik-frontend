@@ -294,7 +294,7 @@
                                       :error-messages="errors"
                                       placeholder="Klik untuk upload..."
                                       prepend-icon="mdi-camera"
-                                      accept="image/png, image/jpg"
+                                      accept=".jpg, .jpeg, .png"
                                       outlined
                                       show-size
                                     >
@@ -388,7 +388,7 @@
                                       >
                                         <v-text-field
                                           v-model="editedItem.name"
-                                          label="Nama Barang/Item"
+                                          :label="$t('label.acceptance_report.item.product_name')"
                                           disabled
                                           dense
                                           outlined
@@ -401,7 +401,7 @@
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty"
-                                          label="Jumlah Barang"
+                                          :label="$t('label.acceptance_report.item.qty')"
                                           disabled
                                           dense
                                           outlined
@@ -414,7 +414,7 @@
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty_ok"
-                                          label="Jmlh Barang Sesuai"
+                                          :label="$t('label.acceptance_report.item.qty_ok')"
                                           type="number"
                                           dense
                                           outlined
@@ -428,7 +428,7 @@
                                       >
                                         <v-text-field
                                           v-model="editedItem.qty_nok"
-                                          label="Jmlh Barang Tdk Sesuai"
+                                          :label="$t('label.acceptance_report.item.qty_nok')"
                                           type="number"
                                           dense
                                           outlined
@@ -443,7 +443,7 @@
                                         <v-select
                                           v-model="editedItem.quality"
                                           :items="qualityList"
-                                          label="Kualitas/ Mutu Barang yang diterima"
+                                          :label="$t('label.acceptance_report.item.quality')"
                                           dense
                                           outlined
                                         />
@@ -536,7 +536,7 @@
                                       :error-messages="errors"
                                       placeholder="Klik untuk upload..."
                                       prepend-icon="mdi-camera"
-                                      accept="image/png, image/jpg"
+                                      accept=".jpg, .jpeg, .png"
                                       outlined
                                       show-size
                                     >
@@ -624,7 +624,7 @@
                                       :error-messages="errors"
                                       placeholder="Klik untuk upload..."
                                       prepend-icon="mdi-camera"
-                                      accept="image/png, image/jpg"
+                                      accept=".jpg, .jpeg, .png"
                                       outlined
                                       show-size
                                     >
@@ -659,6 +659,17 @@
                         outlined
                         solo-inverted
                         placeholder="Tambahkan catatan lainnya terhadap barang yang tidak sesuai..."
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>{{ $t('label.acceptance_report.feedback') }}</b></v-label>
+                      <v-textarea
+                        v-model="recipient.feedback"
+                        outlined
+                        solo-inverted
+                        placeholder="Tambahkan testimoni lainnya..."
                       />
                     </v-col>
                   </v-row>
@@ -740,6 +751,7 @@ export default {
         bast_proof: [],
         item_proof: [],
         note: null,
+        feedback: null,
         selectedFile: null
       },
       selectedFile: null,
@@ -761,12 +773,12 @@ export default {
       dialogDelete: false,
       headers: [
         { text: 'Nama Barang/Item', align: 'start', value: 'name', class: 'success white--text' },
-        { text: 'Jumlah Barang', align: 'center', value: 'qty', class: 'success white--text' },
-        { text: 'Satuan', align: 'center', value: 'unit', class: 'success white--text' },
-        { text: 'Jmlh Barang Sesuai', align: 'center', value: 'qty_ok', class: 'success white--text' },
-        { text: 'Jmlh Barang Tdk Sesuai', align: 'center', value: 'qty_nok', class: 'success white--text' },
+        { text: 'Jumlah Barang', value: 'qty', class: 'success white--text' },
+        { text: 'Satuan', value: 'unit', class: 'success white--text' },
+        { text: 'Jmlh Barang Sesuai', value: 'qty_ok', class: 'success white--text' },
+        { text: 'Jmlh Barang Tdk Sesuai', value: 'qty_nok', class: 'success white--text' },
         { text: 'Kualitas Mutu', value: 'quality', class: 'success white--text' },
-        { text: 'Aksi', align: 'center', value: 'actions', sortable: false, class: 'success white--text' }
+        { text: 'Aksi', value: 'actions', sortable: false, class: 'success white--text' }
       ],
       options: {
         itemsPerPage: 3
@@ -1022,6 +1034,7 @@ export default {
       })
       formData.append('item_proof_length', this.recipient.item_proof.length)
       formData.append('note', this.recipient.note)
+      formData.append('feedback', this.recipient.feedback)
       formData.append('agency_id', this.id)
       const response = await this.$store.dispatch('logistics/postRecipientReport', formData)
       if (response.status === 200) {
@@ -1035,6 +1048,7 @@ export default {
       // this.recipient.date = '2020-12-11'
       this.recipient.officer_fullname = 'Rizie Advista'
       this.recipient.note = 'Tidak ada catatan'
+      this.recipient.feedback = 'tidak ada testimoni'
     },
     changeDate(value) {
       this.recipient.date = value

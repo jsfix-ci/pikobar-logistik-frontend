@@ -30,6 +30,17 @@ const reports = {
         noCache: true,
         roles: ['superadmin', 'dinkesprov']
       }
+    },
+    {
+      path: '/reports/goods_receipt_report/:id',
+      component: () => import('@/views/reports/goods_receipt_report/detail'),
+      hidden: true,
+      meta: {
+        title: 'goods_receipt_report',
+        icon: 'library_books',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov']
+      }
     }
   ]
 }
