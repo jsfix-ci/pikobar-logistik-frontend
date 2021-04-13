@@ -662,6 +662,17 @@
                       />
                     </v-col>
                   </v-row>
+                  <v-row>
+                    <v-col sm="12" md="8" class="left-side">
+                      <v-label><b>{{ $t('label.acceptance_report.feedback') }}</b></v-label>
+                      <v-textarea
+                        v-model="recipient.feedback"
+                        outlined
+                        solo-inverted
+                        placeholder="Tambahkan testimoni lainnya..."
+                      />
+                    </v-col>
+                  </v-row>
                 </div>
                 <!-- End Detail Informasi Penerimaan Barang -->
               </div>
@@ -740,6 +751,7 @@ export default {
         bast_proof: [],
         item_proof: [],
         note: null,
+        feedback: null,
         selectedFile: null
       },
       selectedFile: null,
@@ -1022,6 +1034,7 @@ export default {
       })
       formData.append('item_proof_length', this.recipient.item_proof.length)
       formData.append('note', this.recipient.note)
+      formData.append('feedback', this.recipient.feedback)
       formData.append('agency_id', this.id)
       const response = await this.$store.dispatch('logistics/postRecipientReport', formData)
       if (response.status === 200) {
@@ -1035,6 +1048,7 @@ export default {
       // this.recipient.date = '2020-12-11'
       this.recipient.officer_fullname = 'Rizie Advista'
       this.recipient.note = 'Tidak ada catatan'
+      this.recipient.feedback = 'tidak ada testimoni'
     },
     changeDate(value) {
       this.recipient.date = value
