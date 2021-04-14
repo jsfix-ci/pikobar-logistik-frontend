@@ -10,7 +10,7 @@
       </v-card-title>
       <hr class="thin">
       <v-card-text>
-        <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
+        <v-row class="margin-top-bot-min-20-list-pengajuan-logistik justify-space-between">
           <v-col cols="12" sm="4" md="4">
             <v-card
               outlined
@@ -26,6 +26,40 @@
                 @change="handleSearch"
               />
             </v-card>
+          </v-col>
+          <v-col cols="12" sm="2" md="2">
+            <v-btn
+              class="primary"
+              large
+              max-width="100px"
+              @click="showFilter = !showFilter"
+            >
+              {{ $t('label.filter') }}
+              <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon>
+              <v-icon v-else right>mdi-chevron-down</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row v-if="showFilter" class="mx-0">
+          <v-col cols="12" sm="2" class="px-0">
+            <v-label class="title">{{ $t('label.status') }}</v-label>
+            <v-select
+              v-model="listQuery.status"
+              :items="statusOption"
+              solo
+              item-text="label"
+              item-value="value"
+              :clearable="true"
+              :placeholder="$t('label.select_status')"
+              @change="handleSearch"
+            />
+          </v-col>
+          <v-col cols="12" sm="2">
+            <v-label class="title">{{ $t('label.request_date') }}</v-label>
+            <date-picker
+              :value="listQuery.requestDate"
+              @selected="changeDate"
+            />
           </v-col>
         </v-row>
       </v-card-text>
@@ -96,10 +130,16 @@ export default {
         { value: 'asc', label: 'A-Z' },
         { value: 'desc', label: 'Z-A' }
       ],
+      statusOption: [
+        { value: 'done', label: 'Sudah Lapor' },
+        { value: 'undone', label: 'Belum' }
+      ],
       listQuery: {
         page: 1,
         limit: 10,
-        search: null
+        search: null,
+        status: null,
+        requestDate: null
       },
       date: null,
       showFilter: false,
