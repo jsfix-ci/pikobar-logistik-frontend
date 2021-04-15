@@ -86,7 +86,7 @@ export default {
   SET_DATA_REPORTED_RECEIPT: (state, data) => {
     state.reportedReceipt = data
   },
-  SET_DATA__UNREPORTED_RECEIPT: (state, data) => {
+  SET_DATA_UNREPORTED_RECEIPT: (state, data) => {
     state.unReportedReceipt = data
   }
 }
