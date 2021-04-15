@@ -31,7 +31,10 @@ const state = {
   totalDataRealization: 0,
   dataTracking: null,
   productTopRequest: null,
-  faskesTopRequest: null
+  faskesTopRequest: null,
+  // Statistic
+  reportedReceipt: 0,
+  unReportedReceipt: 0
 }
 
 export default {

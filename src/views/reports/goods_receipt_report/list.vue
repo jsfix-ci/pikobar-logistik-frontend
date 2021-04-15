@@ -13,7 +13,7 @@
       >
         <statistic-card
           :title="'Total Terlapor Penerimaan Logistik'"
-          :value="30"
+          :value="reportedReceipt"
           :unit="'Permohonan'"
           :main-color="'#2f9e5f'"
           :background-color="'#f2f7f4'"
@@ -24,7 +24,7 @@
         />
         <statistic-card
           :title="'Total Terlapor Penerimaan Logistik'"
-          :value="30"
+          :value="unReportedReceipt"
           :unit="'Permohonan'"
           :main-color="'#ec6c6c'"
           :background-color="'#f9f3f3'"
@@ -139,7 +139,9 @@ export default {
     ...mapGetters('logistics', [
       'listAcceptanceReport',
       'totalListAcceptanceReport',
-      'totalDataAcceptanceReport'
+      'totalDataAcceptanceReport',
+      'reportedReceipt',
+      'unReportedReceipt'
     ]),
     ...mapGetters('faskesType', [
       'faskesTypeList'
@@ -148,6 +150,7 @@ export default {
   async created() {
     await this.$store.dispatch('faskesType/getListFaskesType')
     this.getAcceptanceReportList()
+    this.getStatistic()
     EventBus.$on('hideCompletenessDetail', (value) => {
       this.showcompletenessDetail = false
     })
@@ -202,6 +205,9 @@ export default {
     currency(value) {
       const formattingNumber = new FormatingNumber()
       return formattingNumber.formatCurrency(value)
+    },
+    async getStatistic() {
+      await this.$store.dispatch('logistics/getStatisticReport')
     }
   }
 }

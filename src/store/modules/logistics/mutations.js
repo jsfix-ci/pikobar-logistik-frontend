@@ -81,5 +81,12 @@ export default {
   },
   SET_DATA_FASKES_TOP_TOTAL_REQUEST: (state, data) => {
     state.faskesTopRequest = data
+  },
+  // Statistic
+  SET_DATA_REPORTED_RECEIPT: (state, data) => {
+    state.reportedReceipt = data
+  },
+  SET_DATA__UNREPORTED_RECEIPT: (state, data) => {
+    state.unReportedReceipt = data
   }
 }
