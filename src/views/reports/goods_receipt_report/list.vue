@@ -14,7 +14,7 @@
         <statistic-card
           :title="$t('label.goods_receipt_report_total')"
           :value="currency(reportedReceipt)"
-          :unit="'Permohonan'"
+          :unit="$t('label.request')"
           :main-color="'#2f9e5f'"
           :background-color="'#f2f7f4'"
           :class="{
@@ -25,7 +25,7 @@
         <statistic-card
           :title="$t('label.goods_receipt_not_yet_report_total')"
           :value="currency(unReportedReceipt)"
-          :unit="'Permohonan'"
+          :unit="$t('label.request')"
           :main-color="'#ec6c6c'"
           :background-color="'#f9f3f3'"
         />
