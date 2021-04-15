@@ -13,7 +13,7 @@
       >
         <statistic-card
           :title="'Total Terlapor Penerimaan Logistik'"
-          :value="reportedReceipt"
+          :value="currency(reportedReceipt)"
           :unit="'Permohonan'"
           :main-color="'#2f9e5f'"
           :background-color="'#f2f7f4'"
@@ -24,7 +24,7 @@
         />
         <statistic-card
           :title="'Total Terlapor Penerimaan Logistik'"
-          :value="unReportedReceipt"
+          :value="currency(unReportedReceipt)"
           :unit="'Permohonan'"
           :main-color="'#ec6c6c'"
           :background-color="'#f9f3f3'"
