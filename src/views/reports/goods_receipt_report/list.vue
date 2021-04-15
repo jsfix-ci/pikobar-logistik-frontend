@@ -131,8 +131,8 @@ export default {
         { value: 'desc', label: 'Z-A' }
       ],
       statusOption: [
-        { value: 'done', label: 'Sudah Lapor' },
-        { value: 'undone', label: 'Belum' }
+        { value: 1, label: 'Sudah Lapor' },
+        { value: 0, label: 'Belum' }
       ],
       listQuery: {
         page: 1,
