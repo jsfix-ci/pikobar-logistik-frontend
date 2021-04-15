@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="d-flex flex-column stat-card pa-3" :style="cardColor">
-      <strong class="title">{{ title }}</strong>
-      <strong class="title">{{ value }}</strong>
-      <strong>{{ unit }}</strong>
+    <div class="d-flex flex-column stat-card pa-4" :style="cardColor">
+      <strong class="mb-3 title">{{ title }}</strong>
+      <strong class="h1 font-weight-bold mb-0">{{ value }}</strong>
+      <strong class="title">{{ unit }}</strong>
     </div>
   </div>
 </template>
