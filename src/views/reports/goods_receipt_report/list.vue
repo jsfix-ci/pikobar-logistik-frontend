@@ -12,7 +12,7 @@
         }"
       >
         <statistic-card
-          :title="'Total Terlapor Penerimaan Logistik'"
+          :title="$t('label.goods_receipt_report_total')"
           :value="currency(reportedReceipt)"
           :unit="'Permohonan'"
           :main-color="'#2f9e5f'"
@@ -23,7 +23,7 @@
           }"
         />
         <statistic-card
-          :title="'Total Terlapor Penerimaan Logistik'"
+          :title="$t('label.goods_receipt_not_yet_report_total')"
           :value="currency(unReportedReceipt)"
           :unit="'Permohonan'"
           :main-color="'#ec6c6c'"
