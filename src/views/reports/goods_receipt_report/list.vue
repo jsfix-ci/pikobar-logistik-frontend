@@ -2,7 +2,7 @@
   <div>
     <v-card outlined>
       <v-card-title>
-        <span class="text-h5 font-weight-bold">{{ $t('label.goods_receipt_report_list') }}</span>
+        <span class="text-h5 font-weight-bold">{{ $t('label.goods_receipt_report_statistic') }}</span>
       </v-card-title>
       <v-card-text
         class="d-flex"
