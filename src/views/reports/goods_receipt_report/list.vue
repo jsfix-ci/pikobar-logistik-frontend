@@ -6,7 +6,7 @@
       </v-card-title>
       <hr class="mt-5 thin">
       <v-card-title>
-        <span class="font-weight-bold">{{ $t('label.goods_receipt_report_table') }}</span>
+        <span class="font-weight-bold">{{ $t('label.goods_receipt_report_list') }}</span>
       </v-card-title>
       <hr class="thin">
       <v-card-text>
