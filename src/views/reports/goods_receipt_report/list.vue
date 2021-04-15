@@ -4,6 +4,32 @@
       <v-card-title>
         <span class="text-h5 font-weight-bold">{{ $t('label.goods_receipt_report_list') }}</span>
       </v-card-title>
+      <v-card-text
+        class="d-flex"
+        :class="{
+          'flex-column': $vuetify.breakpoint.smAndDown,
+          'flex-row': $vuetify.breakpoint.mdAndUp
+        }"
+      >
+        <statistic-card
+          :title="'Total Terlapor Penerimaan Logistik'"
+          :value="30"
+          :unit="'Permohonan'"
+          :main-color="'#2f9e5f'"
+          :background-color="'#f2f7f4'"
+          :class="{
+            'mr-5': $vuetify.breakpoint.mdAndUp,
+            'mb-5': $vuetify.breakpoint.smAndDown
+          }"
+        />
+        <statistic-card
+          :title="'Total Terlapor Penerimaan Logistik'"
+          :value="30"
+          :unit="'Permohonan'"
+          :main-color="'#ec6c6c'"
+          :background-color="'#f9f3f3'"
+        />
+      </v-card-text>
       <hr class="mt-5 thin">
       <v-card-title>
         <span class="font-weight-bold">{{ $t('label.goods_receipt_report_table') }}</span>
