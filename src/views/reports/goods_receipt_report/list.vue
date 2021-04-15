@@ -54,7 +54,7 @@
               @change="handleSearch"
             />
           </v-col>
-          <v-col cols="12" sm="3" :class="{'px-0': $vuetify.breakpoint.smAndDown}">
+          <v-col cols="12" sm="3" :class="{'px-0': $vuetify.breakpoint.xsOnly}">
             <v-label class="title">{{ $t('label.request_date') }}</v-label>
             <date-picker-dashboard
               :date="listQuery.start_date"
