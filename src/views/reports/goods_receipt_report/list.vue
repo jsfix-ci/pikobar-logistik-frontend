@@ -132,7 +132,7 @@ export default {
       ],
       statusOption: [
         { value: 1, label: 'Sudah Lapor' },
-        { value: 0, label: 'Belum' }
+        { value: 0, label: 'Belum Lapor' }
       ],
       listQuery: {
         page: 1,
