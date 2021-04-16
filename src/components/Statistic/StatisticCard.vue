@@ -17,7 +17,7 @@ export default {
       default: null
     },
     value: {
-      type: Number,
+      type: String,
       default: null
     },
     unit: {
