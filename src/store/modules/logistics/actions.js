@@ -428,5 +428,15 @@ export default {
     } catch (e) {
       return e
     }
+  },
+  async getStatisticReport({ commit }) {
+    try {
+      const response = await doPostUpdate('/api/v1/acceptance-report-statistic', 'GET')
+      commit('SET_DATA_REPORTED_RECEIPT', response.data.already_reported_total)
+      commit('SET_DATA_UNREPORTED_RECEIPT', response.data.not_yet_reported_total)
+      return response
+    } catch (e) {
+      return e
+    }
   }
 }

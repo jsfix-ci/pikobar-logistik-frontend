@@ -2,8 +2,34 @@
   <div>
     <v-card outlined>
       <v-card-title>
-        <span class="text-h5 font-weight-bold">{{ $t('label.goods_receipt_report_list') }}</span>
+        <span class="text-h5 font-weight-bold">{{ $t('label.goods_receipt_report_statistic') }}</span>
       </v-card-title>
+      <v-card-text
+        class="d-flex"
+        :class="{
+          'flex-column': $vuetify.breakpoint.smAndDown,
+          'flex-row': $vuetify.breakpoint.mdAndUp
+        }"
+      >
+        <statistic-card
+          :title="$t('label.goods_receipt_report_total')"
+          :value="currency(reportedReceipt)"
+          :unit="$t('label.request')"
+          :main-color="'#2f9e5f'"
+          :background-color="'#f2f7f4'"
+          :class="{
+            'mr-5': $vuetify.breakpoint.mdAndUp,
+            'mb-5': $vuetify.breakpoint.smAndDown
+          }"
+        />
+        <statistic-card
+          :title="$t('label.goods_receipt_not_yet_report_total')"
+          :value="currency(unReportedReceipt)"
+          :unit="$t('label.request')"
+          :main-color="'#ec6c6c'"
+          :background-color="'#f9f3f3'"
+        />
+      </v-card-text>
       <hr class="mt-5 thin">
       <v-card-title>
         <span class="font-weight-bold">{{ $t('label.goods_receipt_report_list') }}</span>
@@ -117,7 +143,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import FileSaver from 'file-saver'
 import EventBus from '@/utils/eventBus'
 import FormatingNumber from '../../../helpers/formattingNumber'
@@ -156,11 +182,16 @@ export default {
     ]),
     ...mapGetters('faskesType', [
       'faskesTypeList'
+    ]),
+    ...mapState('logistics', [
+      'reportedReceipt',
+      'unReportedReceipt'
     ])
   },
   async created() {
     await this.$store.dispatch('faskesType/getListFaskesType')
     this.getAcceptanceReportList()
+    this.getStatistic()
     EventBus.$on('hideCompletenessDetail', (value) => {
       this.showcompletenessDetail = false
     })
@@ -215,6 +246,9 @@ export default {
     currency(value) {
       const formattingNumber = new FormatingNumber()
       return formattingNumber.formatCurrency(value)
+    },
+    async getStatistic() {
+      await this.$store.dispatch('logistics/getStatisticReport')
     }
   }
 }

@@ -355,6 +355,7 @@ export default {
     goods_receipt_report_list: 'Daftar Pelaporan Penerimaan Barang',
     goods_receipt_report_table: 'Tabel Penerimaan Barang',
     goods_receipt_report_total: 'Total Terlapor Penerimaan Logistik',
+    goods_receipt_report_statistic: 'Statistik Pelaporan Penerimaan Barang',
     goods_receipt_not_yet_report_total: 'Total Belum Melapor Penerimaan Logistik',
     goods_receipt_report_description: ' Sedang dalam pengembangan lebih lanjut dan akan diperbarui dalam waktu dekat',
     detail_request_logistic_medic: 'Detail Pengajuan Logistik',
