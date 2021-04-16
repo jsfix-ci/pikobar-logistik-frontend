@@ -81,12 +81,5 @@ export default {
   },
   faskesTopRequest: (state) => {
     return state.faskesTopRequest
-  },
-  // Statistic
-  reportedReceipt: (state) => {
-    return state.reportedReceipt
-  },
-  unReportedReceipt: (state) => {
-    return state.unReportedReceipt
   }
 }

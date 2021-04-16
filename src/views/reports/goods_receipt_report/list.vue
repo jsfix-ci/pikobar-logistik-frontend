@@ -109,7 +109,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import FileSaver from 'file-saver'
 import EventBus from '@/utils/eventBus'
 import FormatingNumber from '../../../helpers/formattingNumber'
@@ -139,12 +139,14 @@ export default {
     ...mapGetters('logistics', [
       'listAcceptanceReport',
       'totalListAcceptanceReport',
-      'totalDataAcceptanceReport',
-      'reportedReceipt',
-      'unReportedReceipt'
+      'totalDataAcceptanceReport'
     ]),
     ...mapGetters('faskesType', [
       'faskesTypeList'
+    ]),
+    ...mapState('logistics', [
+      'reportedReceipt',
+      'unReportedReceipt'
     ])
   },
   async created() {
