@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex flex-column stat-card pa-4" :style="cardColor">
       <strong class="mb-3 title">{{ title }}</strong>
-      <strong class="h1 font-weight-bold mb-0">{{ value }}</strong>
+      <span class="h1 font-weight-bold mb-0">{{ value }}</span>
       <strong class="title">{{ unit }}</strong>
     </div>
   </div>
