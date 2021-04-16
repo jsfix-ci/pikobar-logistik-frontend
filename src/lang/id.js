@@ -352,7 +352,7 @@ export default {
     date_placeholder: 'Tanggal/Bulan/Tahun',
     date_dashboard_placeholder: 'Tanggal Bulan Tahun - Tanggal Bulan Tahun',
     list_request_logistic_medic: 'Daftar Pengajuan Logistik',
-    goods_receipt_report_list: 'Daftar Penerimaan Barang',
+    goods_receipt_report_list: 'Daftar Pelaporan Penerimaan Barang',
     goods_receipt_report_table: 'Tabel Penerimaan Barang',
     goods_receipt_report_total: 'Total Terlapor Penerimaan Logistik',
     goods_receipt_report_statistic: 'Statistik Pelaporan Penerimaan Barang',
