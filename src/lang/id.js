@@ -414,6 +414,7 @@ export default {
     verified: 'Terverifikasi',
     not_verified: 'Belum Terverifikasi',
     verified_by: 'Diverifikasi Oleh',
+    verified_date: 'Tanggal Diverifikasi',
     finalization_status: 'Status Penyelesaian',
     not_done_yet: 'Belum Selesai',
     done: 'Selesai',
