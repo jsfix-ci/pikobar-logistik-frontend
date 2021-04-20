@@ -58,7 +58,12 @@
           </v-col>
           <v-col cols="12" sm="2">
             <v-label class="title">{{ $t('label.city_district') }}</v-label>
-            <select-area-district-city :on-select-district-city="onSelectDistrictCity" />
+            <select-area-district-city
+              :disabled-district="disabledDistrict"
+              :district-city="districtCity"
+              :city-district.sync="districtCity"
+              :on-select-district-city="onSelectDistrictCity"
+            />
           </v-col>
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.instance_type') }}</v-label>
@@ -231,7 +236,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import FileSaver from 'file-saver'
 import EventBus from '@/utils/eventBus'
 import completenessDetail from './completenessDetail'
@@ -329,7 +334,9 @@ export default {
       isApproved: false,
       isRejected: false,
       showcompletenessDetail: false,
-      showreferenceDetail: false
+      showreferenceDetail: false,
+      disabledDistrict: false,
+      districtCity: null
     }
   },
   computed: {
@@ -340,6 +347,11 @@ export default {
     ]),
     ...mapGetters('faskesType', [
       'faskesTypeList'
+    ]),
+    ...mapState('user', [
+      'roles',
+      'district_user', // district code
+      'district_name'
     ])
   },
   async created() {
@@ -365,6 +377,7 @@ export default {
     EventBus.$on('hideReferenceDetail', (value) => {
       this.showreferenceDetail = false
     })
+    if (this.roles[0] === 'dinkeskota') this.lockDistrictFilter()
   },
   methods: {
     async changeDate(value) {
@@ -409,6 +422,14 @@ export default {
     referenceDetail(data) {
       this.$refs.referenceDetailForm.setData(data.id, data)
       this.showreferenceDetail = true
+    },
+    lockDistrictFilter() {
+      this.disabledDistrict = true
+      this.districtCity = {
+        kemendagri_kabupaten_kode: this.district_user,
+        kemendagri_kabupaten_nama: this.district_name
+      }
+      this.onSelectDistrictCity(this.districtCity)
     }
   }
 }

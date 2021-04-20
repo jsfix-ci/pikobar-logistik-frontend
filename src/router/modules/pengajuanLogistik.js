@@ -7,7 +7,7 @@ const pengajuanLogistik = {
   meta: {
     title: 'logistic_request_title',
     icon: 'medication',
-    roles: ['superadmin', 'dinkesprov']
+    roles: ['superadmin', 'dinkesprov', 'dinkeskota']
   },
   active: false,
   children: [
@@ -18,7 +18,7 @@ const pengajuanLogistik = {
       meta: {
         title: 'not_verified_title',
         noCache: true,
-        roles: ['superadmin', 'dinkesprov']
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     },
     {
@@ -28,7 +28,7 @@ const pengajuanLogistik = {
       meta: {
         title: 'verified_title',
         noCache: true,
-        roles: ['superadmin', 'dinkesprov']
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     },
     {
@@ -38,7 +38,7 @@ const pengajuanLogistik = {
       meta: {
         title: 'approved_title',
         noCache: true,
-        roles: ['superadmin', 'dinkesprov']
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     },
     {
@@ -48,7 +48,7 @@ const pengajuanLogistik = {
       meta: {
         title: 'rejected_title',
         noCache: true,
-        roles: ['superadmin', 'dinkesprov']
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     },
     {
@@ -59,7 +59,7 @@ const pengajuanLogistik = {
         title: 'applicant_medical_tools_list_title',
         icon: 'library_books',
         noCache: true,
-        roles: ['superadmin', 'dinkesprov']
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     }
   ]

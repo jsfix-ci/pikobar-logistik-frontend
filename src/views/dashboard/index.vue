@@ -154,7 +154,7 @@
                       <applicant-instance-chart />
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="roles[0] !== 'dinkeskota'">
                     <v-col cols="12" sm="12" md="12">
                       <statistic-applicant-chart />
                     </v-col>
@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import EventBus from '@/utils/eventBus'
 import FormatingNumber from '../../helpers/formattingNumber'
 
@@ -188,6 +188,9 @@ export default {
   computed: {
     ...mapGetters('logistics', [
       'dataLogisticRequestSummary'
+    ]),
+    ...mapState('user', [
+      'roles'
     ])
   },
   async mounted() {
