@@ -370,14 +370,13 @@ export default {
       this.isApproved = true
     }
     await this.$store.dispatch('faskesType/getListFaskesType')
-    this.getLogisticRequestList()
+    this.roles[0] === 'dinkeskota' ? this.lockDistrictFilter() : this.getLogisticRequestList()
     EventBus.$on('hideCompletenessDetail', (value) => {
       this.showcompletenessDetail = false
     })
     EventBus.$on('hideReferenceDetail', (value) => {
       this.showreferenceDetail = false
     })
-    if (this.roles[0] === 'dinkeskota') this.lockDistrictFilter()
   },
   methods: {
     async changeDate(value) {
