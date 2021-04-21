@@ -370,6 +370,7 @@ export default {
       this.isApproved = true
     }
     await this.$store.dispatch('faskesType/getListFaskesType')
+    if (this.roles[0] === 'dinkeskota') this.lockDistrictFilter()
     this.getLogisticRequestList()
     EventBus.$on('hideCompletenessDetail', (value) => {
       this.showcompletenessDetail = false
@@ -377,7 +378,6 @@ export default {
     EventBus.$on('hideReferenceDetail', (value) => {
       this.showreferenceDetail = false
     })
-    if (this.roles[0] === 'dinkeskota') this.lockDistrictFilter()
   },
   methods: {
     async changeDate(value) {
@@ -429,7 +429,7 @@ export default {
         kemendagri_kabupaten_kode: this.district_user,
         kemendagri_kabupaten_nama: this.district_name
       }
-      this.onSelectDistrictCity(this.districtCity)
+      this.listQuery.city_code = this.districtCity.kemendagri_kabupaten_kode
     }
   }
 }
