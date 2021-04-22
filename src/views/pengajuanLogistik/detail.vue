@@ -78,7 +78,7 @@
           <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.agency_name : '-' }}</span>
         </v-col>
       </v-row>
-      <v-row v-if="roles[0] !== 'dinkeskota'">
+      <v-row v-if="isNotDinkesKota">
         <v-col cols="12" sm="12">
           <span style="margin-left: 20px">
             <v-btn
@@ -154,14 +154,14 @@
     </div>
     <div>
       <br>
-      <v-row v-if="roles[0] !== 'dinkeskota'">
+      <v-row v-if="isNotDinkesKota">
         <v-col>
           <span class="text-data-green">
             {{ $t('label.applicant_urgency') }}
           </span>
         </v-col>
       </v-row>
-      <v-row v-if="roles[0] !== 'dinkeskota'">
+      <v-row v-if="isNotDinkesKota">
         <v-col cols="12" sm="12">
           <v-card
             class="mx-auto"
@@ -342,7 +342,7 @@
                   </v-label>
                 </v-row>
               </v-col>
-              <v-col v-if="roles[0] !== 'dinkeskota'" class="margin-20" cols="12" sm="1" md="1">
+              <v-col v-if="isNotDinkesKota" class="margin-20" cols="12" sm="1" md="1">
                 <v-btn small outlined color="success" style="padding:20px;" @click="showAgencyIdentityDialog"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
@@ -425,7 +425,7 @@
                   <v-img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : noImage" @error="errorHandler" />
                 </v-row>
               </v-col>
-              <v-col v-if="roles[0] !== 'dinkeskota'" class="margin-20" cols="12" sm="1" md="1">
+              <v-col v-if="isNotDinkesKota" class="margin-20" cols="12" sm="1" md="1">
                 <v-btn small outlined color="success" style="padding:20px;" @click="showApplicantIdentityDialog"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
@@ -454,7 +454,7 @@
                 <v-btn small outlined color="success" style="padding:20px;" @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
                   <v-icon small dark style="padding-left:5px;">mdi-download</v-icon> <span>{{ $t('label.download') }}</span>
                 </v-btn>
-                <v-btn v-if="roles[0] !== 'dinkeskota'" small outlined color="success" style="margin-left:15px; padding:20px;" @click="updateLetter"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
+                <v-btn v-if="isNotDinkesKota" small outlined color="success" style="margin-left:15px; padding:20px;" @click="updateLetter"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
           </v-card-text>
@@ -529,10 +529,10 @@
                 <thead>
                   <tr>
                     <th colspan="7" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
-                    <th v-if="isVerified && !isFinalized && roles[0] !== 'dinkeskota'" rowspan="2" class="text-center grey lighten-5">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
+                    <th v-if="isVerified && !isFinalized && isNotDinkesKota" rowspan="2" class="text-center grey lighten-5">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
                     <th v-if="isVerified" colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
                     <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                    <th v-if="isVerified && !isFinalized && roles[0] !== 'dinkeskota'" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
+                    <th v-if="isVerified && !isFinalized && isNotDinkesKota" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                   </tr>
                   <tr>
                     <th class="text-left green lighten-5">{{ $t('label.number').toUpperCase() }}</th>
@@ -568,7 +568,7 @@
                     <td>{{ item.unit.unit || '-' }}</td>
                     <td>{{ item.usage || '-' }}</td>
                     <td>{{ item.product ? item.product.category : '-' }}</td>
-                    <td v-if="isVerified && !isFinalized && roles[0] !== 'dinkeskota'"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
+                    <td v-if="isVerified && !isFinalized && isNotDinkesKota"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
                     <td v-if="isVerified">{{ item.recommendation_product_name || '-' }}</td>
                     <td v-if="isVerified" class="text-right">{{ formatCurrency(item.recommendation_quantity) || '-' }}</td>
                     <td v-if="isVerified">{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
@@ -585,7 +585,7 @@
                       <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
                       <span v-else>-</span>
                     </td>
-                    <td v-if="isVerified && !isApproved && roles[0] !== 'dinkeskota'">
+                    <td v-if="isVerified && !isApproved && isNotDinkesKota">
                       <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, false)">
                         {{ $t('label.update') }}
                       </v-btn>
@@ -606,7 +606,7 @@
                       <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
                       <span v-else>-</span>
                     </td>
-                    <td v-if="isApproved && !isFinalized && roles[0] !== 'dinkeskota'">
+                    <td v-if="isApproved && !isFinalized && isNotDinkesKota">
                       <v-btn text small color="info" @click.stop="openForm(false, item.product, index, true, true)">
                         {{ $t('label.update') }}
                       </v-btn>
@@ -640,10 +640,10 @@
             <v-card-text>
               <v-row>
                 <v-col>
-                  <v-btn v-if="isVerified && !isApproved && !isFinalized && roles[0] !== 'dinkeskota'" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
+                  <v-btn v-if="isVerified && !isApproved && !isFinalized && isNotDinkesKota" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
                     <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_recommendation') }}</span>
                   </v-btn>
-                  <v-btn v-else-if="isVerified && isApproved && !isFinalized && roles[0] !== 'dinkeskota'" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
+                  <v-btn v-else-if="isVerified && isApproved && !isFinalized && isNotDinkesKota" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
                     <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_realization') }}</span>
                   </v-btn>
                   <v-simple-table style="margin-top: 70px">
@@ -653,7 +653,7 @@
                           <th rowspan="2" class="text-center grey lighten-5">{{ $t('label.number').toUpperCase() }}</th>
                           <th colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
                           <th v-if="isApproved" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                          <th v-if="!isFinalized && roles[0] !== 'dinkeskota'" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
+                          <th v-if="!isFinalized && isNotDinkesKota" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                         </tr>
                         <tr>
                           <th class="text-left green lighten-4">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
@@ -685,7 +685,7 @@
                             <a v-if="item.recommendBy" class="blue--text letter-class" @click="picPopUp(item, true, false, item.recommendBy)">{{ item.recommendBy || '-' }}</a>
                             <span v-else>-</span>
                           </td>
-                          <td v-if="isVerified && !isApproved && roles[0] !== 'dinkeskota'">
+                          <td v-if="isVerified && !isApproved && isNotDinkesKota">
                             <v-card-actions>
                               <v-menu
                                 :close-on-content-click="false"
@@ -737,7 +737,7 @@
                             <a v-if="item.realizedBy" class="blue--text letter-class" @click="picPopUp(item, true, true, item.realizedBy)">{{ item.realizedBy || '-' }}</a>
                             <span v-else>-</span>
                           </td>
-                          <td v-if="isApproved && !isFinalized && roles[0] !== 'dinkeskota'">
+                          <td v-if="isApproved && !isFinalized && isNotDinkesKota">
                             <v-card-actions>
                               <v-menu
                                 :close-on-content-click="false"
@@ -910,7 +910,10 @@ export default {
     ]),
     ...mapState('user', [
       'roles'
-    ])
+    ]),
+    isNotDinkesKota() {
+      return this.roles[0] !== 'dinkeskota'
+    }
   },
   async created() {
     this.listQuery.agency_id = this.$route.params.id
