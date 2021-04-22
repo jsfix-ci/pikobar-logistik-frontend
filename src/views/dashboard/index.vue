@@ -193,9 +193,6 @@ export default {
       'roles'
     ])
   },
-  async mounted() {
-    await this.getLogisticRequestSummary()
-  },
   methods: {
     async getLogisticRequestSummary() {
       await this.$store.dispatch('logistics/getLogisticRequestSummary', this.listQuery)
