@@ -164,7 +164,11 @@ export default {
         page: 1,
         limit: 10,
         search: null,
-        status: null
+        status: null,
+        city_code: null
+      },
+      listQueryStatistic: {
+        city_code: null
       },
       date: null,
       showFilter: false,
@@ -186,9 +190,14 @@ export default {
     ...mapState('logistics', [
       'reportedReceipt',
       'unReportedReceipt'
+    ]),
+    ...mapState('user', [
+      'roles',
+      'district_user'
     ])
   },
   async created() {
+    if (this.roles[0] === 'dinkeskota') this.listQuery.city_code = this.district_user
     await this.$store.dispatch('faskesType/getListFaskesType')
     this.getAcceptanceReportList()
     this.getStatistic()
@@ -248,7 +257,8 @@ export default {
       return formattingNumber.formatCurrency(value)
     },
     async getStatistic() {
-      await this.$store.dispatch('logistics/getStatisticReport')
+      if (this.roles[0] === 'dinkeskota') this.listQueryStatistic.city_code = this.district_user
+      await this.$store.dispatch('logistics/getStatisticReport', this.listQueryStatistic)
     }
   }
 }
