@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import EventBus from '@/utils/eventBus'
 
 export default {
@@ -65,7 +65,8 @@ export default {
       },
       listQuery: {
         start_date: null,
-        end_date: null
+        end_date: null,
+        city_code: null
       }
     }
   },
@@ -78,6 +79,10 @@ export default {
     },
     ...mapGetters('logistics', [
       'dataLogisticRequestSummary'
+    ]),
+    ...mapState('user', [
+      'district_user',
+      'roles'
     ])
   },
   created() {
@@ -88,6 +93,7 @@ export default {
     })
   },
   async mounted() {
+    if (this.roles[0] === 'dinkeskota') this.listQuery.city_code = this.district_user
     await this.getLogisticRequestSummary()
   },
   methods: {

@@ -200,7 +200,6 @@ export default {
     async updateChart(value) {
       this.listQuery.start_date = value.startDate
       this.listQuery.end_date = value.endDate
-      await this.getLogisticRequestSummary()
       EventBus.$emit('getCityTotalRequest', this.listQuery)
       EventBus.$emit('getProductTotalRequest', this.listQuery)
       EventBus.$emit('getFaskesTypeTotalRequest', this.listQuery)

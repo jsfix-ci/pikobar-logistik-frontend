@@ -429,9 +429,9 @@ export default {
       return e
     }
   },
-  async getStatisticReport({ commit }) {
+  async getStatisticReport({ commit }, params) {
     try {
-      const response = await doPostUpdate('/api/v1/acceptance-report-statistic', 'GET')
+      const response = await fetchList('/api/v1/acceptance-report-statistic', 'GET', params)
       commit('SET_DATA_REPORTED_RECEIPT', response.data.already_reported_total)
       commit('SET_DATA_UNREPORTED_RECEIPT', response.data.not_yet_reported_total)
       return response
