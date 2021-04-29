@@ -1097,7 +1097,7 @@ export default {
       const res = await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
       // Cek otorisasi user
       if (!res.data) {
-        window.history.length < 3 ? this.$router.push('/dashboard') : this.back()
+        this.$router.push('/dashboard')
         return
       }
       if (this.detailLogisticRequest.letter !== null) {
