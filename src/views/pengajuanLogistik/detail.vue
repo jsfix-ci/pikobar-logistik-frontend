@@ -109,26 +109,6 @@
           {{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.agency_name : '-' }}
         </span>
       </div>
-      <!-- <v-row v-if="isFinalized">
-        <v-col cols="2" sm="2">
-          <span class="text-title">{{ $t('label.approved_by') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.name + picHandphone : '-' }}</span>
-          <br>
-          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.agency_name : '-' }}</span>
-        </v-col>
-      </v-row> -->
-      <!-- <v-row v-else-if="isApproved">
-        <v-col cols="2" sm="2">
-          <span class="text-title">{{ $t('label.approved_by') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.name + picHandphone : '-' }}</span>
-          <br>
-          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.agency_name : '-' }}</span>
-        </v-col>
-      </v-row> -->
       <v-row
         v-if="isNotDinkesKota"
         :class="{
