@@ -1094,7 +1094,12 @@ export default {
       this.loaded = true
     },
     async getListDetail() {
-      await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
+      const res = await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
+      // Cek otorisasi user
+      if (!res.data) {
+        this.$router.push('/dashboard')
+        return
+      }
       if (this.detailLogisticRequest.letter !== null) {
         const temp = this.detailLogisticRequest.letter.letter.split('.')
         this.letterFileType = temp[temp.length - 1]
