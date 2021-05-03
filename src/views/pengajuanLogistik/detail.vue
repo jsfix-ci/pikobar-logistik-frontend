@@ -7,7 +7,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="9">
+        <v-col cols="12" lg="9" md="12">
           <v-card
             v-if="!isVerified && !isRejected"
             class="mx-auti"
@@ -16,7 +16,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
-                  <span style="color: white">{{ $t('label.verify_text_alert_1') }}<b>{{ $t('label.verify_text_alert_2') }}</b> {{ $t('label.verify_text_alert_3') }}</span>
+                  <span class="text-wrap" style="color: white">{{ $t('label.verify_text_alert_1') }}<b>{{ $t('label.verify_text_alert_2') }}</b> {{ $t('label.verify_text_alert_3') }}</span>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -29,63 +29,100 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
-                  <span class="sub-title-verified-card-detail-logistic-needs white--text">{{ $t('label.alert_verified_title_card_logistic_needs_1') }} <b>{{ $t('label.alert_verified_title_card_logistic_needs_2') }}</b></span>
+                  <span class="sub-title-verified-card-detail-logistic-needs white--text text-wrap">{{ $t('label.alert_verified_title_card_logistic_needs_1') }} <b>{{ $t('label.alert_verified_title_card_logistic_needs_2') }}</b></span>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-card>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="3" sm="2">
-          <span class="text-title">{{ $t('label.request_date') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="7" sm="8">
-          <span
-            class="text-data-green"
-          >:  {{ detailLogisticRequest.created_at === null ? $t('label.stripe') : $moment.utc(detailLogisticRequest.created_at).tz('Asia/Jakarta').format('LLL') }}</span>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="3" sm="2">
-          <span class="text-title">{{ $t('label.status') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="2" sm="2">
-          <span v-if="isVerified && !isApproved && !isRejectedApproval" class="text-data-green"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}</span>
-          <span v-else-if="isFinalized" class="text-data-green"> : {{ $t('label.finalized') }}</span>
-          <span v-else-if="isApproved" class="text-data-green"> : {{ detailLogisticRequest.applicant.approval_status }}</span>
-          <span v-else-if="isRejectedApproval" class="text-data-red"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.approval_status : '-' }}</span>
-          <span v-else class="text-data-red"> : {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.verification_status : '-' }}</span>
-        </v-col>
-      </v-row>
-      <v-row v-if="isFinalized">
-        <v-col cols="2" sm="2">
-          <span class="text-title">{{ $t('label.approved_by') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green"> :  {{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.name + picHandphone : '-' }}</span>
+      <div class="d-flex flex-row mt-8">
+        <span
+          class="text-title"
+          :class="{
+            'mr-13': $vuetify.breakpoint.smAndUp,
+            'mr-3': $vuetify.breakpoint.xsOnly
+          }"
+        >
+          {{ $t('label.request_date') }}
+        </span>
+        <span class="text-data-green">:
+          {{
+            detailLogisticRequest.created_at === null
+              ? $t('label.stripe')
+              : $moment.utc(detailLogisticRequest.created_at).tz('Asia/Jakarta').format('LLL')
+          }}
+        </span>
+      </div>
+      <div class="d-flex flex-row my-8">
+        <span
+          class="text-title mr-16"
+        >
+          {{ $t('label.status') }}
+        </span>
+        <span
+          :class="{
+            'text-data-green': isVerified || isFinalized || isApproved,
+            'text-data-red': isRejectedApproval || (!isVerified && !isFinalized && !isApproved && !isRejectedApproval),
+            'ml-16': $vuetify.breakpoint.smAndUp,
+            'ml-6': $vuetify.breakpoint.xsOnly
+          }"
+        >
+          : {{ statusLabel }}
+        </span>
+      </div>
+      <div v-if="isFinalized" class="d-flex flex-row my-8">
+        <span
+          class="text-title mr-4"
+        >
+          {{ $t('label.approved_by') }}
+        </span>
+        <span
+          :class="{
+            'text-data-green': isVerified || isFinalized || isApproved,
+            'text-data-red': isRejectedApproval || (!isVerified && !isFinalized && !isApproved && !isRejectedApproval),
+            'ml-16': $vuetify.breakpoint.smAndUp,
+            'ml-6': $vuetify.breakpoint.xsOnly
+          }"
+        >
+          : {{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.name + picHandphone : '-' }}
           <br>
-          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.agency_name : '-' }}</span>
-        </v-col>
-      </v-row>
-      <v-row v-else-if="isApproved">
-        <v-col cols="2" sm="2">
-          <span class="text-title">{{ $t('label.approved_by') }}</span>
-        </v-col>
-        <v-col class="margin-left-min-30" cols="5" sm="5">
-          <span class="text-data-green">:  {{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.name + picHandphone : '-' }}</span>
+          {{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.agency_name : '-' }}
+        </span>
+      </div>
+      <div v-else-if="isApproved" class="d-flex flex-row my-8">
+        <span
+          class="text-title mr-4"
+        >
+          {{ $t('label.approved_by') }}
+        </span>
+        <span
+          :class="{
+            'text-data-green': isVerified || isFinalized || isApproved,
+            'text-data-red': isRejectedApproval || (!isVerified && !isFinalized && !isApproved && !isRejectedApproval),
+            'ml-16': $vuetify.breakpoint.smAndUp,
+            'ml-6': $vuetify.breakpoint.xsOnly
+          }"
+        >
+          : {{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.name + picHandphone : '-' }}
           <br>
-          <span class="text-data-green" style="margin-left:7px;">{{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.agency_name : '-' }}</span>
-        </v-col>
-      </v-row>
-      <v-row v-if="isNotDinkesKota">
-        <v-col cols="12" sm="12">
-          <span style="margin-left: 20px">
+          {{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.agency_name : '-' }}
+        </span>
+      </div>
+      <v-row
+        v-if="isNotDinkesKota"
+        :class="{
+          'justify-center': $vuetify.breakpoint.xsOnly,
+          'pl-3': $vuetify.breakpoint.smAndUp
+        }"
+      >
+        <div>
+          <span>
             <v-btn
               v-if="!isVerified && !isRejected"
               outlined
               color="#2E7D32"
-              class="margin-btn"
+              :class="verifyButton"
               @click="postVerification"
             >
               {{ $t('label.verif_now') }}
@@ -94,6 +131,7 @@
               v-if="isRejected || isRejectedApproval"
               outlined
               color="#2E7D32"
+              :class="verifyButton"
               @click.stop="showDialogReasonReject = true"
             >
               {{ $t('label.reason_reject') }}
@@ -102,7 +140,7 @@
               v-if="isVerified && !isApproved && !isRejectedApproval"
               outlined
               color="#2E7D32"
-              class="margin-btn"
+              :class="verifyButton"
               @click="submitApprove()"
             >
               {{ $t('label.approve') }}
@@ -111,18 +149,18 @@
               v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
               outlined
               color="#2E7D32"
-              class="margin-btn"
+              class="btn-sm__done"
               @click="submitFinal()"
             >
               {{ $t('label.final') }}
             </v-btn>
           </span>
-          <span style="margin-left: 20px">
+          <span class="ml-3">
             <v-btn
               v-if="!isVerified && !isRejected"
               outlined
               color="#e62929"
-              class="margin-btn"
+              :class="rejectButton"
               @click.stop="showDialogReject = true"
             >
               {{ $t('route.rejected_title') }}
@@ -131,14 +169,14 @@
               v-if="isVerified && !isApproved && !isRejectedApproval"
               outlined
               color="#e62929"
-              class="margin-btn"
+              :class="rejectButton"
               @click.stop="showDialogReject = true"
               @click="setTotal()"
             >
               {{ $t('route.rejected_title') }}
             </v-btn>
           </span>
-        </v-col>
+        </div>
       </v-row>
       <rejectKebutuhanLogistik
         :show="showDialogReject"
@@ -154,7 +192,7 @@
     </div>
     <div>
       <br>
-      <v-row v-if="isNotDinkesKota">
+      <v-row v-if="isNotDinkesKota" class="mt-3">
         <v-col>
           <span class="text-data-green">
             {{ $t('label.applicant_urgency') }}
@@ -164,51 +202,55 @@
       <v-row v-if="isNotDinkesKota">
         <v-col cols="12" sm="12">
           <v-card
-            class="mx-auto"
+            class="d-flex flex-row mx-auto pa-4 align-center"
             outlined
           >
-            <v-row class="mt-3 mb-3">
-              <v-col class="margin-20" cols="12" sm="12" md="12">
-                <v-row v-if="isUrgent" class="margin-top-min-15">
-                  <v-col>
-                    <span>
-                      {{ $t('label.applicant_label_urgency') }} <b>{{ $t('label.important_applicant') }}</b>
-                    </span>
-                  </v-col>
-                  <v-col>
-                    <v-btn
-                      outlined
-                      absolute
-                      right
-                      color="warning"
-                      class="margin-btn margin-top-min-15"
-                      @click="urgencyChange(detailLogisticRequest.applicant.id, 0)"
-                    >
-                      {{ $t('label.important') }}
-                    </v-btn>
-                  </v-col>
-                </v-row>
-                <v-row v-else>
-                  <v-col>
-                    <span class="text-title-green">
-                      {{ $t('label.applicant_label_no_urgency') }}
-                    </span>
-                  </v-col>
-                  <v-col>
-                    <v-btn
-                      outlined
-                      absolute
-                      right
-                      color="#2E7D32"
-                      class="margin-btn margin-top-min-15"
-                      @click="urgencyChange(detailLogisticRequest.applicant.id, 1)"
-                    >
-                      {{ $t('label.button_applicant_urgency_important') }}
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
+            <v-container
+              v-if="isUrgent"
+              fluid
+              class="d-flex"
+              :class="{
+                'flex-row align-center justify-space-between': $vuetify.breakpoint.smAndUp,
+                'flex-column text-center': $vuetify.breakpoint.xsOnly
+              }"
+            >
+              <span>
+                {{ $t('label.applicant_label_urgency') }} <b>{{ $t('label.important_applicant') }}</b>
+              </span>
+              <v-btn
+                outlined
+                color="warning"
+                :class="{
+                  'mt-3': $vuetify.breakpoint.xsOnly
+                }"
+                @click="urgencyChange(detailLogisticRequest.applicant.id, 0)"
+              >
+                {{ $t('label.important') }}
+              </v-btn>
+            </v-container>
+            <v-container
+              v-else
+              fluid
+              class="d-flex mx-0"
+              :class="{
+                'flex-row align-center justify-space-between': $vuetify.breakpoint.smAndUp,
+                'flex-column text-center': $vuetify.breakpoint.xsOnly
+              }"
+            >
+              <span class="text-title-green">
+                {{ $t('label.applicant_label_no_urgency') }}
+              </span>
+              <v-btn
+                outlined
+                color="#2E7D32"
+                :class="{
+                  'mt-3': $vuetify.breakpoint.xsOnly
+                }"
+                @click="urgencyChange(detailLogisticRequest.applicant.id, 1)"
+              >
+                {{ $t('label.button_applicant_urgency_important') }}
+              </v-btn>
+            </v-container>
           </v-card>
         </v-col>
       </v-row>
@@ -222,32 +264,32 @@
       <v-row v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')">
         <v-col cols="12" sm="12">
           <v-card
-            class="mx-auto"
+            class="d-flex flex-row mx-auto pa-4 align-center"
             outlined
           >
-            <v-row class="mt-3 mb-3">
-              <v-col class="margin-20" cols="12" sm="12" md="12">
-                <v-row class="margin-top-min-15">
-                  <v-col>
-                    <span>
-                      {{ $t('label.applicant_status_description') }} <b>{{ detailLogisticRequest.step_label }}</b>
-                    </span>
-                  </v-col>
-                  <v-col>
-                    <v-btn
-                      outlined
-                      absolute
-                      right
-                      color="info"
-                      class="margin-btn margin-top-min-15"
-                      @click="returnChange(detailLogisticRequest.id)"
-                    >
-                      {{ $t('label.return') }}
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
+            <v-container
+              v-if="isUrgent"
+              fluid
+              class="d-flex"
+              :class="{
+                'flex-row align-center justify-space-between': $vuetify.breakpoint.smAndUp,
+                'flex-column text-center': $vuetify.breakpoint.xsOnly
+              }"
+            >
+              <span>
+                {{ $t('label.applicant_status_description') }} <b>{{ detailLogisticRequest.step_label }}</b>
+              </span>
+              <v-btn
+                outlined
+                color="info"
+                :class="{
+                  'mt-3': $vuetify.breakpoint.xsOnly
+                }"
+                @click="returnChange(detailLogisticRequest.id)"
+              >
+                {{ $t('label.return') }}
+              </v-btn>
+            </v-container>
           </v-card>
         </v-col>
       </v-row>
@@ -330,19 +372,33 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col cols="12" sm="3" md="3">
-                <v-row class="mt-5">
-                  <span class="text-title-green">
-                    {{ $t('label.full_address') }}
-                  </span>
-                </v-row>
-                <v-row class="mt-4">
-                  <v-label>
-                    {{ detailLogisticRequest.location_address }}
-                  </v-label>
-                </v-row>
+              <v-col
+                cols="12"
+                sm="3"
+                md="3"
+                :class="{
+                  'margin-20': $vuetify.breakpoint.smAndUp,
+                  'ml-5 mt-n4': $vuetify.breakpoint.xsOnly
+                }"
+              >
+                <span class="text-title-green">
+                  {{ $t('label.full_address') }}
+                </span>
+                <br>
+                <v-label>
+                  {{ detailLogisticRequest.location_address }}
+                </v-label>
               </v-col>
-              <v-col v-if="isNotDinkesKota" class="margin-20" cols="12" sm="1" md="1">
+              <v-col
+                v-if="isNotDinkesKota"
+                cols="12"
+                sm="1"
+                md="1"
+                :class="{
+                  'mt-5': $vuetify.breakpoint.smAndUp,
+                  'ml-5 mb-5': $vuetify.breakpoint.xsOnly
+                }"
+              >
                 <v-btn small outlined color="success" style="padding:20px;" @click="showAgencyIdentityDialog"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
               </v-col>
             </v-row>
@@ -351,7 +407,7 @@
       </v-row>
     </div>
     <div>
-      <v-row>
+      <v-row class="mt-5">
         <v-col>
           <span class="text-data-green">
             {{ $t('label.step_title_2') }}
@@ -364,7 +420,7 @@
             <v-row class="mb-5">
               <v-col class="margin-20" cols="12" sm="6" md="6">
                 <v-row class="margin-top-min-15">
-                  <v-col>
+                  <v-col :class="{ 'max-width__cp': $vuetify.breakpoint.xsOnly }">
                     <span class="text-title-green">
                       {{ $t('label.contact_person') }}
                     </span>
@@ -373,7 +429,7 @@
                       {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.applicant_name : '-' }}
                     </v-label>
                   </v-col>
-                  <v-col>
+                  <v-col :class="{ 'max-width__email': $vuetify.breakpoint.xsOnly }">
                     <span class="text-title-green">
                       {{ $t('label.capital_email') }}
                     </span>
@@ -416,13 +472,31 @@
                 </v-row>
               </v-col>
               <v-col cols="12" sm="3" md="3">
-                <v-row class="mt-5">
+                <v-row
+                  class="mt-4 mx-0"
+                  :class="{
+                    'ml-5 mt-n5': $vuetify.breakpoint.xsOnly
+                  }"
+                >
                   <span class="text-title-green">{{ $t('label.applicant_ktp') }}</span>
                 </v-row>
-                <v-row class="mt-4">
+                <v-row
+                  class="mt-4 mx-0"
+                  :class="{
+                    'ml-5': $vuetify.breakpoint.xsOnly
+                  }"
+                >
                   <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
                   <a v-else-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</a>
-                  <v-img v-else class="image-style" :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : noImage" @error="errorHandler" />
+                  <v-img
+                    v-else
+                    :class="{
+                      'image-large': $vuetify.breakpoint.smAndUp,
+                      'image-small': $vuetify.breakpoint.xsOnly
+                    }"
+                    :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : noImage"
+                    @error="errorHandler"
+                  />
                 </v-row>
               </v-col>
               <v-col v-if="isNotDinkesKota" class="margin-20" cols="12" sm="1" md="1">
@@ -434,7 +508,7 @@
       </v-row>
     </div>
     <div>
-      <v-row>
+      <v-row class="mt-5">
         <v-col>
           <span class="text-data-green">
             {{ $t('label.applicant_letter') }}
@@ -445,18 +519,42 @@
     <v-row>
       <v-col>
         <v-card outlined>
-          <v-card-text>
-            <v-row class="ml-2">
-              <v-col cols="9" md="9">
-                <a :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'" target="_blank" class="blue--text letter-class"><u>{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.application_letter_number : '-' }}</u></a>
-              </v-col>
-              <v-col cols="3" md="3">
-                <v-btn small outlined color="success" style="padding:20px;" @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')">
-                  <v-icon small dark style="padding-left:5px;">mdi-download</v-icon> <span>{{ $t('label.download') }}</span>
-                </v-btn>
-                <v-btn v-if="isNotDinkesKota" small outlined color="success" style="margin-left:15px; padding:20px;" @click="updateLetter"><span>{{ $t('label.edit') }}</span><u><v-icon small dark style="padding-left:5px">mdi-pencil</v-icon></u></v-btn>
-              </v-col>
-            </v-row>
+          <v-card-text
+            :class="{
+              'd-flex flex-row align-center justify-space-between': $vuetify.breakpoint.smAndUp,
+              'd-flex flex-column align-center justify-space-around': $vuetify.breakpoint.xsOnly
+            }"
+          >
+            <a
+              :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'"
+              target="_blank"
+              class="blue--text letter-class"
+            >
+              <u>{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.application_letter_number : '-' }}</u>
+            </a>
+            <div :class="{ 'mt-4': $vuetify.breakpoint.xsOnly }">
+              <v-btn
+                small
+                outlined
+                color="success"
+                class="pa-5"
+                @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')"
+              >
+                <v-icon left small dark>mdi-download</v-icon>
+                <span>{{ $t('label.download') }}</span>
+              </v-btn>
+              <v-btn
+                v-if="isNotDinkesKota"
+                small
+                outlined
+                color="success"
+                class="ml-3 pa-5"
+                @click="updateLetter"
+              >
+                <span>{{ $t('label.edit') }}</span>
+                <v-icon right small dark>mdi-pencil</v-icon>
+              </v-btn>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -514,7 +612,7 @@
       </v-row>
     </div>
     <div> <!-- Daftar Barang Permohonan -->
-      <v-row>
+      <v-row class="mt-5">
         <v-col>
           <span class="text-data-green">
             {{ $t('label.list_logistic_need') }}
@@ -523,7 +621,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-card outlined>
+          <v-card outlined class="pa-4">
             <v-simple-table>
               <template v-slot:default>
                 <thead>
@@ -626,7 +724,7 @@
         </v-col>
       </v-row>
       <div v-if="isVerified">
-        <v-row>
+        <v-row class="mt-5">
           <v-col>
             <span class="text-data-green">
               {{ $t('label.recommendation_distribution_other') }}
@@ -640,13 +738,35 @@
             <v-card-text>
               <v-row>
                 <v-col>
-                  <v-btn v-if="isVerified && !isApproved && !isFinalized && isNotDinkesKota" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, false)">
-                    <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_recommendation') }}</span>
-                  </v-btn>
-                  <v-btn v-else-if="isVerified && isApproved && !isFinalized && isNotDinkesKota" outlined color="success" height="50px" absolute right @click.stop="openForm(true, null, null, true, true)">
-                    <v-icon dark>mdi-plus</v-icon> <span>{{ $t('label.add_distribution_realization') }}</span>
-                  </v-btn>
-                  <v-simple-table style="margin-top: 70px">
+                  <div
+                    class="d-flex flex-row"
+                    :class="{
+                      'justify-end': $vuetify.breakpoint.smAndUp,
+                      'justify-center': $vuetify.breakpoint.xsOnly
+                    }"
+                  >
+                    <v-btn
+                      v-if="isVerified && !isApproved && !isFinalized && isNotDinkesKota"
+                      outlined
+                      color="success"
+                      height="50px"
+                      @click.stop="openForm(true, null, null, true, false)"
+                    >
+                      <v-icon dark>mdi-plus</v-icon>
+                      <span>{{ $t('label.add_distribution_recommendation') }}</span>
+                    </v-btn>
+                    <v-btn
+                      v-else-if="isVerified && isApproved && !isFinalized && isNotDinkesKota"
+                      outlined
+                      color="success"
+                      height="50px"
+                      @click.stop="openForm(true, null, null, true, true)"
+                    >
+                      <v-icon dark>mdi-plus</v-icon>
+                      <span>{{ $t('label.add_distribution_realization') }}</span>
+                    </v-btn>
+                  </div>
+                  <v-simple-table class="mt-8">
                     <template v-slot:default>
                       <thead>
                         <tr>
@@ -913,6 +1033,29 @@ export default {
     ]),
     isNotDinkesKota() {
       return this.roles[0] !== 'dinkeskota'
+    },
+    statusLabel() {
+      if (this.isVerified && !this.isApproved && !this.isRejectedApproval) {
+        return this.detailLogisticRequest.applicant
+          ? this.detailLogisticRequest.applicant.verification_status
+          : '-'
+      } else if (this.isFinalized) {
+        return this.$t('label.finalized')
+      } else if (this.isApproved || this.isRejectedApproval) {
+        return this.detailLogisticRequest.applicant
+          ? this.detailLogisticRequest.applicant.approval_status
+          : '-'
+      } else {
+        return this.detailLogisticRequest.applicant
+          ? this.detailLogisticRequest.applicant.verification_status
+          : '-'
+      }
+    },
+    verifyButton() {
+      return this.$vuetify.breakpoint.smAndUp ? 'btn-sm' : 'btn-xs__verify'
+    },
+    rejectButton() {
+      return this.$vuetify.breakpoint.smAndUp ? 'btn-sm' : 'btn-xs__reject'
     }
   },
   async created() {
@@ -1292,7 +1435,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .table-title {
   font-family: "Product Sans";
   font-style: normal;
@@ -1365,5 +1508,45 @@ export default {
 }
 .mb-15 {
   margin-bottom: 60px;
+}
+.btn-xs {
+  &__verify {
+    min-width: 190px !important;
+    max-width: 190px !important;
+  }
+  &__reject {
+    max-width: 110px !important;
+    min-width: 110px !important;
+  }
+}
+.btn-sm {
+  max-width: 200px !important;
+  min-width: 200px !important;
+
+  &__done {
+    max-width: 250px !important;
+    min-width: 250px !important;
+  }
+}
+.image-large {
+  max-width: 100%;
+  max-height: 500px;
+}
+.image-small {
+  max-width: 50%;
+  max-height: 200px;
+}
+.max-width {
+  &__cp {
+    max-width: 180px !important;
+  }
+
+  &__email {
+    max-width: 150px !important;
+  }
+
+  &__add {
+    max-width: 150px !important;
+  }
 }
 </style>
