@@ -667,7 +667,9 @@
                     <td>{{ item.usage || '-' }}</td>
                     <td>{{ item.product ? item.product.category : '-' }}</td>
                     <td v-if="isVerified && !isFinalized && isNotDinkesKota"><v-btn small color="success" dark @click="getStockItem(item.product.id)">{{ $t('label.check_stock') }}</v-btn></td>
-                    <td v-if="isVerified">{{ item.recommendation_product_name || '-' }}</td>
+                    <td v-if="isVerified" class="text-no-wrap">
+                      <div v-html="splitIntoRows(item.recommendation_product_name || '-')" />
+                    </td>
                     <td v-if="isVerified" class="text-right">{{ formatCurrency(item.recommendation_quantity) || '-' }}</td>
                     <td v-if="isVerified">{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
                     <td v-if="isVerified">{{ item.recommendationDate || '-' }}</td>
@@ -944,6 +946,8 @@
 </template>
 
 <script>
+import _split from 'lodash/split'
+import _chunk from 'lodash/chunk'
 import { mapGetters, mapState } from 'vuex'
 import updateKebutuhanLogistik from './update'
 import DialogDelete from '@/components/DialogDelete'
@@ -1105,6 +1109,23 @@ export default {
     })
   },
   methods: {
+    splitIntoRows(str) {
+      if (typeof str !== 'string') {
+        return str
+      }
+      const wordsLength = 5
+      const words = _split(str, ' ')
+      const rowOfWords = _chunk(words, wordsLength)
+      const rows = rowOfWords.reduce((result, row) => {
+        result += `
+          <p style="margin: 0;">
+            ${row.join(' ')}
+          </p>
+        `
+        return result
+      }, '')
+      return rows
+    },
     rejectData(value) {
       const formData = new FormData()
       this.showDialogReject = false
