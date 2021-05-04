@@ -149,7 +149,7 @@
               v-if="isVerified && isApproved && !isRejectedApproval && !isFinalized"
               outlined
               color="#2E7D32"
-              :class="verifyButton"
+              class="btn-sm__done"
               @click="submitFinal()"
             >
               {{ $t('label.final') }}
@@ -1258,7 +1258,12 @@ export default {
       this.loaded = true
     },
     async getListDetail() {
-      await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
+      const res = await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
+      // Cek otorisasi user
+      if (!res.data) {
+        this.$router.push('/dashboard')
+        return
+      }
       if (this.detailLogisticRequest.letter !== null) {
         const temp = this.detailLogisticRequest.letter.letter.split('.')
         this.letterFileType = temp[temp.length - 1]
@@ -1538,6 +1543,11 @@ export default {
 .btn-sm {
   max-width: 200px !important;
   min-width: 200px !important;
+
+  &__done {
+    max-width: 250px !important;
+    min-width: 250px !important;
+  }
 }
 .image-large {
   max-width: 100%;
