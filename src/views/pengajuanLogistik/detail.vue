@@ -661,7 +661,9 @@
                   <tr v-for="(item, index) in listLogisticNeeds" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
                     <td>{{ item.product ? item.product.name : '-' }}</td>
-                    <td>{{ item.brand || '-' }}</td>
+                    <td class="text-no-wrap">
+                      <div v-html="splitIntoRows(item.brand || '-')" />
+                    </td>
                     <td class="text-right">{{ formatCurrency(item.quantity) || '-' }}</td>
                     <td>{{ item.unit.unit || '-' }}</td>
                     <td>{{ item.usage || '-' }}</td>
@@ -690,7 +692,9 @@
                         {{ $t('label.update') }}
                       </v-btn>
                     </td>
-                    <td v-if="isApproved">{{ item.realization_product_name || '-' }}</td>
+                    <td v-if="isApproved" class="text-no-wrap">
+                      <div v-html="splitIntoRows(item.realization_product_name || '-')" />
+                    </td>
                     <td v-if="isApproved" class="text-right">{{ formatCurrency(item.realization_quantity) || '-' }}</td>
                     <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
                     <td v-if="isApproved">{{ item.realizationDate || '-' }}</td>
@@ -798,7 +802,9 @@
                         </tr>
                         <tr v-for="(item, index) in listRealization" v-else :key="item.index">
                           <td>{{ getTableRowNumbering(index) }}</td>
-                          <td>{{ item.recommendation_product_name ? item.recommendation_product_name : '-' }}</td>
+                          <td class="text-no-wrap">
+                            <div v-html="splitIntoRows(item.recommendation_product_name || '-')" />
+                          </td>
                           <td class="text-right">{{ formatCurrency(item.recommendation_quantity) || '-' }}</td>
                           <td>{{ item.recommendation_product_name !== null ? item.recommendation_unit : '-' }}</td>
                           <td>{{ item.recommendationDate || '-' }}</td>
@@ -843,7 +849,9 @@
                               </v-menu>
                             </v-card-actions>
                           </td>
-                          <td v-if="isApproved">{{ item.realization_product_name ? item.realization_product_name : '-' }}</td>
+                          <td v-if="isApproved">
+                            <div v-html="splitIntoRows(item.realization_product_name || '-')" />
+                          </td>
                           <td v-if="isApproved" class="text-right">{{ formatCurrency(item.realization_quantity) || '-' }}</td>
                           <td v-if="isApproved">{{ item.realization_product_name !== null ? item.realization_unit : '-' }}</td>
                           <td v-if="isApproved">{{ item.realizationDate || '-' }}</td>
