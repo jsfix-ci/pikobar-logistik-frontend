@@ -268,7 +268,6 @@
             outlined
           >
             <v-container
-              v-if="isUrgent"
               fluid
               class="d-flex"
               :class="{
