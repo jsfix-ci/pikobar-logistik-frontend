@@ -267,6 +267,10 @@
                         <p class="reject-reason-data">{{ item.tracking.reject_note }}</p>
                       </div>
                     </v-card>
+                    <TrackingStatus
+                      :list-logistic-request="listLogisticRequest"
+                      :status="item"
+                    />
                   </v-col>
                 </v-row>
               </v-tab-item>
@@ -395,12 +399,14 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import { mapGetters } from 'vuex'
+import TrackingStatus from './status'
 
 export default {
   name: 'LandingPage',
   components: {
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
+    TrackingStatus
   },
   data() {
     return {
