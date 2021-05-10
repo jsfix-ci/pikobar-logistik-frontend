@@ -602,6 +602,7 @@ export default {
     dahsboard_disclaimer_kabkota: '*Data Statistik Permohonan pada Kota/Kab didapatkan dari permohonan yang masuk dan berada dalam status Permohonan Telah Terverifikasi',
     request: 'Permohonan',
     recommendation: 'Rekomendasi Salur',
+    distribution_realization: 'Realisasi Salur',
     realization: 'Realisasi',
     acceptance_report: {
       already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
@@ -639,7 +640,9 @@ export default {
         qty_nok: 'Jmlh Barang Tdk Sesuai',
         quality: 'Kualitas/ Mutu Barang yang diterima',
       }
-    }
+    },
+    show_table: 'Tampil Tabel',
+    close_table: 'Tutup Tabel'
   },
   success: {
     login_success: 'Login Berhasil',
