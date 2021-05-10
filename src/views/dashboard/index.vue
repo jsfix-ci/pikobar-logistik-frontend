@@ -154,7 +154,7 @@
                       <applicant-instance-chart />
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="roles[0] !== 'dinkeskota'">
                     <v-col cols="12" sm="12" md="12">
                       <statistic-applicant-chart />
                     </v-col>
@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import EventBus from '@/utils/eventBus'
 import FormatingNumber from '../../helpers/formattingNumber'
 
@@ -188,10 +188,10 @@ export default {
   computed: {
     ...mapGetters('logistics', [
       'dataLogisticRequestSummary'
+    ]),
+    ...mapState('user', [
+      'roles'
     ])
-  },
-  async mounted() {
-    await this.getLogisticRequestSummary()
   },
   methods: {
     async getLogisticRequestSummary() {
@@ -200,7 +200,6 @@ export default {
     async updateChart(value) {
       this.listQuery.start_date = value.startDate
       this.listQuery.end_date = value.endDate
-      await this.getLogisticRequestSummary()
       EventBus.$emit('getCityTotalRequest', this.listQuery)
       EventBus.$emit('getProductTotalRequest', this.listQuery)
       EventBus.$emit('getFaskesTypeTotalRequest', this.listQuery)

@@ -2,15 +2,41 @@
   <div>
     <v-card outlined>
       <v-card-title>
-        <span class="text-h5 font-weight-bold">{{ $t('label.goods_receipt_report_list') }}</span>
+        <span class="text-h5 font-weight-bold">{{ $t('label.goods_receipt_report_statistic') }}</span>
       </v-card-title>
+      <v-card-text
+        class="d-flex"
+        :class="{
+          'flex-column': $vuetify.breakpoint.smAndDown,
+          'flex-row': $vuetify.breakpoint.mdAndUp
+        }"
+      >
+        <statistic-card
+          :title="$t('label.goods_receipt_report_total')"
+          :value="currency(reportedReceipt)"
+          :unit="$t('label.request')"
+          :main-color="'#2f9e5f'"
+          :background-color="'#f2f7f4'"
+          :class="{
+            'mr-5': $vuetify.breakpoint.mdAndUp,
+            'mb-5': $vuetify.breakpoint.smAndDown
+          }"
+        />
+        <statistic-card
+          :title="$t('label.goods_receipt_not_yet_report_total')"
+          :value="currency(unReportedReceipt)"
+          :unit="$t('label.request')"
+          :main-color="'#ec6c6c'"
+          :background-color="'#f9f3f3'"
+        />
+      </v-card-text>
       <hr class="mt-5 thin">
       <v-card-title>
-        <span class="font-weight-bold">{{ $t('label.goods_receipt_report_table') }}</span>
+        <span class="font-weight-bold">{{ $t('label.goods_receipt_report_list') }}</span>
       </v-card-title>
       <hr class="thin">
       <v-card-text>
-        <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
+        <v-row class="margin-top-bot-min-20-list-pengajuan-logistik justify-space-between">
           <v-col cols="12" sm="4" md="4">
             <v-card
               outlined
@@ -26,6 +52,40 @@
                 @change="handleSearch"
               />
             </v-card>
+          </v-col>
+          <v-col cols="12" sm="2" md="2">
+            <v-btn
+              class="primary"
+              large
+              max-width="100px"
+              @click="showFilter = !showFilter"
+            >
+              {{ $t('label.filter') }}
+              <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon>
+              <v-icon v-else right>mdi-chevron-down</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row v-if="showFilter" class="mx-0">
+          <v-col cols="12" sm="2" class="px-0">
+            <v-label class="title">{{ $t('label.status') }}</v-label>
+            <v-select
+              v-model="listQuery.status"
+              :items="statusOption"
+              solo
+              item-text="label"
+              item-value="value"
+              :clearable="true"
+              :placeholder="$t('label.select_status')"
+              @change="handleSearch"
+            />
+          </v-col>
+          <v-col cols="12" sm="3" :class="{'px-0': $vuetify.breakpoint.xsOnly}">
+            <v-label class="title">{{ $t('label.date') + ' ' + $t('label.received') }}</v-label>
+            <date-picker-dashboard
+              :date="listQuery.start_date"
+              @selected="changeDate"
+            />
           </v-col>
         </v-row>
       </v-card-text>
@@ -83,7 +143,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import FileSaver from 'file-saver'
 import EventBus from '@/utils/eventBus'
 import FormatingNumber from '../../../helpers/formattingNumber'
@@ -96,10 +156,19 @@ export default {
         { value: 'asc', label: 'A-Z' },
         { value: 'desc', label: 'Z-A' }
       ],
+      statusOption: [
+        { value: 1, label: 'Sudah Lapor' },
+        { value: 0, label: 'Belum Lapor' }
+      ],
       listQuery: {
         page: 1,
         limit: 10,
-        search: null
+        search: null,
+        status: null,
+        city_code: null
+      },
+      listQueryStatistic: {
+        city_code: null
       },
       date: null,
       showFilter: false,
@@ -117,11 +186,21 @@ export default {
     ]),
     ...mapGetters('faskesType', [
       'faskesTypeList'
+    ]),
+    ...mapState('logistics', [
+      'reportedReceipt',
+      'unReportedReceipt'
+    ]),
+    ...mapState('user', [
+      'roles',
+      'district_user'
     ])
   },
   async created() {
+    if (this.roles[0] === 'dinkeskota') this.listQuery.city_code = this.district_user
     await this.$store.dispatch('faskesType/getListFaskesType')
     this.getAcceptanceReportList()
+    this.getStatistic()
     EventBus.$on('hideCompletenessDetail', (value) => {
       this.showcompletenessDetail = false
     })
@@ -176,6 +255,10 @@ export default {
     currency(value) {
       const formattingNumber = new FormatingNumber()
       return formattingNumber.formatCurrency(value)
+    },
+    async getStatistic() {
+      if (this.roles[0] === 'dinkeskota') this.listQueryStatistic.city_code = this.district_user
+      await this.$store.dispatch('logistics/getStatisticReport', this.listQueryStatistic)
     }
   }
 }

@@ -58,7 +58,12 @@
           </v-col>
           <v-col cols="12" sm="2">
             <v-label class="title">{{ $t('label.city_district') }}</v-label>
-            <select-area-district-city :on-select-district-city="onSelectDistrictCity" />
+            <select-area-district-city
+              :disabled-district="disabledDistrict"
+              :district-city="districtCity"
+              :city-district.sync="districtCity"
+              :on-select-district-city="onSelectDistrictCity"
+            />
           </v-col>
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.instance_type') }}</v-label>
@@ -157,8 +162,9 @@
                   <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
                   <th v-if="isApproved" class="text-center">{{ $t('label.approved_by').toUpperCase() }}</th>
                   <th v-if="isApproved" class="text-center">{{ $t('label.finalized_by').toUpperCase() }}</th>
-                  <th v-else class="text-center">{{ $t('label.status').toUpperCase() }}</th>
+                  <th v-if="isRejected" class="text-center">{{ $t('label.status').toUpperCase() }}</th>
                   <th v-if="isVerified" class="text-center">{{ $t('label.verified_by').toUpperCase() }}</th>
+                  <th v-if="isVerified" class="text-center">{{ $t('label.verified_date').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.urgency').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
@@ -184,10 +190,14 @@
                     <span v-if="data.applicant.finalized_by" class="green--text">{{ data.applicant.finalized_by.name }}</span>
                     <span v-else class="red--text">{{ 'Belum diselesaikan' }}</span>
                   </td>
-                  <td v-else>{{ data.applicant.status }}</td>
+                  <td v-if="isRejected">{{ data.applicant.status }}</td>
                   <td v-if="isVerified" class="text-center">
                     <span v-if="data.applicant.verified_by" class="green--text">{{ data.applicant.verified_by.name }}</span>
                     <span v-else class="red--text">{{ 'Belum Diverifikasi' }}</span>
+                  </td>
+                  <td v-if="isVerified" class="text-center">
+                    <span v-if="data.applicant.verified_at">{{ $moment(data.applicant.verified_at).format('D MMMM YYYY') }}</span>
+                    <span v-else class="red--text">{{ $t('label.not_verified') }}</span>
                   </td>
                   <td align="center">
                     <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
@@ -226,7 +236,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import FileSaver from 'file-saver'
 import EventBus from '@/utils/eventBus'
 import completenessDetail from './completenessDetail'
@@ -322,8 +332,11 @@ export default {
       showFilter: false,
       isVerified: false,
       isApproved: false,
+      isRejected: false,
       showcompletenessDetail: false,
-      showreferenceDetail: false
+      showreferenceDetail: false,
+      disabledDistrict: false,
+      districtCity: null
     }
   },
   computed: {
@@ -334,6 +347,11 @@ export default {
     ]),
     ...mapGetters('faskesType', [
       'faskesTypeList'
+    ]),
+    ...mapState('user', [
+      'roles',
+      'district_user', // district code
+      'district_name'
     ])
   },
   async created() {
@@ -345,12 +363,14 @@ export default {
       this.listQuery.verification_status = 'not_verified'
     } else if (this.$route.name === 'rejected') {
       this.listQuery.is_rejected = 1
+      this.isRejected = true
     } else if (this.$route.name === 'approved') {
       this.listQuery.verification_status = 'verified'
       this.listQuery.approval_status = 'approved'
       this.isApproved = true
     }
     await this.$store.dispatch('faskesType/getListFaskesType')
+    if (this.roles[0] === 'dinkeskota') this.lockDistrictFilter()
     this.getLogisticRequestList()
     EventBus.$on('hideCompletenessDetail', (value) => {
       this.showcompletenessDetail = false
@@ -402,6 +422,14 @@ export default {
     referenceDetail(data) {
       this.$refs.referenceDetailForm.setData(data.id, data)
       this.showreferenceDetail = true
+    },
+    lockDistrictFilter() {
+      this.disabledDistrict = true
+      this.districtCity = {
+        kemendagri_kabupaten_kode: this.district_user,
+        kemendagri_kabupaten_nama: this.district_name
+      }
+      this.listQuery.city_code = this.districtCity.kemendagri_kabupaten_kode
     }
   }
 }

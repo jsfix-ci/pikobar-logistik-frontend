@@ -7,8 +7,9 @@ WORKDIR /app
 
 # Copy all files to app folder
 COPY package*.json ./
-RUN npm install 
-COPY . /app 
+RUN npm install --progress=false
+#RUN rm -rf package-lock.json
+COPY . /app
 # Environment app
 ARG VUE_APP_SECURE
 ARG VUE_APP_URL

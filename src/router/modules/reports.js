@@ -7,7 +7,7 @@ const reports = {
   meta: {
     title: 'report',
     icon: 'fact_check',
-    roles: ['superadmin', 'dinkesprov']
+    roles: ['superadmin', 'dinkesprov', 'dinkeskota']
   },
   active: false,
   children: [
@@ -18,7 +18,7 @@ const reports = {
       meta: {
         title: 'goods_receipt_report',
         noCache: true,
-        roles: ['superadmin', 'dinkesprov']
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     },
     {
@@ -28,7 +28,7 @@ const reports = {
       meta: {
         title: 'goods_use_report',
         noCache: true,
-        roles: ['superadmin', 'dinkesprov']
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     },
     {
@@ -39,7 +39,7 @@ const reports = {
         title: 'goods_receipt_report',
         icon: 'library_books',
         noCache: true,
-        roles: ['superadmin', 'dinkesprov']
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     }
   ]

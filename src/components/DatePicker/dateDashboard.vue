@@ -28,13 +28,19 @@
       v-model="menu"
       max-width="650"
     >
-      <v-card>
-        <v-date-picker v-model="startDate" :max="endDate" no-title />
-        <v-date-picker v-model="endDate" :max="currentDate" :min="startDate" no-title />
-        <v-card-actions>
-          <v-col cols="12" sm="12" md="2" offset-md="7">
-            <v-btn color="primary" @click="handleSelectedDate()">{{ $t('label.apply') }}</v-btn>
-          </v-col>
+      <v-card class="d-flex flex-column pa-5">
+        <div
+          class="d-flex"
+          :class="{
+            'flex-row justify-space-between': $vuetify.breakpoint.mdAndUp,
+            'flex-column': $vuetify.breakpoint.xsOnly
+          }"
+        >
+          <v-date-picker v-model="startDate" :max="endDate" no-title />
+          <v-date-picker v-model="endDate" :max="currentDate" :min="startDate" no-title />
+        </div>
+        <v-card-actions class="align-self-center mt-2">
+          <v-btn color="primary" @click="handleSelectedDate()">{{ $t('label.apply') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
