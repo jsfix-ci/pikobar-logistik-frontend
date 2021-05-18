@@ -99,7 +99,9 @@
               v-model="tab"
               background-color="#EEEEEE"
               color="#069550"
-              height="60px"
+              height="45px"
+              active-class="active-tab"
+              hide-slider
             >
               <v-tab
                 v-for="(item, index) in dataTracking.application"
@@ -269,7 +271,7 @@
                     </v-card>
                     <TrackingStatus
                       :list-logistic-request="listLogisticRequest"
-                      :status="item"
+                      :id-request="id"
                     />
                   </v-col>
                 </v-row>
@@ -642,5 +644,11 @@ export default {
  .tracking-reject-reason {
    margin-top: .5rem;
  }
-
+ .active-tab {
+  background-color: white;
+  border-radius: 6px 6px 0px 0px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #069550 #069550 white #069550;
+}
 </style>
