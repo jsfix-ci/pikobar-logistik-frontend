@@ -52,16 +52,21 @@
           </span>
         </div>
         <div class="d-flex flex-row tracking-header pa-6 justify-space-between">
-          <div class="d-flex flex-column item-header">
+          <div class="d-flex flex-column" :class="{ 'item-header': $vuetify.breakpoint.lgAndUp }">
             <strong class="title">
               {{ $t('label.tracking_logistic') }}
               <span class="logistic">{{ $t('label.logistic').toLowerCase() }}</span>
             </strong>
             <p class="body-text mt-5">{{ $t('label.tracking_body') }}</p>
           </div>
-          <img class="mr-10" src="../../static/tracking_logistik_1.png" width="350px">
+          <img
+            v-if="$vuetify.breakpoint.lgAndUp"
+            class="mr-10"
+            src="../../static/tracking_logistik_1.png"
+            width="350px"
+          >
         </div>
-        <div class="form item-header mt-10">
+        <div class="form mt-10" :class="{ 'item-header': $vuetify.breakpoint.lgAndUp }">
           <v-form ref="form">
             <ValidationObserver ref="observer">
               <v-label>
@@ -81,9 +86,36 @@
                   @keyup.enter.native="getDataTracking(1)"
                 />
               </ValidationProvider>
-              <div class="button-action">
-                <v-btn v-if="clicked && dataTracking.application.length > 0" class="button-style" min-width="150px" outlined text @click="resetData">{{ $t('label.cancel') }}</v-btn>
-                <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking(1)">{{ $t('label.track_now') }}</v-btn>
+              <div
+                class="button-action"
+                :class="{
+                  'd-flex flex-column': $vuetify.breakpoint.xsOnly
+                }"
+              >
+                <v-btn
+                  v-if="clicked && dataTracking.application.length > 0"
+                  class="button-style"
+                  min-width="150px"
+                  outlined
+                  text
+                  :class="{
+                    'mb-4 full-width': $vuetify.breakpoint.xsOnly
+                  }"
+                  @click="resetData"
+                >
+                  {{ $t('label.cancel') }}
+                </v-btn>
+                <v-btn
+                  class="button-style"
+                  min-width="150px"
+                  color="success"
+                  :class="{
+                    'full-width': $vuetify.breakpoint.xsOnly
+                  }"
+                  @click="getDataTracking(1)"
+                >
+                  {{ $t('label.track_now') }}
+                </v-btn>
               </div>
             </ValidationObserver>
           </v-form>
@@ -569,5 +601,8 @@ export default {
 }
 .item-header {
   width: 50%;
+}
+.full-width {
+  width: 100% !important;
 }
 </style>
