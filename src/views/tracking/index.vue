@@ -51,43 +51,43 @@
             <span class="back-text">{{ $t('label.back') }}</span>
           </span>
         </div>
-        <v-row>
-          <v-col sm="12" md="7" class="left-side">
-            <div class="title">
-              <h3>{{ $t('label.tracking_logistic') }} <span class="logistic">{{ $t('label.logistic').toLowerCase() }}</span></h3>
-            </div>
-            <div class="body-text">
-              <p>{{ $t('label.tracking_body') }}</p>
-            </div>
-            <div class="form">
-              <v-form ref="form">
-                <ValidationObserver ref="observer">
-                  <v-label><b>{{ $t('label.tracking_search') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-                  <ValidationProvider
-                    v-slot="{ errors }"
-                    rules="requiredTrackingField"
-                  >
-                    <v-text-field
-                      v-model="listQuery.search"
-                      outlined
-                      solo-inverted
-                      :error-messages="errors"
-                      :placeholder="$t('label.tracking_search_placeholder')"
-                      @keyup.enter.native="getDataTracking(1)"
-                    />
-                  </ValidationProvider>
-                  <div class="button-action">
-                    <v-btn class="button-style" min-width="150px" outlined text @click="resetData">{{ $t('label.cancel') }}</v-btn>
-                    <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking(1)">{{ $t('label.tracking_cek') }}</v-btn>
-                  </div>
-                </ValidationObserver>
-              </v-form>
-            </div>
-          </v-col>
-          <v-col sm="12" md="5">
-            <img src="../../static/tracking_logistik_1.png" width="350px">
-          </v-col>
-        </v-row>
+        <div class="d-flex flex-row tracking-header pa-6 justify-space-between">
+          <div class="d-flex flex-column item-header">
+            <strong class="title">
+              {{ $t('label.tracking_logistic') }}
+              <span class="logistic">{{ $t('label.logistic').toLowerCase() }}</span>
+            </strong>
+            <p class="body-text mt-5">{{ $t('label.tracking_body') }}</p>
+          </div>
+          <img class="mr-10" src="../../static/tracking_logistik_1.png" width="350px">
+        </div>
+        <div class="form item-header mt-10">
+          <v-form ref="form">
+            <ValidationObserver ref="observer">
+              <v-label>
+                <b>{{ $t('label.tracking_search') }}</b>
+                <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
+              </v-label>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="requiredTrackingField"
+              >
+                <v-text-field
+                  v-model="listQuery.search"
+                  outlined
+                  solo-inverted
+                  :error-messages="errors"
+                  :placeholder="$t('label.tracking_search_placeholder')"
+                  @keyup.enter.native="getDataTracking(1)"
+                />
+              </ValidationProvider>
+              <div class="button-action">
+                <v-btn v-if="clicked && dataTracking.application.length > 0" class="button-style" min-width="150px" outlined text @click="resetData">{{ $t('label.cancel') }}</v-btn>
+                <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking(1)">{{ $t('label.track_now') }}</v-btn>
+              </div>
+            </ValidationObserver>
+          </v-form>
+        </div>
       </v-card>
       <v-card v-if="clicked && dataTracking.application.length > 0" class="main-card-landing-page card-data-tracking" outlined>
         <div class="result">
@@ -418,6 +418,7 @@ export default {
  }
  .button-style {
    margin-right: 20px;
+   text-transform: none !important;
  }
  .back {
    margin-bottom: 30px;
@@ -462,15 +463,12 @@ export default {
   color: #219653;
 }
  .title {
-   h3 {
-    font-family: Lora;
-    font-size: 32px;
-    font-weight: bold;
-    line-height: 45px;
-
-    .logistic {
-      color: #16A75C
-    }
+   font-family: Lora !important;
+   font-size: 32px !important;
+   font-weight: bold !important;
+   line-height: 45px !important;
+   .logistic {
+     color: #16A75C
    }
  }
  .color-step {
@@ -564,5 +562,12 @@ export default {
   border-style: solid;
   border-width: 2px;
   border-color: #069550 #069550 white #069550;
+}
+.tracking-header {
+  background-color: #FFF9E1;
+  border-radius: 16px;
+}
+.item-header {
+  width: 50%;
 }
 </style>
