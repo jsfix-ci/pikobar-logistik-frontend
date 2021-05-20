@@ -12,20 +12,21 @@
         class="elevation-0"
       >
         <v-stepper-step
-          :complete="
-            dataDetailLogisticRequest.recommendation_items ?
-              dataDetailLogisticRequest.recommendation_items.length !== 0
-              : false"
+          :complete="isStepTwoActive"
           :edit-icon="'$complete'"
-          editable
           step="1"
           class="d-flex flex-row align-start"
         >
-          <span class="h1 primary-color">
+          <span class="active-step">
             {{ $t('label.tracking_step1') }}
           </span>
         </v-stepper-step>
-        <v-stepper-content step="1">
+        <v-stepper-content
+          step="1"
+          :class="{
+            'green-border': isStepTwoActive
+          }"
+        >
           <div class="d-flex flex-column">
             <v-btn
               outlined
@@ -45,7 +46,8 @@
                 :headers="requestHeaders"
                 :items="dataDetailLogisticRequest.logistic_request_items"
                 :no-data-text="$t('label.no_data')"
-                items-per-page="3"
+                :items-per-page="3"
+                hide-default-footer
               >
                 <template v-slot:item="{ item, index }">
                   <tr>
@@ -58,25 +60,36 @@
                   </tr>
                 </template>
               </v-data-table>
+              <!-- <pagination
+                :total="5"
+                :total-data="5"
+                :on-next="onNext"
+              /> -->
             </v-container>
           </div>
         </v-stepper-content>
         <v-stepper-step
-          :complete="
-            dataDetailLogisticRequest.finalization_items ?
-              dataDetailLogisticRequest.finalization_items.length !== 0
-              : false"
+          :complete="isStepThreeActive"
           :edit-icon="'$complete'"
-          editable
           step="2"
           class="d-flex flex-row align-start"
         >
-          <span class="h1 primary-color">
+          <span
+            :class="{
+              'non-active-step': !isStepTwoActive,
+              'active-step': isStepTwoActive,
+            }"
+          >
             {{ $t('label.recommendation') }}
           </span>
         </v-stepper-step>
-        <v-stepper-content step="2">
-          <div class="d-flex flex-column">
+        <v-stepper-content
+          step="2"
+          :class="{
+            'green-border': isStepThreeActive
+          }"
+        >
+          <div v-if="isStepTwoActive" class="d-flex flex-column">
             <v-btn
               outlined
               color="green"
@@ -95,7 +108,8 @@
                 :headers="headers"
                 :items="dataDetailLogisticRequest.recommendation_items"
                 :no-data-text="$t('label.no_data')"
-                items-per-page="3"
+                :items-per-page="3"
+                hide-default-footer
               >
                 <template v-slot:item="{ item, index }">
                   <tr>
@@ -111,18 +125,27 @@
           </div>
         </v-stepper-content>
         <v-stepper-step
-          :complete="isDoneStep2"
+          :complete="isStepFourActive"
           :edit-icon="'$complete'"
-          editable
           step="3"
           class="d-flex flex-row align-start"
         >
-          <span class="h1 primary-color">
+          <span
+            :class="{
+              'non-active-step': !isStepThreeActive,
+              'active-step': isStepThreeActive,
+            }"
+          >
             {{ $t('label.distribution_realization') }}
           </span>
         </v-stepper-step>
-        <v-stepper-content step="3">
-          <div class="d-flex flex-column">
+        <v-stepper-content
+          step="3"
+          :class="{
+            'green-border': isStepFourActive
+          }"
+        >
+          <div v-if="isStepThreeActive" class="d-flex flex-column">
             <v-btn
               outlined
               color="green"
@@ -141,6 +164,7 @@
                 :headers="headers"
                 :items="listLogisticRequest"
                 :no-data-text="$t('label.no_data')"
+                hide-default-footer
               >
                 <template v-slot:item="{ item, index }">
                   <tr>
@@ -156,18 +180,22 @@
           </div>
         </v-stepper-content>
         <v-stepper-step
-          :complete="isDoneStep2"
+          :complete="isStepFiveDone"
           :edit-icon="'$complete'"
-          editable
           step="4"
           class="d-flex flex-row align-start"
         >
-          <span class="h1 primary-color">
+          <span
+            :class="{
+              'non-active-step': !isStepFourActive,
+              'active-step': isStepFourActive,
+            }"
+          >
             {{ $t('label.distributed_items') }}
           </span>
         </v-stepper-step>
         <v-stepper-content step="4">
-          <div class="d-flex flex-column">
+          <div v-if="isStepFourActive" class="d-flex flex-column">
             <v-tabs
               v-model="tab"
               background-color="#EEEEEE"
@@ -195,7 +223,6 @@
                   class="address-btn mt-5"
                 >
                   {{ $t('label.show_store_address') }}
-                  {{ item }}
                 </v-btn>
                 <div class="px-4 py-2 mt-5 store-cp">
                   <strong>{{ $t('label.contact_person_info') }}</strong>
@@ -211,6 +238,7 @@
                   :items="listLogisticRequest"
                   :no-data-text="$t('label.no_data')"
                   class="mt-5"
+                  hide-default-footer
                 >
                   <template v-slot:item="{ item: logisticItem, index: logisticItemIndex }">
                     <tr>
@@ -249,14 +277,10 @@ export default {
   },
   data() {
     return {
-      showTable1: false,
+      showTable1: true,
       showTable2: false,
       showTable3: false,
       showTable4: false,
-      isDoneStep1: false,
-      isDoneStep2: false,
-      isDoneStep3: false,
-      isDoneStep4: false,
       tab: null,
       listTab: ['1', '2', '3'],
       headers: [
@@ -279,7 +303,22 @@ export default {
   computed: {
     ...mapState('logistics', [
       'dataDetailLogisticRequest'
-    ])
+    ]),
+    isStepTwoActive() {
+      return this.dataDetailLogisticRequest.recommendation_items
+        ? this.dataDetailLogisticRequest.recommendation_items.length !== 0
+        : false
+    },
+    isStepThreeActive() {
+      return this.dataDetailLogisticRequest.finalization_items
+        ? this.dataDetailLogisticRequest.finalization_items.length !== 0
+        : false
+    },
+    isStepFourActive() {
+      return this.dataDetailLogisticRequest.distributed_items
+        ? this.dataDetailLogisticRequest.distributed_items.length !== 0
+        : false
+    }
   },
   created() {
     console.log(this.listLogisticRequest)
@@ -371,5 +410,21 @@ export default {
       font-size: 14px;
     }
   }
+}
+
+.green-border {
+  border-left: 2px solid rgb(39, 174, 96) !important;
+}
+
+.active-step {
+  font-weight: 500;
+  color: #008444;
+  font-size: 21px;
+}
+
+.non-active-step {
+  font-weight: 500;
+  color: #9E9E9E;
+  font-size: 21px;
 }
 </style>
