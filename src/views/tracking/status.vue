@@ -44,27 +44,28 @@
             >
               <v-data-table
                 :headers="requestHeaders"
-                :items="dataDetailLogisticRequest.logistic_request_items"
+                :items="listRequest"
                 :no-data-text="$t('label.no_data')"
-                :items-per-page="3"
                 hide-default-footer
               >
                 <template v-slot:item="{ item, index }">
                   <tr>
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.product ? item.product.name : '-' }}</td>
-                    <td>{{ item.brand || '-' }}</td>
+                    <td>{{ getTableRowNumbering(listQueryRequest, index) }}</td>
+                    <td>{{ item.product_name || '-' }}</td>
+                    <td>{{ item.description || '-' }}</td>
                     <td>{{ numberFormat(item.quantity) || '-' }}</td>
-                    <td>{{ item.unit || '-' }}</td>
-                    <td>{{ item.product.material_group || '-' }}</td>
+                    <td>{{ item.unit_name || '-' }}</td>
+                    <td>{{ item.material_group || '-' }}</td>
                   </tr>
                 </template>
               </v-data-table>
-              <!-- <pagination
-                :total="5"
-                :total-data="5"
-                :on-next="onNext"
-              /> -->
+              <pagination
+                :total="totalPageRequest"
+                :total-data="totalDataRequest"
+                :page.sync="listQueryRequest.page"
+                :limit.sync="listQueryRequest.limit"
+                :on-next="onNextRequest"
+              />
             </v-container>
           </div>
         </v-stepper-content>
@@ -106,21 +107,27 @@
             >
               <v-data-table
                 :headers="headers"
-                :items="dataDetailLogisticRequest.recommendation_items"
+                :items="listRecommendation"
                 :no-data-text="$t('label.no_data')"
-                :items-per-page="3"
                 hide-default-footer
               >
                 <template v-slot:item="{ item, index }">
                   <tr>
-                    <td>{{ index + 1 }}</td>
+                    <td>{{ getTableRowNumbering(listQueryRecommendation, index) }}</td>
                     <td>{{ item.product_name || '-' }}</td>
-                    <td>{{ item.recommendation_quantity || '-' }}</td>
-                    <td>{{ item.recommendation_unit_name || '-' }}</td>
-                    <td>{{ item.recommendation_status || '-' }}</td>
+                    <td>{{ item.quantity || '-' }}</td>
+                    <td>{{ item.unit_name || '-' }}</td>
+                    <td>{{ item.status || '-' }}</td>
                   </tr>
                 </template>
               </v-data-table>
+              <pagination
+                :total="totalPageRecommendation"
+                :total-data="totalDataRecommendation"
+                :page.sync="listQueryRecommendation.page"
+                :limit.sync="listQueryRecommendation.limit"
+                :on-next="onNextRecommendation"
+              />
             </v-container>
           </div>
         </v-stepper-content>
@@ -297,41 +304,79 @@ export default {
         { text: this.$t('label.total') },
         { text: this.$t('label.unit') },
         { text: this.$t('label.item_type') }
-      ]
+      ],
+      listQueryRequest: {
+        page: 1,
+        limit: 3
+      },
+      listQueryRecommendation: {
+        page: 1,
+        limit: 3
+      }
     }
   },
   computed: {
     ...mapState('logistics', [
       'dataDetailLogisticRequest'
     ]),
+    ...mapState('tracking', [
+      'listRequest',
+      'totalPageRequest',
+      'totalDataRequest',
+      'listRecommendation',
+      'totalPageRecommendation',
+      'totalDataRecommendation',
+      'listRealization',
+      'totalPageRealization',
+      'totalDataRealization'
+    ]),
     isStepTwoActive() {
-      return this.dataDetailLogisticRequest.recommendation_items
-        ? this.dataDetailLogisticRequest.recommendation_items.length !== 0
+      return this.listRecommendation
+        ? this.listRecommendation.length !== 0
         : false
     },
     isStepThreeActive() {
-      return this.dataDetailLogisticRequest.finalization_items
-        ? this.dataDetailLogisticRequest.finalization_items.length !== 0
+      return this.listRealization
+        ? this.listRealization.length !== 0
         : false
     },
     isStepFourActive() {
       return this.dataDetailLogisticRequest.distributed_items
         ? this.dataDetailLogisticRequest.distributed_items.length !== 0
         : false
+    },
+    isStepFiveDone() {
+      return false
     }
   },
   created() {
-    console.log(this.listLogisticRequest)
     this.getTrackingData()
+    this.getRequestStep(this.idRequest)
+    this.getRecommendationStep(this.idRequest)
   },
   methods: {
     numberFormat(value) {
       return new FormatingNumber().formatCurrency(value)
     },
+    getTableRowNumbering(listQuery, index) {
+      return ((listQuery.page - 1) * listQuery.limit + index + 1)
+    },
     async getTrackingData() {
       await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.idRequest)
-      console.log('halo')
-      console.log(this.dataDetailLogisticRequest)
+    },
+    async getRequestStep(id) {
+      this.listQueryRequest.id = id
+      await this.$store.dispatch('tracking/getTrackingLogisticRequest', this.listQueryRequest)
+    },
+    async getRecommendationStep(id) {
+      this.listQueryRecommendation.id = id
+      await this.$store.dispatch('tracking/getTrackingLogisticRecommendation', this.listQueryRecommendation)
+    },
+    async onNextRequest() {
+      await this.getRequestStep(this.idRequest)
+    },
+    async onNextRecommendation() {
+      await this.getRecommendationStep(this.idRequest)
     }
   }
 }
