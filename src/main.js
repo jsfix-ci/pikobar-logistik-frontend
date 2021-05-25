@@ -38,11 +38,11 @@ Vue.component(VmBackTop.name, VmBackTop)
 Vue.config.productionTip = false
 
 // unregister service worker
-// navigator.serviceWorker.getRegistrations().then(function(registrations) {
-//   for (var registration of registrations) {
-//     registration.unregister()
-//   }
-// })
+navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  for (var registration of registrations) {
+    registration.unregister()
+  }
+})
 
 Vue.use(infiniteScroll)
 Vue.use(VueMoment, {
