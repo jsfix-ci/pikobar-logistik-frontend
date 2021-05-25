@@ -216,8 +216,8 @@
                       </div>
                     </v-card>
                     <TrackingStatus
-                      :list-logistic-request="listLogisticRequest"
-                      :id-request="id"
+                      :key="item.id"
+                      :id-request="item.id"
                     />
                   </v-col>
                 </v-row>

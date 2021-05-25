@@ -15,7 +15,7 @@
           :complete="isStepTwoActive"
           :edit-icon="'$complete'"
           step="1"
-          class="d-flex flex-row align-start"
+          class="d-flex flex-row align-start active"
         >
           <span class="active-step">
             {{ $t('label.tracking_step1') }}
@@ -74,6 +74,7 @@
           :edit-icon="'$complete'"
           step="2"
           class="d-flex flex-row align-start"
+          :class="{ 'active': isStepTwoActive }"
         >
           <span
             :class="{
@@ -136,6 +137,7 @@
           :edit-icon="'$complete'"
           step="3"
           class="d-flex flex-row align-start"
+          :class="{ 'active': isStepThreeActive }"
         >
           <span
             :class="{
@@ -169,28 +171,35 @@
             >
               <v-data-table
                 :headers="headers"
-                :items="listLogisticRequest"
+                :items="listRealization"
                 :no-data-text="$t('label.no_data')"
                 hide-default-footer
               >
                 <template v-slot:item="{ item, index }">
                   <tr>
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.final_product_name || '-' }}</td>
-                    <td>{{ item.final_quantity || '-' }}</td>
-                    <td>{{ item.final_unit || '-' }}</td>
-                    <td>{{ item.final_status || '-' }}</td>
+                    <td>{{ getTableRowNumbering(listQueryRealization, index) }}</td>
+                    <td>{{ item.product_name || '-' }}</td>
+                    <td>{{ item.quantity || '-' }}</td>
+                    <td>{{ item.unit_name || '-' }}</td>
+                    <td>{{ item.status || '-' }}</td>
                   </tr>
                 </template>
               </v-data-table>
+              <pagination
+                :total="totalPageRealization"
+                :total-data="totalDataRealization"
+                :page.sync="listQueryRealization.page"
+                :limit.sync="listQueryRealization.limit"
+                :on-next="onNextRealization"
+              />
             </v-container>
           </div>
         </v-stepper-content>
         <v-stepper-step
-          :complete="isStepFiveDone"
           :edit-icon="'$complete'"
           step="4"
           class="d-flex flex-row align-start"
+          :class="{ 'active': isStepFourActive }"
         >
           <span
             :class="{
@@ -212,15 +221,16 @@
               hide-slider
             >
               <v-tab
-                v-for="(item, index) in listTab"
+                v-for="(item, index) in listWarehouse"
                 :key="`tab-${index}`"
+                @click="getDistributionStep(idRequest, item.lo_id)"
               >
-                {{ $t('label.print_mail_location_stock') }}{{ item }}
+                {{ item.whs_name }}
               </v-tab>
             </v-tabs>
             <v-tabs-items v-model="tab">
               <v-tab-item
-                v-for="(item, index) in listTab"
+                v-for="(item, index) in listWarehouse"
                 :key="`tab-item-${index}`"
               >
                 <v-btn
@@ -228,35 +238,44 @@
                   color="green"
                   small
                   class="address-btn mt-5"
+                  :href="item.map_url"
+                  target="_blank"
                 >
                   {{ $t('label.show_store_address') }}
                 </v-btn>
                 <div class="px-4 py-2 mt-5 store-cp">
                   <strong>{{ $t('label.contact_person_info') }}</strong>
                   <span class="d-flex flex-row">
-                    {{ $t('label.name') }} :
+                    {{ $t('label.name') }} : {{ item.pic_name || '-' }}
                   </span>
                   <span class="d-flex flex-row">
-                    {{ $t('label.mobile_phone_number') }} :
+                    {{ $t('label.mobile_phone_number') }} : {{ item.pic_handphone || '-' }}
                   </span>
                 </div>
                 <v-data-table
                   :headers="headers"
-                  :items="listLogisticRequest"
+                  :items="listDistribution"
                   :no-data-text="$t('label.no_data')"
                   class="mt-5"
                   hide-default-footer
                 >
                   <template v-slot:item="{ item: logisticItem, index: logisticItemIndex }">
                     <tr>
-                      <td>{{ logisticItemIndex + 1 }}</td>
-                      <td>{{ logisticItem.final_product_name || '-' }}</td>
-                      <td>{{ logisticItem.final_quantity || '-' }}</td>
-                      <td>{{ logisticItem.final_unit || '-' }}</td>
-                      <td>{{ logisticItem.final_status || '-' }}</td>
+                      <td>{{ getTableRowNumbering(listQueryDistribution, logisticItemIndex) }}</td>
+                      <td>{{ logisticItem.material_name || '-' }}</td>
+                      <td>{{ logisticItem.lo_qty || '-' }}</td>
+                      <td>{{ logisticItem.UoM || '-' }}</td>
+                      <td>{{ logisticItem.lo_proses_stt || '-' }}</td>
                     </tr>
                   </template>
                 </v-data-table>
+                <pagination
+                  :total="totalPageDistribution"
+                  :total-data="totalDataDistribution"
+                  :page.sync="listQueryDistribution.page"
+                  :limit.sync="listQueryDistribution.limit"
+                  :on-next="onNextDistribution"
+                />
               </v-tab-item>
             </v-tabs-items>
           </div>
@@ -272,10 +291,6 @@ import FormatingNumber from '../../helpers/formattingNumber'
 export default {
   name: 'TrackingStatus',
   props: {
-    listLogisticRequest: {
-      type: Array,
-      default: null
-    },
     idRequest: {
       type: Number,
       default: null
@@ -288,7 +303,7 @@ export default {
       showTable3: false,
       showTable4: false,
       tab: null,
-      listTab: ['1', '2', '3'],
+      loId: null,
       headers: [
         { text: this.$t('label.print_mail_no') },
         { text: this.$t('label.apd_name_spec') },
@@ -311,7 +326,15 @@ export default {
       listQueryRecommendation: {
         page: 1,
         limit: 3
-      }
+      },
+      listQueryRealization: {
+        page: 1,
+        limit: 3
+      },
+      listQueryDistribution: {
+        page: 1,
+        limit: 3
+      },
       listRequest: [],
       totalPageRequest: 0,
       totalDataRequest: 0,
@@ -328,9 +351,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('logistics', [
-      'dataDetailLogisticRequest'
-    ]),
     isStepTwoActive() {
       return this.listRecommendation
         ? this.listRecommendation.length !== 0
@@ -342,18 +362,17 @@ export default {
         : false
     },
     isStepFourActive() {
-      return this.dataDetailLogisticRequest.distributed_items
-        ? this.dataDetailLogisticRequest.distributed_items.length !== 0
+      return this.listWarehouse
+        ? this.listWarehouse.length !== 0
         : false
-    },
-    isStepFiveDone() {
-      return false
     }
   },
   created() {
     this.getTrackingData()
     this.getRequestStep(this.idRequest)
     this.getRecommendationStep(this.idRequest)
+    this.getRealizationStep(this.idRequest)
+    this.getWarehouseList(this.idRequest)
   },
   methods: {
     numberFormat(value) {
@@ -367,7 +386,6 @@ export default {
     },
     async getRequestStep(id) {
       this.listQueryRequest.id = id
-      await this.$store.dispatch('tracking/getTrackingLogisticRequest', this.listQueryRequest)
       const { items } = await this.$store.dispatch('tracking/getTrackingLogisticRequest', this.listQueryRequest)
       this.listRequest = items.data
       this.totalPageRequest = items.last_page
@@ -375,7 +393,6 @@ export default {
     },
     async getRecommendationStep(id) {
       this.listQueryRecommendation.id = id
-      await this.$store.dispatch('tracking/getTrackingLogisticRecommendation', this.listQueryRecommendation)
       const { items } = await this.$store.dispatch('tracking/getTrackingLogisticRecommendation', this.listQueryRecommendation)
       this.listRecommendation = items.data
       this.totalPageRecommendation = items.last_page
@@ -407,6 +424,12 @@ export default {
     },
     async onNextRecommendation() {
       await this.getRecommendationStep(this.idRequest)
+    },
+    async onNextRealization() {
+      await this.getRealizationStep(this.idRequest)
+    },
+    async onNextDistribution() {
+      await this.getDistributionStep(this.idRequest, this.loId)
     }
   }
 }
@@ -463,9 +486,15 @@ export default {
   }
 }
 
+.v-stepper__step.active::v-deep {
+  > .v-stepper__step__step {
+    background: #069550 !important;
+  }
+}
+
 .v-data-table::v-deep {
   .v-data-table-header {
-    background-color: #069550 !important;
+    background-color: #27ae60 !important;
     color: white !important;
   }
 
