@@ -65,6 +65,7 @@
                 :page.sync="listQueryRequest.page"
                 :limit.sync="listQueryRequest.limit"
                 :on-next="onNextRequest"
+                :page-sizes="trackingPageSize"
               />
             </v-container>
           </div>
@@ -128,6 +129,7 @@
                 :page.sync="listQueryRecommendation.page"
                 :limit.sync="listQueryRecommendation.limit"
                 :on-next="onNextRecommendation"
+                :page-sizes="trackingPageSize"
               />
             </v-container>
           </div>
@@ -191,6 +193,7 @@
                 :page.sync="listQueryRealization.page"
                 :limit.sync="listQueryRealization.limit"
                 :on-next="onNextRealization"
+                :page-sizes="trackingPageSize"
               />
             </v-container>
           </div>
@@ -275,6 +278,7 @@
                   :page.sync="listQueryDistribution.page"
                   :limit.sync="listQueryDistribution.limit"
                   :on-next="onNextDistribution"
+                  :page-sizes="trackingPageSize"
                 />
               </v-tab-item>
             </v-tabs-items>
@@ -304,6 +308,7 @@ export default {
       showTable4: false,
       tab: null,
       loId: null,
+      trackingPageSize: [3, 5, 10],
       headers: [
         { text: this.$t('label.print_mail_no') },
         { text: this.$t('label.apd_name_spec') },
