@@ -138,7 +138,6 @@
               <v-tab
                 v-for="(item, index) in dataTracking.application"
                 :key="index"
-                @click="getTrackingLogisticNeedList(item.id, 1)"
               >
                 {{ $t('label.tracking_id') }}{{ item.id }}
               </v-tab>
@@ -225,82 +224,6 @@
             </v-tabs>
           </v-col>
         </v-row>
-        <div class="identity text-data-green">
-          {{ $t('label.list_logistic_need') }}
-        </div>
-        <v-row>
-          <v-col>
-            <v-card outlined>
-              <v-simple-table>
-                <template v-slot:default>
-                  <thead>
-                    <tr>
-                      <th colspan="6" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
-                      <th colspan="4" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
-                      <th colspan="4" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                    </tr>
-                    <tr>
-                      <th class="text-left green lighten-5">{{ $t('label.number').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.description').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.total').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.unit').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.item_type').toUpperCase() }}</th>
-                      <th class="text-left green lighten-4">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                      <th class="text-left green lighten-4">{{ $t('label.total').toUpperCase() }}</th>
-                      <th class="text-left green lighten-4">{{ $t('label.unit').toUpperCase() }}</th>
-                      <th class="text-left green lighten-4">{{ $t('label.status').toUpperCase() }}</th>
-                      <th class="text-left green lighten-3">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                      <th class="text-left green lighten-3">{{ $t('label.total').toUpperCase() }}</th>
-                      <th class="text-left green lighten-3">{{ $t('label.unit').toUpperCase() }}</th>
-                      <th class="text-left green lighten-3">{{ $t('label.status').toUpperCase() }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-if="listLogisticRequest.length === 0">
-                      <td class="text-center" :colspan="12">{{ $t('label.no_data') }}</td>
-                    </tr>
-                    <tr v-for="(item, index) in listLogisticRequest" :key="item.index">
-                      <td>{{ getTableRowNumbering(index) }}</td>
-                      <td>{{ item.need_product_name || '-' }}</td>
-                      <td>{{ item.need_description || '-' }}</td>
-                      <td>{{ item.need_quantity || '-' }}</td>
-                      <td>{{ item.need_unit_name || '-' }}</td>
-                      <td>{{ item.category || '-' }}</td>
-                      <!-- recommendation -->
-                      <td>{{ item.recommendation_product_name || '-' }}</td>
-                      <td>{{ item.recommendation_quantity || '-' }}</td>
-                      <td>{{ item.recommendation_unit_name || '-' }}</td>
-                      <td>{{ item.recommendation_status || '-' }}</td>
-                      <!-- realization -->
-                      <td>{{ item.final_product_name || '-' }}</td>
-                      <td>{{ item.final_quantity || '-' }}</td>
-                      <td>{{ item.final_unit || '-' }}</td>
-                      <td>{{ item.final_status || '-' }}</td>
-                    </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-              <br>
-            </v-card>
-            <v-row>
-              <v-col>
-                <div class="total-data-title">{{ $t('label.tracking_total_data_logistic') }} <span class="total-data">{{ totalDataLogisticRequest }} {{ $t('label.tracking_data_prefix') }}</span> </div>
-              </v-col>
-              <v-col>
-                <div class="pagination">
-                  <v-pagination
-                    v-model="listQueryTable.page"
-                    :length="totalListLogisticRequest"
-                    :page.sync="listQueryTable.page"
-                    :total-visible="20"
-                    @input="onNext"
-                  />
-                </div>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
       </v-card>
       <v-card v-else-if="clicked && dataTracking.application.length === 0" class="main-card-landing-page card-data-tracking" outlined>
         <center>
@@ -373,10 +296,7 @@ export default {
   },
   computed: {
     ...mapGetters('logistics', [
-      'dataTracking',
-      'listLogisticRequest',
-      'totalListLogisticRequest',
-      'totalDataLogisticRequest'
+      'dataTracking'
     ])
   },
   methods: {
@@ -388,18 +308,7 @@ export default {
 
       this.listQueryTable.page = page ?? this.listQueryTable.page
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
-      if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
       this.clicked = true
-    },
-    async getTrackingLogisticNeedList(id, page) {
-      this.id = id
-      this.listQueryTable.id = id
-      this.listQueryTable.page = page ?? this.listQueryTable.page
-      await this.$store.dispatch('logistics/getTrackingLogisticNeedList', this.listQueryTable)
-      this.listLogisticRequest.forEach(element => {
-        element.recommendation_status = this.changeStatus(element.recommendation_status)
-        element.final_status = this.changeStatus(element.final_status)
-      })
     },
     changeStatus(value) {
       let status = this.$t('label.not_approved')
@@ -427,9 +336,6 @@ export default {
           break
       }
       return status
-    },
-    async onNext() {
-      await this.getTrackingLogisticNeedList(this.id)
     },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQueryTable.page) - 1) * parseInt(this.listQueryTable.limit)) + (parseInt(index) + 1)
