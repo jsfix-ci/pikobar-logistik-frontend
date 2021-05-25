@@ -267,7 +267,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import FormatingNumber from '../../helpers/formattingNumber'
 
 export default {
@@ -313,22 +312,24 @@ export default {
         page: 1,
         limit: 3
       }
+      listRequest: [],
+      totalPageRequest: 0,
+      totalDataRequest: 0,
+      listRecommendation: [],
+      totalPageRecommendation: 0,
+      totalDataRecommendation: 0,
+      listRealization: [],
+      totalPageRealization: 0,
+      totalDataRealization: 0,
+      listWarehouse: [],
+      listDistribution: [],
+      totalPageDistribution: 0,
+      totalDataDistribution: 0
     }
   },
   computed: {
     ...mapState('logistics', [
       'dataDetailLogisticRequest'
-    ]),
-    ...mapState('tracking', [
-      'listRequest',
-      'totalPageRequest',
-      'totalDataRequest',
-      'listRecommendation',
-      'totalPageRecommendation',
-      'totalDataRecommendation',
-      'listRealization',
-      'totalPageRealization',
-      'totalDataRealization'
     ]),
     isStepTwoActive() {
       return this.listRecommendation
@@ -367,10 +368,39 @@ export default {
     async getRequestStep(id) {
       this.listQueryRequest.id = id
       await this.$store.dispatch('tracking/getTrackingLogisticRequest', this.listQueryRequest)
+      const { items } = await this.$store.dispatch('tracking/getTrackingLogisticRequest', this.listQueryRequest)
+      this.listRequest = items.data
+      this.totalPageRequest = items.last_page
+      this.totalDataRequest = items.total
     },
     async getRecommendationStep(id) {
       this.listQueryRecommendation.id = id
       await this.$store.dispatch('tracking/getTrackingLogisticRecommendation', this.listQueryRecommendation)
+      const { items } = await this.$store.dispatch('tracking/getTrackingLogisticRecommendation', this.listQueryRecommendation)
+      this.listRecommendation = items.data
+      this.totalPageRecommendation = items.last_page
+      this.totalDataRecommendation = items.total
+    },
+    async getRealizationStep(id) {
+      this.listQueryRealization.id = id
+      const { items } = await this.$store.dispatch('tracking/getTrackingLogisticRealization', this.listQueryRealization)
+      this.listRealization = items.data
+      this.totalPageRealization = items.last_page
+      this.totalDataRealization = items.total
+    },
+    async getWarehouseList(id) {
+      const res = await this.$store.dispatch('tracking/getTrackingLogisticWarehouse', { id: id })
+      this.listWarehouse = res
+      if (this.listWarehouse[0]) this.getDistributionStep(id, this.listWarehouse[0].lo_id)
+    },
+    async getDistributionStep(id, loId) {
+      this.loId = loId
+      this.listQueryDistribution.id = id
+      this.listQueryDistribution.loId = loId
+      const { data, last_page, total } = await this.$store.dispatch('tracking/getTrackingLogisticDistribution', this.listQueryDistribution)
+      this.listDistribution = data
+      this.totalPageDistribution = last_page
+      this.totalDataDistribution = total
     },
     async onNextRequest() {
       await this.getRequestStep(this.idRequest)

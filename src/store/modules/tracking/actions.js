@@ -6,9 +6,6 @@ export default {
     delete params.id
     try {
       const response = await fetchList(`/api/v1/landing-page-registration/tracking/${id}/logistic-request`, 'GET', params)
-      commit('SET_LIST_REQUEST', response.items.data)
-      commit('SET_TOTAL_PAGE_REQUEST', response.items.last_page)
-      commit('SET_TOTAL_DATA_REQUEST', response.items.total)
       return response
     } catch (e) {
       return e
@@ -19,9 +16,38 @@ export default {
     delete params.id
     try {
       const response = await fetchList(`/api/v1/landing-page-registration/tracking/${id}/logistic-recommendation`, 'GET', params)
-      commit('SET_LIST_RECOMMENDATION', response.items.data)
-      commit('SET_TOTAL_PAGE_RECOMMENDATION', response.items.last_page)
-      commit('SET_TOTAL_DATA_RECOMMENDATION', response.items.total)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getTrackingLogisticRealization({ commit }, params) {
+    const id = params.id
+    delete params.id
+    try {
+      const response = await fetchList(`/api/v1/landing-page-registration/tracking/${id}/logistic-finalization`, 'GET', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getTrackingLogisticWarehouse({ commit }, params) {
+    const id = params.id
+    delete params.id
+    try {
+      const response = await fetchList(`/api/v1/landing-page-registration/tracking/${id}/logistic-outbound`, 'GET', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getTrackingLogisticDistribution({ commit }, params) {
+    const id = params.id
+    const loId = params.loId
+    delete params.id
+    delete params.loId
+    try {
+      const response = await fetchList(`/api/v1/landing-page-registration/tracking/${id}/logistic-outbound/${loId}`, 'GET', params)
       return response
     } catch (e) {
       return e
