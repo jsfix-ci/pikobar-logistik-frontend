@@ -304,6 +304,15 @@
                   :on-next="onNextDistribution"
                   :page-sizes="trackingPageSize"
                 />
+                <v-alert
+                  outlined
+                  text
+                  type="info"
+                >
+                  {{ $t('label.tracking_info_1') }}
+                  <strong>{{ $t('label.tracking_info_2') }}</strong>
+                  {{ $t('label.tracking_info_3') }}
+                </v-alert>
               </v-tab-item>
             </v-tabs-items>
           </div>
@@ -581,5 +590,11 @@ export default {
 
 .item-intransit {
   color: #008444;
+}
+
+.v-alert::v-deep {
+  .v-alert__content {
+    color: #212121;
+  }
 }
 </style>

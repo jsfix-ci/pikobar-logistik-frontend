@@ -648,7 +648,10 @@ export default {
       }
     },
     show_table: 'Tampil Tabel',
-    close_table: 'Tutup Tabel'
+    close_table: 'Tutup Tabel',
+    tracking_info_1: 'Pengambilan Barang Realisasi Salur dapat dilakukan maksimal ',
+    tracking_info_2: '2 Minggu',
+    tracking_info_3: ' sejak status Permohonan Selesai.'
   },
   success: {
     login_success: 'Login Berhasil',
