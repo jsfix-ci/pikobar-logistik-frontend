@@ -505,7 +505,7 @@ export default {
   border-width: 1px;
   border-color: #1565C0;
   background-color: #E3F2FD;
-  max-width: 300px;
+  max-width: 475px;
 }
 .active-tab {
   background-color: white;
