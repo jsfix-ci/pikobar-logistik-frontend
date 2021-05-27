@@ -15,11 +15,16 @@
           :complete="isStepTwoActive"
           :edit-icon="'$complete'"
           step="1"
-          class="d-flex flex-row align-start active"
+          class="d-flex flex-row align-center active"
         >
-          <span class="active-step">
-            {{ $t('label.tracking_step1') }}
-          </span>
+          <div class="d-flex flex-row align-center">
+            <span class="active-step">
+              {{ $t('label.tracking_step1') }}
+            </span>
+            <strong v-if="!isStepTwoActive" class="step-status">
+              {{ lastStepStatus }}
+            </strong>
+          </div>
         </v-stepper-step>
         <v-stepper-content
           step="1"
@@ -74,17 +79,22 @@
           :complete="isStepThreeActive"
           :edit-icon="'$complete'"
           step="2"
-          class="d-flex flex-row align-start"
+          class="d-flex flex-row align-center"
           :class="{ 'active': isStepTwoActive }"
         >
-          <span
-            :class="{
-              'non-active-step': !isStepTwoActive,
-              'active-step': isStepTwoActive,
-            }"
-          >
-            {{ $t('label.recommendation') }}
-          </span>
+          <div class="d-flex flex-row align-center">
+            <span
+              :class="{
+                'non-active-step': !isStepTwoActive,
+                'active-step': isStepTwoActive,
+              }"
+            >
+              {{ $t('label.recommendation') }}
+            </span>
+            <strong v-if="isStepTwoActive && !isStepThreeActive" class="step-status">
+              {{ lastStepStatus }}
+            </strong>
+          </div>
         </v-stepper-step>
         <v-stepper-content
           step="2"
@@ -141,14 +151,19 @@
           class="d-flex flex-row align-start"
           :class="{ 'active': isStepThreeActive }"
         >
-          <span
-            :class="{
-              'non-active-step': !isStepThreeActive,
-              'active-step': isStepThreeActive,
-            }"
-          >
-            {{ $t('label.distribution_realization') }}
-          </span>
+          <div class="d-flex flex-row align-center">
+            <span
+              :class="{
+                'non-active-step': !isStepThreeActive,
+                'active-step': isStepThreeActive,
+              }"
+            >
+              {{ $t('label.distribution_realization') }}
+            </span>
+            <strong v-if="isStepThreeActive && !isStepFourActive" class="step-status">
+              {{ lastStepStatus }}
+            </strong>
+          </div>
         </v-stepper-step>
         <v-stepper-content
           step="3"
@@ -309,6 +324,7 @@ export default {
       tab: null,
       loId: null,
       trackingPageSize: [3, 5, 10],
+      lastStepStatus: null,
       headers: [
         { text: this.$t('label.print_mail_no') },
         { text: this.$t('label.apd_name_spec') },
@@ -317,7 +333,7 @@ export default {
         { text: this.$t('label.status') }
       ],
       requestHeaders: [
-        { text: this.$t('label.print_mail_no'), class: 'cobain' },
+        { text: this.$t('label.print_mail_no') },
         { text: this.$t('label.apd_name_spec') },
         { text: this.$t('label.description') },
         { text: this.$t('label.total') },
@@ -373,7 +389,6 @@ export default {
     }
   },
   created() {
-    this.getTrackingData()
     this.getRequestStep(this.idRequest)
     this.getRecommendationStep(this.idRequest)
     this.getRealizationStep(this.idRequest)
@@ -386,15 +401,13 @@ export default {
     getTableRowNumbering(listQuery, index) {
       return ((listQuery.page - 1) * listQuery.limit + index + 1)
     },
-    async getTrackingData() {
-      await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.idRequest)
-    },
     async getRequestStep(id) {
       this.listQueryRequest.id = id
-      const { items } = await this.$store.dispatch('tracking/getTrackingLogisticRequest', this.listQueryRequest)
+      const { items, status } = await this.$store.dispatch('tracking/getTrackingLogisticRequest', this.listQueryRequest)
       this.listRequest = items.data
       this.totalPageRequest = items.last_page
       this.totalDataRequest = items.total
+      this.lastStepStatus = status
     },
     async getRecommendationStep(id) {
       this.listQueryRecommendation.id = id
@@ -465,9 +478,6 @@ export default {
 .primary-color {
   color: #219653;
 }
-.cobain span {
-  color: #219653 !important;
-}
 .store-cp {
   border-radius: 6px;
   border-style: solid;
@@ -535,5 +545,13 @@ export default {
   font-weight: 500;
   color: #9E9E9E;
   font-size: 21px;
+}
+
+.step-status {
+  background-color: #FFA600;
+  border-radius: 42px;
+  color: white;
+  padding: 10px 16px 10px 16px !important;
+  margin-left: 14px !important;
 }
 </style>
