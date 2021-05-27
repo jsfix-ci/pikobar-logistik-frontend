@@ -277,13 +277,22 @@
                   class="mt-5"
                   hide-default-footer
                 >
-                  <template v-slot:item="{ item: logisticItem, index: logisticItemIndex }">
+                  <template v-slot:item="{ item: distributionItem, index: distributionItemIndex }">
                     <tr>
-                      <td>{{ getTableRowNumbering(listQueryDistribution, logisticItemIndex) }}</td>
-                      <td>{{ logisticItem.material_name || '-' }}</td>
-                      <td>{{ logisticItem.lo_qty || '-' }}</td>
-                      <td>{{ logisticItem.UoM || '-' }}</td>
-                      <td>{{ logisticItem.lo_proses_stt || '-' }}</td>
+                      <td>{{ getTableRowNumbering(listQueryDistribution, distributionItemIndex) }}</td>
+                      <td>{{ distributionItem.material_name || '-' }}</td>
+                      <td>{{ distributionItem.lo_qty || '-' }}</td>
+                      <td>{{ distributionItem.UoM || '-' }}</td>
+                      <td
+                        :class="{
+                          'item-new': distributionItem.lo_proses_stt ? distributionItem.lo_proses_stt === 'NEW' : false,
+                          'item-booked': distributionItem.lo_proses_stt ? distributionItem.lo_proses_stt === 'BOOKED' : false,
+                          'item-do': distributionItem.lo_proses_stt ? distributionItem.lo_proses_stt === 'DO' : false,
+                          'item-intransit': distributionItem.lo_proses_stt ? distributionItem.lo_proses_stt === 'INTRANSIT' : false
+                        }"
+                      >
+                        {{ capitalize(distributionItem.lo_proses_stt) || '-' }}
+                      </td>
                     </tr>
                   </template>
                 </v-data-table>
@@ -448,6 +457,9 @@ export default {
     },
     async onNextDistribution() {
       await this.getDistributionStep(this.idRequest, this.loId)
+    },
+    capitalize(word) {
+      return word ? word[0].toUpperCase() + word.slice(1).toLowerCase() : null
     }
   }
 }
@@ -553,5 +565,21 @@ export default {
   color: white;
   padding: 10px 16px 10px 16px !important;
   margin-left: 14px !important;
+}
+
+.item-new {
+  color: #1E88E5;
+}
+
+.item-booked {
+  color: #FF9500;
+}
+
+.item-do {
+  color: #691B9A;
+}
+
+.item-intransit {
+  color: #008444;
 }
 </style>
