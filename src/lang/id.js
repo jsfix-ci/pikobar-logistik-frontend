@@ -108,6 +108,12 @@ export default {
     update_distribution_realization: 'Update Barang Realisasi',
     recommendation_distribution_other: 'Daftar Barang Rekomendasi Salur Lainnya',
     realization_distribution_other: 'Daftar Barang Realisasi Salur Lainnya',
+    distributed_items: 'Barang Didistribusikan',
+    show_store_address: 'Lihat Alamat Gudang',
+    contact_person_info: 'Info Orang yang bisa dihubungi',
+    name: 'Nama',
+    mobile_phone_number: 'No. HP',
+    track_now: 'Lacak Sekarang',
     add_distribution_other: 'Tambah Realisasi Distribusi Lainnya',
     add_data: 'Tambah Data',
     sort: 'Urutkan',
@@ -574,7 +580,7 @@ export default {
     applicant_code_placeholder: 'Masukan Kode',
     tracking_cek: 'Cek',
     tracking_logistic: 'Lacak pengajuan',
-    tracking_body: 'Fitur ini memudahkan Anda untuk mencari tahu telah sejauh mana tahapan dari pengajuan Anda',
+    tracking_body: 'Fitur pelacakan pengajuan logistik memudahkan Anda untuk mencari tahu sejauh mana tahapan pengajuan logistik alat kesehatan yang telah diajukan sebelumnya.',
     tracking_count_success: 'Berhasil menemukan',
     tracking_result: 'Hasil',
     tracking_step1: 'Permohonan Masuk',
@@ -602,6 +608,7 @@ export default {
     dahsboard_disclaimer_kabkota: '*Data Statistik Permohonan pada Kota/Kab didapatkan dari permohonan yang masuk dan berada dalam status Permohonan Telah Terverifikasi',
     request: 'Permohonan',
     recommendation: 'Rekomendasi Salur',
+    distribution_realization: 'Realisasi Salur',
     realization: 'Realisasi',
     acceptance_report: {
       already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
@@ -639,7 +646,12 @@ export default {
         qty_nok: 'Jmlh Barang Tdk Sesuai',
         quality: 'Kualitas/ Mutu Barang yang diterima',
       }
-    }
+    },
+    show_table: 'Tampil Tabel',
+    close_table: 'Tutup Tabel',
+    tracking_info_1: 'Pengambilan Barang Realisasi Salur dapat dilakukan maksimal ',
+    tracking_info_2: '2 Minggu',
+    tracking_info_3: ' sejak status Permohonan Selesai.'
   },
   success: {
     login_success: 'Login Berhasil',
