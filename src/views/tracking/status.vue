@@ -198,7 +198,7 @@
                     <td>{{ item.product_name || '-' }}</td>
                     <td>{{ item.quantity || '-' }}</td>
                     <td>{{ item.unit_name || '-' }}</td>
-                    <td>{{ item.status || '-' }}</td>
+                    <td>{{ translateRealizationStatus(item.status) || '-' }}</td>
                   </tr>
                 </template>
               </v-data-table>
@@ -291,7 +291,7 @@
                           'item-intransit': distributionItem.lo_proses_stt ? distributionItem.lo_proses_stt === 'INTRANSIT' : false
                         }"
                       >
-                        {{ capitalize(distributionItem.lo_proses_stt) || '-' }}
+                        {{ translateDistributionStatus(distributionItem.lo_proses_stt) || '-' }}
                       </td>
                     </tr>
                   </template>
@@ -469,6 +469,44 @@ export default {
     },
     capitalize(word) {
       return word ? word[0].toUpperCase() + word.slice(1).toLowerCase() : null
+    },
+    translateRealizationStatus(status) {
+      status = status.toLowerCase()
+      switch (status) {
+        case 'approved':
+          return this.$t('label.approved_item')
+
+        case 'replaced':
+          return this.$t('label.replaced_2')
+
+        case 'not available':
+          return this.$t('label.not_available_2')
+
+        case 'not yet fulfilled':
+          return this.$t('label.not_yet_fulfilled')
+
+        default:
+          return null
+      }
+    },
+    translateDistributionStatus(status) {
+      status = status.toLowerCase()
+      switch (status) {
+        case 'new':
+          return this.$t('label.goods_registration')
+
+        case 'booked':
+          return this.$t('label.goods_being_prepared')
+
+        case 'do':
+          return this.$t('label.goods_being_packed')
+
+        case 'intransit':
+          return this.$t('label.distributed')
+
+        default:
+          return null
+      }
     }
   }
 }
@@ -505,7 +543,7 @@ export default {
   border-width: 1px;
   border-color: #1565C0;
   background-color: #E3F2FD;
-  max-width: 300px;
+  max-width: 475px;
 }
 .active-tab {
   background-color: white;
