@@ -82,6 +82,7 @@ export default {
     dark_mode: 'Dark Mode',
     summary: 'Ringkasan',
     replaced: 'Barang Diganti',
+    replaced_2: 'Diganti',
     delete_dialog: 'Apakah Anda yakin akan menghapus data',
     urgency_dialog: 'Apakah Anda yakin akan menjadikan permohonan ini sebagai "Permohonan Penting"?',
     return_to_administration_step_dialog: 'Apakah Anda yakin akan mengembalikan permohonan ini ke tahap administrasi?',
@@ -431,6 +432,7 @@ export default {
     not_delivered: 'Belum Dikirim',
     delivered: 'Sudah Dikirim',
     not_available: 'Barang Belum Tersedia',
+    not_available_2: 'Belum Tersedia',
     not_yet_fulfilled: 'Belum Bisa Dipenuhi',
     not_approved: 'Belum Disetujui',
     total_data: 'Total Data',
@@ -651,7 +653,11 @@ export default {
     close_table: 'Tutup Tabel',
     tracking_info_1: 'Pengambilan Barang Realisasi Salur dapat dilakukan maksimal ',
     tracking_info_2: '2 Minggu',
-    tracking_info_3: ' sejak status Permohonan Selesai.'
+    tracking_info_3: ' sejak status Permohonan Selesai.',
+    goods_registration: 'Pendataan Barang',
+    goods_being_prepared: 'Barang Dipersiapkan',
+    goods_being_packed: 'Barang Dipacking',
+    distributed: 'Sudah Distribusi'
   },
   success: {
     login_success: 'Login Berhasil',
