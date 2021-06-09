@@ -67,8 +67,8 @@
           >
         </div>
         <div class="form mt-10" :class="{ 'item-header': $vuetify.breakpoint.lgAndUp }">
-          <v-form ref="form">
-            <ValidationObserver ref="observer">
+          <ValidationObserver ref="observer">
+            <v-form ref="form" @submit="getDataTracking(1)">
               <v-label>
                 <b>{{ $t('label.tracking_search') }}</b>
                 <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
@@ -83,7 +83,6 @@
                   solo-inverted
                   :error-messages="errors"
                   :placeholder="$t('label.tracking_search_placeholder')"
-                  @keyup.enter.native="getDataTracking(1)"
                 />
               </ValidationProvider>
               <div
@@ -117,8 +116,8 @@
                   {{ $t('label.track_now') }}
                 </v-btn>
               </div>
-            </ValidationObserver>
-          </v-form>
+            </v-form>
+          </ValidationObserver>
         </div>
       </v-card>
       <v-card v-if="clicked && dataTracking.application.length > 0" class="main-card-landing-page card-data-tracking" outlined>
