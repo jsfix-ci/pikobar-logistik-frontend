@@ -129,7 +129,7 @@
                     <td>{{ item.product_name || '-' }}</td>
                     <td>{{ item.quantity || '-' }}</td>
                     <td>{{ item.unit_name || '-' }}</td>
-                    <td>{{ item.status || '-' }}</td>
+                    <td>{{ translateStatus(item.status) || '-' }}</td>
                   </tr>
                 </template>
               </v-data-table>
@@ -198,7 +198,7 @@
                     <td>{{ item.product_name || '-' }}</td>
                     <td>{{ item.quantity || '-' }}</td>
                     <td>{{ item.unit_name || '-' }}</td>
-                    <td>{{ translateRealizationStatus(item.status) || '-' }}</td>
+                    <td>{{ translateStatus(item.status) || '-' }}</td>
                   </tr>
                 </template>
               </v-data-table>
@@ -470,7 +470,7 @@ export default {
     capitalize(word) {
       return word ? word[0].toUpperCase() + word.slice(1).toLowerCase() : null
     },
-    translateRealizationStatus(status) {
+    translateStatus(status) {
       status = status.toLowerCase()
       switch (status) {
         case 'approved':
