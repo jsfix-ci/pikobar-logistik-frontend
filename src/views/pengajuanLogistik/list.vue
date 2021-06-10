@@ -181,7 +181,7 @@
                   </td>
                   <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
                   <td>{{ data.applicant.applicant_name }}</td>
-                  <td>{{ data.created_at === null ? $t('label.stripe') : $moment(data.created_at).format('D MMMM YYYY') }}</td>
+                  <td>{{ data.applicant.created_at === null ? $t('label.stripe') : $moment(data.applicant.created_at).format('D MMMM YYYY') }}</td>
                   <td v-if="isApproved" class="text-center">
                     <span v-if="data.applicant.approved_by" class="green--text">{{ data.applicant.approved_by.name }}</span>
                     <span v-else class="red--text">{{ 'Belum DiSetujui' }}</span>
