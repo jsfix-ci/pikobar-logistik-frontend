@@ -51,43 +51,74 @@
             <span class="back-text">{{ $t('label.back') }}</span>
           </span>
         </div>
-        <v-row>
-          <v-col sm="12" md="7" class="left-side">
-            <div class="title">
-              <h3>{{ $t('label.tracking_logistic') }} <span class="logistic">{{ $t('label.logistic').toLowerCase() }}</span></h3>
-            </div>
-            <div class="body-text">
-              <p>{{ $t('label.tracking_body') }}</p>
-            </div>
-            <div class="form">
-              <v-form ref="form">
-                <ValidationObserver ref="observer">
-                  <v-label><b>{{ $t('label.tracking_search') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-                  <ValidationProvider
-                    v-slot="{ errors }"
-                    rules="requiredTrackingField"
-                  >
-                    <v-text-field
-                      v-model="listQuery.search"
-                      outlined
-                      solo-inverted
-                      :error-messages="errors"
-                      :placeholder="$t('label.tracking_search_placeholder')"
-                      @keyup.enter.native="getDataTracking(1)"
-                    />
-                  </ValidationProvider>
-                  <div class="button-action">
-                    <v-btn class="button-style" min-width="150px" outlined text @click="resetData">{{ $t('label.cancel') }}</v-btn>
-                    <v-btn class="button-style" min-width="150px" color="success" @click="getDataTracking(1)">{{ $t('label.tracking_cek') }}</v-btn>
-                  </div>
-                </ValidationObserver>
-              </v-form>
-            </div>
-          </v-col>
-          <v-col sm="12" md="5">
-            <img src="../../static/tracking_logistik_1.png" width="350px">
-          </v-col>
-        </v-row>
+        <div class="d-flex flex-row tracking-header pa-6 justify-space-between">
+          <div class="d-flex flex-column" :class="{ 'item-header': $vuetify.breakpoint.lgAndUp }">
+            <strong class="title">
+              {{ $t('label.tracking_logistic') }}
+              <span class="logistic">{{ $t('label.logistic').toLowerCase() }}</span>
+            </strong>
+            <p class="body-text mt-5">{{ $t('label.tracking_body') }}</p>
+          </div>
+          <img
+            v-if="$vuetify.breakpoint.lgAndUp"
+            class="mr-10"
+            src="../../static/tracking_logistik_1.png"
+            width="350px"
+          >
+        </div>
+        <div class="form mt-10" :class="{ 'item-header': $vuetify.breakpoint.lgAndUp }">
+          <ValidationObserver ref="observer">
+            <v-form ref="form" @submit="getDataTracking(1)">
+              <v-label>
+                <b>{{ $t('label.tracking_search') }}</b>
+                <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
+              </v-label>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="requiredTrackingField"
+              >
+                <v-text-field
+                  v-model="listQuery.search"
+                  outlined
+                  solo-inverted
+                  :error-messages="errors"
+                  :placeholder="$t('label.tracking_search_placeholder')"
+                />
+              </ValidationProvider>
+              <div
+                class="button-action"
+                :class="{
+                  'd-flex flex-column': $vuetify.breakpoint.xsOnly
+                }"
+              >
+                <v-btn
+                  v-if="clicked && dataTracking.application.length > 0"
+                  class="button-style"
+                  min-width="150px"
+                  outlined
+                  text
+                  :class="{
+                    'mb-4 full-width': $vuetify.breakpoint.xsOnly
+                  }"
+                  @click="resetData"
+                >
+                  {{ $t('label.cancel') }}
+                </v-btn>
+                <v-btn
+                  class="button-style"
+                  min-width="150px"
+                  color="success"
+                  :class="{
+                    'full-width': $vuetify.breakpoint.xsOnly
+                  }"
+                  @click="getDataTracking(1)"
+                >
+                  {{ $t('label.track_now') }}
+                </v-btn>
+              </div>
+            </v-form>
+          </ValidationObserver>
+        </div>
       </v-card>
       <v-card v-if="clicked && dataTracking.application.length > 0" class="main-card-landing-page card-data-tracking" outlined>
         <div class="result">
@@ -99,12 +130,13 @@
               v-model="tab"
               background-color="#EEEEEE"
               color="#069550"
-              height="60px"
+              height="45px"
+              active-class="active-tab"
+              hide-slider
             >
               <v-tab
                 v-for="(item, index) in dataTracking.application"
                 :key="index"
-                @click="getTrackingLogisticNeedList(item.id, 1)"
               >
                 {{ $t('label.tracking_id') }}{{ item.id }}
               </v-tab>
@@ -175,178 +207,20 @@
                 </v-card>
                 <v-row>
                   <v-col cols="12">
-                    <v-stepper value="1" :alt-labels="true" :dark="true" :light="false">
-                      <v-stepper-header v-if="!item.tracking.approval.is_reject && !item.tracking.verification.is_reject" class="tracking-status">
-                        <v-row>
-                          <v-col cols="12">
-                            <div class="tracking-status-text">
-                              <p><span>{{ $t('label.tracking_status') }}</span> <span>{{ item.tracking.status }}</span></p>
-                            </div>
-                          </v-col>
-                        </v-row>
-                        <v-stepper-step
-                          :complete="item.tracking.request"
-                          step=""
-                          class="tracking-step tracking-step-first"
-                        >
-                          <div class="color-step">
-                            <img src="../../static/iconChecklist.png">
-                            <div class="step-name">{{ $t('label.tracking_step1') }}</div>
-                          </div>
-                        </v-stepper-step>
-                        <v-divider class="tracking-divider" />
-                        <v-stepper-step
-                          :complete="item.tracking.verification.status"
-                          step=""
-                          class="tracking-step"
-                        >
-                          <span class="color-step">
-                            <img src="../../static/iconBox.png">
-                            <div class="step-name">{{ $t('label.tracking_step2') }}</div>
-                          </span>
-                        </v-stepper-step>
-                        <v-divider class="tracking-divider" />
-                        <v-stepper-step
-                          :complete="item.tracking.approval.status"
-                          step=""
-                          class="tracking-step"
-                        >
-                          <span class="color-step">
-                            <img src="../../static/iconContract.png">
-                            <div class="step-name">{{ $t('label.tracking_step3') }}</div>
-                          </span>
-                        </v-stepper-step>
-                      </v-stepper-header>
-                      <v-stepper-header v-else class="tracking-status-reject">
-                        <v-row>
-                          <v-col cols="12">
-                            <div class="tracking-status-text">
-                              <p><span>{{ $t('label.tracking_status') }}</span> <b>{{ item.tracking.status }}</b></p>
-                            </div>
-                          </v-col>
-                        </v-row>
-                        <v-stepper-step
-                          :complete="item.tracking.request"
-                          step=""
-                          class="tracking-step tracking-step-first"
-                        >
-                          <div class="color-step">
-                            <img src="../../static/iconChecklist.png">
-                            <div class="step-name">{{ $t('label.tracking_step1') }}</div>
-                          </div>
-                        </v-stepper-step>
-                        <v-divider class="tracking-divider" />
-                        <v-stepper-step
-                          :complete="item.tracking.verification.status"
-                          step=""
-                          class="tracking-step"
-                        >
-                          <span class="color-step">
-                            <img src="../../static/iconBox.png">
-                            <div v-if="item.tracking.verification.is_reject" class="step-name">{{ item.tracking.status }}</div>
-                            <div v-else class="step-name">{{ $t('label.tracking_step2') }}</div>
-                          </span>
-                        </v-stepper-step>
-                        <v-divider class="tracking-divider" />
-                        <v-stepper-step
-                          :complete="item.tracking.approval.status"
-                          step=""
-                          class="tracking-step"
-                        >
-                          <span class="color-step">
-                            <img src="../../static/iconContract.png">
-                            <div v-if="item.tracking.approval.is_reject" class="step-name">{{ item.tracking.status }}</div>
-                            <div v-else class="step-name">{{ $t('label.tracking_step3') }}</div>
-                          </span>
-                        </v-stepper-step>
-                      </v-stepper-header>
-                    </v-stepper>
                     <v-card v-if="item.tracking.verification.is_reject || item.tracking.approval.is_reject" class="tracking-status-reject tracking-reject-reason">
                       <div class="tracking-status-reject-note">
                         <p class="reject-reason-title">{{ $t('label.tracking_reason_reject') }}</p>
                         <p class="reject-reason-data">{{ item.tracking.reject_note }}</p>
                       </div>
                     </v-card>
+                    <TrackingStatus
+                      :key="item.id"
+                      :id-request="item.id"
+                    />
                   </v-col>
                 </v-row>
               </v-tab-item>
             </v-tabs>
-          </v-col>
-        </v-row>
-        <div class="identity text-data-green">
-          {{ $t('label.list_logistic_need') }}
-        </div>
-        <v-row>
-          <v-col>
-            <v-card outlined>
-              <v-simple-table>
-                <template v-slot:default>
-                  <thead>
-                    <tr>
-                      <th colspan="6" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
-                      <th colspan="4" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
-                      <th colspan="4" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                    </tr>
-                    <tr>
-                      <th class="text-left green lighten-5">{{ $t('label.number').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.description').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.total').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.unit').toUpperCase() }}</th>
-                      <th class="text-left green lighten-5">{{ $t('label.item_type').toUpperCase() }}</th>
-                      <th class="text-left green lighten-4">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                      <th class="text-left green lighten-4">{{ $t('label.total').toUpperCase() }}</th>
-                      <th class="text-left green lighten-4">{{ $t('label.unit').toUpperCase() }}</th>
-                      <th class="text-left green lighten-4">{{ $t('label.status').toUpperCase() }}</th>
-                      <th class="text-left green lighten-3">{{ $t('label.apd_name_spec').toUpperCase() }}</th>
-                      <th class="text-left green lighten-3">{{ $t('label.total').toUpperCase() }}</th>
-                      <th class="text-left green lighten-3">{{ $t('label.unit').toUpperCase() }}</th>
-                      <th class="text-left green lighten-3">{{ $t('label.status').toUpperCase() }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-if="listLogisticRequest.length === 0">
-                      <td class="text-center" :colspan="12">{{ $t('label.no_data') }}</td>
-                    </tr>
-                    <tr v-for="(item, index) in listLogisticRequest" :key="item.index">
-                      <td>{{ getTableRowNumbering(index) }}</td>
-                      <td>{{ item.need_product_name || '-' }}</td>
-                      <td>{{ item.need_description || '-' }}</td>
-                      <td>{{ item.need_quantity || '-' }}</td>
-                      <td>{{ item.need_unit_name || '-' }}</td>
-                      <td>{{ item.category || '-' }}</td>
-                      <!-- recommendation -->
-                      <td>{{ item.recommendation_product_name || '-' }}</td>
-                      <td>{{ item.recommendation_quantity || '-' }}</td>
-                      <td>{{ item.recommendation_unit_name || '-' }}</td>
-                      <td>{{ item.recommendation_status || '-' }}</td>
-                      <!-- realization -->
-                      <td>{{ item.final_product_name || '-' }}</td>
-                      <td>{{ item.final_quantity || '-' }}</td>
-                      <td>{{ item.final_unit || '-' }}</td>
-                      <td>{{ item.final_status || '-' }}</td>
-                    </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-              <br>
-            </v-card>
-            <v-row>
-              <v-col>
-                <div class="total-data-title">{{ $t('label.tracking_total_data_logistic') }} <span class="total-data">{{ totalDataLogisticRequest }} {{ $t('label.tracking_data_prefix') }}</span> </div>
-              </v-col>
-              <v-col>
-                <div class="pagination">
-                  <v-pagination
-                    v-model="listQueryTable.page"
-                    :length="totalListLogisticRequest"
-                    :page.sync="listQueryTable.page"
-                    :total-visible="20"
-                    @input="onNext"
-                  />
-                </div>
-              </v-col>
-            </v-row>
           </v-col>
         </v-row>
       </v-card>
@@ -395,12 +269,14 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import { mapGetters } from 'vuex'
+import TrackingStatus from './status'
 
 export default {
   name: 'LandingPage',
   components: {
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
+    TrackingStatus
   },
   data() {
     return {
@@ -419,10 +295,7 @@ export default {
   },
   computed: {
     ...mapGetters('logistics', [
-      'dataTracking',
-      'listLogisticRequest',
-      'totalListLogisticRequest',
-      'totalDataLogisticRequest'
+      'dataTracking'
     ])
   },
   methods: {
@@ -434,18 +307,7 @@ export default {
 
       this.listQueryTable.page = page ?? this.listQueryTable.page
       await this.$store.dispatch('logistics/getTrackingLogistic', this.listQuery)
-      if (this.dataTracking.application.length > 0) this.getTrackingLogisticNeedList(this.dataTracking.application[0].id)
       this.clicked = true
-    },
-    async getTrackingLogisticNeedList(id, page) {
-      this.id = id
-      this.listQueryTable.id = id
-      this.listQueryTable.page = page ?? this.listQueryTable.page
-      await this.$store.dispatch('logistics/getTrackingLogisticNeedList', this.listQueryTable)
-      this.listLogisticRequest.forEach(element => {
-        element.recommendation_status = this.changeStatus(element.recommendation_status)
-        element.final_status = this.changeStatus(element.final_status)
-      })
     },
     changeStatus(value) {
       let status = this.$t('label.not_approved')
@@ -474,9 +336,6 @@ export default {
       }
       return status
     },
-    async onNext() {
-      await this.getTrackingLogisticNeedList(this.id)
-    },
     getTableRowNumbering(index) {
       return ((parseInt(this.listQueryTable.page) - 1) * parseInt(this.listQueryTable.limit)) + (parseInt(index) + 1)
     },
@@ -496,6 +355,7 @@ export default {
  }
  .button-style {
    margin-right: 20px;
+   text-transform: none !important;
  }
  .back {
    margin-bottom: 30px;
@@ -540,15 +400,12 @@ export default {
   color: #219653;
 }
  .title {
-   h3 {
-    font-family: Lora;
-    font-size: 32px;
-    font-weight: bold;
-    line-height: 45px;
-
-    .logistic {
-      color: #16A75C
-    }
+   font-family: Lora !important;
+   font-size: 32px !important;
+   font-weight: bold !important;
+   line-height: 45px !important;
+   .logistic {
+     color: #16A75C
    }
  }
  .color-step {
@@ -636,5 +493,21 @@ export default {
  .tracking-reject-reason {
    margin-top: .5rem;
  }
-
+ .active-tab {
+  background-color: white;
+  border-radius: 6px 6px 0px 0px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #069550 #069550 white #069550;
+}
+.tracking-header {
+  background-color: #FFF9E1;
+  border-radius: 16px;
+}
+.item-header {
+  width: 50%;
+}
+.full-width {
+  width: 100% !important;
+}
 </style>

@@ -14,6 +14,7 @@ import letter from './modules/letter'
 import faskes from './modules/faskes'
 import faskesType from './modules/faskesType'
 import masterData from './modules/masterData'
+import tracking from './modules/tracking'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -31,7 +32,8 @@ const store = new Vuex.Store({
     faskes,
     faskesType,
     masterData,
-    letter
+    letter,
+    tracking
   }
 })
 
