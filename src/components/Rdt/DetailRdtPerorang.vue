@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title"><b>Abdul Ghani</b></div> <!-- To do: get data from api -->
+    <div class="title"><strong>Abdul Ghani</strong></div> <!-- To do: get data from api -->
     <v-row no-gutters>
       <v-col
         class="bg-success"
@@ -12,10 +12,10 @@
         >
           <v-card-text>
             <div class="subtitle-1 white--text text-center">
-              <b>{{ $t('label.test_results') }}</b>
+              <strong>{{ $t('label.test_results') }}</strong>
             </div>
             <div class="white--text text-center">
-              <b>Negatif</b> <!-- To do: get data from api -->
+              <strong>Negatif</strong> <!-- To do: get data from api -->
             </div>
           </v-card-text>
         </v-card>
@@ -31,10 +31,10 @@
         >
           <v-card-text>
             <div class="subtitle-1 green--text">
-              <b>{{ $t('label.rdt_code') }}</b>
+              <strong>{{ $t('label.rdt_code') }}</strong>
             </div>
             <div>
-              <b>656758765876567858</b> <!-- To do: get data from api -->
+              <strong>656758765876567858</strong> <!-- To do: get data from api -->
             </div>
           </v-card-text>
         </v-card>
@@ -50,10 +50,10 @@
         >
           <v-card-text>
             <div class="subtitle-1 green--text">
-              <b>{{ $t('label.faskes_name') }}</b>
+              <strong>{{ $t('label.faskes_name') }}</strong>
             </div>
             <div>
-              <b>RSUD Kota Depok</b> <!-- To do: get data from api -->
+              <strong>RSUD Kota Depok</strong> <!-- To do: get data from api -->
             </div>
           </v-card-text>
         </v-card>
@@ -69,10 +69,10 @@
         >
           <v-card-text>
             <div class="subtitle-1 green--text">
-              <b>{{ $t('label.goal_category') }}</b>
+              <strong>{{ $t('label.goal_category') }}</strong>
             </div>
             <div>
-              <b>Kategori B</b> <!-- To do: get data from api -->
+              <strong>Kategori B</strong> <!-- To do: get data from api -->
             </div>
           </v-card-text>
         </v-card>
@@ -88,10 +88,10 @@
         >
           <v-card-text>
             <div class="subtitle-1 green--text">
-              <b>{{ $t('label.check_date') }}</b>
+              <strong>{{ $t('label.check_date') }}</strong>
             </div>
             <div>
-              <b>26 Maret 2020</b> <!-- To do: get data from api -->
+              <strong>26 Maret 2020</strong> <!-- To do: get data from api -->
             </div>
           </v-card-text>
         </v-card>
@@ -112,10 +112,10 @@
               >
                 <v-card-text>
                   <div class="subtitle-1 green--text">
-                    <b>{{ $t('label.nik') }}</b>
+                    <strong>{{ $t('label.nik') }}</strong>
                   </div>
                   <div>
-                    <b>3037686867868</b> <!-- To do: get data from api -->
+                    <strong>3037686867868</strong> <!-- To do: get data from api -->
                   </div>
                 </v-card-text>
               </v-card>
@@ -125,10 +125,10 @@
               >
                 <v-card-text>
                   <div class="subtitle-1 green--text">
-                    <b>{{ $t('label.birth_date') }}</b>
+                    <strong>{{ $t('label.birth_date') }}</strong>
                   </div>
                   <div>
-                    <b>23 Juni 1975</b> <!-- To do: get data from api -->
+                    <strong>23 Juni 1975</strong> <!-- To do: get data from api -->
                   </div>
                 </v-card-text>
               </v-card>
@@ -138,10 +138,10 @@
               >
                 <v-card-text>
                   <div class="subtitle-1 green--text">
-                    <b>{{ $t('label.age') }}</b>
+                    <strong>{{ $t('label.age') }}</strong>
                   </div>
                   <div>
-                    <b>45 Tahun</b> <!-- To do: get data from api -->
+                    <strong>45 Tahun</strong> <!-- To do: get data from api -->
                   </div>
                 </v-card-text>
               </v-card>
@@ -156,10 +156,10 @@
               >
                 <v-card-text>
                   <div class="subtitle-1 green--text">
-                    <b>{{ $t('label.gender') }}</b>
+                    <strong>{{ $t('label.gender') }}</strong>
                   </div>
                   <div>
-                    <b>Laki-Laki</b> <!-- To do: get data from api -->
+                    <strong>Laki-Laki</strong> <!-- To do: get data from api -->
                   </div>
                 </v-card-text>
               </v-card>
@@ -169,10 +169,10 @@
               >
                 <v-card-text>
                   <div class="subtitle-1 green--text">
-                    <b>{{ $t('label.phone_number') }}</b>
+                    <strong>{{ $t('label.phone_number') }}</strong>
                   </div>
                   <div>
-                    <b>0898765775566</b> <!-- To do: get data from api -->
+                    <strong>0898765775566</strong> <!-- To do: get data from api -->
                   </div>
                 </v-card-text>
               </v-card>
@@ -182,10 +182,10 @@
               >
                 <v-card-text>
                   <div class="subtitle-1 green--text">
-                    <b>{{ $t('label.citizen') }}</b>
+                    <strong>{{ $t('label.citizen') }}</strong>
                   </div>
                   <div>
-                    <b>Indonesia</b> <!-- To do: get data from api -->
+                    <strong>Indonesia</strong> <!-- To do: get data from api -->
                   </div>
                 </v-card-text>
               </v-card>
@@ -200,10 +200,10 @@
               >
                 <v-card-text>
                   <div class="subtitle-1 green--text">
-                    <b>{{ $t('label.address') }}</b>
+                    <strong>{{ $t('label.address') }}</strong>
                   </div>
                   <div>
-                    <b>Jl. Merdeka II No.18</b> <!-- To do: get data from api -->
+                    <strong>Jl. Merdeka II No.18</strong> <!-- To do: get data from api -->
                   </div>
                 </v-card-text>
               </v-card>

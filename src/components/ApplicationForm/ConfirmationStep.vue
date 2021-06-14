@@ -338,7 +338,7 @@
       <div v-else>
         <v-row class="margin-top-min-50-data-confirmation">
           <v-col class="ml-1 mr-1">
-            <v-label class="title"><b>{{ $t('label.confirm_data') }}</b></v-label>
+            <v-label class="title"><strong>{{ $t('label.confirm_data') }}</strong></v-label>
           </v-col>
         </v-row>
         <hr>
@@ -348,44 +348,44 @@
             <v-col>
               <v-row class="margin-top-min-15">
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.instance_type') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.instance_type') }}</strong></span>
                   <br>
                   <v-label>{{ formApplicant.instanceTypeName }}</v-label>
                 </v-col>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.city_district') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.city_district') }}</strong></span>
                   <br>
                   <v-label>{{ formApplicant.cityNameId.name }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.instance_name') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.instance_name') }}</strong></span>
                   <br>
                   <v-label v-if="formApplicant.instanceEtc">{{ formApplicant.instanceEtc }}</v-label>
                   <v-label v-else>{{ formApplicant.instanceName }}</v-label>
                 </v-col>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.select_sub_district_full_name') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.select_sub_district_full_name') }}</strong></span>
                   <br>
                   <v-label>{{ formApplicant.districtNameId.name }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.number_phone') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.number_phone') }}</strong></span>
                   <br>
                   <v-label>{{ formApplicant.instancePhoneNumber }}</v-label>
                 </v-col>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.village') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.village') }}</strong></span>
                   <br>
                   <v-label>{{ formApplicant.villageNameId.name }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.full_address') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.full_address') }}</strong></span>
                   <br>
                   <v-label>{{ formApplicant.fullAddress }}</v-label>
                 </v-col>
@@ -400,40 +400,40 @@
             <v-col>
               <v-row class="margin-top-min-15">
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.contact_person') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.contact_person') }}</strong></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantName }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.applicant_position_identity') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.applicant_position_identity') }}</strong></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantPosition }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.email') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.email') }}</strong></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantEmail }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.applicant_phone') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.applicant_phone') }}</strong></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantPhoneNumber }}</v-label>
                 </v-col>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.applicant_phone_sub') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.applicant_phone_sub') }}</strong></span>
                   <br>
                   <v-label>{{ formIdentityApplicant.applicantPhoneNumber2 }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
-                  <span class="text-caption green--text"><b>{{ $t('label.applicant_ktp') }}</b></span>
+                  <span class="text-caption green--text"><strong>{{ $t('label.applicant_ktp') }}</strong></span>
                   <br>
                   <img class="image-style-data-confirmation" :src="url">
                 </v-col>

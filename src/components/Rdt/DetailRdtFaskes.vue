@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1><b>{{ idData }}</b></h1>
+    <h1><strong>{{ idData }}</strong></h1>
     <v-row>
       <v-col cols="12" sm="6">
         <v-card

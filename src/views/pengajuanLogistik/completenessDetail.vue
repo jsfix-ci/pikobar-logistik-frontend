@@ -7,7 +7,7 @@
     <v-card>
       <div class="col-sm-12">
         <v-card-text class="headerSection headerMargin">
-          <span><h4><b>{{ $t('label.completeness_header') }}</b></h4></span>
+          <span><h4><strong>{{ $t('label.completeness_header') }}</strong></h4></span>
         </v-card-text>
       </div>
       <div class="col-sm-12">

@@ -234,7 +234,7 @@
 
         <v-card-text>
           <span>{{ $t('label.warning_text') }} </span>
-          <span><b>{{ $t('label.warning_contact') }}</b></span>
+          <span><strong>{{ $t('label.warning_contact') }}</strong></span>
         </v-card-text>
 
         <v-card-actions>

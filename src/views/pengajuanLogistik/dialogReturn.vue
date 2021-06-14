@@ -7,24 +7,24 @@
     <v-card>
       <div class="col-sm-12">
         <v-card-text>
-          <span><h4><b>{{ titleReturn }}</b></h4></span>
+          <span><h4><strong>{{ titleReturn }}</strong></h4></span>
         </v-card-text>
       </div>
       <div style="margin-left: 10px; margin-top: -20px">
         <div class="col-sm-12">
-          <span><b>{{ $t('label.applicant_letter_number') }}</b></span>
+          <span><strong>{{ $t('label.applicant_letter_number') }}</strong></span>
           <br>
           <span class="green--text">{{ dataDialog.applicant.application_letter_number }}</span>
         </div>
 
         <div class="col-sm-12">
-          <span><b>{{ $t('label.applicant_agency_name') }}</b></span>
+          <span><strong>{{ $t('label.applicant_agency_name') }}</strong></span>
           <br>
           <span class="green--text">{{ dataDialog.agency_name }}</span>
         </div>
 
         <div class="col-sm-12">
-          <span><b>{{ $t('label.applicant_name') }}</b></span>
+          <span><strong>{{ $t('label.applicant_name') }}</strong></span>
           <br>
           <span class="green--text">{{ dataDialog.applicant.applicant_name }}</span>
         </div>

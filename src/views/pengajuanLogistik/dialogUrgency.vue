@@ -7,25 +7,25 @@
     <v-card>
       <div class="col-sm-12">
         <v-card-text>
-          <span v-if="isUrgency === 1"><h4><b>{{ $t('label.urgency_dialog') }}</b></h4></span>
-          <span v-else><h4><b>{{ $t('label.not_urgency_dialog') }}</b></h4></span>
+          <span v-if="isUrgency === 1"><h4><strong>{{ $t('label.urgency_dialog') }}</strong></h4></span>
+          <span v-else><h4><strong>{{ $t('label.not_urgency_dialog') }}</strong></h4></span>
         </v-card-text>
       </div>
       <div style="margin-left: 10px; margin-top: -20px">
         <div class="col-sm-12">
-          <span><b>{{ $t('label.applicant_letter_number') }}</b></span>
+          <span><strong>{{ $t('label.applicant_letter_number') }}</strong></span>
           <br>
           <span class="green--text">{{ dataDialog.applicant.application_letter_number }}</span>
         </div>
 
         <div class="col-sm-12">
-          <span><b>{{ $t('label.applicant_agency_name') }}</b></span>
+          <span><strong>{{ $t('label.applicant_agency_name') }}</strong></span>
           <br>
           <span class="green--text">{{ dataDialog.agency_name }}</span>
         </div>
 
         <div class="col-sm-12">
-          <span><b>{{ $t('label.applicant_name') }}</b></span>
+          <span><strong>{{ $t('label.applicant_name') }}</strong></span>
           <br>
           <span class="green--text">{{ dataDialog.applicant.applicant_name }}</span>
         </div>

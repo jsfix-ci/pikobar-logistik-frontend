@@ -16,7 +16,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
-                  <span style="color: white">{{ $t('label.verify_text_alert_1') }}<b>{{ $t('label.verify_text_alert_2') }}</b> {{ $t('label.verify_text_alert_3') }}</span>
+                  <span style="color: white">{{ $t('label.verify_text_alert_1') }}<strong>{{ $t('label.verify_text_alert_2') }}</strong> {{ $t('label.verify_text_alert_3') }}</span>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -29,7 +29,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
-                  <span class="sub-title-verified-card-detail-logistic-needs white--text">{{ $t('label.alert_verified_title_card_logistic_needs_1') }} <b>{{ $t('label.alert_verified_title_card_logistic_needs_2') }}</b></span>
+                  <span class="sub-title-verified-card-detail-logistic-needs white--text">{{ $t('label.alert_verified_title_card_logistic_needs_1') }} <strong>{{ $t('label.alert_verified_title_card_logistic_needs_2') }}</strong></span>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>

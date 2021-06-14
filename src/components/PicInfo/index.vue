@@ -8,7 +8,7 @@
       <v-card>
         <div class="col-sm-12">
           <v-card-title class="dialog-pic-title">
-            <h4><b>{{ $t('label.pic_detail_title') }}</b></h4>
+            <h4><strong>{{ $t('label.pic_detail_title') }}</strong></h4>
           </v-card-title>
           <div v-if="dataPic">
             <v-card-text>

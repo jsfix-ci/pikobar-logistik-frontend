@@ -7,7 +7,7 @@
     <v-card>
       <div class="col-sm-12">
         <v-card-text class="headerSection headerMargin">
-          <span style="text-align:center"><h4><b>{{ $t('label.instance_reference_dialog_title') }}</b></h4></span>
+          <span style="text-align:center"><h4><strong>{{ $t('label.instance_reference_dialog_title') }}</strong></h4></span>
         </v-card-text>
       </div>
       <div class="col-sm-12">

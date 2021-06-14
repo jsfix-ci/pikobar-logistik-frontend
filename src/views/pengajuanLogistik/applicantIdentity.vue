@@ -8,14 +8,14 @@
       <ValidationObserver ref="observer">
         <div class="col-sm-12">
           <v-card-text class="headerSection">
-            <span><h4><b>{{ $t('route.applicant_form_edit') + ' - ' + $t('label.step_title_2') }}</b></h4></span>
+            <span><h4><strong>{{ $t('route.applicant_form_edit') + ' - ' + $t('label.step_title_2') }}</strong></h4></span>
           </v-card-text>
         </div>
         <div class="container">
           <div class="row">
             <div class="col-sm-6">
               <ValidationProvider v-slot="{ errors }" rules="requiredApplicantName">
-                <span><b>{{ $t('label.contact_person') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+                <span><strong>{{ $t('label.contact_person') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
                 <v-text-field
                   v-model="queryUpdateData.applicant_name"
                   outlined
@@ -27,7 +27,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
               >
-                <v-label class="title"><b>{{ $t('label.applicant_position') }}</b></v-label>
+                <v-label class="title"><strong>{{ $t('label.applicant_position') }}</strong></v-label>
                 <v-text-field
                   v-model="queryUpdateData.applicants_office"
                   outlined
@@ -37,7 +37,7 @@
                 />
               </ValidationProvider>
               <ValidationProvider>
-                <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b></v-label>
+                <v-label class="title"><strong>{{ $t('label.upload_applicant_ktp') }}</strong></v-label>
                 <v-img class="image-style-fit" :src="queryUpdateData.urlFile" @error="errorHandler" />
                 <br>
                 <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
@@ -119,7 +119,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
               >
-                <v-label class="title"><b>{{ $t('label.applicant_email') }}</b></v-label>
+                <v-label class="title"><strong>{{ $t('label.applicant_email') }}</strong></v-label>
                 <v-text-field
                   v-model="queryUpdateData.email"
                   outlined
@@ -132,7 +132,7 @@
                 v-slot="{ errors }"
                 rules="requiredApplicantPhoneNumber|isPhoneNumber"
               >
-                <v-label class="title"><b>{{ $t('label.applicant_phone_number') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-label class="title"><strong>{{ $t('label.applicant_phone_number') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
                 <v-text-field
                   v-model="queryUpdateData.primary_phone_number"
                   outlined
@@ -144,7 +144,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
               >
-                <v-label class="title"><b>{{ $t('label.applicant_phone_sub') }}</b></v-label>
+                <v-label class="title"><strong>{{ $t('label.applicant_phone_sub') }}</strong></v-label>
                 <v-text-field
                   v-model="queryUpdateData.secondary_phone_number"
                   outlined

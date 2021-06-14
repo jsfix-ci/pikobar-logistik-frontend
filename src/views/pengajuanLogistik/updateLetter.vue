@@ -8,14 +8,14 @@
       <ValidationObserver ref="observer">
         <div class="col-sm-12">
           <v-card-text class="headerSection">
-            <span><h4><b>{{ $t('route.applicant_form_edit') + ' - ' + $t('label.applicant_letter') }}</b></h4></span>
+            <span><h4><strong>{{ $t('route.applicant_form_edit') + ' - ' + $t('label.applicant_letter') }}</strong></h4></span>
           </v-card-text>
         </div>
         <div class="container">
           <div class="row">
             <div class="col-sm-12">
               <ValidationProvider v-slot="{ errors }" rules="requiredApplicantLetterNumber">
-                <span><b>{{ $t('label.applicant_letter_number') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+                <span><strong>{{ $t('label.applicant_letter_number') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
                 <v-text-field
                   v-model="queryUpdateData.application_letter_number"
                   outlined
@@ -27,7 +27,7 @@
               </ValidationProvider>
             </div>
             <div class="col-sm-12" style="margin-top:-40px;">
-              <v-label class="title"><b>{{ $t('label.applicant_letter_number_upload') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.applicant_letter_number_upload') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <br>
               <v-row>
                 <v-col cols="2" sm="6" md="2">

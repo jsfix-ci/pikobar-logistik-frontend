@@ -105,7 +105,7 @@
         <v-col v-if="type !== 'update'" class="margin-top-min-30-update-logistic-needs">
           <v-row class="margin-top-min-30-update-logistic-needs">
             <v-col class="total_applicant">
-              <p> {{ $t('label.total_applicant') }} <span class="pl-1"> <b> {{ letter_request.length }} {{ $t('route.applicant_medical_tools_title') }} </b></span></p>
+              <p> {{ $t('label.total_applicant') }} <span class="pl-1"> <strong> {{ letter_request.length }} {{ $t('route.applicant_medical_tools_title') }} </strong></span></p>
             </v-col>
           </v-row>
         </v-col>

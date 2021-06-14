@@ -34,10 +34,10 @@
           <v-col cols="6" md="6">
             <v-row>
               <v-col cols="2">
-                <span><b>Status</b></span>
+                <span><strong>Status</strong></span>
               </v-col>
               <v-col>
-                <span><b>: </b></span>
+                <span><strong>: </strong></span>
                 <span v-if="isFileExists" class="green--text">{{ $t('label.outgoing_mail_ready') }}</span>
                 <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
               </v-col>

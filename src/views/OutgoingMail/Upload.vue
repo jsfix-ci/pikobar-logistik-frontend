@@ -24,7 +24,7 @@
             />
           </ValidationProvider>
           <v-col>
-            <v-label class="title"><b>{{ $t('route.outgoing_mail') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+            <v-label class="title"><strong>{{ $t('route.outgoing_mail') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
             <br>
             <v-label><i class="text-small-second-step">({{ $t('label.max_type_file_upload_letter') }})</i></v-label>
             <v-row class="mt-1">

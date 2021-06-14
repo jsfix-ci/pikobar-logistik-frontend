@@ -70,7 +70,7 @@
           <ValidationObserver ref="observer">
             <v-form ref="form" @submit="getDataTracking(1)">
               <v-label>
-                <b>{{ $t('label.tracking_search') }}</b>
+                <strong>{{ $t('label.tracking_search') }}</strong>
                 <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
               </v-label>
               <ValidationProvider
@@ -122,7 +122,7 @@
       </v-card>
       <v-card v-if="clicked && dataTracking.application.length > 0" class="main-card-landing-page card-data-tracking" outlined>
         <div class="result">
-          <p>{{ $t('label.tracking_count_success') }} <b>{{ dataTracking.total }}</b> {{ $t('label.tracking_result') }}</p>
+          <p>{{ $t('label.tracking_count_success') }} <strong>{{ dataTracking.total }}</strong> {{ $t('label.tracking_result') }}</p>
         </div>
         <v-row>
           <v-col>

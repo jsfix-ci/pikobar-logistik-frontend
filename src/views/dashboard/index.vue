@@ -37,7 +37,7 @@
                 <v-row>
                   <v-col sm="12" md="4">
                     <v-list-item-title class="text-card-source-dashboard text-card-data-title">
-                      <b>{{ $t('label.incoming_request_statistic') }}</b>
+                      <strong>{{ $t('label.incoming_request_statistic') }}</strong>
                     </v-list-item-title>
                     <div class="text-card-time-range text-card-time-range-space">{{ $t('label.dashboard_time_range') }}</div>
                     <date-picker-dashboard
@@ -56,7 +56,7 @@
                   <v-col sm="12" md="2" offset-md="1">
                     <div class="approved">
                       <div class="title-card-data amber--text darken-4">
-                        <b>{{ $t('label.dashboard_unverified') }}</b>
+                        <strong>{{ $t('label.dashboard_unverified') }}</strong>
                       </div>
                       <div class="value-card-data amber--text darken-4">
                         {{ currency(dataLogisticRequestSummary.total_unverified) }}
@@ -72,7 +72,7 @@
                     </div>
                     <div class="verified space-data-card">
                       <div class="title-card-data light-blue--text darken-4">
-                        <b>{{ $t('label.dashboard_verified') }}</b>
+                        <strong>{{ $t('label.dashboard_verified') }}</strong>
                       </div>
                       <div class="value-card-data light-blue--text darken-4">
                         {{ currency(dataLogisticRequestSummary.total_verified) }}
@@ -88,7 +88,7 @@
                     </div>
                     <div class="verified space-data-card">
                       <div class="title-card-data purple--text accent-4">
-                        <b>{{ $t('label.dashboard_approved') }}</b>
+                        <strong>{{ $t('label.dashboard_approved') }}</strong>
                       </div>
                       <div class="value-card-data purple--text accent-4">
                         {{ currency(dataLogisticRequestSummary.total_approved) }}
@@ -106,7 +106,7 @@
                   <v-col sm="12" md="2">
                     <div class="approved">
                       <div class="title-card-data green--text accent-4">
-                        <b>{{ $t('label.dashboard_final') }}</b>
+                        <strong>{{ $t('label.dashboard_final') }}</strong>
                       </div>
                       <div class="value-card-data green--text accent-4">
                         {{ currency(dataLogisticRequestSummary.total_final) }}
@@ -122,7 +122,7 @@
                     </div>
                     <div class="verified space-data-card">
                       <div class="title-card-data red-text">
-                        <b>{{ $t('label.tracking_step4') }}</b>
+                        <strong>{{ $t('label.tracking_step4') }}</strong>
                       </div>
                       <div class="value-card-data red-text">
                         {{ currency(dataLogisticRequestSummary.total_rejected) }}

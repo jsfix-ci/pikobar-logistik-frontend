@@ -47,7 +47,7 @@
             sm="12"
             md="1"
           >
-            <center><v-label class="title"><b>{{ index + 1 }}</b></v-label></center>
+            <center><v-label class="title"><strong>{{ index + 1 }}</strong></v-label></center>
             <center><v-icon class="padding-10-third-step" color="red" size="25" @click="deleteData(index)">mdi-delete</v-icon></center>
           </v-col>
           <v-col
@@ -59,7 +59,7 @@
               v-slot="{ errors }"
               rules="requiredAPDName"
             >
-              <v-label class="title"><b>{{ $t('label.apd_name_spec') }}</b></v-label>
+              <v-label class="title"><strong>{{ $t('label.apd_name_spec') }}</strong></v-label>
               <v-autocomplete
                 v-model="data.apd"
                 :placeholder="$t('label.choose_apd')"
@@ -82,7 +82,7 @@
               v-slot="{ errors }"
               rules="requiredBrand"
             >
-              <v-label class="title"><b>{{ $t('label.description') }}</b></v-label>
+              <v-label class="title"><strong>{{ $t('label.description') }}</strong></v-label>
               <v-text-field
                 v-model="data.brand"
                 :placeholder="$t('label.input_description')"
@@ -101,7 +101,7 @@
               v-slot="{ errors }"
               rules="requiredTotal|notMinus|notDecimal"
             >
-              <v-label class="title"><b>{{ $t('label.total') }}</b></v-label>
+              <v-label class="title"><strong>{{ $t('label.total') }}</strong></v-label>
               <v-text-field
                 v-model="data.total"
                 outlined
@@ -121,7 +121,7 @@
               v-slot="{ errors }"
               rules="requiredUnit"
             >
-              <v-label class="title"><b>{{ $t('label.unit') }}</b></v-label>
+              <v-label class="title"><strong>{{ $t('label.unit') }}</strong></v-label>
               <v-autocomplete
                 v-model="data.unitId"
                 :items="data.unitList"
@@ -142,7 +142,7 @@
               v-slot="{ errors }"
               rules="requiredPurpose"
             >
-              <v-label class="title"><b>{{ $t('label.purpose') }}</b></v-label>
+              <v-label class="title"><strong>{{ $t('label.purpose') }}</strong></v-label>
               <v-text-field
                 v-model="data.purpose"
                 :placeholder="$t('label.input_purpose')"
