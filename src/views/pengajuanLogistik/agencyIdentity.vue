@@ -15,7 +15,7 @@
           <div class="row">
             <div class="col-sm-6">
               <ValidationProvider v-slot="{ errors }" rules="requiredInstanceType">
-                <span><strong>{{ $t('label.instance_type') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+                <span><strong>{{ $t('label.instance_type') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></span>
                 <v-autocomplete
                   v-model="queryUpdateData.agency_type"
                   :items="faskesTypeList"
@@ -33,7 +33,7 @@
                 v-slot="{ errors }"
                 rules="requiredInstanceName"
               >
-                <v-label class="title"><strong>{{ $t('label.instance_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-label class="title"><strong>{{ $t('label.instance_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                 <v-autocomplete
                   v-model="queryUpdateData.master_faskes_id"
                   :items="faskesList"
@@ -52,7 +52,7 @@
                 v-slot="{ errors }"
                 rules="requiredInstanceName"
               >
-                <v-label class="title"><strong>{{ $t('label.instance_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-label class="title"><strong>{{ $t('label.instance_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                 <v-text-field
                   v-model="queryUpdateData.agency_name"
                   outlined
@@ -80,7 +80,7 @@
                 v-slot="{ errors }"
                 rules="requiredCityName"
               >
-                <v-label class="title"><strong>{{ $t('label.city_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-label class="title"><strong>{{ $t('label.city_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                 <v-autocomplete
                   v-model="queryUpdateData.location_district_code"
                   :items="applicantListCity"
@@ -97,7 +97,7 @@
                 v-slot="{ errors }"
                 rules="requiredDistrictName"
               >
-                <v-label class="title"><strong>{{ $t('label.district_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-label class="title"><strong>{{ $t('label.district_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                 <v-autocomplete
                   v-model="queryUpdateData.location_subdistrict_code"
                   :items="applicantListDistrict"
@@ -114,7 +114,7 @@
                 v-slot="{ errors }"
                 rules="requiredVillageName"
               >
-                <v-label class="title"><strong>{{ $t('label.village_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-label class="title"><strong>{{ $t('label.village_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                 <v-autocomplete
                   v-model="queryUpdateData.location_village_code"
                   :items="applicantListVillage"

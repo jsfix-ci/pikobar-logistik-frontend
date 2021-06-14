@@ -173,7 +173,7 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><strong>{{ $t('label.acceptance_report.fullname') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><strong>{{ $t('label.acceptance_report.fullname') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                       <div class="body-text">
                         <p class="grey--text">{{ $t('label.acceptance_report.fullname_description') }}</p>
                       </div>
@@ -193,7 +193,7 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><strong>{{ $t('label.acceptance_report.position') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><strong>{{ $t('label.acceptance_report.position') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                       <ValidationProvider
                         v-slot="{ errors }"
                         rules="acceptanceReportPosition"
@@ -210,7 +210,7 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><strong>{{ $t('label.acceptance_report.phone') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><strong>{{ $t('label.acceptance_report.phone') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                       <ValidationProvider
                         v-slot="{ errors }"
                         rules="acceptanceReportPhone|isPhoneNumber"
@@ -227,7 +227,7 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><strong>{{ $t('label.acceptance_report.date') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><strong>{{ $t('label.acceptance_report.date') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                       <date-picker-input
                         :value="recipient.date"
                         @selected="changeDate"
@@ -236,7 +236,7 @@
                   </v-row>
                   <v-row>
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><strong>{{ $t('label.acceptance_report.proof_pic') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><strong>{{ $t('label.acceptance_report.proof_pic') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                       <div class="body-text">
                         <p class="grey--text">{{ $t('label.acceptance_report.upload_description') }}<br>{{ $t('label.acceptance_report.upload_description_type') }}</p>
                       </div>
@@ -323,7 +323,7 @@
                   </v-row>
                   <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><strong>{{ $t('label.acceptance_report.officer_fullname') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><strong>{{ $t('label.acceptance_report.officer_fullname') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                       <div class="body-text">
                         <p class="grey--text">{{ $t('label.acceptance_report.officer_fullname_description') }}</p>
                       </div>
@@ -478,7 +478,7 @@
                   </v-row>
                   <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><strong>{{ $t('label.acceptance_report.bast_proof') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><strong>{{ $t('label.acceptance_report.bast_proof') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                       <div class="body-text">
                         <p class="grey--text">Ukuran maksimal tiap satu file adalah 5 Mb.<br>File yang didukung adalah .jpg dan .png</p>
                       </div>
@@ -565,7 +565,7 @@
                   </v-row>
                   <v-row class="mt-5">
                     <v-col sm="12" md="8" class="left-side">
-                      <v-label><strong>Foto Barang yang Diterima</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                      <v-label><strong>Foto Barang yang Diterima</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                       <div class="body-text">
                         <p class="grey--text">Ukuran maksimal tiap satu file adalah 5 Mb.<br>File yang didukung adalah .jpg dan .png</p>
                       </div>

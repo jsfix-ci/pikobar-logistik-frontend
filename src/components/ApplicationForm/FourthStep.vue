@@ -17,7 +17,7 @@
               v-slot="{ errors }"
               rules="requiredApplicantLetterNumber"
             >
-              <v-label class="title"><strong>{{ $t('label.applicant_letter_number') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.applicant_letter_number') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="applicantLetter.name"
                 outlined
@@ -29,7 +29,7 @@
             <ValidationProvider
               rules="required"
             >
-              <v-label class="title"><strong>{{ $t('label.applicant_letter_number_upload') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.applicant_letter_number_upload') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <br>
               <v-row class="mt-1">
                 <v-col sm="12" md="3">
@@ -96,7 +96,7 @@
               v-slot="{ errors }"
               rules="requiredCovidPatientTotal"
             >
-              <v-label class="title"><strong>Jumlah Pasien COVID-19 yang ditangani</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>Jumlah Pasien COVID-19 yang ditangani</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="applicantLetter.total_covid_patients"
                 outlined
@@ -110,7 +110,7 @@
               v-slot="{ errors }"
               rules="requiredIsolationRoomTotal"
             >
-              <v-label class="title"><strong>Jumlah ruang isolasi</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>Jumlah ruang isolasi</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="applicantLetter.total_isolation_room"
                 outlined
@@ -124,7 +124,7 @@
               v-slot="{ errors }"
               rules="requiredBedroomTotal"
             >
-              <v-label class="title"><strong>Jumlah ruang tidur</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>Jumlah ruang tidur</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="applicantLetter.total_bedroom"
                 outlined
@@ -138,7 +138,7 @@
               v-slot="{ errors }"
               rules="requiredHealthWorkerTotal"
             >
-              <v-label class="title"><strong>Jumlah tenaga kesehatan yang menangani</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>Jumlah tenaga kesehatan yang menangani</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="applicantLetter.total_health_worker"
                 outlined

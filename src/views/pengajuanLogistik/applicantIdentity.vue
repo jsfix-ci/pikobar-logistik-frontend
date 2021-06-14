@@ -15,7 +15,7 @@
           <div class="row">
             <div class="col-sm-6">
               <ValidationProvider v-slot="{ errors }" rules="requiredApplicantName">
-                <span><strong>{{ $t('label.contact_person') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+                <span><strong>{{ $t('label.contact_person') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></span>
                 <v-text-field
                   v-model="queryUpdateData.applicant_name"
                   outlined
@@ -40,7 +40,7 @@
                 <v-label class="title"><strong>{{ $t('label.upload_applicant_ktp') }}</strong></v-label>
                 <v-img class="image-style-fit" :src="queryUpdateData.urlFile" @error="errorHandler" />
                 <br>
-                <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
+                <v-label><em class="text-small-second-step">({{ $t('label.max_file_title') }})</em></v-label>
                 <div>
                   <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
                   <v-label v-else>{{ selectedFileName }}</v-label>
@@ -132,7 +132,7 @@
                 v-slot="{ errors }"
                 rules="requiredApplicantPhoneNumber|isPhoneNumber"
               >
-                <v-label class="title"><strong>{{ $t('label.applicant_phone_number') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-label class="title"><strong>{{ $t('label.applicant_phone_number') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
                 <v-text-field
                   v-model="queryUpdateData.primary_phone_number"
                   outlined

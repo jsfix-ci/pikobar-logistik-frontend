@@ -14,7 +14,7 @@
               v-slot="{ errors }"
               rules="requiredInstanceType"
             >
-              <v-label class="title"><strong>{{ $t('label.instance_type') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.instance_type') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-autocomplete
                 v-model="formApplicant.instanceType"
                 outlined
@@ -31,7 +31,7 @@
               v-slot="{ errors }"
               rules="requiredInstanceName"
             >
-              <v-label class="title"><strong>{{ $t('label.instance_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.instance_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-autocomplete
                 v-model="formApplicant.instance"
                 :items="faskesList"
@@ -52,7 +52,7 @@
               v-slot="{ errors }"
               rules="requiredInstanceName"
             >
-              <v-label class="title"><strong>{{ $t('label.instance_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.instance_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="formApplicant.instanceEtc"
                 outlined
@@ -97,7 +97,7 @@
               v-slot="{ errors }"
               rules="requiredCityName"
             >
-              <v-label class="title"><strong>{{ $t('label.city_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.city_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-autocomplete
                 v-model="formApplicant.cityNameId"
                 outlined
@@ -111,7 +111,7 @@
               v-slot="{ errors }"
               rules="requiredDistrictName"
             >
-              <v-label class="title"><strong>{{ $t('label.district_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.district_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-autocomplete
                 v-model="formApplicant.districtNameId"
                 outlined
@@ -125,7 +125,7 @@
               v-slot="{ errors }"
               rules="requiredVillageName"
             >
-              <v-label class="title"><strong>{{ $t('label.village_name') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.village_name') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-autocomplete
                 v-model="formApplicant.villageNameId"
                 outlined
@@ -139,7 +139,7 @@
               v-slot="{ errors }"
               rules="requiredFullAddress"
             >
-              <v-label class="title"><strong>{{ $t('label.full_address') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.full_address') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-textarea
                 v-model="formApplicant.fullAddress"
                 outlined

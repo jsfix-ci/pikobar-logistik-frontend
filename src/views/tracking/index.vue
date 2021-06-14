@@ -71,7 +71,7 @@
             <v-form ref="form" @submit="getDataTracking(1)">
               <v-label>
                 <strong>{{ $t('label.tracking_search') }}</strong>
-                <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
+                <em class="text-small-first-step">{{ $t('label.must_fill') }}</em>
               </v-label>
               <ValidationProvider
                 v-slot="{ errors }"

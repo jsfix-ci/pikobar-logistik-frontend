@@ -15,7 +15,7 @@
           <div class="row">
             <div class="col-sm-12">
               <ValidationProvider v-slot="{ errors }" rules="requiredApplicantLetterNumber">
-                <span><strong>{{ $t('label.applicant_letter_number') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+                <span><strong>{{ $t('label.applicant_letter_number') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></span>
                 <v-text-field
                   v-model="queryUpdateData.application_letter_number"
                   outlined
@@ -27,7 +27,7 @@
               </ValidationProvider>
             </div>
             <div class="col-sm-12" style="margin-top:-40px;">
-              <v-label class="title"><strong>{{ $t('label.applicant_letter_number_upload') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.applicant_letter_number_upload') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
               <br>
               <v-row>
                 <v-col cols="2" sm="6" md="2">

@@ -14,7 +14,7 @@
               v-slot="{ errors }"
               rules="requiredApplicantName"
             >
-              <v-label class="title"><strong>{{ $t('label.contact_person') }}</strong> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.contact_person') }}</strong> <em class="text-small-second-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="formIdentityApplicant.applicantName"
                 outlined
@@ -28,7 +28,7 @@
               v-slot="{ errors }"
               rules="requiredApplicantPosition"
             >
-              <v-label class="title"><strong>{{ $t('label.applicant_position') }}</strong> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.applicant_position') }}</strong> <em class="text-small-second-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="formIdentityApplicant.applicantPosition"
                 outlined
@@ -54,9 +54,9 @@
               v-if="!isAdmin"
               rules="required"
             >
-              <v-label class="title"><strong>{{ $t('label.upload_applicant_ktp') }}</strong> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.upload_applicant_ktp') }}</strong> <em class="text-small-second-step">{{ $t('label.must_fill') }}</em></v-label>
               <br>
-              <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
+              <v-label><em class="text-small-second-step">({{ $t('label.max_file_title') }})</em></v-label>
               <div>
                 <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
                 <v-label v-else>{{ selectedFileName }}</v-label>
@@ -122,7 +122,7 @@
             >
               <v-label class="title"><strong>{{ $t('label.upload_applicant_ktp') }}</strong></v-label>
               <br>
-              <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
+              <v-label><em class="text-small-second-step">({{ $t('label.max_file_title') }})</em></v-label>
               <div>
                 <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
                 <v-label v-else>{{ selectedFileName }}</v-label>
@@ -184,7 +184,7 @@
               v-slot="{ errors }"
               rules="requiredApplicantEmail|email"
             >
-              <v-label class="title"><strong>{{ $t('label.applicant_email') }}</strong> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.applicant_email') }}</strong> <em class="text-small-second-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="formIdentityApplicant.applicantEmail"
                 outlined
@@ -210,7 +210,7 @@
               v-slot="{ errors }"
               rules="requiredApplicantPhoneNumber|isPhoneNumber"
             >
-              <v-label class="title"><strong>{{ $t('label.applicant_phone_number') }}</strong> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.applicant_phone_number') }}</strong> <em class="text-small-second-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="formIdentityApplicant.applicantPhoneNumber"
                 outlined
@@ -224,7 +224,7 @@
               v-slot="{ errors }"
               rules="requiredApplicantPhoneNumber|isPhoneNumber"
             >
-              <v-label class="title"><strong>{{ $t('label.other_applicant_phone_number') }}</strong> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title"><strong>{{ $t('label.other_applicant_phone_number') }}</strong> <em class="text-small-second-step">{{ $t('label.must_fill') }}</em></v-label>
               <v-text-field
                 v-model="formIdentityApplicant.applicantPhoneNumber2"
                 outlined

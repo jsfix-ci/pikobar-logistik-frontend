@@ -14,7 +14,7 @@
             v-slot="{ errors }"
             rules="requiredLicenseNumberFacility"
           >
-            <v-label class="title"><strong>{{ $t('label.license_number_facility') }}</strong> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
+            <v-label class="title"><strong>{{ $t('label.license_number_facility') }}</strong> <em class="text-small-add-instance">{{ $t('label.must_fill') }}</em></v-label>
             <v-text-field
               v-model="listQuery.nomor_izin_sarana"
               :placeholder="$t('label.license_number_facility_placeholder')"
@@ -36,7 +36,7 @@
             v-slot="{ errors }"
             rules="requiredInstanceType"
           >
-            <v-label class="title"><strong>{{ $t('label.instance_type') }}</strong> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
+            <v-label class="title"><strong>{{ $t('label.instance_type') }}</strong> <em class="text-small-add-instance">{{ $t('label.must_fill') }}</em></v-label>
             <v-select
               v-model="listQuery.id_tipe_faskes"
               :placeholder="$t('label.autocomplete_instance_placeholder')"
@@ -51,7 +51,7 @@
             v-slot="{ errors }"
             rules="requiredFaskesName"
           >
-            <v-label class="title"><strong>{{ $t('label.faskes_name') }}</strong> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
+            <v-label class="title"><strong>{{ $t('label.faskes_name') }}</strong> <em class="text-small-add-instance">{{ $t('label.must_fill') }}</em></v-label>
             <v-text-field
               v-model="listQuery.nama_faskes"
               :placeholder="$t('label.input_faskes_name')"
@@ -63,7 +63,7 @@
             v-slot="{ errors }"
             rules="requiredUpperName"
           >
-            <v-label class="title"><strong>{{ $t('label.upper_name') }}</strong> <i class="text-small-add-instance">{{ $t('label.must_fill') }}</i></v-label>
+            <v-label class="title"><strong>{{ $t('label.upper_name') }}</strong> <em class="text-small-add-instance">{{ $t('label.must_fill') }}</em></v-label>
             <v-text-field
               v-model="listQuery.nama_atasan"
               :placeholder="$t('label.input_upper_name')"
@@ -80,7 +80,7 @@
           <ValidationProvider>
             <v-label class="title"><strong>{{ $t('label.upload_fasyankes_letter_permit') }}</strong></v-label>
             <br>
-            <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
+            <v-label><em class="text-small-second-step">({{ $t('label.max_file_title') }})</em></v-label>
             <div>
               <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
               <v-label v-else>{{ selectedFileName }}</v-label>

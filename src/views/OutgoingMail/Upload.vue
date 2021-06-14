@@ -11,7 +11,7 @@
         </v-col>
         <v-col>
           <p class="sub-title-update-logistic-needs">{{ $t('route.outgoing_mail') }}</p>
-          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_number_form') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_number_form') }} <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></span>
           <ValidationProvider
             v-slot="{ errors }"
             rules="letterNumber"
@@ -24,9 +24,9 @@
             />
           </ValidationProvider>
           <v-col>
-            <v-label class="title"><strong>{{ $t('route.outgoing_mail') }}</strong> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+            <v-label class="title"><strong>{{ $t('route.outgoing_mail') }}</strong> <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></v-label>
             <br>
-            <v-label><i class="text-small-second-step">({{ $t('label.max_type_file_upload_letter') }})</i></v-label>
+            <v-label><em class="text-small-second-step">({{ $t('label.max_type_file_upload_letter') }})</em></v-label>
             <v-row class="mt-1">
               <v-col cols="3" sm="6" md="3">
                 <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">

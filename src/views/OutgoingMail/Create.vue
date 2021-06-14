@@ -13,7 +13,7 @@
         </v-col>
         <v-col v-if="type === 'create'">
           <p class="sub-title-update-logistic-needs">{{ $t('route.outgoing_mail') }}</p>
-          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_name') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_name') }} <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></span>
           <ValidationProvider
             v-slot="{ errors }"
             rules="letterName"
@@ -37,7 +37,7 @@
           </ValidationProvider>
         </v-col>
         <v-col v-if="type === 'create'" class="margin-top-min-30-update-logistic-needs">
-          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_date') }} <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></span>
+          <span class="value-sub-title-update-logistic-needs">{{ $t('label.outgoing_mail_date') }} <em class="text-small-first-step">{{ $t('label.must_fill') }}</em></span>
           <date-picker-input
             :value="data.letter_date"
             @selected="changeDate"
