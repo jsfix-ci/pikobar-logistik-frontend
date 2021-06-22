@@ -414,13 +414,9 @@ export default {
   },
   computed: {
     isStepTwoActive() {
-      if (this.recommendationtStepNote) {
-        return true
-      } else {
-        return this.listRecommendation
-          ? this.listRecommendation.length !== 0
-          : false
-      }
+      return this.listRecommendation
+        ? this.listRecommendation.length !== 0
+        : false
     },
     isStepThreeActive() {
       return this.listRealization
