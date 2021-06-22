@@ -414,6 +414,7 @@ export default {
   },
   computed: {
     isStepTwoActive() {
+      if (this.recommendationtStepNote) return true
       return this.listRecommendation
         ? this.listRecommendation.length !== 0
         : false
