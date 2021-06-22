@@ -124,6 +124,7 @@
               {{ recommendationtStepNote }}
             </v-alert>
             <v-btn
+              v-if="listRecommendation.length !== 0"
               outlined
               color="green"
               small
@@ -413,9 +414,13 @@ export default {
   },
   computed: {
     isStepTwoActive() {
-      return this.listRecommendation
-        ? this.listRecommendation.length !== 0
-        : false
+      if (this.recommendationtStepNote) {
+        return true
+      } else {
+        return this.listRecommendation
+          ? this.listRecommendation.length !== 0
+          : false
+      }
     },
     isStepThreeActive() {
       return this.listRealization
