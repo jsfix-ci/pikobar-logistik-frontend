@@ -33,6 +33,16 @@
           }"
         >
           <div class="d-flex flex-column">
+            <v-alert
+              v-if="requestStepNote"
+              outlined
+              text
+              type="error"
+              icon="mdi-information-outline"
+            >
+              <strong>{{ $t('label.reason_reject') }} : </strong>
+              {{ requestStepNote }}
+            </v-alert>
             <v-btn
               outlined
               color="green"
@@ -103,6 +113,16 @@
           }"
         >
           <div v-if="isStepTwoActive" class="d-flex flex-column">
+            <v-alert
+              v-if="recommendationtStepNote"
+              outlined
+              text
+              type="error"
+              icon="mdi-information-outline"
+            >
+              <strong>{{ $t('label.reason_reject') }} : </strong>
+              {{ recommendationtStepNote }}
+            </v-alert>
             <v-btn
               outlined
               color="green"
@@ -343,6 +363,8 @@ export default {
       loId: null,
       trackingPageSize: [3, 5, 10],
       lastStepStatus: null,
+      requestStepNote: null,
+      recommendationtStepNote: null,
       headers: [
         { text: this.$t('label.print_mail_no') },
         { text: this.$t('label.apd_name_spec') },
@@ -421,18 +443,20 @@ export default {
     },
     async getRequestStep(id) {
       this.listQueryRequest.id = id
-      const { items, status } = await this.$store.dispatch('tracking/getTrackingLogisticRequest', this.listQueryRequest)
+      const { items, status, note } = await this.$store.dispatch('tracking/getTrackingLogisticRequest', this.listQueryRequest)
       this.listRequest = items.data
       this.totalPageRequest = items.last_page
       this.totalDataRequest = items.total
       this.lastStepStatus = status
+      this.requestStepNote = note
     },
     async getRecommendationStep(id) {
       this.listQueryRecommendation.id = id
-      const { items } = await this.$store.dispatch('tracking/getTrackingLogisticRecommendation', this.listQueryRecommendation)
+      const { items, note } = await this.$store.dispatch('tracking/getTrackingLogisticRecommendation', this.listQueryRecommendation)
       this.listRecommendation = items.data
       this.totalPageRecommendation = items.last_page
       this.totalDataRecommendation = items.total
+      this.recommendationtStepNote = note
     },
     async getRealizationStep(id) {
       this.listQueryRealization.id = id
