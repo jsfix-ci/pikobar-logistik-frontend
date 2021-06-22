@@ -114,16 +114,17 @@
         >
           <div v-if="isStepTwoActive" class="d-flex flex-column">
             <v-alert
-              v-if="recommendationtStepNote"
+              v-if="recommendationStepNote"
               outlined
               text
               type="error"
               icon="mdi-information-outline"
             >
               <strong>{{ $t('label.reason_reject') }} : </strong>
-              {{ recommendationtStepNote }}
+              {{ recommendationStepNote }}
             </v-alert>
             <v-btn
+              v-if="listRecommendation.length !== 0"
               outlined
               color="green"
               small
@@ -364,7 +365,7 @@ export default {
       trackingPageSize: [3, 5, 10],
       lastStepStatus: null,
       requestStepNote: null,
-      recommendationtStepNote: null,
+      recommendationStepNote: null,
       headers: [
         { text: this.$t('label.print_mail_no') },
         { text: this.$t('label.apd_name_spec') },
@@ -413,6 +414,7 @@ export default {
   },
   computed: {
     isStepTwoActive() {
+      if (this.recommendationStepNote) return true
       return this.listRecommendation
         ? this.listRecommendation.length !== 0
         : false
@@ -456,7 +458,7 @@ export default {
       this.listRecommendation = items.data
       this.totalPageRecommendation = items.last_page
       this.totalDataRecommendation = items.total
-      this.recommendationtStepNote = note
+      this.recommendationStepNote = note
     },
     async getRealizationStep(id) {
       this.listQueryRealization.id = id
