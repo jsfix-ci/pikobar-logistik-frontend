@@ -52,7 +52,8 @@
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.request_date') }}</v-label>
             <date-picker-dashboard
-              :date="listQuery.start_date"
+              :initial-start-date="listQuery.start_date"
+              :initial-end-date="listQuery.end_date"
               @selected="changeDate"
             />
           </v-col>
