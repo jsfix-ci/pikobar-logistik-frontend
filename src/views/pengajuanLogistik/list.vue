@@ -477,7 +477,7 @@ export default {
     filterQuery(oldQuery) {
       const newQuery = { ...oldQuery }
       Object.keys(newQuery).forEach(key => {
-        if (newQuery[key] === null || newQuery[key] === undefined || newQuery[key] === '' || key === 'approval_status' || key === 'is_rejected') {
+        if (newQuery[key] === null || newQuery[key] === undefined || newQuery[key] === '' || key === 'approval_status' || key === 'is_rejected' || key === 'verification_status') {
           delete newQuery[key]
         }
       })
