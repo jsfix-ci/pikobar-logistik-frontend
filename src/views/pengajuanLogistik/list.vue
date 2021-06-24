@@ -398,6 +398,7 @@ export default {
     async changeDate(value) {
       this.listQuery.start_date = value.startDate
       this.listQuery.end_date = value.endDate
+      this.listQuery.page = 1
       this.$router.replace({
         query: {
           ...this.filterQuery(this.listQuery)
@@ -443,6 +444,7 @@ export default {
     },
     onSelectDistrictCity(value) {
       this.listQuery.city_code = value ? value.kemendagri_kabupaten_kode : ''
+      this.listQuery.page = 1
       this.$router.replace({
         query: {
           ...this.filterQuery(this.listQuery),
