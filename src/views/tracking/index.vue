@@ -68,7 +68,7 @@
         </div>
         <div class="form mt-10" :class="{ 'item-header': $vuetify.breakpoint.lgAndUp }">
           <ValidationObserver ref="observer">
-            <v-form ref="form" @submit="getDataTracking(1)">
+            <div ref="form" @submit="getDataTracking(1)">
               <v-label>
                 <b>{{ $t('label.tracking_search') }}</b>
                 <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
@@ -116,7 +116,7 @@
                   {{ $t('label.track_now') }}
                 </v-btn>
               </div>
-            </v-form>
+            </div>
           </ValidationObserver>
         </div>
       </v-card>
