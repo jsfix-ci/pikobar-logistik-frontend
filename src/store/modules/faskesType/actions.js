@@ -1,11 +1,14 @@
 import { fetchList } from '@/api'
 
 export default {
-  async getListFaskesType({ commit }, params) {
+  async getListFaskesType({ state, commit }, params) {
     try {
-      const response = await fetchList('/api/v1/master-faskes-type', 'GET', params)
-      commit('SET_LIST_FASKES_TYPE', response.data)
-      return response
+      const { listFaskesType } = state
+      if (!Array.isArray(listFaskesType) || !listFaskesType.length) {
+        const response = await fetchList('/api/v1/master-faskes-type', 'GET', params)
+        commit('SET_LIST_FASKES_TYPE', response.data)
+      }
+      return state.listFaskesType
     } catch (error) {
       return error.response
     }
