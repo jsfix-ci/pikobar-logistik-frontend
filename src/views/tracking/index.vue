@@ -68,7 +68,7 @@
         </div>
         <div class="form mt-10" :class="{ 'item-header': $vuetify.breakpoint.lgAndUp }">
           <ValidationObserver ref="observer">
-            <div ref="form" @submit="getDataTracking(1)">
+            <div ref="form">
               <v-label>
                 <b>{{ $t('label.tracking_search') }}</b>
                 <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
@@ -83,6 +83,7 @@
                   solo-inverted
                   :error-messages="errors"
                   :placeholder="$t('label.tracking_search_placeholder')"
+                  @keyup.enter.native="getDataTracking(1)"
                 />
               </ValidationProvider>
               <div
