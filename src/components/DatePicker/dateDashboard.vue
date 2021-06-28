@@ -66,14 +66,24 @@ export default {
     rule: {
       type: String,
       default: ''
+    },
+    initialStartDate: {
+      type: String,
+      default: null
+    },
+    initialEndDate: {
+      type: String,
+      default: null
     }
   },
   data() {
     return {
       menu: false,
-      startDate: '2020-01-01',
-      endDate: this.$moment(Date.now()).format('YYYY-MM-DD'),
-      dateFormatted: null,
+      startDate: this.initialStartDate || '2020-01-01',
+      endDate: this.initialEndDate || this.$moment(Date.now()).format('YYYY-MM-DD'),
+      dateFormatted: this.initialStartDate && this.initialEndDate
+        ? `${this.$moment(this.initialStartDate).format('DD MMMM YYYY')} - ${this.$moment(this.initialEndDate).format('DD MMMM YYYY')}`
+        : null,
       currentDate: this.$moment(Date.now()).format('YYYY-MM-DD')
     }
   },

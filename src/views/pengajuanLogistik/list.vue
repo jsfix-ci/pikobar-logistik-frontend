@@ -52,7 +52,8 @@
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.request_date') }}</v-label>
             <date-picker-dashboard
-              :date="listQuery.start_date"
+              :initial-start-date="listQuery.start_date"
+              :initial-end-date="listQuery.end_date"
               @selected="changeDate"
             />
           </v-col>
@@ -220,9 +221,10 @@
     <pagination
       :total="totalListLogisticRequest"
       :total-data="totalDataLogisticRequest"
-      :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
-      :on-next="onNext"
+      :page="listQuery.page"
+      :limit="listQuery.limit"
+      @update:page="onListQueryPageUpdated"
+      @update:limit="onListQueryLimitUpdated"
     />
     <completenessDetail
       ref="completenessDetailForm"
@@ -249,24 +251,31 @@ export default {
     referenceDetail
   },
   data() {
+    const faskesType = parseInt(this.$route.query?.faskes_type)
+    const isReference = parseInt(this.$route.query?.is_reference)
+    const completeness = parseInt(this.$route.query?.completeness)
+    const isUrgency = parseInt(this.$route.query?.is_urgency)
+    const finalizedBy = parseInt(this.$route.query?.finalized_by)
     return {
       sortOption: [
         { value: 'asc', label: 'A-Z' },
         { value: 'desc', label: 'Z-A' }
       ],
       listQuery: {
-        page: 1,
-        limit: 10,
-        sort: '',
-        city_code: '',
-        verification_status: '',
-        agency_name: '',
-        start_date: null,
-        end_date: null,
-        is_reference: null,
-        completeness: null,
-        is_urgency: null,
-        finalized_by: null
+        page: parseInt(this.$route.query?.page || 1),
+        limit: parseInt(this.$route.query?.limit || 10),
+        sort: this.$route.query?.sort || '',
+        city_code: this.$route.query?.city_code || '',
+        verification_status: this.$route.query?.verification_status || '',
+        agency_name: this.$route.query?.agency_name || '',
+        start_date: this.$route.query?.start_date || null,
+        end_date: this.$route.query?.end_date || null,
+        is_reference: Number.isNaN(isReference) ? null : isReference,
+        completeness: Number.isNaN(completeness) ? null : completeness,
+        is_urgency: Number.isNaN(isUrgency) ? null : isUrgency,
+        finalized_by: Number.isNaN(finalizedBy) ? null : finalizedBy,
+        faskes_type: Number.isNaN(faskesType) ? null : faskesType,
+        source_data: this.$route.query?.source_data || null
       },
       status: [
         {
@@ -329,7 +338,7 @@ export default {
         }
       ],
       date: null,
-      showFilter: false,
+      showFilter: true,
       isVerified: false,
       isApproved: false,
       isRejected: false,
@@ -378,12 +387,23 @@ export default {
     EventBus.$on('hideReferenceDetail', (value) => {
       this.showreferenceDetail = false
     })
+    if (this.$route.query?.city_code && this.$route.query?.city_name) {
+      this.districtCity = {
+        kemendagri_kabupaten_kode: this.$route.query?.city_code,
+        kemendagri_kabupaten_nama: this.$route.query?.city_name
+      }
+    }
   },
   methods: {
     async changeDate(value) {
       this.listQuery.start_date = value.startDate
       this.listQuery.end_date = value.endDate
-      await this.getLogisticRequestList()
+      this.listQuery.page = 1
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
     },
     async getLogisticRequestList() {
       await this.$store.dispatch('logistics/getListLogisticRequest', this.listQuery)
@@ -395,17 +415,42 @@ export default {
     },
     async handleSearch() {
       this.listQuery.page = 1
-      await this.getLogisticRequestList()
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
     },
-    async onNext() {
-      await this.getLogisticRequestList()
+    onListQueryPageUpdated(newPage) {
+      this.listQuery.page = newPage
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          page: newPage
+        }
+      })
+    },
+    onListQueryLimitUpdated(newLimit) {
+      this.listQuery.limit = newLimit
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          limit: newLimit
+        }
+      })
     },
     getTableRowNumbering(index) {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     },
     onSelectDistrictCity(value) {
       this.listQuery.city_code = value ? value.kemendagri_kabupaten_kode : ''
-      this.handleSearch()
+      this.listQuery.page = 1
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery),
+          city_name: value.kemendagri_kabupaten_nama
+        }
+      })
     },
     toDetail(data) {
       this.$router.push(`/alat-kesehatan/detail/${data.id}`)
@@ -430,6 +475,15 @@ export default {
         kemendagri_kabupaten_nama: this.district_name
       }
       this.listQuery.city_code = this.districtCity.kemendagri_kabupaten_kode
+    },
+    filterQuery(oldQuery) {
+      const newQuery = { ...oldQuery }
+      Object.keys(newQuery).forEach(key => {
+        if (newQuery[key] === null || newQuery[key] === undefined || newQuery[key] === '' || key === 'approval_status' || key === 'is_rejected' || key === 'verification_status') {
+          delete newQuery[key]
+        }
+      })
+      return newQuery
     }
   }
 }
