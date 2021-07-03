@@ -133,9 +133,10 @@
     <pagination
       :total="totalListOutgoingMail"
       :total-data="totalDataOutgoingMail"
-      :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
-      :on-next="onNext"
+      :page="listQuery.page"
+      :limit="listQuery.limit"
+      @update:page="onListQueryPageUpdated"
+      @update:limit="onListQueryLimitUpdated"
     />
     <CreateLetter
       :show="showForm"
@@ -160,7 +161,7 @@ export default {
   data() {
     return {
       list: null,
-      showFilter: false,
+      showFilter: true,
       showForm: false,
       uploadForm: false,
       sortOption: [
@@ -168,12 +169,11 @@ export default {
         { value: 'desc', label: 'Z-A' }
       ],
       listQuery: {
-        limit: 10,
-        page: 1,
-        total: null,
-        letter_number: null,
-        letter_date: null,
-        sort: null
+        page: parseInt(this.$route.query?.page || 1),
+        limit: parseInt(this.$route.query?.limit || 10),
+        letter_number: this.$route.query?.letter_number || null,
+        letter_date: this.$route.query?.letter_date || null,
+        sort: this.$route.query?.sort || null
       }
     }
   },
@@ -221,15 +221,51 @@ export default {
     getTableRowNumbering(index) {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     },
-    async onNext() {
-      await this.getList()
-    },
     async handleSearch() {
+      this.listQuery.page = 1
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
       await this.getList()
     },
     async changeDate(value) {
       this.listQuery.letter_date = value
+      this.listQuery.page = 1
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
       await this.getList()
+    },
+    onListQueryPageUpdated(newPage) {
+      this.listQuery.page = newPage
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          page: newPage
+        }
+      })
+    },
+    onListQueryLimitUpdated(newLimit) {
+      this.listQuery.limit = newLimit
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          limit: newLimit
+        }
+      })
+    },
+    filterQuery(oldQuery) {
+      const newQuery = { ...oldQuery }
+      Object.keys(newQuery).forEach(key => {
+        if (newQuery[key] === null || newQuery[key] === undefined || newQuery[key] === '' || key === 'approval_status' || key === 'is_rejected' || key === 'verification_status') {
+          delete newQuery[key]
+        }
+      })
+      return newQuery
     }
   }
 }
