@@ -47,7 +47,7 @@
           <v-col cols="12" sm="3">
             <v-label class="title">{{ $t('label.request_date') }}</v-label>
             <date-picker
-              :value="date"
+              :value="listQuery.letter_date"
               @selected="changeDate"
             />
           </v-col>
@@ -138,9 +138,10 @@
     <pagination
       :total="totalListIncomingMail"
       :total-data="totalDataIncomingMail"
-      :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
-      :on-next="onNext"
+      :page="listQuery.page"
+      :limit="listQuery.limit"
+      @update:page="onListQueryPageUpdated"
+      @update:limit="onListQueryLimitUpdated"
     />
   </div>
 </template>
@@ -151,19 +152,21 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'ListIncomingMail',
   data() {
+    const agencyType = parseInt(this.$route.query?.agency_type)
     return {
       sortOption: [
         { value: 'asc', label: 'A-Z' },
         { value: 'desc', label: 'Z-A' }
       ],
       listQuery: {
-        page: 1,
-        limit: 10,
-        sort: '',
-        district_code: '',
-        incoming_mail_status: '',
-        letter_number: '',
-        date: ''
+        page: parseInt(this.$route.query?.page || 1),
+        limit: parseInt(this.$route.query?.limit || 10),
+        sort: this.$route.query?.sort || '',
+        district_code: this.$route.query?.district_code || '',
+        letter_number: this.$route.query?.letter_number || '',
+        agency_type: Number.isNaN(agencyType) ? null : agencyType,
+        mail_status: this.$route.query?.mail_status || '',
+        letter_date: this.$route.query?.letter_date || ''
       },
       status: [
         {
@@ -196,7 +199,7 @@ export default {
         }
       ],
       date: null,
-      showFilter: false,
+      showFilter: true,
       isVerified: false,
       isApproved: false
     }
@@ -222,15 +225,18 @@ export default {
   methods: {
     async changeDate(value) {
       this.listQuery.letter_date = value
-      await this.getIncomingMailList()
+      this.handleSearch()
     },
     async getIncomingMailList() {
       await this.$store.dispatch('letter/getListIncomingMail', this.listQuery)
     },
     async handleSearch() {
-      await this.getIncomingMailList()
-    },
-    async onNext() {
+      this.listQuery.page = 1
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
       await this.getIncomingMailList()
     },
     getTableRowNumbering(index) {
@@ -242,6 +248,33 @@ export default {
     },
     toDetail(data) {
       this.$router.push(`/letter/incoming/detail/${data.id}`)
+    },
+    onListQueryPageUpdated(newPage) {
+      this.listQuery.page = newPage
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          page: newPage
+        }
+      })
+    },
+    onListQueryLimitUpdated(newLimit) {
+      this.listQuery.limit = newLimit
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          limit: newLimit
+        }
+      })
+    },
+    filterQuery(oldQuery) {
+      const newQuery = { ...oldQuery }
+      Object.keys(newQuery).forEach(key => {
+        if (newQuery[key] === null || newQuery[key] === undefined || newQuery[key] === '' || key === 'approval_status' || key === 'is_rejected' || key === 'verification_status') {
+          delete newQuery[key]
+        }
+      })
+      return newQuery
     }
   }
 }
