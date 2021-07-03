@@ -83,7 +83,8 @@
           <v-col cols="12" sm="3" :class="{'px-0': $vuetify.breakpoint.xsOnly}">
             <v-label class="title">{{ $t('label.date') + ' ' + $t('label.received') }}</v-label>
             <date-picker-dashboard
-              :date="listQuery.start_date"
+              :initial-start-date="listQuery.start_date"
+              :initial-end-date="listQuery.end_date"
               @selected="changeDate"
             />
           </v-col>
@@ -136,9 +137,10 @@
     <pagination
       :total="totalListAcceptanceReport"
       :total-data="totalDataAcceptanceReport"
-      :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
-      :on-next="onNext"
+      :page="listQuery.page"
+      :limit="listQuery.limit"
+      @update:page="onListQueryPageUpdated"
+      @update:limit="onListQueryLimitUpdated"
     />
   </div>
 </template>
@@ -151,6 +153,7 @@ import FormatingNumber from '../../../helpers/formattingNumber'
 export default {
   name: 'GoodsReceiptReportList',
   data() {
+    const status = parseInt(this.$route.query?.status)
     return {
       sortOption: [
         { value: 'asc', label: 'A-Z' },
@@ -161,17 +164,19 @@ export default {
         { value: 0, label: 'Belum Lapor' }
       ],
       listQuery: {
-        page: 1,
-        limit: 10,
-        search: null,
-        status: null,
-        city_code: null
+        page: parseInt(this.$route.query?.page || 1),
+        limit: parseInt(this.$route.query?.limit || 10),
+        search: this.$route.query?.search || null,
+        status: Number.isNaN(status) ? null : status,
+        city_code: this.$route.query?.city_code || null,
+        start_date: this.$route.query?.start_date || null,
+        end_date: this.$route.query?.end_date || null
       },
       listQueryStatistic: {
         city_code: null
       },
       date: null,
-      showFilter: false,
+      showFilter: true,
       isVerified: false,
       isApproved: false,
       showcompletenessDetail: false,
@@ -212,7 +217,7 @@ export default {
     async changeDate(value) {
       this.listQuery.start_date = value.startDate
       this.listQuery.end_date = value.endDate
-      await this.getAcceptanceReportList()
+      await this.handleSearch()
     },
     async getAcceptanceReportList() {
       await this.$store.dispatch('logistics/getListGoodsReceiptReport', this.listQuery)
@@ -224,9 +229,11 @@ export default {
     },
     async handleSearch() {
       this.listQuery.page = 1
-      await this.getAcceptanceReportList()
-    },
-    async onNext() {
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
       await this.getAcceptanceReportList()
     },
     getTableRowNumbering(index) {
@@ -259,6 +266,33 @@ export default {
     async getStatistic() {
       if (this.roles[0] === 'dinkeskota') this.listQueryStatistic.city_code = this.district_user
       await this.$store.dispatch('logistics/getStatisticReport', this.listQueryStatistic)
+    },
+    onListQueryPageUpdated(newPage) {
+      this.listQuery.page = newPage
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          page: newPage
+        }
+      })
+    },
+    onListQueryLimitUpdated(newLimit) {
+      this.listQuery.limit = newLimit
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          limit: newLimit
+        }
+      })
+    },
+    filterQuery(oldQuery) {
+      const newQuery = { ...oldQuery }
+      Object.keys(newQuery).forEach(key => {
+        if (newQuery[key] === null || newQuery[key] === undefined || newQuery[key] === '' || key === 'approval_status' || key === 'is_rejected' || key === 'verification_status') {
+          delete newQuery[key]
+        }
+      })
+      return newQuery
     }
   }
 }
