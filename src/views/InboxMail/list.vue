@@ -222,7 +222,7 @@ export default {
     this.getIncomingMailList()
   },
   methods: {
-    async changeDate(value) {
+    changeDate(value) {
       this.listQuery.letter_date = value
       this.handleSearch()
     },
