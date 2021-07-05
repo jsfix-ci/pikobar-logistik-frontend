@@ -95,7 +95,7 @@ export default {
     changePageSize(value) {
       this.pageSize = value
       this.currentPage = 1
-      this.onNext()
+      if (this.onNext !== null) this.onNext()
     }
   }
 }
