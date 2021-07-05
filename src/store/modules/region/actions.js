@@ -3,14 +3,12 @@ import { fetchList } from '@/api'
 export default {
   async getListDistrictCity({ state, commit }) {
     try {
-      const response = await fetchList('/api/v1/areas/cities', 'GET')
-      commit('SET_DISTRICT_CITY', response.data)
       const { listDistrictCity } = state
       if (!Array.isArray(listDistrictCity) || !listDistrictCity.length) {
         const response = await fetchList('/api/v1/areas/cities', 'GET')
         commit('SET_DISTRICT_CITY', response.data)
       }
-      return response
+      return state.districtCity
     } catch (e) {
       return e
     }
