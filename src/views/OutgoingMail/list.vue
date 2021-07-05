@@ -134,9 +134,8 @@
       :total="totalListOutgoingMail"
       :total-data="totalDataOutgoingMail"
       :page="listQuery.page"
-      :limit="listQuery.limit"
+      :limit.sync="listQuery.limit"
       @update:page="onListQueryPageUpdated"
-      @update:limit="onListQueryLimitUpdated"
     />
     <CreateLetter
       :show="showForm"
@@ -244,17 +243,7 @@ export default {
       this.listQuery.page = newPage
       this.$router.replace({
         query: {
-          ...this.$route.query,
-          page: newPage
-        }
-      })
-    },
-    onListQueryLimitUpdated(newLimit) {
-      this.listQuery.limit = newLimit
-      this.$router.replace({
-        query: {
-          ...this.$route.query,
-          limit: newLimit
+          ...this.filterQuery(this.listQuery)
         }
       })
     },
