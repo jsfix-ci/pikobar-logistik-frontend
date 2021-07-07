@@ -14,6 +14,9 @@ import formPemohonAdmin from './modules/formPemohonAdmin'
 import letterRouter from './modules/letter'
 import reports from './modules/reports'
 
+/* Sentry */
+import * as Sentry from '@sentry/core'
+
 /**
  * constantRoutes
  * a base page that does not have permission requirements
@@ -93,6 +96,13 @@ export const asyncRoutes = [
   { path: '*', redirect: '/', hidden: true }
 ]
 
+async function beforeEach(to, from, next) {
+  Sentry.configureScope((scope) => {
+    scope.setTransactionName(to.path)
+  })
+  next()
+}
+
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
@@ -100,6 +110,7 @@ const createRouter = () => new Router({
 })
 
 const router = createRouter()
+router.beforeEach(beforeEach)
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
