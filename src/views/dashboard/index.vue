@@ -93,7 +93,7 @@
                       <div class="value-card-data purple--text accent-4">
                         {{ currency(dataLogisticRequestSummary.total_approved) }}
                       </div>
-                      <a href="/#/alat-kesehatan/disetujui">
+                      <a href="/#/alat-kesehatan/belum-realisasi">
                         <span class="in-full-text">
                           {{ $t('label.in_full') }}
                         </span>
@@ -111,7 +111,7 @@
                       <div class="value-card-data green--text accent-4">
                         {{ currency(dataLogisticRequestSummary.total_final) }}
                       </div>
-                      <a href="/#/alat-kesehatan/disetujui">
+                      <a href="/#/alat-kesehatan/selesai-realisasi">
                         <span class="in-full-text">
                           {{ $t('label.in_full') }}
                         </span>
