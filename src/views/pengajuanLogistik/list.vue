@@ -131,19 +131,6 @@
               @change="handleSearch()"
             />
           </v-col>
-          <v-col v-if="isApproved" cols="12" sm="3" class="mt-n8">
-            <v-label class="title">{{ $t('label.finalization_status') }}</v-label>
-            <v-select
-              v-model="listQuery.finalized_by"
-              :items="finalizedStatus"
-              solo
-              item-text="text"
-              item-value="value"
-              :clearable="true"
-              :placeholder="$t('label.finalization_status')"
-              @change="handleSearch()"
-            />
-          </v-col>
         </v-row>
       </v-card-text>
       <hr class="thin">
