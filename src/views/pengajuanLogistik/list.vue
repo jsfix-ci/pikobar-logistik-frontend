@@ -359,10 +359,11 @@ export default {
     } else if (this.$route.name === 'rejected') {
       this.listQuery.is_rejected = 1
       this.isRejected = true
-    } else if (this.$route.name === 'approved') {
+    } else if (this.$route.name === 'realized' || this.$route.name === 'not_yet_realized') {
       this.listQuery.verification_status = 'verified'
       this.listQuery.approval_status = 'approved'
       this.isApproved = true
+      this.listQuery.finalized_by = this.$route.name === 'realized' ? 1 : 0
     }
     await this.$store.dispatch('faskesType/getListFaskesType')
     if (this.roles[0] === 'dinkeskota') this.lockDistrictFilter()
