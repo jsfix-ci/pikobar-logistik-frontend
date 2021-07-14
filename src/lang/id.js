@@ -18,6 +18,8 @@ export default {
     verified_title: 'Rekomendasi',
     rejected_title: 'Ditolak',
     approved_title: 'Realisasi',
+    realized_title: 'Selesai Realisasi',
+    not_yet_realized_title: 'Belum Realisasi',
     not_verified_title: 'Administrasi',
     rdt: 'Test Masif',
     create_rdt: 'Input hasil test',
