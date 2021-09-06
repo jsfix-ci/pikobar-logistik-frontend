@@ -438,5 +438,8 @@ export default {
     } catch (e) {
       return e
     }
+  },
+  logisticRequestType({ commit }, payload) {
+    commit('SET_LOGISTIC_REQUEST_TYPE', payload)
   }
 }
