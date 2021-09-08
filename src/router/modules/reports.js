@@ -42,6 +42,17 @@ const reports = {
       }
     },
     {
+      path: '/reports/allocation/:id',
+      component: () => import('@/views/reports/allocation/detail'),
+      name: 'allocation',
+      hidden: true,
+      meta: {
+        title: 'allocation',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
+      }
+    },
+    {
       path: '/reports/goods_receipt_report/:id',
       component: () => import('@/views/reports/goods_receipt_report/detail'),
       hidden: true,

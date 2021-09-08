@@ -243,7 +243,7 @@ export default {
       this.handleSearch()
     },
     toDetail(data) {
-      this.$router.push(`/reports/goods_receipt_report/${data.id}`)
+      this.$router.push(`/reports/allocation/${data.id}`)
     },
     async exportData() {
       const response = await this.$store.dispatch('logistics/logisticRequestExportData', this.listQuery)
