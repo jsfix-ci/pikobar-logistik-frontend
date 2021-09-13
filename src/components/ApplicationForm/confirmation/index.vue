@@ -1,12 +1,14 @@
 <template>
   <div class="background-landing-page">
+    <!-- header parent -->
     <div class="full-landing-page main-page-data-confirmation">
+      <!-- header desktop -->
       <div class="header-landing-page">
         <v-row justify="space-between" align="center">
           <v-col cols="12" md="8" xs="12">
             <v-row>
               <router-link to="/landing-page">
-                <v-img :max-width="40" src="../../static/logistik_logo_lingkar.svg" />
+                <v-img :max-width="40" src="@/static/logistik_logo_lingkar.svg" />
               </router-link>
               <router-link to="/landing-page">
                 <div class="title-page-data-confirmation">{{ $t('label.applicant_form_title') }}</div>
@@ -21,12 +23,13 @@
           </v-col>
         </v-row>
       </div>
+      <!-- header mobile -->
       <div class="header-landing-page-mobile">
         <v-row>
           <v-col cols="8">
             <v-row>
               <v-col class="margin-left-20" cols="2">
-                <img height="40" src="../../static/logistik_logo_lingkar.svg">
+                <img height="40" src="@/static/logistik_logo_lingkar.svg">
               </v-col>
               <v-col cols="6">
                 <div class="title-page-landing-page-mobile">
@@ -47,9 +50,10 @@
     </div>
     <div class="negative-landing-page main-page-data-confirmation">
       <v-card class="main-card-data-confirmation" outlined>
+        <!-- loading -->
         <div v-if="isLoading" class="mt-n5">
           <v-row align="center" justify="center">
-            <img height="200" src="../../static/mengirim.svg">
+            <img height="200" src="@/static/mengirim.svg">
           </v-row>
           <v-row align="center" justify="center" class="margin-wait-data-confirmation">
             {{ $t('label.wait') }}
@@ -61,9 +65,10 @@
             {{ $t('label.loading_step_two') }}
           </v-row>
         </div>
+        <!-- loading done -->
         <div v-else-if="isDone" class="mt-n5">
           <v-row align="center" justify="center">
-            <img height="200" src="../../static/berhasil.svg">
+            <img height="200" src="@/static/berhasil.svg">
           </v-row>
           <v-row align="center" justify="center">
             <div class="save-style-data-confirmation">{{ $t('label.save_success') }}</div>
@@ -79,201 +84,32 @@
             <v-btn href="/#/landing-page">{{ $t('label.back') }}</v-btn>
           </v-row>
         </div>
+
         <div v-else>
+          <!-- header card 'Konfirmasi Data' -->
           <div class="data-confirmation-text">{{ $t('label.confirm_data') }}</div>
           <hr>
+          <!-- identitas instansi sudah dibikin komponent -->
           <div class="main-color-data-confirmation">{{ $t('label.instance_identity') }}</div>
-          <v-row>
-            <v-col>
-              <v-card class="mx-auto" outlined>
-                <v-row>
-                  <v-col class="margin-20">
-                    <v-row class="margin-top-min-15">
-                      <v-col>
-                        <span class="main-color-data-confirmation">{{ $t('label.instance_type') }}</span>
-                        <br>
-                        <v-label>{{ formApplicant.instanceTypeName }}</v-label>
-                      </v-col>
-                      <v-col>
-                        <span class="main-color-data-confirmation">{{ $t('label.city_district') }}</span>
-                        <br>
-                        <v-label>{{ formApplicant.cityNameId.name }}</v-label>
-                      </v-col>
-                      <v-col>
-                        <span class="main-color-data-confirmation">{{ $t('label.full_address') }}</span>
-                        <br>
-                        <v-label>{{ formApplicant.fullAddress }}</v-label>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                        <span class="main-color-data-confirmation">{{ $t('label.instance_name') }}</span>
-                        <br>
-                        <v-label v-if="formApplicant.instanceEtc">{{ formApplicant.instanceEtc }}</v-label>
-                        <v-label v-else>{{ formApplicant.instanceName }}</v-label>
-                      </v-col>
-                      <v-col>
-                        <span class="main-color-data-confirmation">{{ $t('label.select_sub_district_full_name') }}</span>
-                        <br>
-                        <v-label>{{ formApplicant.districtNameId.name }}</v-label>
-                      </v-col>
-                      <v-col />
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                        <span class="main-color-data-confirmation">{{ $t('label.number_phone') }}</span>
-                        <br>
-                        <v-label>{{ formApplicant.instancePhoneNumber }}</v-label>
-                      </v-col>
-                      <v-col>
-                        <span class="main-color-data-confirmation">{{ $t('label.village') }}</span>
-                        <br>
-                        <v-label>{{ formApplicant.villageNameId.name }}</v-label>
-                      </v-col>
-                      <v-col />
-                    </v-row>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-col>
-          </v-row>
+          <instance-identity :form-applicant="formApplicant" />
+
+          <!-- Identitas pemohon -->
           <div class="main-color-data-confirmation">{{ $t('label.step_title_2') }}</div>
-          <v-card class="mx-auto" outlined>
-            <v-row>
-              <v-col cols="7" class="margin-20">
-                <v-row class="margin-top-min-15">
-                  <v-col>
-                    <span class="main-color-data-confirmation">{{ $t('label.contact_person') }}</span>
-                    <br>
-                    <v-label>{{ formIdentityApplicant.applicantName }}</v-label>
-                  </v-col>
-                  <v-col>
-                    <span class="main-color-data-confirmation">{{ $t('label.capital_email') }}</span>
-                    <br>
-                    <v-label>{{ formIdentityApplicant.applicantEmail }}</v-label>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <span class="main-color-data-confirmation">{{ $t('label.applicant_position_identity') }}</span>
-                    <br>
-                    <v-label>{{ formIdentityApplicant.applicantPosition }}</v-label>
-                  </v-col>
-                  <v-col>
-                    <span class="main-color-data-confirmation">{{ $t('label.applicant_phone') }}</span>
-                    <br>
-                    <v-label>{{ formIdentityApplicant.applicantPhoneNumber }}</v-label>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col offset-md="6" offset-sm="6">
-                    <span class="main-color-data-confirmation">{{ $t('label.applicant_phone_sub') }}</span>
-                    <br>
-                    <v-label>{{ formIdentityApplicant.applicantPhoneNumber2 }}</v-label>
-                  </v-col>
-                </v-row>
-              </v-col>
-              <v-col cols="4" class="margin-20">
-                <span class="main-color-data-confirmation">{{ $t('label.applicant_ktp') }}</span>
-                <br>
-                <img class="image-style-data-confirmation" :src="url">
-              </v-col>
-            </v-row>
-          </v-card>
+          <applicant-identity :form-identity-applicant="formIdentityApplicant" />
+
+          <!-- Surat pemohon -->
           <div class="main-color-data-confirmation">{{ $t('label.step_title_4') }}</div>
-          <v-card outlined>
-            <v-row class="ml-2">
-              <v-col cols="1" md="1">
-                <span class="main-color-data-confirmation">#</span>
-              </v-col>
-              <v-col cols="3" md="3">
-                <span class="main-color-data-confirmation">{{ $t('label.letter_number') }}</span>
-              </v-col>
-            </v-row>
-            <v-row class="ml-2">
-              <v-col cols="1" md="1">
-                <span>1</span>
-              </v-col>
-              <v-col cols="3" md="3">
-                <span class="grey--text">{{ formApplicant.letterNumber }}</span>
-              </v-col>
-              <v-col cols="4" md="4">
-                <a :href="urlLetter" target="_blank" class="blue--text"><u>{{ applicantLetter.name }}</u></a>
-              </v-col>
-              <v-col>
-                <span class="main-color-data-confirmation">{{ $t('label.download') }}</span>
-              </v-col>
-            </v-row>
-          </v-card>
+          <letter-applicant :form-applicant="formApplicant" :applicant-letter="applicantLetter" />
+
+          <!-- Detail kondisi faskes -->
           <div v-if="formApplicant.instanceType <= 3">
             <div class="main-color-data-confirmation">Detail Kondisi Fasilitas Kesehatan</div>
-            <v-card class="mx-auto" outlined>
-              <v-col>
-                <v-row class="margin-top-min-15">
-                  <v-col>
-                    <span class="main-color-data-confirmation">Jumlah Pasien COVID-19 yang ditangani</span>
-                    <br>
-                    <v-label>
-                      {{ applicantLetter.total_covid_patients || '-' }} Orang
-                    </v-label>
-                  </v-col>
-                  <v-col>
-                    <span class="main-color-data-confirmation">Jumlah Tempat Tidur</span>
-                    <br>
-                    <v-label>
-                      {{ applicantLetter.total_bedroom || '-' }} Tempat Tidur
-                    </v-label>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <span class="main-color-data-confirmation">Jumlah Ruang Isolasi</span>
-                    <br>
-                    <v-label>
-                      {{ applicantLetter.total_isolation_room || '-' }} Ruangan
-                    </v-label>
-                  </v-col>
-                  <v-col>
-                    <span class="main-color-data-confirmation">Jumlah Tenaga Kesehatan</span>
-                    <br>
-                    <v-label>
-                      {{ applicantLetter.total_health_worker || '-' }} Orang
-                    </v-label>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-card>
+            <faskes-status :applicant-letter="applicantLetter" />
           </div>
+
+          <!-- tabel daftar kebutuhan -->
           <div class="main-color-data-confirmation">{{ $t('label.list_logistic_need') }}</div>
-          <v-card outlined>
-            <v-simple-table>
-              <template v-slot:default>
-                <thead>
-                  <tr>
-                    <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.apd_name_specification') }}</th>
-                    <th class="text-left">{{ $t('label.description') }}</th>
-                    <th class="text-left">{{ $t('label.total') }}</th>
-                    <th class="text-left">{{ $t('label.unit') }}</th>
-                    <th class="text-left">{{ $t('label.purpose') }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-if="logisticNeeds.length === 0">
-                    <td class="text-center-data-confirmation" :colspan="7">{{ $t('label.no_data') }}</td>
-                  </tr>
-                  <tr v-for="(item, index) in dataShow" v-else :key="item.index">
-                    <td>{{ getTableRowNumbering(index) }}</td>
-                    <td>{{ item.unitList[0].name }}</td>
-                    <td>{{ item.brand }}</td>
-                    <td>{{ item.total }}</td>
-                    <td>{{ item.unitList[0].unit }}</td>
-                    <td>{{ item.purpose }}</td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </v-card>
+          <list-logistic :logistic-needs="logisticNeeds" :data-show="dataShow" />
           <v-pagination
             v-model="listQuery.page"
             :length="total"
@@ -287,13 +123,14 @@
         </div>
       </v-card>
     </div>
+    <!-- mobile layout -->
     <div class="full-landing-page main-page-mobile-data-confirmation ">
       <div class="header-landing-page-mobile">
         <v-row>
           <v-col cols="8">
             <v-row>
               <v-col class="margin-left-20" cols="2">
-                <img height="40" src="../../static/logistik_logo_lingkar.svg">
+                <img height="40" src="@/static/logistik_logo_lingkar.svg">
               </v-col>
               <v-col cols="6">
                 <div class="title-page-landing-page-mobile margin-left-title-mobile-landing-page">
@@ -314,7 +151,7 @@
     <div class="main-page-mobile-data-confirmation bg-mobile-data-confirmation">
       <div v-if="isLoading" class="mt-n12">
         <v-row align="center" justify="center">
-          <img height="200" src="../../static/mengirim.svg">
+          <img height="200" src="@/static/mengirim.svg">
         </v-row>
         <v-row align="center" justify="center" class="margin-wait-data-confirmation text-center-data-confirmation">
           {{ $t('label.wait') }}
@@ -323,7 +160,7 @@
       </div>
       <div v-else-if="isDone" class="mt-n12">
         <v-row align="center" justify="center">
-          <img height="200" src="../../static/berhasil.svg">
+          <img height="200" src="@/static/berhasil.svg">
         </v-row>
         <v-row align="center" justify="center">
           <div class="save-style-data-confirmation text-center-data-confirmation">{{ $t('label.save_success') }}</div>
@@ -548,8 +385,7 @@
 import EventBus from '@/utils/eventBus'
 
 export default {
-  // name: 'TahapKonfirmasi',
-  name: 'TestingComponentIgnore',
+  name: 'TahapKonfirmasi',
   props: {
     formApplicant: {
       type: Object,
