@@ -3,93 +3,27 @@
     <!-- header parent -->
     <div class="full-landing-page main-page-data-confirmation">
       <!-- header desktop -->
-      <div class="header-landing-page">
-        <v-row justify="space-between" align="center">
-          <v-col cols="12" md="8" xs="12">
-            <v-row>
-              <router-link to="/landing-page">
-                <v-img :max-width="40" src="@/static/logistik_logo_lingkar.svg" />
-              </router-link>
-              <router-link to="/landing-page">
-                <div class="title-page-data-confirmation">{{ $t('label.applicant_form_title') }}</div>
-              </router-link>
-            </v-row>
-          </v-col>
-          <v-col cols="12" md="4" xs="12">
-            <v-row class="float-right-landing-page">
-              <a :href="$t('label.link_tutorial')" target="_blank"><v-icon color="white" size="25">{{ $t('label.icon_help') }}</v-icon></a>
-              <a :href="$t('label.link_tutorial')" target="_blank"><div class="tutorial-class-form-pemohon pusat-bantuan-landing-page">{{ $t('label.tutorial') }}</div></a>
-            </v-row>
-          </v-col>
-        </v-row>
-      </div>
-      <!-- header mobile -->
-      <div class="header-landing-page-mobile">
-        <v-row>
-          <v-col cols="8">
-            <v-row>
-              <v-col class="margin-left-20" cols="2">
-                <img height="40" src="@/static/logistik_logo_lingkar.svg">
-              </v-col>
-              <v-col cols="6">
-                <div class="title-page-landing-page-mobile">
-                  {{ $t('label.logistic') }} <br>
-                  {{ $t('label.medical_tools') }}
-                </div>
-              </v-col>
-            </v-row>
-          </v-col>
-          <v-col cols="4">
-            <v-row class="float-right-landing-page">
-              <v-icon class="margin-20-data-confirmation" color="white" size="30">{{ $t('label.icon_talk') }}</v-icon>
-              <v-icon color="white" size="30">{{ $t('label.icon_help') }}</v-icon>
-            </v-row>
-          </v-col>
-        </v-row>
-      </div>
+      <header-landing-page />
+
     </div>
     <div class="negative-landing-page main-page-data-confirmation">
       <v-card class="main-card-data-confirmation" outlined>
         <!-- loading -->
         <div v-if="isLoading" class="mt-n5">
-          <v-row align="center" justify="center">
-            <img height="200" src="@/static/mengirim.svg">
-          </v-row>
-          <v-row align="center" justify="center" class="margin-wait-data-confirmation">
-            {{ $t('label.wait') }}
-          </v-row>
-          <v-row align="center" justify="center" class="mt-5">
-            {{ $t('label.loading_step_one') }}
-          </v-row>
-          <v-row align="center" justify="center">
-            {{ $t('label.loading_step_two') }}
-          </v-row>
+          <loading-page />
         </div>
+
         <!-- loading done -->
         <div v-else-if="isDone" class="mt-n5">
-          <v-row align="center" justify="center">
-            <img height="200" src="@/static/berhasil.svg">
-          </v-row>
-          <v-row align="center" justify="center">
-            <div class="save-style-data-confirmation">{{ $t('label.save_success') }}</div>
-          </v-row>
-          <v-row align="center" justify="center" class="confirmation-text mt-7">
-            {{ $t('label.loading_done_one') }}
-          </v-row>
-          <v-row align="center" justify="center" class="confirmation-text mt-3">
-            {{ $t('label.loading_done_two') }}
-          </v-row>
-          <br>
-          <v-row align="center" justify="center" class="mt-3 mb-15">
-            <v-btn href="/#/landing-page">{{ $t('label.back') }}</v-btn>
-          </v-row>
+          <success-request />
         </div>
 
         <div v-else>
           <!-- header card 'Konfirmasi Data' -->
           <div class="data-confirmation-text">{{ $t('label.confirm_data') }}</div>
           <hr>
-          <!-- identitas instansi sudah dibikin komponent -->
+
+          <!-- identitas instansi -->
           <div class="main-color-data-confirmation">{{ $t('label.instance_identity') }}</div>
           <instance-identity :form-applicant="formApplicant" />
 
@@ -124,7 +58,8 @@
       </v-card>
     </div>
     <!-- mobile layout -->
-    <div class="full-landing-page main-page-mobile-data-confirmation ">
+    <div class="full-landing-page main-page-mobile-data-confirmation">
+      <!-- header mobile -->
       <div class="header-landing-page-mobile">
         <v-row>
           <v-col cols="8">
@@ -150,6 +85,7 @@
     </div>
     <div class="main-page-mobile-data-confirmation bg-mobile-data-confirmation">
       <div v-if="isLoading" class="mt-n12">
+        <!-- loading mobile -->
         <v-row align="center" justify="center">
           <img height="200" src="@/static/mengirim.svg">
         </v-row>
@@ -159,6 +95,7 @@
         <v-row class="text-center mr-1 ml-1 mt-3">{{ $t('label.loading_step_one') + $t('label.loading_step_two') }}</v-row>
       </div>
       <div v-else-if="isDone" class="mt-n12">
+        <!-- loading success mobile -->
         <v-row align="center" justify="center">
           <img height="200" src="@/static/berhasil.svg">
         </v-row>
@@ -179,6 +116,7 @@
           </v-col>
         </v-row>
         <hr>
+        <!-- identitas instansi mobile -->
         <div class="mr-1 ml-1">
           <div class="main-color-data-confirmation">{{ $t('label.instance_identity') }}</div>
           <v-card class="mx-auto" outlined>
@@ -229,8 +167,10 @@
               </v-row>
             </v-col>
           </v-card>
+          <!-- <instance-identity :form-applicant="formApplicant" /> -->
         </div>
         <br>
+        <!-- Identitas pemohon mobile-->
         <div class="mr-1 ml-1">
           <div class="main-color-data-confirmation">{{ $t('label.step_title_2') }}</div>
           <v-card class="mx-auto" outlined>
@@ -277,7 +217,9 @@
               </v-row>
             </v-col>
           </v-card>
+          <!-- <applicant-identity :form-identity-applicant="formIdentityApplicant" /> -->
         </div>
+        <!-- Surat pemohon mobile -->
         <div class="mr-1 ml-1">
           <div class="main-color-data-confirmation">{{ $t('label.step_title_4') }}</div>
           <v-card class="mx-auto" outlined>
@@ -291,6 +233,7 @@
             </v-row>
           </v-card>
         </div>
+        <!-- Detail kondisi faskes mobile -->
         <div v-if="formApplicant.instanceType <= 3" class="mr-1 ml-1">
           <div class="main-color-data-confirmation">Detail Kondisi Fasilitas Kesehatan</div>
           <v-card class="mx-auto" outlined>
@@ -331,43 +274,16 @@
           </v-card>
         </div>
         <div class="mr-1 ml-1">
+          <!-- tabel daftar kebutuhan -->
           <div class="main-color-data-confirmation">{{ $t('label.list_logistic_need') }}</div>
-          <v-card outlined>
-            <v-simple-table>
-              <template v-slot:default>
-                <thead>
-                  <tr>
-                    <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                    <th class="text-left">{{ $t('label.apd_name_specification') }}</th>
-                    <th class="text-left">{{ $t('label.description') }}</th>
-                    <th class="text-left">{{ $t('label.total') }}</th>
-                    <th class="text-left">{{ $t('label.unit') }}</th>
-                    <th class="text-left">{{ $t('label.purpose') }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-if="logisticNeeds.length === 0">
-                    <td class="text-center-data-confirmation" :colspan="7">{{ $t('label.no_data') }}</td>
-                  </tr>
-                  <tr v-for="(item, index) in dataShow" v-else :key="item.index">
-                    <td>{{ getTableRowNumbering(index) }}</td>
-                    <td>{{ item.unitList[0].name }}</td>
-                    <td>{{ item.brand }}</td>
-                    <td>{{ item.total }}</td>
-                    <td>{{ item.unitList[0].unit }}</td>
-                    <td>{{ item.purpose }}</td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </v-card>
+          <list-logistic :logistic-needs="logisticNeeds" :data-show="dataShow" />
+          <v-pagination
+            v-model="listQuery.page"
+            :length="total"
+            :total-visible="3"
+            @input="onNext"
+          />
         </div>
-        <v-pagination
-          v-model="listQuery.page"
-          :length="total"
-          :total-visible="3"
-          @input="onNext"
-        />
         <hr>
         <v-row>
           <v-col cols="5" sm="5">
@@ -383,9 +299,11 @@
 </template>
 <script>
 import EventBus from '@/utils/eventBus'
+import HeaderLandingPage from '@/layout/Header/HeaderLandingPage.vue'
 
 export default {
   name: 'TahapKonfirmasi',
+  components: { HeaderLandingPage },
   props: {
     formApplicant: {
       type: Object,
