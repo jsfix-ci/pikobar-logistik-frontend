@@ -2,9 +2,9 @@ def secretsProd = [
   [path: 'kv-logistik-frontend/production/app-v2', engineVersion: 2, secretValues: [
     [envVar: 'VUE_APP_SECURE', vaultKey: 'VUE_APP_SECURE'],
     [envVar: 'VUE_APP_URL', vaultKey: 'VUE_APP_URL'],
-    [envVar: 'VUE_APP_PORT', vaultKey: 'VUE_APP_PORT']
-    [envVar: 'REGISTRY_USERNAME', vaultKey: 'REGISTRY_USERNAME']
-    [envVar: 'REGISTRY_PASSWORD', vaultKey: 'REGISTRY_PASSWORD']
+    [envVar: 'VUE_APP_PORT', vaultKey: 'VUE_APP_PORT'],
+    [envVar: 'REGISTRY_USERNAME', vaultKey: 'REGISTRY_USERNAME'],
+    [envVar: 'REGISTRY_PASSWORD', vaultKey: 'REGISTRY_PASSWORD'],
     [envVar: 'SECRET_POLICY', vaultKey: 'SECRET_POLICY']]],
 ]
 
