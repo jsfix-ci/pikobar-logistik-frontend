@@ -88,7 +88,7 @@ tolerations: []
 affinity: {}
 
 secret:
-  policy: "keep"
+  policy: ""
   registry:
     registry_url: "registry.digitalservice.id"
     username: ""
@@ -96,3 +96,4 @@ secret:
     email: "logistik@jds.id"
 
 configmap:
+  policy: ""
