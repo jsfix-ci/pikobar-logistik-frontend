@@ -54,6 +54,8 @@ spec:
                 name:  "{{ .Release.Name }}-{{ .Release.Namespace }}-secret-general"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      imagePullSecrets: 
+        - name: "{{ .Release.Name }}-{{ .Release.Namespace }}-secret-registry"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
