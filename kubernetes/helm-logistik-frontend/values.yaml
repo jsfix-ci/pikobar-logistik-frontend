@@ -12,7 +12,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "__VERSION__"
 
-imagePullSecrets: [./secret-registry.yaml]
+imagePullSecrets: []
 nameOverride: "pikobar-logistik-frontend"
 fullnameOverride: "pikobar-logistik-chart-frontend"
 
