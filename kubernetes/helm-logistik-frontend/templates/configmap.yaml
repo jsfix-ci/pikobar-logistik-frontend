@@ -4,5 +4,5 @@ metadata:
   name: "{{ .Release.Name }}-{{ .Release.Namespace }}-configmap-general"
   namespace: {{ .Release.Namespace }}
   annotations:
-    "helm.sh/resource-policy": {{ .Values.configmap.policy }}
+    "helm.sh/resource-policy": {{ .Values.configmap.policy | quote }}
 data:
