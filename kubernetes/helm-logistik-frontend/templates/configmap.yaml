@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}-{{ .Release.Namespace }}-configmap-general"
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/resource-policy": {{ .Values.configmap.policy }}
+data:
