@@ -105,6 +105,7 @@ pipeline {
                             helm install $appName kubernetes/helm-logistik-frontend --namespace pikobar-logistik --values kubernetes/helm-logistik-frontend/values.yaml --dry-run --debug
                             helm upgrade $appName \
                                 --set secret.policy=$SECRET_POLICY \
+                                --set configmap.policy=$CONFIGMAP_POLICY \
                                 --set secret.registry.username=$REGISTRY_USERNAME \
                                 --set secret.registry.password=$REGISTRY_PASSWORD kubernetes/helm-logistik-frontend --namespace pikobar-logistik
                             kubectl get pods --namespace pikobar-logistik
