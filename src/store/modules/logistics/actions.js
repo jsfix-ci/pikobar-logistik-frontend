@@ -83,6 +83,14 @@ export default {
       return e
     }
   },
+  async postApplicantVaksinAdmin({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/vaccine-request', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async updateApplicant({ commit }, params) {
     try {
       const response = await doPostUpdate('/api/v1/logistic-request/' + params.id, 'PUT', params)

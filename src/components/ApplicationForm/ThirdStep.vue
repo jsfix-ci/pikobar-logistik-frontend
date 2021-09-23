@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div v-if="!isAddAPD">
-      <third-step-options @next="onClick" />
+      <third-step-options :is-admin="isAdmin" @next="onClick" />
       <v-row>
         <v-col cols="12" sm="12" md="4" offset-md="4">
           <v-alert
@@ -65,7 +65,7 @@
               >
                 <v-label class="title"><b>{{ $t('label.description') }}</b></v-label>
                 <v-text-field
-                  v-model="data.brand"
+                  v-model="data.description"
                   :placeholder="$t('label.input_description')"
                   :error-messages="errors"
                   outlined
@@ -159,23 +159,23 @@
             </v-col>
           </v-row>
         </v-form>
-        <v-container fluid>
-          <v-col cols="6" sm="6" md="6" class="float-right-third-step">
-            <v-btn
-              class="btn-margin-positive"
-              color="primary"
-              @click="onNext"
-            >{{ $t('label.next') }}</v-btn>
-            <v-btn
-              class="btn-margin-positive"
-              outlined
-              text
-              @click="onPrev"
-            >{{ $t('label.cancel') }}</v-btn>
-          </v-col>
-        </v-container>
       </ValidationObserver>
     </div>
+    <v-container fluid>
+      <v-col cols="6" sm="6" md="6" class="float-right-third-step">
+        <v-btn
+          class="btn-margin-positive"
+          color="primary"
+          @click="onNext"
+        >{{ $t('label.next') }}</v-btn>
+        <v-btn
+          class="btn-margin-positive"
+          outlined
+          text
+          @click="onPrev"
+        >{{ $t('label.cancel') }}</v-btn>
+      </v-col>
+    </v-container>
   </v-container>
 </template>
 <script>
@@ -195,6 +195,10 @@ export default {
     logisticNeeds: {
       type: Array,
       default: null
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -208,7 +212,8 @@ export default {
       isValid: false,
       showAlert: false,
       listQueryAPD: {
-        user_filter: null
+        user_filter: null,
+        category: null
       }
     }
   },
@@ -216,6 +221,14 @@ export default {
     ...mapGetters('logistics', [
       'listAPD', 'listApdUnit', 'logisticRequestType'
     ])
+  },
+  watch: {
+    logisticRequestType(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.listQueryAPD.category = newVal === 'vaksin' ? newVal : null
+        this.getListAPD()
+      }
+    }
   },
   async created() {
     await this.getListAPD()
@@ -235,7 +248,7 @@ export default {
         id: this.idAPD,
         apd: '',
         apdName: '',
-        brand: '',
+        description: '',
         total: 0,
         unitId: '',
         unitName: '',
@@ -281,14 +294,12 @@ export default {
       })
     },
     async onNext() {
-      const valid = await this.$refs.observer.validate()
-      if (this.logisticNeeds.length > 0) {
-        this.isValid = true
-      }
-      if (!valid) {
-        return
-      } else if (!this.isValid) {
+      if (!this.logisticNeeds.length) {
         this.showAlert = true
+        return
+      }
+      const valid = await this.$refs.observer.validate()
+      if (!valid) {
         return
       }
       EventBus.$emit('nextStep', this.step)

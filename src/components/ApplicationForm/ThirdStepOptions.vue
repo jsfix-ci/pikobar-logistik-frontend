@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <v-row>
-      <v-col md="5" offset-md="1">
+      <v-col :md="isAdmin === true ? '5' : '10'" offset-md="1">
         <div class="d-flex justify-center">
           <v-img
             src="../../static/apd.svg"
@@ -21,7 +21,7 @@
           </v-btn>
         </div>
       </v-col>
-      <v-col md="5">
+      <v-col v-if="isAdmin" md="5">
         <div class="d-flex justify-center">
           <v-img
             src="../../static/apd.svg"
@@ -36,7 +36,7 @@
           <v-btn
             color="#2E7D32"
             outlined
-            @click="onClick('vaccine')"
+            @click="onClick('vaksin')"
           >
             {{ $t('label.add') }}
           </v-btn>
@@ -48,6 +48,12 @@
 <script>
 export default {
   name: 'ThirdStepOptions',
+  props: {
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
+  },
   methods: {
     onClick(type) {
       this.$store.dispatch('logistics/logisticRequestType', type)
