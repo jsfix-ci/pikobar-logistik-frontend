@@ -10,7 +10,7 @@
             max-height="250px"
           />
         </div>
-        <p class="text-center">Tambahkan Kebutuhan Alat Kesehatan</p>
+        <p class="text-center">{{ $t('label.add_logistics_label') }}</p>
         <div class="d-flex justify-center">
           <v-btn
             color="#2E7D32"
@@ -30,8 +30,7 @@
             max-height="250px"
           />
         </div>
-        <!-- <p class="text-center">{{ $t('label.add_logistics_label') }}</p> -->
-        <p class="text-center">Tambahkan Kebutuhan Vaksin</p>
+        <p class="text-center">{{ $t('label.add_vaccine_label') }}</p>
         <div class="d-flex justify-center">
           <v-btn
             color="#2E7D32"
