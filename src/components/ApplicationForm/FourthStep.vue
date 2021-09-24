@@ -91,7 +91,7 @@
               </v-row>
             </ValidationProvider>
           </v-col>
-          <v-col v-if="formApplicant.instanceType <= 3" cols="12" sm="12" md="6">
+          <v-col v-if="formApplicant.instanceType <= 3 && logisticRequestType === 'alkes'" cols="12" sm="12" md="6">
             <ValidationProvider
               v-slot="{ errors }"
               rules="requiredCovidPatientTotal"
@@ -172,6 +172,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import EventBus from '@/utils/eventBus'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SuratPermohonan',
@@ -201,6 +202,9 @@ export default {
       requiredAlert: false,
       isValid: false
     }
+  },
+  computed: {
+    ...mapGetters('logistics', ['logisticRequestType'])
   },
   created() {
     this.reloadData()

@@ -81,5 +81,8 @@ export default {
   },
   faskesTopRequest: (state) => {
     return state.faskesTopRequest
+  },
+  logisticRequestType: (state) => {
+    return state.logisticRequestType
   }
 }

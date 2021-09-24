@@ -82,6 +82,9 @@ export default {
   SET_DATA_FASKES_TOP_TOTAL_REQUEST: (state, data) => {
     state.faskesTopRequest = data
   },
+  SET_LOGISTIC_REQUEST_TYPE: (state, data) => {
+    state.logisticRequestType = data
+  },
   // Statistic
   SET_DATA_REPORTED_RECEIPT: (state, data) => {
     state.reportedReceipt = data
