@@ -46,7 +46,7 @@
         />
       </v-col>
       <v-col cols="12" sm="3" :class="{'px-0': $vuetify.breakpoint.xsOnly}">
-        <v-label class="title">{{ $t('label.date') + ' ' + $t('label.received') }}</v-label>
+        <v-label class="title">{{ $t('label.request_date') }}</v-label>
         <date-picker-dashboard
           :initial-start-date="listQuery.start_date"
           :initial-end-date="listQuery.end_date"
