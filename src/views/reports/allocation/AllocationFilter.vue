@@ -80,8 +80,8 @@ export default {
   data() {
     return {
       statusOption: [
-        { value: 1, label: 'Sudah Lapor' },
-        { value: 0, label: 'Belum Lapor' }
+        { value: 1, label: 'Success' },
+        { value: 0, label: 'Draft' }
       ],
       showFilter: this.show
     }
