@@ -514,6 +514,8 @@ export default {
     outgoing_mail_add: 'Tambah Surat Perintah',
     incoming_mail_add: 'Tambah Surat Masuk',
     total_applicant: 'Total Permohonan',
+    total_recipient: 'Total Penerima',
+    total_allocation: 'Total Alokasi Barang',
     outgoing_mail_print: 'Cetak Surat',
     incoming_mail_print: 'Cetak Surat',
     outgoing_mail_detail: 'Detail Surat Perintah',
