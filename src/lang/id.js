@@ -40,7 +40,8 @@ export default {
     outgoing_mail: 'Surat Perintah',
     incoming_mail: 'Surat Masuk',
     outgoing_mail_detail: 'Detail Surat Perintah',
-    incoming_mail_detail: 'Detail Surat Masuk'
+    incoming_mail_detail: 'Detail Surat Masuk',
+    allocation: 'Alokasi Salur Logistik'
   },
   label: {
     preview: 'Preview',
@@ -366,6 +367,11 @@ export default {
     goods_receipt_report_table: 'Tabel Penerimaan Barang',
     goods_receipt_report_total: 'Total Terlapor Penerimaan Logistik',
     goods_receipt_report_statistic: 'Statistik Pelaporan Penerimaan Barang',
+    allocation: 'Alokasi',
+    allocation_list: 'Daftar Alokasi Salur Logistik',
+    allocation_statistic: 'Total Alokasi Salur Logistik',
+    create_allocation: 'Tambah Alokasi Salur',
+    allocation_table: 'Tabel Alokasi Salur Logistik',
     goods_receipt_not_yet_report_total: 'Total Belum Melapor Penerimaan Logistik',
     goods_receipt_report_description: ' Sedang dalam pengembangan lebih lanjut dan akan diperbarui dalam waktu dekat',
     detail_request_logistic_medic: 'Detail Pengajuan Logistik',
@@ -511,6 +517,8 @@ export default {
     outgoing_mail_add: 'Tambah Surat Perintah',
     incoming_mail_add: 'Tambah Surat Masuk',
     total_applicant: 'Total Permohonan',
+    total_recipient: 'Total Penerima',
+    total_allocation: 'Total Alokasi Barang',
     outgoing_mail_print: 'Cetak Surat',
     incoming_mail_print: 'Cetak Surat',
     outgoing_mail_detail: 'Detail Surat Perintah',
