@@ -62,7 +62,7 @@ export default {
   props: {
     listQuery: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     },
     changeDate: {
       type: Function,
