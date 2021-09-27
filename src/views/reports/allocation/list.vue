@@ -38,8 +38,8 @@
       <AllocationFilter
         :show="showFilter"
         :list-query="listQuery"
-        :handle-search="handleSearch"
-        :change-date="changeDate"
+        @search="handleSearch"
+        @changeDate="changeDate"
       />
       <hr class="thin">
       <AllocationTable
