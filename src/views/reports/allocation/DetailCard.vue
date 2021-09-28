@@ -8,7 +8,7 @@
         :placeholder="$t('label.search_data')"
         prepend-inner-icon="search"
         class="mr-4"
-        @change="handleSearch"
+        @change="$emit('search')"
       />
       <v-btn
         large
@@ -39,7 +39,9 @@
           </tr>
         </thead>
         <tbody>
-          <td>Hai juga</td>
+          <tr v-for="data in tableData.allocation_distribution_requests" :key="data.id">
+            <td>{{ data.agency_name }}</td>
+          </tr>
         </tbody>
       </template>
     </v-simple-table>
@@ -50,19 +52,18 @@
 import tableHeader from './detailTableHeader'
 export default {
   props: {
-    query: {
+    listQuery: {
       type: Object,
       default: () => ({})
     },
-    handleSearch: {
-      type: Function,
-      default: null
+    tableData: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
     return {
-      tableHeader,
-      listQuery: this.query
+      tableHeader
     }
   }
 }

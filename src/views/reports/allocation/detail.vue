@@ -31,7 +31,11 @@
         </div>
       </div>
     </div>
-    <DetailCard />
+    <DetailCard
+      :list-query="listQuery"
+      :table-data="detailAllocation"
+      @search="handleSearch"
+    />
   </div>
 </template>
 
@@ -46,7 +50,10 @@ export default {
   data() {
     return {
       infoLabelList,
-      infoValueList: []
+      infoValueList: [],
+      listQuery: {
+        search: null
+      }
     }
   },
   computed: {
@@ -83,6 +90,11 @@ export default {
         isUrl: true
       }
     ]
+  },
+  methods: {
+    handleSearch() {
+      console.log('search')
+    }
   }
 }
 </script>
