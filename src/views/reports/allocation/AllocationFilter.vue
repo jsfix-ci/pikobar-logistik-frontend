@@ -72,8 +72,8 @@ export default {
   data() {
     return {
       statusOption: [
-        { value: 1, label: 'Success' },
-        { value: 0, label: 'Draft' }
+        { value: 'success', label: 'Success' },
+        { value: 'draft', label: 'Draft' }
       ],
       showFilter: this.show
     }
