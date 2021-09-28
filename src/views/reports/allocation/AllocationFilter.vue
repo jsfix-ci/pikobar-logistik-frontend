@@ -50,7 +50,7 @@
         <date-picker-dashboard
           :initial-start-date="listQuery.start_date"
           :initial-end-date="listQuery.end_date"
-          @selected="$emit('changeDate')"
+          @selected="(value) => $emit('changeDate', value)"
         />
       </v-col>
     </v-row>
@@ -72,8 +72,8 @@ export default {
   data() {
     return {
       statusOption: [
-        { value: 1, label: 'Success' },
-        { value: 0, label: 'Draft' }
+        { value: 'success', label: 'Success' },
+        { value: 'draft', label: 'Draft' }
       ],
       showFilter: this.show
     }

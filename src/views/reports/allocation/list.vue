@@ -68,7 +68,6 @@ export default {
     AllocationFilter
   },
   data() {
-    const status = parseInt(this.$route.query?.status)
     return {
       sortOption: [
         { value: 'asc', label: 'A-Z' },
@@ -78,7 +77,7 @@ export default {
         page: parseInt(this.$route.query?.page || 1),
         limit: parseInt(this.$route.query?.limit || 10),
         search: this.$route.query?.search || null,
-        status: Number.isNaN(status) ? null : status,
+        status: this.$route.query?.status || null,
         start_date: this.$route.query?.start_date || null,
         end_date: this.$route.query?.end_date || null
       },
@@ -115,10 +114,6 @@ export default {
         }
       })
       await this.$store.dispatch('allocation/getListAllocation', this.listQuery)
-    },
-    referenceDetail(data) {
-      this.$refs.referenceDetailForm.setData(data.id, data)
-      this.showreferenceDetail = true
     },
     currency(value) {
       const formattingNumber = new FormatingNumber()
