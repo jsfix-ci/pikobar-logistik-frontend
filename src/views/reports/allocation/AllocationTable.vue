@@ -67,7 +67,7 @@ export default {
     },
     listQuery: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     }
   },
   data() {
