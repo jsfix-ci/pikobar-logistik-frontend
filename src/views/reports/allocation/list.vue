@@ -115,10 +115,6 @@ export default {
       })
       await this.$store.dispatch('allocation/getListAllocation', this.listQuery)
     },
-    referenceDetail(data) {
-      this.$refs.referenceDetailForm.setData(data.id, data)
-      this.showreferenceDetail = true
-    },
     currency(value) {
       const formattingNumber = new FormatingNumber()
       return formattingNumber.formatCurrency(value)
