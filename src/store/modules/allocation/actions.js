@@ -23,7 +23,6 @@ export default {
   },
   async getDetailAllocation({ commit }, id) {
     try {
-      console.log(id)
       const response = await fetchList(`/api/v1/allocation-vaccine-request/${id}`, 'GET')
       commit('SET_DETAIL_ALLOCATION', response.data)
     } catch (e) {
