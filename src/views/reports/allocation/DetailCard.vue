@@ -28,12 +28,10 @@
     <v-simple-table class="mt-8">
       <template v-slot:default>
         <thead class="detail-card__header">
-          <tr v-for="headerRow in tableHeader" :key="headerRow.id">
+          <tr>
             <th
-              v-for="header in headerRow.data"
-              :key="header.label"
-              :colspan="header.colSpan"
-              :rowspan="header.rowSpan"
+              v-for="header in tableHeader"
+              :key="header.id"
               class="detail-card__header__cell"
             >
               {{ header.label }}
@@ -82,32 +80,8 @@ export default {
 
     &__cell {
       color: white !important;
-      font-size: 16px !important;
-      border: 1px solid;
+      font-size: 14px !important;
     }
   }
 }
-// .v-data-table::v-deep {
-//   .thead {
-//     background-color: #27ae60 !important;
-//     color: white !important;
-//   }
-
-//   table {
-//     border-style: solid;
-//     border-width: 1px;
-//     border-color: #e3e3e3;
-//   }
-
-//   tbody {
-//     background-color: #FAFAFA !important;
-//   }
-
-//   th {
-//     tr {
-//       color: green !important;
-//       font-size: 14px;
-//     }
-//   }
-// }
 </style>
