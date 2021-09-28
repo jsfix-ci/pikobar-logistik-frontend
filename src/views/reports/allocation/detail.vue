@@ -3,12 +3,32 @@
     <span class="detail__title">{{ $t('label.allocation_detail') }}</span>
     <div class="d-flex flex-row my-4">
       <div class="d-flex flex-column mr-4">
-        <span class="mb-2">{{ $t('label.allocation_outgoing_letter_number') }} :</span>
-        <span>{{ $t('label.allocation_official_letter_number') }} :</span>
+        <span
+          v-for="info in infoLabelList"
+          :key="info.id"
+          class="mb-2"
+        >
+          {{ info.label }}
+        </span>
       </div>
       <div class="d-flex flex-column detail__letter-info">
-        <span class="mb-2">SK/034/dinkes/03/2020</span>
-        <span>SK/034/dinkes/03/2020</span>
+        <div
+          v-for="data in infoValueList"
+          :key="data.label"
+          class="mb-2"
+        >
+          <a
+            v-if="data.isUrl"
+            :href="data.label"
+            target="_blank"
+          >
+            :
+            <span class="detail__letter-info__url">
+              {{ data.label }}
+            </span>
+          </a>
+          <span v-else>: {{ data.label }}</span>
+        </div>
       </div>
     </div>
     <DetailCard />
@@ -16,10 +36,53 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import infoLabelList from './detailInfoLabel'
 import DetailCard from './DetailCard.vue'
 export default {
   components: {
     DetailCard
+  },
+  data() {
+    return {
+      infoLabelList,
+      infoValueList: []
+    }
+  },
+  computed: {
+    ...mapState('allocation', [
+      'detailAllocation'
+    ])
+  },
+  async created() {
+    await this.$store.dispatch('allocation/getDetailAllocation', this.$route.params.id)
+    this.infoValueList = [
+      {
+        label: this.detailAllocation.letter_number
+      },
+      {
+        label: this.detailAllocation.letter_date
+      },
+      {
+        label: this.detailAllocation.applicant_name
+      },
+      {
+        label: this.detailAllocation.applicant_position
+      },
+      {
+        label: this.detailAllocation.applicant_agency_id
+      },
+      {
+        label: this.detailAllocation.applicant_agency_name
+      },
+      {
+        label: this.detailAllocation.distribution
+      },
+      {
+        label: this.detailAllocation.letter_url,
+        isUrl: true
+      }
+    ]
   }
 }
 </script>
@@ -38,6 +101,11 @@ export default {
   &__letter-info {
     color: #219653;
     font-weight: 500;
+
+    &__url {
+      text-decoration: underline;
+      color: #3E8DCA;
+    }
   }
 }
 </style>
