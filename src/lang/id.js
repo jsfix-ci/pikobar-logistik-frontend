@@ -369,6 +369,8 @@ export default {
     allocation_statistic: 'Total Alokasi Salur Logistik',
     create_allocation: 'Tambah Alokasi Salur',
     allocation_table: 'Tabel Alokasi Salur Logistik',
+    general_information: 'Informasi Umum',
+    choose_item: 'Pilih Item',
     goods_receipt_not_yet_report_total: 'Total Belum Melapor Penerimaan Logistik',
     goods_receipt_report_description: ' Sedang dalam pengembangan lebih lanjut dan akan diperbarui dalam waktu dekat',
     detail_request_logistic_medic: 'Detail Pengajuan Logistik',
