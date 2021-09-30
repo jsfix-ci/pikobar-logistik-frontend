@@ -13,7 +13,7 @@
             hide-details
             :placeholder="$t('label.search_data')"
             prepend-inner-icon="search"
-            @change="handleSearch"
+            @change="$emit('search')"
           />
         </v-card>
       </div>
@@ -42,7 +42,7 @@
           item-value="value"
           :clearable="true"
           :placeholder="$t('label.select_status')"
-          @change="handleSearch"
+          @change="$emit('search')"
         />
       </v-col>
       <v-col cols="12" sm="3" :class="{'px-0': $vuetify.breakpoint.xsOnly}">
@@ -50,7 +50,7 @@
         <date-picker-dashboard
           :initial-start-date="listQuery.start_date"
           :initial-end-date="listQuery.end_date"
-          @selected="changeDate"
+          @selected="(value) => $emit('changeDate', value)"
         />
       </v-col>
     </v-row>
@@ -62,15 +62,7 @@ export default {
   props: {
     listQuery: {
       type: Object,
-      default: () => {}
-    },
-    changeDate: {
-      type: Function,
-      default: null
-    },
-    handleSearch: {
-      type: Function,
-      default: null
+      default: () => ({})
     },
     show: {
       type: Boolean,
@@ -80,8 +72,8 @@ export default {
   data() {
     return {
       statusOption: [
-        { value: 1, label: 'Success' },
-        { value: 0, label: 'Draft' }
+        { value: 'success', label: 'Success' },
+        { value: 'draft', label: 'Draft' }
       ],
       showFilter: this.show
     }

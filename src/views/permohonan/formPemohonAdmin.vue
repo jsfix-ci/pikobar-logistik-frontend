@@ -35,6 +35,7 @@
         <v-stepper-content step="3">
           <kebutuhan-logistik
             :logistic-needs="logisticNeeds"
+            :is-admin="isAdmin"
           />
         </v-stepper-content>
         <v-stepper-content step="4">
