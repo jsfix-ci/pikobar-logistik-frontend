@@ -12,7 +12,7 @@
           </v-stepper-step>
           <v-divider
             v-if="(index + 1) !== stepHeader.length"
-            :key="step.step"
+            :key="step.label"
           />
         </template>
       </v-stepper-header>
@@ -22,26 +22,34 @@
           :key="step.step"
           :step="step.step"
         >
-          <StepOne v-if="step.step === 1" />
-          <StepTwo v-if="step.step === 2" />
+          <StepOne
+            v-if="step.step === 1"
+            ref="firstStep"
+            :form="form"
+          />
+          <StepTwo
+            v-if="step.step === 2"
+          />
         </v-stepper-content>
       </v-stepper-items>
-      <v-btn
-        large
-        depressed
-        max-width="100px"
-        @click="stepModel--"
-      >
-        Back
-      </v-btn>
-      <v-btn
-        large
-        depressed
-        max-width="100px"
-        @click="stepModel++"
-      >
-        Next
-      </v-btn>
+      <div class="d-flex flex-row justify-end mr-8 mb-5">
+        <v-btn
+          large
+          depressed
+          class="form-btn__cancel mr-2"
+          @click="onCancel"
+        >
+          {{ $t('label.cancel') }}
+        </v-btn>
+        <v-btn
+          large
+          depressed
+          class="form-btn__next"
+          @click="onNext"
+        >
+          {{ $t('label.next') }}
+        </v-btn>
+      </div>
     </v-stepper>
   </v-card>
 </template>
@@ -58,12 +66,41 @@ export default {
   data() {
     return {
       stepHeader,
-      stepModel: 1
+      stepModel: 1,
+      form: {}
+    }
+  },
+  methods: {
+    async onNext() {
+      const isValid = await this.$refs.firstStep[0].validate()
+      if (isValid) this.stepModel++
+    },
+    onCancel() {
+      this.stepModel === 1 ? this.$router.go(-1) : this.stepModel--
     }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.form-btn {
+  &__next {
+    text-transform: none !important;
+    font-size: 16px;
+    letter-spacing: 0.05rem;
+    background-color: #27AE60 !important;
+    color: white;
+    width: 170px;
+  }
+  &__cancel {
+    text-transform: none !important;
+    font-size: 16px;
+    letter-spacing: 0.05rem;
+    background-color: white !important;
+    color: #BDBDBD;
+    width: 170px;
+    border: 1px #E0E0E0 solid;
+    border-radius: 8px;
+  }
+}
 </style>
