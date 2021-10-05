@@ -25,7 +25,7 @@
                 v-if="field.type === 'text'"
                 v-model="form[field.model]"
                 :error-messages="errors"
-                :label="$t('label.please_input') + ' ' + field.label"
+                :label="`${$t('label.please_input')} ${field.label}`"
                 solo-inverted
               />
               <date-picker
