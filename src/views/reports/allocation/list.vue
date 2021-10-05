@@ -24,6 +24,7 @@
           depressed
           class="add-allocation"
           color="primary"
+          @click="createAllocation"
         >
           <v-icon
             color="white"
@@ -138,6 +139,9 @@ export default {
         }
       })
       return newQuery
+    },
+    createAllocation() {
+      this.$router.push(`/reports/allocation/create-allocation`)
     }
   }
 }
