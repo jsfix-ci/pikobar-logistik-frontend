@@ -85,7 +85,7 @@ export default {
 <style lang="scss" scoped>
 .form-btn {
   &__next {
-    text-transform: none !important;
+    text-transform: none;
     font-size: 16px;
     letter-spacing: 0.05rem;
     background-color: #27AE60 !important;
@@ -93,7 +93,7 @@ export default {
     width: 170px;
   }
   &__cancel {
-    text-transform: none !important;
+    text-transform: none;
     font-size: 16px;
     letter-spacing: 0.05rem;
     background-color: white !important;
