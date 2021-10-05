@@ -42,9 +42,8 @@ const reports = {
       }
     },
     {
-      path: '/reports/allocation/:id',
-      component: () => import('@/views/reports/allocation/detail'),
-      name: 'allocation',
+      path: '/reports/allocation/create-allocation',
+      component: () => import('@/views/reports/allocation/form'),
       hidden: true,
       meta: {
         title: 'allocation',
@@ -53,8 +52,9 @@ const reports = {
       }
     },
     {
-      path: '/reports/allocation/create-allocation',
-      component: () => import('@/views/reports/allocation/form'),
+      path: '/reports/allocation/:id',
+      component: () => import('@/views/reports/allocation/detail'),
+      name: 'allocation',
       hidden: true,
       meta: {
         title: 'allocation',
