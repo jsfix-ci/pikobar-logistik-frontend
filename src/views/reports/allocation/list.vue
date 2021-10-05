@@ -24,6 +24,7 @@
           depressed
           class="add-allocation"
           color="primary"
+          @click="createAllocation"
         >
           <v-icon
             color="white"
@@ -115,10 +116,6 @@ export default {
       })
       await this.$store.dispatch('allocation/getListAllocation', this.listQuery)
     },
-    referenceDetail(data) {
-      this.$refs.referenceDetailForm.setData(data.id, data)
-      this.showreferenceDetail = true
-    },
     currency(value) {
       const formattingNumber = new FormatingNumber()
       return formattingNumber.formatCurrency(value)
@@ -142,6 +139,9 @@ export default {
         }
       })
       return newQuery
+    },
+    createAllocation() {
+      this.$router.push(`/reports/allocation/create-allocation`)
     }
   }
 }

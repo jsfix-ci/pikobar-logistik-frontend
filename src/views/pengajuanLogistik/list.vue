@@ -131,19 +131,6 @@
               @change="handleSearch()"
             />
           </v-col>
-          <v-col v-if="isApproved" cols="12" sm="3" class="mt-n8">
-            <v-label class="title">{{ $t('label.finalization_status') }}</v-label>
-            <v-select
-              v-model="listQuery.finalized_by"
-              :items="finalizedStatus"
-              solo
-              item-text="text"
-              item-value="value"
-              :clearable="true"
-              :placeholder="$t('label.finalization_status')"
-              @change="handleSearch()"
-            />
-          </v-col>
         </v-row>
       </v-card-text>
       <hr class="thin">
@@ -372,10 +359,11 @@ export default {
     } else if (this.$route.name === 'rejected') {
       this.listQuery.is_rejected = 1
       this.isRejected = true
-    } else if (this.$route.name === 'approved') {
+    } else if (this.$route.name === 'realized' || this.$route.name === 'not_yet_realized') {
       this.listQuery.verification_status = 'verified'
       this.listQuery.approval_status = 'approved'
       this.isApproved = true
+      this.listQuery.finalized_by = this.$route.name === 'realized' ? 1 : 0
     }
     await this.$store.dispatch('faskesType/getListFaskesType')
     if (this.roles[0] === 'dinkeskota') this.lockDistrictFilter()
