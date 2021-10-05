@@ -31,7 +31,7 @@
           <tr>
             <th
               v-for="header in tableHeader"
-              :key="header.id"
+              :key="header.label"
               class="detail-card__header__cell"
             >
               {{ header.label }}
@@ -39,8 +39,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="data in tableData.allocation_distribution_requests" :key="data.id">
+          <tr v-for="(data, index) in tableData.allocation_distribution_requests" :key="data.id">
+            <td>{{ index + 1 }}</td>
             <td>{{ data.agency_name }}</td>
+            <!-- Loop through the dynamic columns -->
+            <td v-for="material in tableData.allocation_material_requests" :key="material.material_id">
+              {{ displayDynamicColumn(material, data.allocation_material_requests) }}
+            </td>
           </tr>
         </tbody>
       </template>
@@ -49,7 +54,6 @@
 </template>
 
 <script>
-import tableHeader from './detailTableHeader'
 export default {
   props: {
     listQuery: {
@@ -57,13 +61,21 @@ export default {
       default: () => ({})
     },
     tableData: {
+      type: Object,
+      default: () => ({})
+    },
+    tableHeader: {
       type: Array,
       default: () => []
     }
   },
-  data() {
-    return {
-      tableHeader
+  methods: {
+    displayDynamicColumn(obj, array) {
+      // Find obj in array using material_id
+      const result = array.find(item => {
+        return item.material_id === obj.material_id
+      })
+      return result ? result.qty : '-'
     }
   }
 }

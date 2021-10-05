@@ -34,6 +34,7 @@
     <DetailCard
       :list-query="listQuery"
       :table-data="detailAllocation"
+      :table-header="tableHeader"
       @search="handleSearch"
     />
   </div>
@@ -42,6 +43,7 @@
 <script>
 import { mapState } from 'vuex'
 import infoLabelList from './detailInfoLabel'
+import listHeader from './detailTableHeader'
 import DetailCard from './DetailCard.vue'
 export default {
   components: {
@@ -50,6 +52,8 @@ export default {
   data() {
     return {
       infoLabelList,
+      listHeader,
+      tableHeader: [],
       infoValueList: [],
       listQuery: {
         search: null
@@ -62,38 +66,55 @@ export default {
     ])
   },
   async created() {
+    this.tableHeader.push(...this.listHeader)
     await this.$store.dispatch('allocation/getDetailAllocation', this.$route.params.id)
-    this.infoValueList = [
-      {
-        label: this.detailAllocation.letter_number
-      },
-      {
-        label: this.detailAllocation.letter_date
-      },
-      {
-        label: this.detailAllocation.applicant_name
-      },
-      {
-        label: this.detailAllocation.applicant_position
-      },
-      {
-        label: this.detailAllocation.applicant_agency_id
-      },
-      {
-        label: this.detailAllocation.applicant_agency_name
-      },
-      {
-        label: this.detailAllocation.description
-      },
-      {
-        label: this.detailAllocation.letter_url,
-        isUrl: true
-      }
-    ]
+    this.assignDetailInfo()
+    this.createTableHeader()
   },
   methods: {
     handleSearch() {
       console.log('search')
+    },
+    assignDetailInfo() {
+      this.infoValueList = [
+        {
+          label: this.detailAllocation.letter_number
+        },
+        {
+          label: this.detailAllocation.letter_date
+        },
+        {
+          label: this.detailAllocation.applicant_name
+        },
+        {
+          label: this.detailAllocation.applicant_position
+        },
+        {
+          label: this.detailAllocation.applicant_agency_id
+        },
+        {
+          label: this.detailAllocation.applicant_agency_name
+        },
+        {
+          label: this.detailAllocation.description
+        },
+        {
+          label: this.detailAllocation.letter_url,
+          isUrl: true
+        }
+      ]
+    },
+    createTableHeader() {
+      const dynamicHeader = []
+      for (let i = 0; i < this.detailAllocation.allocation_material_requests.length; i++) {
+        const header = this.detailAllocation.allocation_material_requests[i]
+        dynamicHeader.push({
+          materialId: header.material_id,
+          label: header.material_name,
+          isDynamic: true
+        })
+      }
+      this.tableHeader.splice.apply(this.tableHeader, [2, 0].concat(dynamicHeader))
     }
   }
 }
