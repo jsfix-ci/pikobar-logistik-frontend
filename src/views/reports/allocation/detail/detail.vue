@@ -1,36 +1,12 @@
 <template>
   <div class="d-flex flex-column">
-    <span class="detail__title">{{ $t('label.allocation_detail') }}</span>
-    <div class="d-flex flex-row my-4">
-      <div class="d-flex flex-column mr-4">
-        <span
-          v-for="info in infoLabelList"
-          :key="info.id"
-          class="mb-2"
-        >
-          {{ info.label }}
-        </span>
-      </div>
-      <div class="d-flex flex-column detail__letter-info">
-        <div
-          v-for="data in infoValueList"
-          :key="data.label"
-          class="mb-2"
-        >
-          <a
-            v-if="data.isUrl"
-            :href="data.label"
-            target="_blank"
-          >
-            :
-            <span class="detail__letter-info__url">
-              {{ data.label }}
-            </span>
-          </a>
-          <span v-else>: {{ data.label }}</span>
-        </div>
-      </div>
-    </div>
+    <span class="detail__title">
+      {{ $t('label.allocation_detail') }}
+    </span>
+    <DetailInfo
+      :list-label="infoLabelList"
+      :list-value="infoValueList"
+    />
     <DetailCard
       :list-query="listQuery"
       :table-data="detailAllocation"
@@ -42,11 +18,13 @@
 
 <script>
 import { mapState } from 'vuex'
-import infoLabelList from './detailInfoLabel'
-import listHeader from './detailTableHeader'
+import infoLabelList from './infoLabel'
+import listHeader from './tableHeader'
+import DetailInfo from './DetailInfo.vue'
 import DetailCard from './DetailCard.vue'
 export default {
   components: {
+    DetailInfo,
     DetailCard
   },
   data() {
@@ -129,16 +107,6 @@ export default {
     font-size: 24px;
     line-height: 29px;
     color: black;
-  }
-
-  &__letter-info {
-    color: #219653;
-    font-weight: 500;
-
-    &__url {
-      text-decoration: underline;
-      color: #3E8DCA;
-    }
   }
 }
 </style>

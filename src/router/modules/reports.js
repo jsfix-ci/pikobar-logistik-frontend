@@ -53,7 +53,7 @@ const reports = {
     },
     {
       path: '/reports/allocation/:id',
-      component: () => import('@/views/reports/allocation/detail'),
+      component: () => import('@/views/reports/allocation/detail/detail'),
       name: 'allocation',
       hidden: true,
       meta: {

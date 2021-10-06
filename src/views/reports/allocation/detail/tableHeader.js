@@ -5,5 +5,11 @@ export default [
   },
   {
     label: i18n.t('label.agency_name')
+  },
+  {
+    label: i18n.t('label.planned_delivery_date')
+  },
+  {
+    label: i18n.t('label.note')
   }
 ]

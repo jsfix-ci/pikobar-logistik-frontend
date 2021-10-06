@@ -32,9 +32,16 @@
             <th
               v-for="header in tableHeader"
               :key="header.label"
-              class="detail-card__header__cell"
+              class="detail-card__header__cell text-center"
+              :class="{ 'px-0': header.isDynamic }"
             >
-              {{ header.label }}
+              <DynamicHeader
+                v-if="header.isDynamic"
+                :header="header"
+              />
+              <span v-else>
+                {{ header.label }}
+              </span>
             </th>
           </tr>
         </thead>
@@ -46,6 +53,9 @@
             <td v-for="material in tableData.allocation_material_requests" :key="material.material_id">
               {{ displayDynamicColumn(material, data.allocation_material_requests) }}
             </td>
+            <!-- @todo: replace Tanggal and Keterangan with real data -->
+            <td>Tanggal</td>
+            <td>Keterangan</td>
           </tr>
         </tbody>
       </template>
@@ -54,7 +64,11 @@
 </template>
 
 <script>
+import DynamicHeader from './DynamicHeader.vue'
 export default {
+  components: {
+    DynamicHeader
+  },
   props: {
     listQuery: {
       type: Object,
@@ -89,11 +103,12 @@ export default {
   }
 
   &__header {
-    background-color: #069550 !important;
+    background-color: #069550;
 
     &__cell {
       color: white !important;
       font-size: 14px !important;
+      border: 1px solid white;
     }
   }
 }
