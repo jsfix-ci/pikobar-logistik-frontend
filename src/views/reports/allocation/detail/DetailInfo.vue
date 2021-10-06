@@ -22,10 +22,10 @@
         >
           :
           <span class="detail-info__url">
-            {{ data.label }}
+            {{ data.label || '-' }}
           </span>
         </a>
-        <span v-else>: {{ data.label }}</span>
+        <span v-else>: {{ data.label || '-' }}</span>
       </div>
     </div>
   </div>
