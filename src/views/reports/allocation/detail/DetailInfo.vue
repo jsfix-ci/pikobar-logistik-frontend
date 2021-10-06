@@ -3,7 +3,7 @@
     <div class="d-flex flex-column mr-4">
       <span
         v-for="info in listLabel"
-        :key="info.id"
+        :key="info.label"
         class="mb-2"
       >
         {{ info.label }}
