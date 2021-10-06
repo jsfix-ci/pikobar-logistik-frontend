@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     handleSearch() {
+      // @todo: create search function
       console.log('search')
     },
     assignDetailInfo() {
