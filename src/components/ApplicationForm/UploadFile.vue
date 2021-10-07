@@ -68,14 +68,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-	.upload-file-border {
-		border: 2px dashed #cbd5e0;
-		border-radius: 5px;
-	}
-	.pointer {
-		cursor: pointer;
-	}
-	.note {
-		color: #a0aec0;
-	}
+  .upload-file-border {
+    border: 2px dashed #cbd5e0;
+  }
+  .pointer {
+    cursor: pointer;
+  }
+  .note {
+    color: #a0aec0;
+  }
 </style>
