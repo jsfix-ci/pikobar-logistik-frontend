@@ -26,7 +26,6 @@
                 solo-inverted
               />
             </ValidationProvider>
-            <hr>
             <ValidationProvider
               v-slot="{ errors }"
               ref="provider"
