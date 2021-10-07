@@ -1,3 +1,5 @@
+/* eslint-disable vue/valid-v-model */
+/* eslint-disable vue/html-indent */
 <template>
   <v-container>
     <v-row>
@@ -26,35 +28,33 @@
                 solo-inverted
               />
             </ValidationProvider>
+            <hr>
             <ValidationProvider
-              rules="required"
+              v-slot="{ errors }"
+              ref="provider"
+              name="Surat Permohonan"
+              rules="required|size:10000|ext:jpg,png,jpeg,pdf"
             >
               <v-label class="title"><b>{{ $t('label.applicant_letter_number_upload') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-              <br>
-              <v-row class="mt-1">
+              <v-row>
                 <v-col sm="12" md="3">
                   <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
                   <img v-if="isUpload" height="100" src="../../static/upload_dokumen.svg">
                 </v-col>
-                <v-col sm="12" md="9">
+                <v-col sm="12" md="8">
                   <v-row class="mr-1 ml-1">
                     <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
-                    <v-label v-if="isUpload">{{ selectedFileName }}</v-label>
+                    <v-label v-if="isUpload">{{ file.name }}</v-label>
                   </v-row>
-                  <br>
                   <v-row class="mr-1 ml-1 mt-1">
                     <input
-                      ref="uploader"
+                      v-show="false"
+                      ref="uploadImage"
                       type="file"
-                      class="d-none"
                       accept=".jpg, .jpeg, .png, .pdf"
-                      @change="onFileChanged"
+                      @change="saveImage"
                     >
-                    <v-text-field
-                      v-model="selectedFileName"
-                      disabled
-                      class="d-none"
-                    />
+                    <p class="error--text" style="font: 12px Product Sans">{{ errors[0] }}</p>
                     <v-btn
                       v-if="!isUpload"
                       color="#2E7D32"
@@ -74,18 +74,6 @@
                     >
                       {{ $t('label.reupload') }}
                     </v-btn>
-                    <v-alert
-                      v-if="uploadAlert"
-                      type="error"
-                    >
-                      {{ $t('label.upload_error_message') }}
-                    </v-alert>
-                    <v-alert
-                      v-if="requiredAlert"
-                      type="error"
-                    >
-                      {{ $t('errors.field_must_be_filled_applicant_file') }}
-                    </v-alert>
                   </v-row>
                 </v-col>
               </v-row>
@@ -192,6 +180,8 @@ export default {
   },
   data() {
     return {
+      file: null,
+      value: null,
       step: 4,
       isSelecting: false,
       isUpload: false,
@@ -210,12 +200,21 @@ export default {
     this.reloadData()
   },
   methods: {
+    async saveImage(e) {
+      this.file = e.target.files[0]
+      const valid = await this.$refs.provider.validate(this.file)
+      this.selectedFileName = this.file.name
+      this.isUpload = true
+      if (!valid) return
+      const formData = new FormData()
+      formData.append('file', this.file)
+      this.applicantLetter.dataFile = this.file
+    },
     async reloadData() {
       if (this.applicantLetter.dataFile) {
-        this.selectedFile = this.applicantLetter.dataFile
-        this.selectedFileName = this.selectedFile.name
+        this.file = this.applicantLetter.dataFile
+        this.selectedFileName = this.file.name
         this.isUpload = true
-        this.requiredAlert = false
       } else {
         this.applicantLetter.name = null
         this.applicantLetter.dataFile = null
@@ -223,35 +222,11 @@ export default {
     },
     onButtonClick() {
       this.isSelecting = false
-      this.$refs.uploader.click()
-    },
-    onFileChanged(e) {
-      this.selectedFile = e.target.files[0]
-      if (this.selectedFile.size < 10000000) {
-        this.isFileValid = true
-      } else {
-        this.isFileValid = false
-        return
-      }
-      this.selectedFileName = this.selectedFile.name
-      this.isUpload = true
-      const formData = new FormData()
-      formData.append('file', this.selectedFile)
-      this.applicantLetter.dataFile = this.selectedFile
-      this.requiredAlert = false
+      this.$refs.uploadImage.click()
     },
     async onNext() {
-      this.isValid = true
-      this.requiredAlert = false
-      if (!this.isUpload) {
-        this.requiredAlert = true
-        this.isValid = false
-      }
       const valid = await this.$refs.observer.validate()
       if (!valid) {
-        this.isValid = false
-      }
-      if (!this.isValid) {
         return
       }
       EventBus.$emit('confirmStep', this.applicantLetter)

@@ -51,94 +51,27 @@
               />
             </ValidationProvider>
             <ValidationProvider
-              v-if="!isAdmin"
-              rules="required"
-            >
-              <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b> <i class="text-small-second-step">{{ $t('label.must_fill') }}</i></v-label>
-              <br>
-              <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
-              <div>
-                <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
-                <v-label v-else>{{ selectedFileName }}</v-label>
-                <br>
-                <input
-                  ref="uploader"
-                  type="file"
-                  class="d-none"
-                  accept=".jpg, .jpeg, .png"
-                  @change="onFileChanged"
-                >
-                <v-text-field
-                  v-model="selectedFileName"
-                  disabled
-                  class="d-none"
-                />
-                <v-btn
-                  v-if="!isUpload"
-                  color="#2E7D32"
-                  class="margin-10"
-                  depressed
-                  :outlined="true"
-                  :loading="isSelecting"
-                  @click="onButtonClick"
-                >
-                  {{ $t('label.upload') }}
-                </v-btn>
-                <v-btn
-                  v-if="isUpload"
-                  outlined
-                  class="btn-delete-mobile-second-step"
-                  @click="deleteFile"
-                >
-                  {{ $t('label.delete') }}
-                </v-btn>
-                <v-btn
-                  v-if="isUpload"
-                  color="#2E7D32"
-                  class="margin-10"
-                  depressed
-                  :outlined="true"
-                  :loading="isSelecting"
-                  @click="onButtonClick"
-                >
-                  {{ $t('label.reupload') }}
-                </v-btn>
-                <v-alert
-                  v-if="uploadAlert"
-                  type="error"
-                >
-                  {{ $t('label.upload_error_message') }}
-                </v-alert>
-                <v-alert
-                  v-if="requiredAlert"
-                  type="error"
-                >
-                  {{ $t('errors.field_must_be_filled_identity_file') }}
-                </v-alert>
-              </div>
-            </ValidationProvider>
-            <ValidationProvider
-              v-else
+              v-slot="{ errors }"
+              ref="provider"
+              name="KTP"
+              :rules="isAdmin ? 'size:10000|ext:jpg,png,jpeg' : 'required|size:10000|ext:jpg,png,jpeg'"
             >
               <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b></v-label>
               <br>
               <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
               <div>
                 <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
-                <v-label v-else>{{ selectedFileName }}</v-label>
+                <v-label v-else>{{ file.name }}</v-label>
                 <br>
                 <input
-                  ref="uploader"
+                  v-show="false"
+                  ref="uploadImage"
+                  name="namanansdfasdfaf"
                   type="file"
-                  class="d-none"
-                  accept=".jpg, .jpeg, .png"
-                  @change="onFileChanged"
+                  accept=".jpg, ,jpeg, .png"
+                  @change="saveImage"
                 >
-                <v-text-field
-                  v-model="selectedFileName"
-                  disabled
-                  class="d-none"
-                />
+                <p class="error--text" style="font: 12px Product Sans">{{ errors[0] }}</p>
                 <v-btn
                   v-if="!isUpload"
                   color="#2E7D32"
@@ -151,7 +84,7 @@
                   {{ $t('label.upload') }}
                 </v-btn>
                 <v-btn
-                  v-if="isUpload"
+                  v-if="isUpload && isAdmin"
                   outlined
                   class="btn-delete-mobile-second-step"
                   @click="deleteFile"
@@ -169,12 +102,6 @@
                 >
                   {{ $t('label.reupload') }}
                 </v-btn>
-                <v-alert
-                  v-if="uploadAlert"
-                  type="error"
-                >
-                  {{ $t('label.upload_error_message') }}
-                </v-alert>
               </div>
             </ValidationProvider>
           </v-col>
@@ -294,36 +221,33 @@ export default {
       selectedFile: null,
       selectedFileName: '',
       isUpload: false,
-      uploadAlert: false,
-      requiredAlert: false,
-      isFileValid: false,
-      isValid: false
+      file: null
     }
   },
   created() {
     this.reloadData()
   },
   methods: {
+    async saveImage(e) {
+      this.file = e.target.files[0]
+      this.selectedFileName = this.file.name
+      this.isUpload = true
+      const valid = await this.$refs.provider.validate(this.file)
+      if (!valid) return
+      const formData = new FormData()
+      formData.append('file', this.file)
+      this.formIdentityApplicant.dataFile = this.file
+    },
     async reloadData() {
       if (this.formIdentityApplicant.dataFile) {
-        this.selectedFile = this.formIdentityApplicant.dataFile
-        this.selectedFileName = this.selectedFile.name
+        this.file = this.formIdentityApplicant.dataFile
+        this.selectedFileName = this.file.name
         this.isUpload = true
-        this.requiredAlert = false
       }
     },
     async onNext() {
-      this.isValid = true
-      this.requiredAlert = false
       const valid = await this.$refs.observer.validate()
       if (!valid) {
-        this.isValid = false
-      }
-      if (!this.isAdmin && !this.isFileValid) {
-        this.requiredAlert = true
-        this.isValid = false
-      }
-      if (!this.isValid) {
         return
       }
       EventBus.$emit('nextStep', this.step)
@@ -333,34 +257,13 @@ export default {
     },
     onButtonClick() {
       this.isSelecting = false
-      this.uploadAlert = false
-      this.$refs.uploader.click()
+      this.$refs.uploadImage.click()
     },
-    onFileChanged(e) {
-      this.selectedFile = e.target.files[0]
-      if (this.selectedFile.type === 'image/jpeg' || this.selectedFile.type === 'image/png') {
-        if (this.selectedFile.size < 10000000) {
-          this.isFileValid = true
-        } else {
-          this.isFileValid = false
-          return
-        }
-      } else {
-        this.isFileValid = false
-        return
-      }
-      this.selectedFileName = this.selectedFile.name
-      this.isUpload = true
-      const formData = new FormData()
-      formData.append('file', this.selectedFile)
-      this.formIdentityApplicant.dataFile = this.selectedFile
-      this.requiredAlert = false
-    },
-    deleteFile() {
-      this.selectedFileName = ''
-      this.formIdentityApplicant.dataFile = null
+    async deleteFile() {
       this.isUpload = false
-      if (!this.isAdmin) this.isFileValid = false
+      this.selectedFileName = null
+      this.file = null
+      this.formIdentityApplicant.dataFile = null
     }
   }
 }
