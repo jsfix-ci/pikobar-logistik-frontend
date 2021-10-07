@@ -1,5 +1,3 @@
-/* eslint-disable vue/valid-v-model */
-/* eslint-disable vue/html-indent */
 <template>
   <v-container>
     <v-row>
