@@ -177,17 +177,15 @@ export default {
   },
   data() {
     return {
-      file: null,
-      value: null,
       step: 4,
-      isSelecting: false,
+      file: null,
       isUpload: false,
       selectedFile: null,
-      selectedFileName: '',
-      uploadAlert: false,
       letterNumber: null,
+      uploadAlert: false,
+      isSelecting: false,
       requiredAlert: false,
-      isValid: false
+      selectedFileName: null
     }
   },
   computed: {
