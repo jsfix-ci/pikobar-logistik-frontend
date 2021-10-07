@@ -7,7 +7,8 @@ const state = {
   totalListAllocationPage: null,
   totalAllocation: null,
   totalSuccess: null,
-  totalDraft: null
+  totalDraft: null,
+  detailAllocation: null
 }
 
 export default {

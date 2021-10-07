@@ -45,7 +45,17 @@ const reports = {
       path: '/reports/allocation/create-allocation',
       component: () => import('@/views/reports/allocation/form'),
       hidden: true,
+      meta: {
+        title: 'allocation',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
+      }
+    },
+    {
+      path: '/reports/allocation/:id',
+      component: () => import('@/views/reports/allocation/detail/detail'),
       name: 'allocation',
+      hidden: true,
       meta: {
         title: 'allocation',
         noCache: true,
