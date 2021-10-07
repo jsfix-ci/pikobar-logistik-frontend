@@ -37,6 +37,7 @@
                 :empty-file="$t('label.not_yet_upload_file')"
                 :title="$t('label.applicant_letter_number_upload')"
                 note="JPG, JPEG, PNG, PDF up to 10MB"
+                accept=".jpg, .jpeg, .png, .pdf"
                 :is-upload="isUpload"
                 :selected-file-name="selectedFileName"
                 @saveImage="saveImage"

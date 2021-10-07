@@ -15,7 +15,7 @@
         <input
           ref="uploadImage"
           type="file"
-          accept=".jpg, .jpeg, .png, .pdf"
+          :accept="accept"
           @change="saveImage"
         >
       </div>
@@ -47,6 +47,10 @@ export default {
       default: null
     },
     emptyFile: {
+      type: String,
+      default: null
+    },
+    accept: {
       type: String,
       default: null
     }
