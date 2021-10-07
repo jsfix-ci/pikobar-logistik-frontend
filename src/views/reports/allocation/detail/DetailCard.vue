@@ -48,14 +48,13 @@
         <tbody>
           <tr v-for="(data, index) in tableData.allocation_distribution_requests" :key="data.id">
             <td>{{ index + 1 }}</td>
-            <td>{{ data.agency_name }}</td>
+            <td>{{ data.agency_name || '-' }}</td>
             <!-- Loop through the dynamic columns -->
             <td v-for="material in tableData.allocation_material_requests" :key="material.material_id">
               {{ displayDynamicColumn(material, data.allocation_material_requests) }}
             </td>
-            <!-- @todo: replace Tanggal and Keterangan with real data -->
-            <td>Tanggal</td>
-            <td>Keterangan</td>
+            <td>{{ $moment(data.distribution_plan_date).format('D MMMM YYYY') || '-' }}</td>
+            <td>{{ data.additional_information || '-' }}</td>
           </tr>
         </tbody>
       </template>

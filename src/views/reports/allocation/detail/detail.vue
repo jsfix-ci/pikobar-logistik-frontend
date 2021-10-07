@@ -75,7 +75,7 @@ export default {
           label: this.detailAllocation.applicant_agency_name
         },
         {
-          label: this.detailAllocation.description
+          label: this.detailAllocation.distribution_description
         },
         {
           label: this.detailAllocation.letter_url,
