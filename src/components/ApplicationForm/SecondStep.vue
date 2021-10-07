@@ -56,53 +56,16 @@
               name="KTP"
               :rules="isAdmin ? 'size:10000|ext:jpg,png,jpeg' : 'required|size:10000|ext:jpg,png,jpeg'"
             >
-              <v-label class="title"><b>{{ $t('label.upload_applicant_ktp') }}</b></v-label>
-              <br>
-              <v-label><i class="text-small-second-step">({{ $t('label.max_file_title') }})</i></v-label>
-              <div>
-                <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
-                <v-label v-else>{{ file.name }}</v-label>
-                <br>
-                <input
-                  v-show="false"
-                  ref="uploadImage"
-                  name="namanansdfasdfaf"
-                  type="file"
-                  accept=".jpg, ,jpeg, .png"
-                  @change="saveImage"
-                >
-                <p class="error--text" style="font: 12px Product Sans">{{ errors[0] }}</p>
-                <v-btn
-                  v-if="!isUpload"
-                  color="#2E7D32"
-                  class="margin-10"
-                  depressed
-                  :outlined="true"
-                  :loading="isSelecting"
-                  @click="onButtonClick"
-                >
-                  {{ $t('label.upload') }}
-                </v-btn>
-                <v-btn
-                  v-if="isUpload && isAdmin"
-                  outlined
-                  class="btn-delete-mobile-second-step"
-                  @click="deleteFile"
-                >
-                  {{ $t('label.delete') }}
-                </v-btn>
-                <v-btn
-                  v-if="isUpload"
-                  color="#2E7D32"
-                  class="margin-10"
-                  depressed
-                  :outlined="true"
-                  :loading="isSelecting"
-                  @click="onButtonClick"
-                >
-                  {{ $t('label.reupload') }}
-                </v-btn>
-              </div>
+              <upload-file
+                :suffix-title="isAdmin ? null : $t('label.must_fill')"
+                :empty-file="$t('label.not_yet_upload_file')"
+                :title="$t('label.upload_applicant_ktp')"
+                note="JPG, JPEG, PNG up to 10MB"
+                :is-upload="isUpload"
+                :selected-file-name="selectedFileName"
+                @saveImage="saveImage"
+              />
+              <p v-if="errors.length" class="ma-2 error--text error--message">{{ errors[0] }}</p>
             </ValidationProvider>
           </v-col>
           <v-col cols="12" sm="12" md="6">
@@ -229,11 +192,12 @@ export default {
   },
   methods: {
     async saveImage(e) {
+      this.isUpload = false
       this.file = e.target.files[0]
       this.selectedFileName = this.file.name
-      this.isUpload = true
       const valid = await this.$refs.provider.validate(this.file)
-      if (!valid) return
+      if (!valid.valid) return
+      this.isUpload = true
       const formData = new FormData()
       formData.append('file', this.file)
       this.formIdentityApplicant.dataFile = this.file
@@ -254,16 +218,6 @@ export default {
     },
     onPrev() {
       EventBus.$emit('prevStep', this.step)
-    },
-    onButtonClick() {
-      this.isSelecting = false
-      this.$refs.uploadImage.click()
-    },
-    async deleteFile() {
-      this.isUpload = false
-      this.selectedFileName = null
-      this.file = null
-      this.formIdentityApplicant.dataFile = null
     }
   }
 }

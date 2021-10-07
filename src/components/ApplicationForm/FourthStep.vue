@@ -165,9 +165,7 @@ export default {
       this.file = e.target.files[0]
       this.selectedFileName = this.file.name
       const valid = await this.$refs.provider.validate(this.file)
-      if (!valid.valid) {
-        return
-      }
+      if (!valid.valid) return
       this.isUpload = true
       const formData = new FormData()
       formData.append('file', this.file)
