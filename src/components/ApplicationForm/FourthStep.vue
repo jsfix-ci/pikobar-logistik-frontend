@@ -32,48 +32,16 @@
               name="Surat Permohonan"
               rules="required|size:10000|ext:jpg,png,jpeg,pdf"
             >
-              <v-label class="title"><b>{{ $t('label.applicant_letter_number_upload') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-              <v-row>
-                <v-col sm="12" md="3">
-                  <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
-                  <img v-if="isUpload" height="100" src="../../static/upload_dokumen.svg">
-                </v-col>
-                <v-col sm="12" md="8">
-                  <v-row class="mr-1 ml-1">
-                    <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
-                    <v-label v-if="isUpload">{{ file.name }}</v-label>
-                  </v-row>
-                  <v-row class="mr-1 ml-1 mt-1">
-                    <input
-                      v-show="false"
-                      ref="uploadImage"
-                      type="file"
-                      accept=".jpg, .jpeg, .png, .pdf"
-                      @change="saveImage"
-                    >
-                    <p class="error--text" style="font: 12px Product Sans">{{ errors[0] }}</p>
-                    <v-btn
-                      v-if="!isUpload"
-                      color="#2E7D32"
-                      outlined
-                      @click="onButtonClick"
-                    >
-                      {{ $t('label.upload') }}
-                    </v-btn>
-                    <v-btn
-                      v-if="isUpload"
-                      color="#2E7D32"
-                      class="margin-10"
-                      depressed
-                      :outlined="true"
-                      :loading="isSelecting"
-                      @click="onButtonClick"
-                    >
-                      {{ $t('label.reupload') }}
-                    </v-btn>
-                  </v-row>
-                </v-col>
-              </v-row>
+              <upload-file
+                :suffix-title="$t('label.must_fill')"
+                :empty-file="$t('label.not_yet_upload_file')"
+                :title="$t('label.applicant_letter_number_upload')"
+                note="JPG, JPEG, PNG, PDF up to 10MB"
+                :is-upload="isUpload"
+                :selected-file-name="selectedFileName"
+                @saveImage="saveImage"
+              />
+              <p v-if="errors.length" class="ma-2 error--text error--message">{{ errors[0] }}</p>
             </ValidationProvider>
           </v-col>
           <v-col v-if="formApplicant.instanceType <= 3 && logisticRequestType === 'alkes'" cols="12" sm="12" md="6">
@@ -182,9 +150,6 @@ export default {
       isUpload: false,
       selectedFile: null,
       letterNumber: null,
-      uploadAlert: false,
-      isSelecting: false,
-      requiredAlert: false,
       selectedFileName: null
     }
   },
@@ -196,11 +161,14 @@ export default {
   },
   methods: {
     async saveImage(e) {
+      this.isUpload = false
       this.file = e.target.files[0]
-      const valid = await this.$refs.provider.validate(this.file)
       this.selectedFileName = this.file.name
+      const valid = await this.$refs.provider.validate(this.file)
+      if (!valid.valid) {
+        return
+      }
       this.isUpload = true
-      if (!valid) return
       const formData = new FormData()
       formData.append('file', this.file)
       this.applicantLetter.dataFile = this.file
@@ -214,10 +182,6 @@ export default {
         this.applicantLetter.name = null
         this.applicantLetter.dataFile = null
       }
-    },
-    onButtonClick() {
-      this.isSelecting = false
-      this.$refs.uploadImage.click()
     },
     async onNext() {
       const valid = await this.$refs.observer.validate()
@@ -237,6 +201,7 @@ export default {
 .float-right-fourth-step {
   float: right;
 }
+
 @media (max-width: 1199px) and (min-width: 960px) {
 }
 @media (max-width: 768px) and (min-width: 320px) {
