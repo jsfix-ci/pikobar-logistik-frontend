@@ -22,7 +22,7 @@ const reports = {
       }
     },
     {
-      path: '/allocation/create-allocation',
+      path: '/allocation/create',
       component: () => import('@/views/allocation/form/form'),
       hidden: true,
       meta: {
