@@ -141,7 +141,7 @@ export default {
       return newQuery
     },
     createAllocation() {
-      this.$router.push(`/allocation/create-allocation`)
+      this.$router.push(`/allocation/create`)
     }
   }
 }
