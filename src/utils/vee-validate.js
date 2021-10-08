@@ -1,4 +1,4 @@
-import { required, email, max, numeric } from 'vee-validate/dist/rules'
+import { required, email, max, numeric, ext, size } from 'vee-validate/dist/rules'
 import { isContainHtmlTags, isPhoneNumber } from '@/utils/validate'
 import { extend, setInteractionMode } from 'vee-validate'
 import i18n from '@/lang'
@@ -6,7 +6,17 @@ import i18n from '@/lang'
 setInteractionMode('eager')
 extend('required', {
   ...required,
-  message: (_, values) => i18n.t('errors.field_must_be_filled', values)
+  message: (_, values) => `${values._field_} tidak boleh kosong`
+})
+
+extend('size', {
+  ...size,
+  message: (_, values) => `Ukuran file ${values._field_} maksimal ${values.size / 1000}MB`
+})
+
+extend('ext', {
+  ...ext,
+  message: (_, values) => `File ${values._field_} tidak sesuai format`
 })
 
 extend('requiredNumericTotal', {
