@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     toDetail(data) {
-      this.$router.push(`/reports/allocation/${data.id}`)
+      this.$router.push(`/allocation/${data.id}`)
     },
     capitalize(string) {
       return string.charAt(0).toUpperCase() + string.slice(1)

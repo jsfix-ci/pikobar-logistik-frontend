@@ -59,7 +59,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import FormatingNumber from '../../../helpers/formattingNumber'
+import FormatingNumber from '../../helpers/formattingNumber'
 import AllocationTable from './AllocationTable.vue'
 import AllocationFilter from './AllocationFilter.vue'
 export default {
@@ -141,7 +141,7 @@ export default {
       return newQuery
     },
     createAllocation() {
-      this.$router.push(`/reports/allocation/create-allocation`)
+      this.$router.push(`/allocation/create-allocation`)
     }
   }
 }
