@@ -7,7 +7,7 @@
       {{ header.label }}
     </span>
     <span class="px-4">
-      {{ $t('label.total_2') }} :
+      {{ $t('label.total_2') }} : {{ header.total }}
     </span>
   </div>
 </template>

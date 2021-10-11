@@ -20,6 +20,7 @@
 import { mapState } from 'vuex'
 import infoLabelList from './infoLabel'
 import listHeader from './tableHeader'
+import FormatingNumber from '../../../helpers/formattingNumber'
 import DetailInfo from './DetailInfo.vue'
 import DetailCard from './DetailCard.vue'
 export default {
@@ -90,10 +91,15 @@ export default {
         dynamicHeader.push({
           materialId: header.material_id,
           label: header.material_name,
+          total: this.currency(header.total_qty),
           isDynamic: true
         })
       }
       this.tableHeader.splice.apply(this.tableHeader, [2, 0].concat(dynamicHeader))
+    },
+    currency(value) {
+      const formattingNumber = new FormatingNumber()
+      return formattingNumber.formatCurrency(value)
     }
   }
 }
