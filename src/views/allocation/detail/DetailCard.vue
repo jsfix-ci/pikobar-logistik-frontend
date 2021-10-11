@@ -53,7 +53,9 @@
             <td v-for="material in tableData.allocation_material_requests" :key="material.material_id">
               {{ displayDynamicColumn(material, data.allocation_material_requests) }}
             </td>
-            <td>{{ $moment(data.distribution_plan_date).format('D MMMM YYYY') || '-' }}</td>
+            <td>
+              {{ data.distribution_plan_date ? $moment(data.distribution_plan_date).format('D MMMM YYYY') : '-' }}
+            </td>
             <td>{{ data.additional_information || '-' }}</td>
           </tr>
         </tbody>
