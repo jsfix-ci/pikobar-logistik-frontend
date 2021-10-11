@@ -16,6 +16,7 @@
             <ValidationProvider
               v-slot="{ errors }"
               :rules="field.rules"
+              :name="field.label"
             >
               <label>
                 <strong>{{ field.label }} </strong>
