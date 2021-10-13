@@ -706,6 +706,7 @@ export default {
     password_must_be_filled: 'Password harus diisi',
     password_must_be_more_than_characters: 'Password harus lebih dari 5 karakter',
     field_must_be_valid_email: 'Masukkan email yang valid',
+    field_must_be_valid_url: 'Masukkan url yang valid',
     field_must_be_filled: 'Bidang tidak boleh kosong',
     field_must_be_filled_instance_type: 'Jenis instansi tidak boleh kosong',
     field_must_be_filled_instance_name: 'Nama instansi tidak boleh kosong',

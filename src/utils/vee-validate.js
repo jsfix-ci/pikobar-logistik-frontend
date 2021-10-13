@@ -1,5 +1,5 @@
 import { required, email, max, numeric, ext, size } from 'vee-validate/dist/rules'
-import { isContainHtmlTags, isPhoneNumber } from '@/utils/validate'
+import { isContainHtmlTags, isPhoneNumber, isUrl } from '@/utils/validate'
 import { extend, setInteractionMode } from 'vee-validate'
 import i18n from '@/lang'
 
@@ -319,4 +319,11 @@ extend('acceptanceReportBastProof', {
 extend('acceptanceReportItemProof', {
   ...required,
   message: (_, values) => i18n.t('errors.acceptance_report.item_proof', values)
+})
+
+extend('url', {
+  message: (_, values) => i18n.t('errors.field_must_be_valid_url', values),
+  validate: value => {
+    return isUrl(value)
+  }
 })
