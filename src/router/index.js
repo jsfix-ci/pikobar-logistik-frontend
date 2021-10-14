@@ -9,6 +9,7 @@ import Layout from '@/layout'
 /* Router Modules */
 import dashboardRouter from './modules/dashboard'
 import pengajuanLogistik from './modules/pengajuanLogistik'
+import requestVaccine from './modules/requestVaccine'
 import faskesRouter from './modules/faskes'
 import formPemohonAdmin from './modules/formPemohonAdmin'
 import letterRouter from './modules/letter'
@@ -89,6 +90,7 @@ export const asyncRoutes = [
   dashboardRouter,
   formPemohonAdmin,
   pengajuanLogistik,
+  requestVaccine,
   reports,
   letterRouter,
   faskesRouter,
