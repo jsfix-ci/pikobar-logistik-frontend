@@ -542,6 +542,7 @@ export default {
     total_applicant: 'Total Permohonan',
     total_recipient: 'Total Penerima',
     total_allocation: 'Total Alokasi Barang',
+    detail_logistic_allocation_info: 'Detail Info Alokasi Salur Logistik',
     outgoing_mail_print: 'Cetak Surat',
     incoming_mail_print: 'Cetak Surat',
     outgoing_mail_detail: 'Detail Surat Perintah',
