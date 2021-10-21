@@ -14,76 +14,16 @@
         @selected-district-city="onSelectDistrictCity"
         @export-data="exportData"
       />
-      <v-row>
-        <v-col auto>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.instance_type').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.instance_name').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.instance_reference').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
-                  <th v-if="isApproved" class="text-center">{{ $t('label.approved_by').toUpperCase() }}</th>
-                  <th v-if="isApproved" class="text-center">{{ $t('label.finalized_by').toUpperCase() }}</th>
-                  <th v-if="isRejected" class="text-center">{{ $t('label.status').toUpperCase() }}</th>
-                  <th v-if="isVerified" class="text-center">{{ $t('label.verified_by').toUpperCase() }}</th>
-                  <th v-if="isVerified" class="text-center">{{ $t('label.verified_date').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('label.urgency').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(data, index) in listLogisticRequest" :key="data.index">
-                  <td>{{ getTableRowNumbering(index) }}</td>
-                  <td>{{ data.applicant.application_letter_number }}</td>
-                  <td>{{ data.master_faskes_type.name }}</td>
-                  <td>{{ data.agency_name }}</td>
-                  <td>
-                    <v-btn v-if="data.is_reference === 1" outlined small color="success" @click="referenceDetail(data)">{{ $t('label.instance_is_reference') }}</v-btn>
-                  </td>
-                  <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
-                  <td>{{ data.applicant.applicant_name }}</td>
-                  <td>{{ data.created_at ? $moment(data.created_at).format('D MMMM YYYY') : $t('label.stripe') }}</td>
-                  <td v-if="isApproved" class="text-center">
-                    <span v-if="data.applicant.approved_by" class="green--text">{{ data.applicant.approved_by.name }}</span>
-                    <span v-else class="red--text">{{ 'Belum DiSetujui' }}</span>
-                  </td>
-                  <td v-if="isApproved" class="text-center">
-                    <span v-if="data.applicant.finalized_by" class="green--text">{{ data.applicant.finalized_by.name }}</span>
-                    <span v-else class="red--text">{{ 'Belum diselesaikan' }}</span>
-                  </td>
-                  <td v-if="isRejected">{{ data.applicant.status }}</td>
-                  <td v-if="isVerified" class="text-center">
-                    <span v-if="data.applicant.verified_by" class="green--text">{{ data.applicant.verified_by.name }}</span>
-                    <span v-else class="red--text">{{ 'Belum Diverifikasi' }}</span>
-                  </td>
-                  <td v-if="isVerified" class="text-center">
-                    <span v-if="data.applicant.verified_at">{{ $moment(data.applicant.verified_at).format('D MMMM YYYY') }}</span>
-                    <span v-else class="red--text">{{ $t('label.not_verified') }}</span>
-                  </td>
-                  <td align="center">
-                    <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
-                    <v-btn v-else outlined small color="error" @click="completenessDetail(data)">{{ $t('label.not_complete') }}</v-btn>
-                  </td>
-                  <td align="center">
-                    <v-btn v-if="data.applicant.is_urgency === 1" outlined small color="warning">{{ $t('label.important') }}</v-btn>
-                  </td>
-                  <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
-                </tr>
-                <tr v-if="listLogisticRequest.length === 0">
-                  <td colspan="10" class="text-center">{{ $t('label.no_data') }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-col>
-      </v-row>
+      <data-table
+        :items="listLogisticRequest"
+        :is-approved="isApproved"
+        :is-rejected="isRejected"
+        :is-verified="isVerified"
+        :list-query="listQuery"
+        @to-detail="toDetail"
+        @reference-detail="referenceDetail"
+        @completeness-detail="completenessDetail"
+      />
     </v-card>
     <pagination
       :total="totalListLogisticRequest"
@@ -110,13 +50,15 @@ import EventBus from '@/utils/eventBus'
 import completenessDetail from '@/views/pengajuanLogistik/completenessDetail'
 import referenceDetail from '@/views/pengajuanLogistik/referenceDetail'
 import SearchFilter from './searchFilter.vue'
+import DataTable from './dataTable.vue'
 
 export default {
   name: 'ListRequestVaccine',
   components: {
     completenessDetail,
     referenceDetail,
-    SearchFilter
+    SearchFilter,
+    DataTable
   },
   props: {
     title: {
@@ -213,7 +155,6 @@ export default {
   },
   methods: {
     async changeDate(value) {
-      console.log('terpanggil dari sumber')
       this.listQuery.start_date = value.startDate
       this.listQuery.end_date = value.endDate
       this.listQuery.page = 1
@@ -310,37 +251,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.bg-dark {
-  background: linear-gradient(90deg, #4F4F4F 0%, #828282 100%);
-}
-.bg-success {
-  background: linear-gradient(90deg, #219653 0%, #27AE60 100%);
-}
-.bg-info {
-  background: linear-gradient(90deg, #2F80ED 0%, #2D9CDB 100%);
-}
-.bottom-add-survey {
-  margin-top:25px;
-}
-.margin-top-min-20-list-pengajuan-logistik {
-  margin-top: -20px;
-}
-.margin-top-bot-min-20-list-pengajuan-logistik {
-  margin-top: -20px;
-  margin-bottom: -20px;
-}
-.table-title {
-  font-family: "Product Sans";
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 19px;
-  color: #828282;
-}
-.thin {
-  margin-top: 5px;
-  margin-bottom: 0px;
-}
-</style>
