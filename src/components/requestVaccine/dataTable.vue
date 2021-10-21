@@ -3,9 +3,11 @@
     <v-data-table
       :headers="headerFilter"
       :items="items"
-      no-data-text="Tidak ada data"
+      :loading="loading"
+      :items-per-page="listQuery.limit"
+      :loading-text="$t('label.loading')"
+      :no-data-text="$t('label.no-data')"
       hide-default-footer
-      class="elevation-1"
     >
       <template v-slot:[`item.numbering_item`]="{ item }">
         {{ getTableRowNumbering(item) }}
@@ -22,17 +24,17 @@
 
       <template v-slot:[`item.applicant.approved_by`]="{ value }">
         <span v-if="value" class="green--text">{{ value.name }}</span>
-        <span v-else class="red--text">{{ 'Belum Disetujui' }}</span>
+        <span v-else class="red--text">{{ $t('label.not_approved') }}</span>
       </template>
 
       <template v-slot:[`item.applicant.finalized_by`]="{ value }">
         <span v-if="value" class="green--text">{{ value.name }}</span>
-        <span v-else class="red--text">{{ 'Belum Disetujui' }}</span>
+        <span v-else class="red--text">{{ $t('label.not_approved') }}</span>
       </template>
 
       <template v-slot:[`item.applicant.verified_by`]="{ value }">
         <span v-if="value" class="green--text">{{ value.name }}</span>
-        <span v-else class="red--text">{{ 'Belum Diverifikasi' }}</span>
+        <span v-else class="red--text">{{ $t('label.not_verified') }}</span>
       </template>
 
       <template v-slot:[`item.applicant.verified_at`]="{ value }">
@@ -78,6 +80,10 @@ export default {
     listQuery: {
       type: Object,
       default: null
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

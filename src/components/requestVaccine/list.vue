@@ -20,6 +20,7 @@
         :is-rejected="isRejected"
         :is-verified="isVerified"
         :list-query="listQuery"
+        :loading="loading"
         @to-detail="toDetail"
         @reference-detail="referenceDetail"
         @completeness-detail="completenessDetail"
@@ -100,6 +101,7 @@ export default {
         }
       ],
       date: null,
+      loading: false,
       isVerified: false,
       isApproved: false,
       isRejected: false,
@@ -165,12 +167,14 @@ export default {
       })
     },
     async getLogisticRequestList() {
+      this.loading = true
       await this.$store.dispatch('logistics/getListLogisticRequest', this.listQuery)
       this.listLogisticRequest.forEach(element => {
         if (element.master_faskes) {
           element.is_reference = element.master_faskes.is_reference
         }
       })
+      this.loading = false
     },
     async handleSearch() {
       this.listQuery.page = 1

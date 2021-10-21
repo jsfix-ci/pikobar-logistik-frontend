@@ -444,7 +444,7 @@ export default {
     approved: 'Sudah Disetujui',
     approved_item: 'Disetujui',
     verified: 'Terverifikasi',
-    not_verified: 'Belum Terverifikasi',
+    not_verified: 'Belum Diverifikasi',
     verified_by: 'Diverifikasi Oleh',
     verified_date: 'Tanggal Diverifikasi',
     finalization_status: 'Status Penyelesaian',
