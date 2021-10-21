@@ -23,7 +23,7 @@ const requestVaccine = {
     },
     {
       path: '/vaksin/terverifikasi',
-      component: () => import('@/views/pengajuanLogistik/list'),
+      component: () => import('@/views/requestVaccine'),
       name: 'verified',
       meta: {
         title: 'verified_title',
@@ -33,7 +33,7 @@ const requestVaccine = {
     },
     {
       path: '/vaksin/belum-realisasi',
-      component: () => import('@/views/pengajuanLogistik/list'),
+      component: () => import('@/views/requestVaccine'),
       name: 'not_yet_realized',
       meta: {
         title: 'not_yet_realized_title',
@@ -43,7 +43,7 @@ const requestVaccine = {
     },
     {
       path: '/vaksin/selesai-realisasi',
-      component: () => import('@/views/pengajuanLogistik/list'),
+      component: () => import('@/views/requestVaccine'),
       name: 'realized',
       meta: {
         title: 'realized_title',
@@ -53,7 +53,7 @@ const requestVaccine = {
     },
     {
       path: '/vaksin/ditolak',
-      component: () => import('@/views/pengajuanLogistik/list'),
+      component: () => import('@/views/requestVaccine'),
       name: 'rejected',
       meta: {
         title: 'rejected_title',
