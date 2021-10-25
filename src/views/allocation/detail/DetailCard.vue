@@ -8,7 +8,7 @@
         :placeholder="$t('label.search_instance_name')"
         prepend-inner-icon="search"
         class="mr-4"
-        @change="$emit('search')"
+        @change="$emit('search', true)"
       />
       <v-btn
         large

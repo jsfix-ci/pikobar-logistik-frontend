@@ -36,7 +36,7 @@ export default {
       tableHeader: [],
       infoValueList: [],
       listQuery: {
-        search: null,
+        search: this.$route.query?.search || '',
         page: parseInt(this.$route.query?.page || 1),
         limit: parseInt(this.$route.query?.limit || 10),
         allocation_request_id: this.$route.params.id
@@ -52,13 +52,18 @@ export default {
   async created() {
     this.tableHeader.push(...this.listHeader)
     await this.$store.dispatch('allocation/getDetailAllocationInfo', this.$route.params.id)
-    await this.handleSearch()
+    await this.$store.dispatch('allocation/getDetailAllocationData', this.listQuery)
     this.assignDetailInfo()
     this.createTableHeader()
   },
   methods: {
-    async handleSearch() {
-      await this.$store.dispatch('allocation/getDetailAllocationData', this.listQuery)
+    handleSearch(isSearch) {
+      if (isSearch) this.listQuery.page = 1
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
     },
     assignDetailInfo() {
       this.infoValueList = [
@@ -105,6 +110,19 @@ export default {
     formattingNumber(value) {
       const format = new FormattingNumber()
       return format.formatCurrency(value)
+    },
+    filterQuery(oldQuery) {
+      const newQuery = { ...oldQuery }
+      Object.keys(newQuery).forEach(key => {
+        const shouldBeDeleted = newQuery[key] === null ||
+          newQuery[key] === undefined ||
+          newQuery[key] === '' ||
+          key === 'allocation_request_id'
+        if (shouldBeDeleted) {
+          delete newQuery[key]
+        }
+      })
+      return newQuery
     }
   }
 }
