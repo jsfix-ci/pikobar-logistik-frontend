@@ -5,6 +5,7 @@
         v-model="listQuery.search"
         solo-inverted
         hide-details
+        clearable
         :placeholder="$t('label.search_instance_name')"
         prepend-inner-icon="search"
         class="mr-4"
