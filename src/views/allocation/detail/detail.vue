@@ -36,7 +36,10 @@ export default {
       tableHeader: [],
       infoValueList: [],
       listQuery: {
-        search: null
+        search: null,
+        page: parseInt(this.$route.query?.page || 1),
+        limit: parseInt(this.$route.query?.limit || 10),
+        allocation_request_id: this.$route.params.id
       }
     }
   },

@@ -391,6 +391,7 @@ export default {
     detail_request_logistic_medic: 'Detail Pengajuan Logistik',
     created_date: 'Tanggal Dibuat',
     search_data: 'Cari',
+    search_instance_name: 'Cari Nama Instansi',
     search_application_letter: 'Masukan No. Surat Permohonan',
     verif_now: 'Verifikasi Sekarang',
     capital_email: 'Email',
