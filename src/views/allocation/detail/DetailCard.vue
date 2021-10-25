@@ -5,10 +5,11 @@
         v-model="listQuery.search"
         solo-inverted
         hide-details
-        :placeholder="$t('label.search_data')"
+        clearable
+        :placeholder="$t('label.search_instance_name')"
         prepend-inner-icon="search"
         class="mr-4"
-        @change="$emit('search')"
+        @change="$emit('search', true)"
       />
       <v-btn
         large
@@ -46,11 +47,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(data, index) in tableData.allocation_distribution_requests" :key="data.id">
-            <td>{{ index + 1 }}</td>
+          <tr v-for="(data, index) in tableData.data" :key="data.id">
+            <td>{{ getTableRowNumbering(index) }}</td>
             <td>{{ data.agency_name || '-' }}</td>
             <!-- Loop through the dynamic columns -->
-            <td v-for="material in tableData.allocation_material_requests" :key="material.material_id">
+            <td v-for="material in dynamicHeader" :key="material.material_id">
               {{ displayDynamicColumn(material, data.allocation_material_requests) }}
             </td>
             <td>
@@ -61,6 +62,13 @@
         </tbody>
       </template>
     </v-simple-table>
+    <pagination
+      :total="tableData.last_page"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      :on-next="() => $emit('search')"
+      class="px-5"
+    />
   </v-card>
 </template>
 
@@ -82,6 +90,10 @@ export default {
     tableHeader: {
       type: Array,
       default: () => []
+    },
+    dynamicHeader: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
@@ -91,6 +103,9 @@ export default {
         return item.material_id === obj.material_id
       })
       return result ? result.qty : '-'
+    },
+    getTableRowNumbering(index) {
+      return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     }
   }
 }
