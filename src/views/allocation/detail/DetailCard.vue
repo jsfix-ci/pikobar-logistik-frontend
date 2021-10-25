@@ -46,11 +46,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(data, index) in tableData.allocation_distribution_requests" :key="data.id">
+          <tr v-for="(data, index) in tableData.data" :key="data.id">
             <td>{{ index + 1 }}</td>
             <td>{{ data.agency_name || '-' }}</td>
             <!-- Loop through the dynamic columns -->
-            <td v-for="material in tableData.allocation_material_requests" :key="material.material_id">
+            <td v-for="material in dynamicHeader" :key="material.material_id">
               {{ displayDynamicColumn(material, data.allocation_material_requests) }}
             </td>
             <td>
@@ -80,6 +80,10 @@ export default {
       default: () => ({})
     },
     tableHeader: {
+      type: Array,
+      default: () => []
+    },
+    dynamicHeader: {
       type: Array,
       default: () => []
     }

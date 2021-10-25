@@ -17,7 +17,10 @@ export default {
   SET_TOTAL_DRAFT: (state, data) => {
     state.totalDraft = data
   },
-  SET_DETAIL_ALLOCATION: (state, data) => {
-    state.detailAllocation = data
+  SET_DETAIL_ALLOCATION_INFO: (state, data) => {
+    state.detailAllocationInfo = data
+  },
+  SET_DETAIL_ALLOCATION_DATA: (state, data) => {
+    state.detailAllocationData = data
   }
 }

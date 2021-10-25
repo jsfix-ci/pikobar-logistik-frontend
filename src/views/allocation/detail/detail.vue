@@ -9,8 +9,9 @@
     />
     <DetailCard
       :list-query="listQuery"
-      :table-data="detailAllocation"
+      :table-data="detailAllocationData"
       :table-header="tableHeader"
+      :dynamic-header="detailAllocationInfo.allocation_material_requests"
       @search="handleSearch"
     />
   </div>
@@ -41,53 +42,54 @@ export default {
   },
   computed: {
     ...mapState('allocation', [
-      'detailAllocation'
+      'detailAllocationInfo',
+      'detailAllocationData'
     ])
   },
   async created() {
     this.tableHeader.push(...this.listHeader)
-    await this.$store.dispatch('allocation/getDetailAllocation', this.$route.params.id)
+    await this.$store.dispatch('allocation/getDetailAllocationInfo', this.$route.params.id)
+    await this.handleSearch()
     this.assignDetailInfo()
     this.createTableHeader()
   },
   methods: {
-    handleSearch() {
-      // @todo: create search function
-      console.log('search')
+    async handleSearch() {
+      await this.$store.dispatch('allocation/getDetailAllocationData', this.listQuery)
     },
     assignDetailInfo() {
       this.infoValueList = [
         {
-          label: this.detailAllocation.letter_number
+          label: this.detailAllocationInfo.letter_number
         },
         {
-          label: this.detailAllocation.letter_date
+          label: this.detailAllocationInfo.letter_date
         },
         {
-          label: this.detailAllocation.applicant_name
+          label: this.detailAllocationInfo.applicant_name
         },
         {
-          label: this.detailAllocation.applicant_position
+          label: this.detailAllocationInfo.applicant_position
         },
         {
-          label: this.detailAllocation.applicant_agency_id
+          label: this.detailAllocationInfo.applicant_agency_id
         },
         {
-          label: this.detailAllocation.applicant_agency_name
+          label: this.detailAllocationInfo.applicant_agency_name
         },
         {
-          label: this.detailAllocation.distribution_description
+          label: this.detailAllocationInfo.distribution_description
         },
         {
-          label: this.detailAllocation.letter_url,
+          label: this.detailAllocationInfo.letter_url,
           isUrl: true
         }
       ]
     },
     createTableHeader() {
       const dynamicHeader = []
-      for (let i = 0; i < this.detailAllocation.allocation_material_requests.length; i++) {
-        const header = this.detailAllocation.allocation_material_requests[i]
+      for (let i = 0; i < this.detailAllocationInfo.allocation_material_requests.length; i++) {
+        const header = this.detailAllocationInfo.allocation_material_requests[i]
         dynamicHeader.push({
           materialId: header.material_id,
           label: header.material_name,
