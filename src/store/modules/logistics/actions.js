@@ -125,6 +125,18 @@ export default {
       return e
     }
   },
+
+  async getListVaccineRequest({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/vaccine-request', 'GET', params)
+      commit('SET_LIST_VACCINE_REQUEST', response.data.data)
+      commit('SET_TOTAL_LIST_VACCINE_REQUEST', response.data.last_page)
+      commit('SET_TOTAL_DATA_VACCINE_REQUEST', response.data.total)
+    } catch (e) {
+      return e
+    }
+  },
+
   // API Goods Receipt Report
   async getListGoodsReceiptReport({ commit }, params) {
     try {
