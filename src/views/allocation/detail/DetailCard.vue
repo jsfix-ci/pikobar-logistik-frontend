@@ -47,7 +47,7 @@
         </thead>
         <tbody>
           <tr v-for="(data, index) in tableData.data" :key="data.id">
-            <td>{{ index + 1 }}</td>
+            <td>{{ getTableRowNumbering(index) }}</td>
             <td>{{ data.agency_name || '-' }}</td>
             <!-- Loop through the dynamic columns -->
             <td v-for="material in dynamicHeader" :key="material.material_id">
@@ -102,6 +102,9 @@ export default {
         return item.material_id === obj.material_id
       })
       return result ? result.qty : '-'
+    },
+    getTableRowNumbering(index) {
+      return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     }
   }
 }
