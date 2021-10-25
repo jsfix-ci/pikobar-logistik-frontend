@@ -15,7 +15,7 @@
         @export-data="exportData"
       />
       <data-table
-        :items="listLogisticRequest"
+        :items="listVaccineRequest"
         :is-approved="isApproved"
         :is-rejected="isRejected"
         :is-verified="isVerified"
@@ -27,8 +27,8 @@
       />
     </v-card>
     <pagination
-      :total="totalListLogisticRequest"
-      :total-data="totalDataLogisticRequest"
+      :total="totalListVaccineRequest"
+      :total-data="totalDataVaccineRequest"
       :page="listQuery.page"
       :limit.sync="listQuery.limit"
       @update:page="onListQueryPageUpdated"
@@ -115,7 +115,10 @@ export default {
     ...mapGetters('logistics', [
       'listLogisticRequest',
       'totalListLogisticRequest',
-      'totalDataLogisticRequest'
+      'totalDataLogisticRequest',
+      'listVaccineRequest',
+      'totalListVaccineRequest',
+      'totalDataVaccineRequest'
     ]),
     ...mapState('user', [
       'roles',
@@ -168,8 +171,8 @@ export default {
     },
     async getLogisticRequestList() {
       this.loading = true
-      await this.$store.dispatch('logistics/getListLogisticRequest', this.listQuery)
-      this.listLogisticRequest.forEach(element => {
+      await this.$store.dispatch('logistics/getListVaccineRequest', this.listQuery)
+      this.listVaccineRequest.forEach(element => {
         if (element.master_faskes) {
           element.is_reference = element.master_faskes.is_reference
         }

@@ -97,7 +97,7 @@ export default {
         },
         {
           text: this.$t('label.incoming_mail_number').toUpperCase(),
-          value: 'applicant.application_letter_number',
+          value: 'letter_number',
           width: 200
         },
         {
@@ -118,12 +118,12 @@ export default {
         },
         {
           text: this.$t('label.city_name').toUpperCase(),
-          value: 'city.kemendagri_kabupaten_nama',
+          value: 'village.kemendagri_kabupaten_nama',
           width: 200
         },
         {
           text: this.$t('label.contact_person').toUpperCase(),
-          value: 'applicant.applicant_name',
+          value: 'applicant_fullname',
           width: 225
         },
         {
