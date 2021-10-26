@@ -11,6 +11,7 @@
       <DropdownInput
         v-for="field in fieldList"
         :key="field.label"
+        v-model="form[field.model]"
         :label="field.label"
         :options="listOptions[field.options]"
         :placeholder="field.placeholder"
@@ -26,6 +27,12 @@ import DropdownInput from '../../../components/DropdownInput'
 export default {
   components: {
     DropdownInput
+  },
+  props: {
+    form: {
+      type: Object,
+      default: () => ({})
+    }
   },
   data() {
     return {

@@ -4,7 +4,7 @@ export default [
   {
     id: 1,
     label: i18n.t('label.outgoing_letter_number'),
-    model: 'outgoing_letter_number',
+    model: 'letter_number',
     type: 'text',
     isRequired: true,
     rules: 'required'
@@ -28,7 +28,7 @@ export default [
   {
     id: 4,
     label: i18n.t('label.applicant_position_identity'),
-    model: 'applicant_position_identity',
+    model: 'applicant_position',
     type: 'text',
     isRequired: true,
     rules: 'required'
@@ -36,7 +36,7 @@ export default [
   {
     id: 5,
     label: i18n.t('label.applicant_instance_code'),
-    model: 'applicant_instance_code',
+    model: 'applicant_agency_code',
     type: 'text',
     isRequired: true,
     rules: 'required'
@@ -44,7 +44,7 @@ export default [
   {
     id: 6,
     label: i18n.t('label.applicant_instance_name'),
-    model: 'applicant_instance_name',
+    model: 'applicant_agency_name',
     type: 'text',
     isRequired: true,
     rules: 'required'
@@ -52,7 +52,7 @@ export default [
   {
     id: 7,
     label: i18n.t('label.distribution_note'),
-    model: 'distribution_note',
+    model: 'distribution_description',
     type: 'text',
     isRequired: true,
     rules: 'required'
@@ -60,7 +60,7 @@ export default [
   {
     id: 8,
     label: i18n.t('label.applicant_letter_link'),
-    model: 'applicant_letter_link',
+    model: 'letter_url',
     type: 'text',
     isRequired: true,
     rules: 'required|url'

@@ -9,7 +9,30 @@ const state = {
   totalSuccess: null,
   totalDraft: null,
   detailAllocationInfo: null,
-  detailAllocationData: null
+  detailAllocationData: null,
+  allocationForm: {
+    letter_number: '',
+    letter_date: '',
+    applicant_name: '',
+    applicant_position: '',
+    applicant_agency_code: '',
+    applicant_agency_name: '',
+    distribution_description: '',
+    letter_url: '',
+    instance_list: [
+      {
+        agency_id: '',
+        allocation_material_requests: [
+          {
+            material_id: '',
+            qty: '',
+            UoM: '',
+            additional_information: ''
+          }
+        ]
+      }
+    ]
+  }
 }
 
 export default {

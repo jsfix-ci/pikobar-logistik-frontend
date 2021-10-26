@@ -25,10 +25,11 @@
           <StepOne
             v-if="step.step === 1"
             ref="firstStep"
-            :form="form"
+            :form="allocationForm"
           />
           <StepTwo
             v-if="step.step === 2"
+            :form="allocationForm"
           />
         </v-stepper-content>
       </v-stepper-items>
@@ -55,6 +56,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import stepHeader from './stepHeader'
 import StepOne from './StepOne.vue'
 import StepTwo from './StepTwo.vue'
@@ -67,8 +69,12 @@ export default {
     return {
       stepHeader,
       stepModel: 1,
-      form: {}
     }
+  },
+  computed: {
+    ...mapState('allocation', [
+      'allocationForm'
+    ])
   },
   methods: {
     async onNext() {
