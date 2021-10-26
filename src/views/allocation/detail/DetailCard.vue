@@ -28,8 +28,11 @@
     </div>
     <AllocationTableDetail
       :table-header="tableHeader"
-      :table-data="tableData"
+      :table-data="tableData.data"
       :dynamic-header="dynamicHeader"
+      :list-query="listQuery"
+      :total-page="tableData.last_page"
+      @onNext="() => $emit('search')"
     />
   </v-card>
 </template>

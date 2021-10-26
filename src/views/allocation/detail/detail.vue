@@ -22,6 +22,7 @@ import { mapState } from 'vuex'
 import infoLabelList from './infoLabel'
 import listHeader from './tableHeader'
 import FormattingNumber from '../../../helpers/formattingNumber'
+import { createDynamicHeader } from '../tableHeader'
 import DetailInfo from './DetailInfo.vue'
 import DetailCard from './DetailCard.vue'
 export default {
@@ -54,9 +55,10 @@ export default {
     await this.$store.dispatch('allocation/getDetailAllocationInfo', this.$route.params.id)
     await this.$store.dispatch('allocation/getDetailAllocationData', this.listQuery)
     this.assignDetailInfo()
-    this.createTableHeader()
+    this.createDynamicHeader(this.tableHeader, this.detailAllocationInfo.allocation_material_requests)
   },
   methods: {
+    createDynamicHeader,
     handleSearch(isSearch) {
       if (isSearch) this.listQuery.page = 1
       this.$router.replace({
@@ -93,19 +95,6 @@ export default {
           isUrl: true
         }
       ]
-    },
-    createTableHeader() {
-      const dynamicHeader = []
-      for (let i = 0; i < this.detailAllocationInfo.allocation_material_requests.length; i++) {
-        const header = this.detailAllocationInfo.allocation_material_requests[i]
-        dynamicHeader.push({
-          materialId: header.material_id,
-          label: header.material_name,
-          total: this.formattingNumber(header.total_qty),
-          isDynamic: true
-        })
-      }
-      this.tableHeader.splice.apply(this.tableHeader, [2, 0].concat(dynamicHeader))
     },
     formattingNumber(value) {
       const format = new FormattingNumber()

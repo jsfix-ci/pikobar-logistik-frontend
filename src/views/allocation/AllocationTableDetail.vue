@@ -2,12 +2,12 @@
   <div>
     <v-simple-table class="mt-8">
       <template v-slot:default>
-        <thead class="detail-card__header">
+        <thead class="allocation-table-detail__header">
           <tr>
             <th
               v-for="header in tableHeader"
               :key="header.label"
-              class="detail-card__header__cell text-center"
+              class="allocation-table-detail__header__cell text-center"
               :class="{ 'px-0': header.isDynamic }"
             >
               <DynamicHeader
@@ -21,12 +21,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(data, index) in tableData.data" :key="data.id">
+          <tr v-for="(data, index) in tableData" :key="data.id">
             <td>{{ getTableRowNumbering(index) }}</td>
             <td>{{ data.agency_name || '-' }}</td>
             <!-- Loop through the dynamic columns -->
             <td v-for="material in dynamicHeader" :key="material.material_id">
-              {{ displayDynamicColumn(material, data.allocation_material_requests) }}
+              {{ displayDynamicHeader(material, data.allocation_material_requests) }}
             </td>
             <td>
               {{ data.distribution_plan_date ? $moment(data.distribution_plan_date).format('D MMMM YYYY') : '-' }}
@@ -37,10 +37,10 @@
       </template>
     </v-simple-table>
     <pagination
-      :total="tableData.last_page"
+      :total="totalPage"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
-      :on-next="() => $emit('search')"
+      :on-next="() => $emit('onNext')"
       class="px-5"
     />
   </div>
@@ -48,6 +48,7 @@
 
 <script>
 import DynamicHeader from './DynamicHeader.vue'
+import { displayDynamicHeader } from './tableHeader'
 export default {
   components: {
     DynamicHeader
@@ -64,16 +65,18 @@ export default {
     dynamicHeader: {
       type: Array,
       default: () => []
+    },
+    listQuery: {
+      type: Object,
+      default: () => ({})
+    },
+    totalPage: {
+      type: Number,
+      default: 0
     }
   },
   methods: {
-    displayDynamicColumn(obj, array) {
-      // Find obj in array using material_id
-      const result = array.find(item => {
-        return item.material_id === obj.material_id
-      })
-      return result ? result.qty : '-'
-    },
+    displayDynamicHeader,
     getTableRowNumbering(index) {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     }
