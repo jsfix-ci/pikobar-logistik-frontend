@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       stepHeader,
-      stepModel: 1,
+      stepModel: 1
     }
   },
   computed: {

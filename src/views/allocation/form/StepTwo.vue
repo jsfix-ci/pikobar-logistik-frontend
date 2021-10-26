@@ -61,6 +61,24 @@ export default {
         ]
       }
     }
+  },
+  methods: {
+    createNewInstance() {
+      const instance = {
+        agency_id: '',
+        allocation_material_requests: []
+      }
+      this.createNewMaterial(instance)
+      this.form.instanceList.push(instance)
+    },
+    createNewMaterial(instance) {
+      instance.push({
+        material_id: '',
+        qty: '',
+        UoM: '',
+        additional_information: ''
+      })
+    }
   }
 }
 </script>
