@@ -6,8 +6,10 @@
     <v-select
       :items="options"
       :label="placeholder"
+      :value="value"
       outlined
       solo
+      @input="$emit('input', $event)"
       @select="$emit('select')"
     />
   </div>
@@ -16,6 +18,10 @@
 <script>
 export default {
   props: {
+    value: {
+      type: String,
+      default: null
+    },
     options: {
       type: Array,
       default: () => []
