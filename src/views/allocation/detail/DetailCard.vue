@@ -5,10 +5,11 @@
         v-model="listQuery.search"
         solo-inverted
         hide-details
-        :placeholder="$t('label.search_data')"
+        clearable
+        :placeholder="$t('label.search_instance_name')"
         prepend-inner-icon="search"
         class="mr-4"
-        @change="$emit('search')"
+        @change="$emit('search', true)"
       />
       <v-btn
         large
@@ -28,6 +29,7 @@
     <AllocationTableDetail
       :table-header="tableHeader"
       :table-data="tableData"
+      :dynamic-header="dynamicHeader"
     />
   </v-card>
 </template>
@@ -48,6 +50,10 @@ export default {
       default: () => ({})
     },
     tableHeader: {
+      type: Array,
+      default: () => []
+    },
+    dynamicHeader: {
       type: Array,
       default: () => []
     }

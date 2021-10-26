@@ -8,7 +8,8 @@ const state = {
   totalAllocation: null,
   totalSuccess: null,
   totalDraft: null,
-  detailAllocation: null
+  detailAllocationInfo: null,
+  detailAllocationData: null
 }
 
 export default {

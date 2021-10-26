@@ -63,6 +63,6 @@ export default [
     model: 'applicant_letter_link',
     type: 'text',
     isRequired: true,
-    rules: 'required'
+    rules: 'required|url'
   }
 ]

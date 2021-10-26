@@ -21,10 +21,18 @@ export default {
       return e
     }
   },
-  async getDetailAllocation({ commit }, id) {
+  async getDetailAllocationInfo({ commit }, id) {
     try {
       const response = await fetchList(`/api/v1/allocation-vaccine-request/${id}`, 'GET')
-      commit('SET_DETAIL_ALLOCATION', response.data)
+      commit('SET_DETAIL_ALLOCATION_INFO', response.data)
+    } catch (e) {
+      return e
+    }
+  },
+  async getDetailAllocationData({ commit }, params) {
+    try {
+      const response = await fetchList(`/api/v1/allocation-distribution-vaccine-request`, 'GET', params)
+      commit('SET_DETAIL_ALLOCATION_DATA', response.data)
     } catch (e) {
       return e
     }
