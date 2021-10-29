@@ -6,7 +6,7 @@
       :loading="loading"
       :items-per-page="listQuery.limit"
       :loading-text="$t('label.loading')"
-      :no-data-text="$t('label.no-data')"
+      :no-data-text="$t('label.no_data')"
       hide-default-footer
     >
       <template v-slot:[`item.numbering_item`]="{ item }">
@@ -41,13 +41,13 @@
         {{ $moment(value).format('DD MMMM YYYY') }}
       </template>
 
-      <template v-slot:[`item.completeness`]="{ item }">
-        <v-btn v-if="item.completeness" outlined small color="success" class="cursor-auto">{{ $t('label.completed') }}</v-btn>
+      <template v-slot:[`item.is_completed`]="{ item }">
+        <v-btn v-if="item.is_completed" outlined small color="success" class="cursor-auto">{{ $t('label.completed') }}</v-btn>
         <v-btn v-else outlined small color="error" @click="completenessDetail(item)">{{ $t('label.not_complete') }}</v-btn>
       </template>
 
-      <template v-slot:[`item.applicant.is_urgency`]="{ value }">
-        <v-btn v-if="value === 1" outlined small color="warning" class="cursor-auto">{{ $t('label.important') }}</v-btn>
+      <template v-slot:[`item.is_urgency`]="{ value }">
+        <v-btn v-if="value" outlined small color="warning" class="cursor-auto">{{ $t('label.important') }}</v-btn>
         <v-btn v-else outlined small color="success" class="cursor-auto">{{ $t('label.normal') }}</v-btn>
       </template>
 
@@ -102,29 +102,29 @@ export default {
         },
         {
           text: this.$t('label.instance_type').toUpperCase(),
-          value: 'master_faskes_type.name',
+          value: 'agency_type_name',
           width: 150
         },
         {
           text: this.$t('label.instance_name').toUpperCase(),
           value: 'agency_name',
-          width: 250
+          width: 225
         },
         {
-          text: this.$t('label.instance_reference').toUpperCase(),
+          text: this.$t('label.instance_reference_status').toUpperCase(),
           value: 'is_reference',
           width: 175,
           align: 'center'
         },
         {
           text: this.$t('label.city_name').toUpperCase(),
-          value: 'village.kemendagri_kabupaten_nama',
+          value: 'agency_city_name',
           width: 200
         },
         {
           text: this.$t('label.contact_person').toUpperCase(),
           value: 'applicant_fullname',
-          width: 225
+          width: 200
         },
         {
           text: this.$t('label.request_date').toUpperCase(),
@@ -158,13 +158,13 @@ export default {
         },
         {
           text: this.$t('label.completeness').toUpperCase(),
-          value: 'completeness',
+          value: 'is_completed',
           align: 'center',
           width: 150
         },
         {
           text: this.$t('label.urgency').toUpperCase(),
-          value: 'applicant.is_urgency',
+          value: 'is_urgency',
           align: 'center',
           width: 150
         },
