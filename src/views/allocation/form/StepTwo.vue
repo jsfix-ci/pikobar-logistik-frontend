@@ -134,15 +134,12 @@ export default {
   methods: {
     createNewInstance() {
       // @todo: create function description
-      console.log(this.form)
       if (this.form.instance_list[this.form.instance_list.length - 1].agency_id) {
         const instance = {
           agency_id: '',
           allocation_material_requests: []
         }
-        console.log('masuk', instance)
         this.createNewMaterial(instance)
-        console.log('masuk lagi')
         this.form.instance_list.push(instance)
       }
     },
