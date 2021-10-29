@@ -311,6 +311,7 @@ export default {
     not_complete_applicant_secondary_phone_number: '- No. HP Pemohon 2',
     not_complete_applicant_letter: '- Dokumen Surat',
     not_complete_applicant_file: '- Dokumen Tanda Pengenal',
+    not_complete_applicant_email: '- Email',
     completeness_fail: ' (Belum Ada)',
     applicant_urgency: 'Urgensi Permohonan',
     applicant_label_no_urgency: 'Tandai permohonan ini sebagai permohonan darurat.',
