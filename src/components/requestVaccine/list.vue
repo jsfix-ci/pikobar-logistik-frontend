@@ -33,7 +33,7 @@
       :limit.sync="listQuery.limit"
       @update:page="onListQueryPageUpdated"
     />
-    <completenessDetail
+    <completeness-detail-vaccine
       ref="completenessDetailForm"
       :show="showcompletenessDetail"
     />
@@ -48,7 +48,7 @@
 import { mapGetters, mapState } from 'vuex'
 import FileSaver from 'file-saver'
 import EventBus from '@/utils/eventBus'
-import completenessDetail from '@/views/pengajuanLogistik/completenessDetail'
+import completenessDetailVaccine from './completenessDetail.vue'
 import referenceDetail from '@/views/pengajuanLogistik/referenceDetail'
 import SearchFilter from './searchFilter.vue'
 import DataTable from './dataTable.vue'
@@ -56,7 +56,7 @@ import DataTable from './dataTable.vue'
 export default {
   name: 'ListRequestVaccine',
   components: {
-    completenessDetail,
+    completenessDetailVaccine,
     referenceDetail,
     SearchFilter,
     DataTable
@@ -79,7 +79,7 @@ export default {
         limit: parseInt(this.$route.query?.limit || 10),
         sort: this.$route.query?.sort || '',
         city_code: this.$route.query?.city_code || '',
-        verification_status: this.$route.query?.verification_status || '',
+        // verification_status: this.$route.query?.verification_status || '',
         agency_name: this.$route.query?.agency_name || '',
         start_date: this.$route.query?.start_date || null,
         end_date: this.$route.query?.end_date || null,
@@ -113,9 +113,6 @@ export default {
   },
   computed: {
     ...mapGetters('logistics', [
-      'listLogisticRequest',
-      'totalListLogisticRequest',
-      'totalDataLogisticRequest',
       'listVaccineRequest',
       'totalListVaccineRequest',
       'totalDataVaccineRequest'
@@ -127,21 +124,34 @@ export default {
     ])
   },
   async created() {
-    if (this.$route.name === 'verified') {
-      this.isVerified = true
-      this.listQuery.verification_status = 'verified'
-      this.listQuery.approval_status = 'not_approved'
-    } else if (this.$route.name === 'notVerified') {
-      this.listQuery.verification_status = 'not_verified'
+    // if (this.$route.name === 'verified') {
+    //   this.isVerified = true
+    //   this.listQuery.verification_status = 'verified'
+    //   this.listQuery.approval_status = 'not_approved'
+    // } else if (this.$route.name === 'notVerified') {
+    //   this.listQuery.verification_status = 'not_verified'
+    // } else if (this.$route.name === 'rejected') {
+    //   this.listQuery.is_rejected = 1
+    //   this.isRejected = true
+    // } else if (this.$route.name === 'realized' || this.$route.name === 'not_yet_realized') {
+    //   this.listQuery.verification_status = 'verified'
+    //   this.listQuery.approval_status = 'approved'
+    //   this.isApproved = true
+    //   this.listQuery.finalized_by = this.$route.name === 'realized' ? 1 : 0
+    // }
+
+    if (this.$route.name === 'notVerified') {
+      this.listQuery.status = 'not_verified'
+    } else if (this.$route.name === 'verified') {
+      this.listQuery.status = 'verified'
+    } else if (this.$route.name === 'approved') {
+      this.listQuery.status = 'approved'
+    } else if (this.$route.name === 'finalized') {
+      this.listQuery.status = 'finalized'
     } else if (this.$route.name === 'rejected') {
-      this.listQuery.is_rejected = 1
-      this.isRejected = true
-    } else if (this.$route.name === 'realized' || this.$route.name === 'not_yet_realized') {
-      this.listQuery.verification_status = 'verified'
-      this.listQuery.approval_status = 'approved'
-      this.isApproved = true
-      this.listQuery.finalized_by = this.$route.name === 'realized' ? 1 : 0
+      this.listQuery.status = 'rejected'
     }
+
     await this.$store.dispatch('faskesType/getListFaskesType')
     if (this.roles[0] === 'dinkeskota') this.lockDistrictFilter()
     this.getLogisticRequestList()
