@@ -51,7 +51,7 @@
 import EventBus from '@/utils/eventBus'
 
 export default {
-  name: 'CompletenessDetail',
+  name: 'CompletenessDetailVaccine',
   props: {
     show: {
       type: Boolean,
