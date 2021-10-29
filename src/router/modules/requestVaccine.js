@@ -34,7 +34,7 @@ const requestVaccine = {
     {
       path: '/vaksin/belum-realisasi',
       component: () => import('@/views/requestVaccine'),
-      name: 'not_yet_realized',
+      name: 'approved',
       meta: {
         title: 'not_yet_realized_title',
         noCache: true,
@@ -44,7 +44,7 @@ const requestVaccine = {
     {
       path: '/vaksin/selesai-realisasi',
       component: () => import('@/views/requestVaccine'),
-      name: 'realized',
+      name: 'finalized',
       meta: {
         title: 'realized_title',
         noCache: true,
