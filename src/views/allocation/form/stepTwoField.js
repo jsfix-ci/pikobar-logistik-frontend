@@ -1,11 +1,5 @@
 import i18n from '@/lang'
 export default [
-  // {
-  //   label: i18n.t('label.instance_name'),
-  //   placeholder: i18n.t('label.choose_instance'),
-  //   model: 'agency_id',
-  //   options: 'instance'
-  // },
   {
     label: i18n.t('label.goods_item'),
     placeholder: i18n.t('label.choose_item'),
