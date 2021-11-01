@@ -8,11 +8,12 @@
       Rhoncus ut eu id integer risus lobortis
     </p>
     <div
-      v-for="(instance, index) in form.instance_list"
+      v-for="(instance, parentIndex) in form.instance_list"
       :key="instance.agency_id"
-      class="d-flex flex-column"
+      class="d-flex flex-column mb-5"
     >
-      <div class="d-flex flex-row">
+      <!-- Parent (instance) -->
+      <div class="d-flex flex-row align-center">
         <DropdownInput
           v-model="instance.agency_id"
           :label="$t('label.instance_type')"
@@ -27,8 +28,16 @@
           :placeholder="'Pilih Instansi'"
           class="mr-3"
         />
+        <v-btn
+          large
+          depressed
+          class="detail-btn mr-5"
+          @click="instance.isExtended = !instance.isExtended"
+        >
+          {{ instance.isExtended ? $t('label.close') : $t('label.show_items') }}
+        </v-btn>
         <v-icon
-          v-if="form.instance_list.length-1 === index"
+          v-if="form.instance_list.length-1 === parentIndex"
           color="green"
           class="mr-3"
           @click="createNewInstance()"
@@ -39,54 +48,47 @@
           v-if="form.instance_list.length > 1"
           color="red"
           class="mr-3"
-          @click="deleteArray(form.instance_list, index)"
+          @click="deleteArray(form.instance_list, parentIndex)"
         >
           mdi-delete-circle
         </v-icon>
       </div>
-      <div
-        v-for="material in instance.allocation_material_requests"
-        :key="material.material_id"
-        class="d-flex flex-row"
-      >
-        <DropdownInput
-          v-for="field in fieldList"
-          :key="field.label"
-          v-model="form[field.model]"
-          :label="field.label"
-          :options="listOptions[field.options]"
-          :placeholder="field.placeholder"
-          class="mr-3"
-        />
-        <v-icon
-          v-if="instance.allocation_material_requests.length-1 === index"
-          color="green"
-          class="mr-3"
-          @click="createNewInstance()"
+      <!-- Child (material) -->
+      <div v-if="instance.isExtended">
+        <div
+          v-for="(material, childIndex) in instance.allocation_material_requests"
+          :key="material.material_id"
+          class="d-flex flex-row ml-10 align-center"
         >
-          mdi-plus-circle
-        </v-icon>
-        <v-icon
-          v-if="instance.allocation_material_requests.length > 1"
-          color="red"
-          class="mr-3"
-          @click="deleteArray(instance.allocation_material_requests, index)"
-        >
-          mdi-delete-circle
-        </v-icon>
+          <DropdownInput
+            v-for="field in fieldList"
+            :key="field.label"
+            v-model="material[field.model]"
+            :label="field.label"
+            :options="listOptions[field.options]"
+            :placeholder="field.placeholder"
+            class="mr-3"
+          />
+          <v-icon
+            v-if="instance.allocation_material_requests.length-1 === childIndex"
+            color="green"
+            class="mr-3"
+            @click="createNewMaterial(instance)"
+          >
+            mdi-plus-circle
+          </v-icon>
+          <v-icon
+            v-if="instance.allocation_material_requests.length > 1"
+            color="red"
+            class="mr-3"
+            @click="deleteArray(instance.allocation_material_requests, childIndex)"
+          >
+            mdi-delete-circle
+          </v-icon>
+        </div>
       </div>
+      <hr>
     </div>
-    <!-- <div class="d-flex flex-row">
-      <DropdownInput
-        v-for="field in fieldList"
-        :key="field.label"
-        v-model="form[field.model]"
-        :label="field.label"
-        :options="listOptions[field.options]"
-        :placeholder="field.placeholder"
-        class="mr-3"
-      />
-    </div> -->
   </div>
 </template>
 
@@ -137,20 +139,23 @@ export default {
       if (this.form.instance_list[this.form.instance_list.length - 1].agency_id) {
         const instance = {
           agency_id: '',
-          allocation_material_requests: []
+          allocation_material_requests: [],
+          isExtended: false
         }
-        this.createNewMaterial(instance)
+        this.createNewMaterial(instance, true)
         this.form.instance_list.push(instance)
       }
     },
-    createNewMaterial(instance) {
+    createNewMaterial(instance, isInitiate = false) {
       // @todo: create function description
-      instance.allocation_material_requests.push({
-        material_id: '',
-        qty: '',
-        UoM: '',
-        additional_information: ''
-      })
+      if (isInitiate || (!isInitiate && instance.allocation_material_requests[instance.allocation_material_requests.length - 1].material_id)) {
+        instance.allocation_material_requests.push({
+          material_id: '',
+          qty: '',
+          UoM: '',
+          additional_information: ''
+        })
+      }
     },
     deleteArray(array, index) {
       array.splice(index, 1)
@@ -158,3 +163,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.detail-btn {
+  background-color: white !important;
+  color: #27AE60;
+  border: 1px solid #27AE60;
+  border-radius: 8px;
+  font-size: 14px;
+  text-transform: none !important;
+}
+</style>

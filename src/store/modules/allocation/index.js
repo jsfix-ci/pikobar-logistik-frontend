@@ -22,6 +22,7 @@ const state = {
     instance_list: [
       {
         agency_id: '',
+        isExtended: false,
         allocation_material_requests: [
           {
             material_id: '',
