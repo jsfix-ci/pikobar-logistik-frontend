@@ -79,7 +79,7 @@ export default {
         limit: parseInt(this.$route.query?.limit || 10),
         sort: this.$route.query?.sort || null,
         city_code: this.$route.query?.city_code || null,
-        agency_name: this.$route.query?.agency_name || null,
+        search: this.$route.query?.search || null,
         start_date: this.$route.query?.start_date || null,
         end_date: this.$route.query?.end_date || null,
         is_reference: Number.isNaN(isReference) ? null : isReference,

@@ -8,7 +8,7 @@
             class="card-search"
           >
             <v-text-field
-              v-model="listQuery.agency_name"
+              v-model="listQuery.search"
               solo-inverted
               flat
               hide-details
@@ -31,37 +31,7 @@
     <hr v-if="showFilter" class="thin">
     <v-card-text v-if="showFilter">
       <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
-        <v-col cols="12" sm="1">
-          <v-label class="title">{{ $t('label.sort') }}</v-label>
-          <v-select
-            v-model="listQuery.sort"
-            :items="sortOption"
-            solo
-            item-text="label"
-            item-value="value"
-            :clearable="true"
-            :placeholder="$t('label.sort')"
-            @change="handleSearch"
-          />
-        </v-col>
-        <v-col cols="12" sm="3">
-          <v-label class="title">{{ $t('label.request_date') }}</v-label>
-          <date-picker-dashboard
-            :initial-start-date="listQuery.start_date"
-            :initial-end-date="listQuery.end_date"
-            @selected="changeDate"
-          />
-        </v-col>
-        <v-col cols="12" sm="2">
-          <v-label class="title">{{ $t('label.city_district') }}</v-label>
-          <select-area-district-city
-            :disabled-district="disabledDistrict"
-            :district-city="districtCity"
-            :city-district.sync="districtCity"
-            :on-select-district-city="onSelectDistrictCity"
-          />
-        </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="4">
           <v-label class="title">{{ $t('label.instance_type') }}</v-label>
           <v-select
             v-model="listQuery.faskes_type"
@@ -74,16 +44,33 @@
             @change="handleSearch()"
           />
         </v-col>
-        <v-col cols="12" sm="3">
-          <v-label class="title">{{ $t('label.applicant_origin') }}</v-label>
+        <v-col cols="12" sm="4">
+          <v-label class="title">{{ $t('label.request_date') }}</v-label>
+          <date-picker-dashboard
+            :initial-start-date="listQuery.start_date"
+            :initial-end-date="listQuery.end_date"
+            @selected="changeDate"
+          />
+        </v-col>
+        <v-col cols="12" sm="4">
+          <v-label class="title">{{ $t('label.city_district') }}</v-label>
+          <select-area-district-city
+            :disabled-district="disabledDistrict"
+            :district-city="districtCity"
+            :city-district.sync="districtCity"
+            :on-select-district-city="onSelectDistrictCity"
+          />
+        </v-col>
+        <v-col cols="12" sm="3" class="mt-n8">
+          <v-label class="title">{{ $t('label.urgency_level') }}</v-label>
           <v-select
-            v-model="listQuery.source_data"
-            :items="applicantOrigin"
+            v-model="listQuery.is_urgency"
+            :items="urgencyStatus"
             solo
             item-text="text"
             item-value="value"
             :clearable="true"
-            :placeholder="$t('label.select_applicant_origin')"
+            :placeholder="$t('label.input_urgency_level')"
             @change="handleSearch()"
           />
         </v-col>
@@ -114,16 +101,16 @@
           />
         </v-col>
         <v-col cols="12" sm="3" class="mt-n8">
-          <v-label class="title">{{ $t('label.urgency_level') }}</v-label>
+          <v-label class="title">{{ $t('label.sort') }}</v-label>
           <v-select
-            v-model="listQuery.is_urgency"
-            :items="urgencyStatus"
+            v-model="listQuery.sort"
+            :items="sortOption"
             solo
-            item-text="text"
+            item-text="label"
             item-value="value"
             :clearable="true"
-            :placeholder="$t('label.input_urgency_level')"
-            @change="handleSearch()"
+            :placeholder="$t('label.sort')"
+            @change="handleSearch"
           />
         </v-col>
       </v-row>
@@ -155,16 +142,6 @@ export default {
       sortOption: [
         { value: 'asc', label: 'A-Z' },
         { value: 'desc', label: 'Z-A' }
-      ],
-      applicantOrigin: [
-        {
-          text: this.$t('label.dinkes_province'),
-          value: 'dinkes_provinsi'
-        },
-        {
-          text: this.$t('label.pikobar'),
-          value: 'pikobar'
-        }
       ],
       referenceFaskes: [
         {
