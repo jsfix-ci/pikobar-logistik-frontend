@@ -70,21 +70,20 @@ export default {
   data() {
     const faskesType = parseInt(this.$route.query?.faskes_type)
     const isReference = parseInt(this.$route.query?.is_reference)
-    const completeness = parseInt(this.$route.query?.completeness)
+    const completeness = parseInt(this.$route.query?.is_completed)
     const isUrgency = parseInt(this.$route.query?.is_urgency)
     const finalizedBy = parseInt(this.$route.query?.finalized_by)
     return {
       listQuery: {
         page: parseInt(this.$route.query?.page || 1),
         limit: parseInt(this.$route.query?.limit || 10),
-        sort: this.$route.query?.sort || '',
-        city_code: this.$route.query?.city_code || '',
-        // verification_status: this.$route.query?.verification_status || '',
-        agency_name: this.$route.query?.agency_name || '',
+        sort: this.$route.query?.sort || null,
+        city_code: this.$route.query?.city_code || null,
+        agency_name: this.$route.query?.agency_name || null,
         start_date: this.$route.query?.start_date || null,
         end_date: this.$route.query?.end_date || null,
         is_reference: Number.isNaN(isReference) ? null : isReference,
-        completeness: Number.isNaN(completeness) ? null : completeness,
+        is_completed: Number.isNaN(completeness) ? null : completeness,
         is_urgency: Number.isNaN(isUrgency) ? null : isUrgency,
         finalized_by: Number.isNaN(finalizedBy) ? null : finalizedBy,
         faskes_type: Number.isNaN(faskesType) ? null : faskesType,
@@ -124,22 +123,6 @@ export default {
     ])
   },
   async created() {
-    // if (this.$route.name === 'verified') {
-    //   this.isVerified = true
-    //   this.listQuery.verification_status = 'verified'
-    //   this.listQuery.approval_status = 'not_approved'
-    // } else if (this.$route.name === 'notVerified') {
-    //   this.listQuery.verification_status = 'not_verified'
-    // } else if (this.$route.name === 'rejected') {
-    //   this.listQuery.is_rejected = 1
-    //   this.isRejected = true
-    // } else if (this.$route.name === 'realized' || this.$route.name === 'not_yet_realized') {
-    //   this.listQuery.verification_status = 'verified'
-    //   this.listQuery.approval_status = 'approved'
-    //   this.isApproved = true
-    //   this.listQuery.finalized_by = this.$route.name === 'realized' ? 1 : 0
-    // }
-
     if (this.$route.name === 'notVerified') {
       this.listQuery.status = 'not_verified'
     } else if (this.$route.name === 'verified') {
@@ -227,7 +210,7 @@ export default {
       }
     },
     toDetail(data) {
-      this.$router.push(`/alat-kesehatan/detail/${data.id}`)
+      this.$router.push(`/vaksin/detail/${data.id}`)
     },
     async exportData() {
       const response = await this.$store.dispatch('logistics/logisticRequestExportData', this.listQuery)
@@ -235,7 +218,7 @@ export default {
       await FileSaver.saveAs(response, fileName)
     },
     completenessDetail(data) {
-      this.$refs.completenessDetailForm.setData(data.id, data)
+      this.$refs.completenessDetailForm.setData(data)
       this.showcompletenessDetail = true
     },
     referenceDetail(data) {

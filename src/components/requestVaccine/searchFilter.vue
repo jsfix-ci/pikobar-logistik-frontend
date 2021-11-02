@@ -103,7 +103,7 @@
         <v-col cols="12" sm="3" class="mt-n8">
           <v-label class="title">{{ $t('label.completeness') }}</v-label>
           <v-select
-            v-model="listQuery.completeness"
+            v-model="listQuery.is_completed"
             :items="completeStatus"
             solo
             item-text="text"
