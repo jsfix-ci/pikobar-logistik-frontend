@@ -19,6 +19,7 @@ const state = {
     applicant_agency_name: '',
     distribution_description: '',
     letter_url: '',
+    // @todo: remove this dummy instance_list array
     instance_list: [
       {
         agency_id: '',
