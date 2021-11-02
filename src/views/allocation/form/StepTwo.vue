@@ -13,79 +13,26 @@
       class="d-flex flex-column mb-5"
     >
       <!-- Parent (instance) -->
-      <div class="d-flex flex-row align-center">
-        <DropdownInput
-          v-model="instance.agency_id"
-          :label="$t('label.instance_type')"
-          :options="['satu', 'dua']"
-          :placeholder="'Pilih Jenis Instansi'"
-          class="mr-3"
-        />
-        <DropdownInput
-          v-model="instance.agency_id"
-          :label="$t('label.instance_name')"
-          :options="['satu', 'dua']"
-          :placeholder="'Pilih Instansi'"
-          class="mr-3"
-        />
-        <v-btn
-          large
-          depressed
-          class="detail-btn mr-5"
-          @click="instance.isExtended = !instance.isExtended"
-        >
-          {{ instance.isExtended ? $t('label.close') : $t('label.show_items') }}
-        </v-btn>
-        <v-icon
-          v-if="form.instance_list.length-1 === parentIndex"
-          color="green"
-          class="mr-3"
-          @click="createNewInstance()"
-        >
-          mdi-plus-circle
-        </v-icon>
-        <v-icon
-          v-if="form.instance_list.length > 1"
-          color="red"
-          class="mr-3"
-          @click="deleteArray(form.instance_list, parentIndex)"
-        >
-          mdi-delete-circle
-        </v-icon>
-      </div>
+      <StepTwoParent
+        :instance="instance"
+        :array-length="form.instance_list.length"
+        :index="parentIndex"
+        @addParent="createNewInstance()"
+        @delete="(index) => deleteArray(form.instance_list, index)"
+      />
       <!-- Child (material) -->
       <div v-if="instance.isExtended">
-        <div
+        <StepTwoChild
           v-for="(material, childIndex) in instance.allocation_material_requests"
           :key="material.material_id"
-          class="d-flex flex-row ml-10 align-center"
-        >
-          <DropdownInput
-            v-for="field in fieldList"
-            :key="field.label"
-            v-model="material[field.model]"
-            :label="field.label"
-            :options="listOptions[field.options]"
-            :placeholder="field.placeholder"
-            class="mr-3"
-          />
-          <v-icon
-            v-if="instance.allocation_material_requests.length-1 === childIndex"
-            color="green"
-            class="mr-3"
-            @click="createNewMaterial(instance)"
-          >
-            mdi-plus-circle
-          </v-icon>
-          <v-icon
-            v-if="instance.allocation_material_requests.length > 1"
-            color="red"
-            class="mr-3"
-            @click="deleteArray(instance.allocation_material_requests, childIndex)"
-          >
-            mdi-delete-circle
-          </v-icon>
-        </div>
+          :material="material"
+          :field-list="fieldList"
+          :options-list="listOptions"
+          :index="childIndex"
+          :array-length="instance.allocation_material_requests.length"
+          @addChild="createNewMaterial(instance)"
+          @delete="(index) => deleteArray(instance.allocation_material_requests, index)"
+        />
       </div>
       <hr>
     </div>
@@ -94,10 +41,12 @@
 
 <script>
 import fieldList from './stepTwoField'
-import DropdownInput from '../../../components/DropdownInput'
+import StepTwoParent from './StepTwoParent.vue'
+import StepTwoChild from './StepTwoChild.vue'
 export default {
   components: {
-    DropdownInput
+    StepTwoParent,
+    StepTwoChild
   },
   props: {
     form: {
@@ -163,14 +112,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.detail-btn {
-  background-color: white !important;
-  color: #27AE60;
-  border: 1px solid #27AE60;
-  border-radius: 8px;
-  font-size: 14px;
-  text-transform: none !important;
-}
-</style>
