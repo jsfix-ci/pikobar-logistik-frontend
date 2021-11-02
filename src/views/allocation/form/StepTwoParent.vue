@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex flex-row align-center">
-    <!-- @todo: replace options props with real data -->
+    <!-- @todo: replace options props with real data and confirm model name with BE -->
     <DropdownInput
-      v-model="instance.agency_id"
+      v-model="instance.agency_type"
       :label="$t('label.instance_type')"
       :options="['satu', 'dua']"
       :placeholder="'Pilih Jenis Instansi'"
