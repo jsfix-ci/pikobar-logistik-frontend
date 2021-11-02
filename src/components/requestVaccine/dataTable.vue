@@ -179,24 +179,24 @@ export default {
   },
   computed: {
     headerFilter() {
-      if (!this.isVerified && !this.isApproved && !this.isRejected) {
+      if (this.listQuery.status === 'not_verified') {
         return this.headers.filter(head =>
           head.value !== 'applicant.finalized_by' &&
           head.value !== 'applicant.verified_by' &&
           head.value !== 'applicant.verified_at' &&
           head.value !== 'applicant.approved_by' &&
           head.value !== 'applicant.status')
-      } else if (this.isVerified && !this.isApproved && !this.isRejected) {
+      } else if (this.listQuery.status === 'verified') {
         return this.headers.filter(head =>
           head.value !== 'applicant.finalized_by' &&
           head.value !== 'applicant.approved_by' &&
           head.value !== 'applicant.status')
-      } else if (this.isApproved && !this.isVerified && !this.isRejected) {
+      } else if (this.listQuery.status === 'approved' || this.listQuery.status === 'finalized') {
         return this.headers.filter(head =>
           head.value !== 'applicant.verified_by' &&
           head.value !== 'applicant.verified_at' &&
           head.value !== 'applicant.status')
-      } else if (this.isRejected && !this.isVerified && !this.isApproved) {
+      } else if (this.listQuery.status === 'rejected') {
         return this.headers.filter(head =>
           head.value !== 'applicant.finalized_by' &&
           head.value !== 'applicant.verified_by' &&
