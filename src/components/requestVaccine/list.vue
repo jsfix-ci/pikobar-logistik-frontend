@@ -78,7 +78,7 @@ export default {
         page: parseInt(this.$route.query?.page || 1),
         limit: parseInt(this.$route.query?.limit || 10),
         sort: this.$route.query?.sort || null,
-        city_code: this.$route.query?.city_code || null,
+        city_id: this.$route.query?.city_id || null,
         search: this.$route.query?.search || null,
         start_date: this.$route.query?.start_date || null,
         end_date: this.$route.query?.end_date || null,
@@ -144,9 +144,9 @@ export default {
     EventBus.$on('hideReferenceDetail', (value) => {
       this.showreferenceDetail = false
     })
-    if (this.$route.query?.city_code && this.$route.query?.city_name) {
+    if (this.$route.query?.city_id && this.$route.query?.city_name) {
       this.districtCity = {
-        kemendagri_kabupaten_kode: this.$route.query?.city_code,
+        kemendagri_kabupaten_kode: this.$route.query?.city_id,
         kemendagri_kabupaten_nama: this.$route.query?.city_name
       }
     }
@@ -192,7 +192,7 @@ export default {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     },
     onSelectDistrictCity(value) {
-      this.listQuery.city_code = value ? value.kemendagri_kabupaten_kode : ''
+      this.listQuery.city_id = value ? value.kemendagri_kabupaten_kode : ''
       this.listQuery.page = 1
       if (!value) {
         this.$router.replace({
@@ -231,7 +231,7 @@ export default {
         kemendagri_kabupaten_kode: this.district_user,
         kemendagri_kabupaten_nama: this.district_name
       }
-      this.listQuery.city_code = this.districtCity.kemendagri_kabupaten_kode
+      this.listQuery.city_id = this.districtCity.kemendagri_kabupaten_kode
     },
     filterQuery(oldQuery) {
       const newQuery = { ...oldQuery }
