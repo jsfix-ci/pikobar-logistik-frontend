@@ -7,25 +7,52 @@
       Enim ut etiam phasellus aliquet amet, eget placerat sapien tempus.
       Rhoncus ut eu id integer risus lobortis
     </p>
-    <div class="d-flex flex-row">
-      <DropdownInput
-        v-for="field in fieldList"
-        :key="field.label"
-        :label="field.label"
-        :options="listOptions[field.options]"
-        :placeholder="field.placeholder"
-        class="mr-3"
+    <div
+      v-for="(instance, parentIndex) in form.instance_list"
+      :key="instance.agency_id"
+      class="d-flex flex-column mb-5"
+    >
+      <!-- Parent (instance) -->
+      <StepTwoParent
+        :instance="instance"
+        :array-length="form.instance_list.length"
+        :index="parentIndex"
+        @addParent="createNewInstance()"
+        @delete="(index) => deleteArray(form.instance_list, index)"
       />
+      <!-- Child (material) -->
+      <div v-if="instance.isExtended">
+        <StepTwoChild
+          v-for="(material, childIndex) in instance.allocation_material_requests"
+          :key="material.material_id"
+          :material="material"
+          :field-list="fieldList"
+          :options-list="listOptions"
+          :index="childIndex"
+          :array-length="instance.allocation_material_requests.length"
+          @addChild="createNewMaterial(instance)"
+          @delete="(index) => deleteArray(instance.allocation_material_requests, index)"
+        />
+      </div>
+      <hr>
     </div>
   </div>
 </template>
 
 <script>
 import fieldList from './stepTwoField'
-import DropdownInput from '../../../components/DropdownInput'
+import StepTwoParent from './StepTwoParent.vue'
+import StepTwoChild from './StepTwoChild.vue'
 export default {
   components: {
-    DropdownInput
+    StepTwoParent,
+    StepTwoChild
+  },
+  props: {
+    form: {
+      type: Object,
+      default: () => ({})
+    }
   },
   data() {
     return {
@@ -53,6 +80,34 @@ export default {
           'Tujuan 2'
         ]
       }
+    }
+  },
+  methods: {
+    createNewInstance() {
+      // @todo: create function description
+      if (this.form.instance_list[this.form.instance_list.length - 1].agency_id) {
+        const instance = {
+          agency_id: '',
+          allocation_material_requests: [],
+          isExtended: false
+        }
+        this.createNewMaterial(instance, true)
+        this.form.instance_list.push(instance)
+      }
+    },
+    createNewMaterial(instance, isInitiate = false) {
+      // @todo: create function description
+      if (isInitiate || (!isInitiate && instance.allocation_material_requests[instance.allocation_material_requests.length - 1].material_id)) {
+        instance.allocation_material_requests.push({
+          material_id: '',
+          qty: '',
+          UoM: '',
+          additional_information: ''
+        })
+      }
+    },
+    deleteArray(array, index) {
+      array.splice(index, 1)
     }
   }
 }

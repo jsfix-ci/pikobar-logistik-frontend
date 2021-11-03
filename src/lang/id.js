@@ -116,6 +116,7 @@ export default {
     realization_distribution_other: 'Daftar Barang Realisasi Salur Lainnya',
     distributed_items: 'Barang Didistribusikan',
     show_store_address: 'Lihat Alamat Gudang',
+    show_items: 'Lihat Barang',
     contact_person_info: 'Info Orang yang bisa dihubungi',
     name: 'Nama',
     mobile_phone_number: 'No. HP',
