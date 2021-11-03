@@ -85,7 +85,7 @@ export default {
   methods: {
     createNewInstance() {
       // @todo: create function description
-      if (this.form.instance_list[this.form.instance_list.length - 1].agency_id) {
+      if (this.form.instance_list[this.form.instance_list.length - 1].agency_type) {
         const instance = {
           agency_id: '',
           allocation_material_requests: [],
