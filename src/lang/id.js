@@ -302,7 +302,7 @@ export default {
     completeness_placeholder: 'Pilih Status Kelengkapan',
     not_complete: 'Belum Lengkap',
     completed: 'Lengkap',
-    completeness_header: 'Permohonan Belum Lengkap',
+    completeness_header: 'Permohonan belum lengkap',
     not_complete_description: 'Berikut data yang perlu dilengkapi dari ID Permohonan #',
     not_complete_applicant_name: '- Nama Pemohon',
     not_complete_agency_name: '- Instansi Pemohon',

@@ -63,7 +63,7 @@ export default {
   props: {
     items: {
       type: Array,
-      default: null
+      default: () => []
     },
     isApproved: {
       type: Boolean,

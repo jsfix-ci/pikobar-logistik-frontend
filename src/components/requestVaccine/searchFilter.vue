@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card-text>
-      <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
+      <v-row>
         <v-col cols="12" sm="4" md="4">
           <v-card
             outlined
@@ -30,7 +30,7 @@
     </v-card-text>
     <hr v-if="showFilter" class="thin">
     <v-card-text v-if="showFilter">
-      <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
+      <v-row>
         <v-col cols="12" sm="4">
           <v-label class="title">{{ $t('label.instance_type') }}</v-label>
           <v-select
