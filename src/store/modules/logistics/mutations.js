@@ -91,5 +91,18 @@ export default {
   },
   SET_DATA_UNREPORTED_RECEIPT: (state, data) => {
     state.unReportedReceipt = data
+  },
+
+  SET_LIST_VACCINE_REQUEST: (state, data) => {
+    state.dataListVaccineRequest = data
+  },
+
+  SET_TOTAL_LIST_VACCINE_REQUEST: (state, data) => {
+    state.totalListVaccineRequest = data
+  },
+
+  SET_TOTAL_DATA_VACCINE_REQUEST: (state, data) => {
+    state.totalDataVaccineRequest = data
   }
+
 }
