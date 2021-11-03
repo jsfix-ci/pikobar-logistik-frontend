@@ -5,39 +5,34 @@
     :persistent="true"
   >
     <v-card>
-      <div class="col-sm-12">
-        <v-card-text class="headerSection headerMargin">
-          <span><h4><b>{{ $t('label.completeness_header') }}</b></h4></span>
-        </v-card-text>
-      </div>
-      <div class="col-sm-12">
-        <v-card-text>
-          <span>{{ $t('label.not_complete_description') + data.id + ':' }}</span>
-        </v-card-text>
-        <v-card-text v-if="!data.agency_address" class="contentMargin">
+      <v-card-title>
+        <span><h4><b>{{ $t('label.completeness_header') }}</b></h4></span>
+      </v-card-title>
+      <v-card-text>
+        <div>{{ $t('label.not_complete_description') + data.id + ':' }}</div>
+        <div v-if="!data.agency_address">
           <span>{{ $t('label.not_complete_agency_address') }}</span>
           <span class="red--text">{{ $t('label.completeness_fail') }}</span>
-        </v-card-text>
-        <v-card-text v-if="!data.applicant_file_url" class="contentMargin">
+        </div>
+        <div v-if="!data.applicant_file_url">
           <span>{{ $t('label.not_complete_applicant_file') }}</span>
           <span class="red--text">{{ $t('label.completeness_fail') }}</span>
-        </v-card-text>
-        <v-card-text v-if="!data.applicant_email" class="contentMargin">
+        </div>
+        <div v-if="!data.applicant_email">
           <span>{{ $t('label.not_complete_applicant_email') }}</span>
           <span class="red--text">{{ $t('label.completeness_fail') }}</span>
-        </v-card-text>
-        <v-card-text v-if="!data.applicant_primary_phone_number" class="contentMargin">
+        </div>
+        <div v-if="!data.applicant_primary_phone_number">
           <span>{{ $t('label.not_complete_applicant_primary_phone_number') }}</span>
           <span class="red--text">{{ $t('label.completeness_fail') }}</span>
-        </v-card-text>
-        <hr class="thin">
-      </div>
+        </div>
+      </v-card-text>
       <v-col class="d-flex justify-center">
         <v-btn
           small
           width="180px"
           height="40px"
-          class="margin-btn-update-logistic-needs"
+          color="success"
           @click="closeDialog"
         >
           {{ $t('label.back') }}
@@ -64,9 +59,9 @@ export default {
     }
   },
   methods: {
-    // Default Method
     setData(value) {
       this.data = value
+      console.log(this.data)
     },
     closeDialog() {
       EventBus.$emit('hideCompletenessDetail', false)
@@ -74,15 +69,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .contentDialog {
-    margin-top: -50px;
-  }
-  .headerMargin {
-    margin-bottom: -20px;
-  }
-  .contentMargin {
-    margin-top: -20px;
-  }
-</style>
