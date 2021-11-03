@@ -9,10 +9,22 @@
       :placeholder="field.placeholder"
       class="mr-3"
     />
+    <div class="d-flex flex-column">
+      <span class="purpose-label">
+        {{ $t('label.purpose') }}
+      </span>
+      <v-text-field
+        v-model="material['additional_information']"
+        :label="$t('label.input_purpose')"
+        class="align-self-center"
+        outlined
+        solo-inverted
+      />
+    </div>
     <v-icon
       v-if="arrayLength-1 === index"
       color="green"
-      class="mr-3"
+      class="ml-3"
       @click="$emit('addChild')"
     >
       mdi-plus-circle
@@ -20,7 +32,7 @@
     <v-icon
       v-if="arrayLength > 1"
       color="red"
-      class="mr-3"
+      class="mx-3"
       @click="$emit('delete', index)"
     >
       mdi-delete-circle
@@ -62,3 +74,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.purpose-label {
+  font-weight: 500;
+}
+</style>

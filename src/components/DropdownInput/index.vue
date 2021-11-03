@@ -7,10 +7,12 @@
       :items="options"
       :label="placeholder"
       :value="value"
+      item-text="name"
+      item-value="id"
       outlined
       solo
       @input="$emit('input', $event)"
-      @select="$emit('select')"
+      @change="$emit('select')"
     />
   </div>
 </template>
