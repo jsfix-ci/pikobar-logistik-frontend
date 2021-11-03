@@ -61,7 +61,6 @@ export default {
   methods: {
     setData(value) {
       this.data = value
-      console.log(this.data)
     },
     closeDialog() {
       EventBus.$emit('hideCompletenessDetail', false)
