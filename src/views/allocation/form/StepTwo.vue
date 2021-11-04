@@ -59,10 +59,6 @@ export default {
       fieldList,
       // @todo: replace listOptions with real data
       listOptions: {
-        instance: [
-          'Instansi 1',
-          'Instansi 2'
-        ],
         item: [
           'Item 1',
           'Item 2'
@@ -90,7 +86,8 @@ export default {
           agency_id: '',
           agency_type: '',
           allocation_material_requests: [],
-          isExtended: false
+          isExtended: false,
+          listAgency: []
         }
         this.createNewMaterial(instance, true)
         this.form.instance_list.push(instance)

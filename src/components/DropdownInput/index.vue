@@ -7,7 +7,7 @@
       :items="options"
       :label="placeholder"
       :value="value"
-      item-text="name"
+      :item-text="displayName"
       item-value="id"
       outlined
       solo
@@ -33,6 +33,10 @@ export default {
       default: ''
     },
     label: {
+      type: String,
+      default: ''
+    },
+    displayName: {
       type: String,
       default: ''
     }
