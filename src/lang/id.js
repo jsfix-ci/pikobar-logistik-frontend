@@ -755,6 +755,8 @@ export default {
     field_phone_number_not_valid: 'Nomor telepon tidak valid',
     server_error_occurred: 'Terjadi kesalahan pada server',
     feature_under_development: 'Fitur dalam pengembangan',
+    please_complete_current_instance_first: 'Lengkapi data instansi yang ada terlebih dahulu',
+    please_complete_current_material_first: 'Lengkapi data barang yang ada terlebih dahulu',
     required_fields: {
       distribution_destination: 'Tujuan distribusi harus diisi',
       address: 'Alamat harus diisi',

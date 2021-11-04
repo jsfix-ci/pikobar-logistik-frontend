@@ -22,6 +22,7 @@ const state = {
     // @todo: remove this dummy instance_list array
     instance_list: [
       {
+        agency_type: '',
         agency_id: '',
         isExtended: false,
         allocation_material_requests: [

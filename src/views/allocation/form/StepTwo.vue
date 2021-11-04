@@ -83,31 +83,52 @@ export default {
     }
   },
   methods: {
-    createNewInstance() {
+    async createNewInstance() {
       // @todo: create function description
-      if (this.form.instance_list[this.form.instance_list.length - 1].agency_type) {
+      if (this.isInstanceValid()) {
         const instance = {
           agency_id: '',
+          agency_type: '',
           allocation_material_requests: [],
           isExtended: false
         }
         this.createNewMaterial(instance, true)
         this.form.instance_list.push(instance)
+      } else {
+        await this.$store.dispatch('toast/errorToast', this.$t('errors.please_complete_current_instance_first'))
       }
     },
-    createNewMaterial(instance, isInitiate = false) {
+    async createNewMaterial(instance, isInitiate = false) {
       // @todo: create function description
-      if (isInitiate || (!isInitiate && instance.allocation_material_requests[instance.allocation_material_requests.length - 1].material_id)) {
+      if (this.isMaterialValid(instance, isInitiate)) {
         instance.allocation_material_requests.push({
           material_id: '',
           qty: '',
           UoM: '',
           additional_information: ''
         })
+      } else {
+        await this.$store.dispatch('toast/errorToast', this.$t('errors.please_complete_current_material_first'))
       }
     },
     deleteArray(array, index) {
       array.splice(index, 1)
+    },
+    isInstanceValid() {
+      // @todo: create function description
+      return this.form.instance_list[this.form.instance_list.length - 1].agency_type &&
+        this.form.instance_list[this.form.instance_list.length - 1].agency_id
+    },
+    isMaterialValid(instance, isInitiate) {
+      // @todo: create function description
+      return isInitiate ||
+        (
+          !isInitiate &&
+          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].material_id &&
+          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].qty &&
+          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].UoM &&
+          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].additional_information
+        )
     }
   }
 }

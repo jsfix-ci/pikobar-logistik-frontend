@@ -4,9 +4,10 @@
     <DropdownInput
       v-model="instance.agency_type"
       :label="$t('label.instance_type')"
-      :options="['satu', 'dua']"
+      :options="listFaskesType"
       :placeholder="'Pilih Jenis Instansi'"
       class="mr-3"
+      @select="onInstanceTypeSelected(instance.agency_type)"
     />
     <!-- @todo: replace options props with real data -->
     <DropdownInput
@@ -44,6 +45,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import DropdownInput from '../../../components/DropdownInput'
 export default {
   components: {
@@ -61,6 +63,27 @@ export default {
     index: {
       type: Number,
       default: null
+    }
+  },
+  computed: {
+    ...mapState('faskes', [
+      'listFaskes'
+    ]),
+    ...mapState('faskesType', [
+      'listFaskesType'
+    ])
+  },
+  async mounted() {
+    await this.$store.dispatch('faskesType/getListFaskesType')
+  },
+  methods: {
+    async onInstanceTypeSelected(id) {
+      const params = {
+        id_tipe_faskes: id,
+        verification_status: 'verified'
+      }
+      // @todo: change this API call
+      await this.$store.dispatch('faskes/getListFaskes', params)
     }
   }
 }

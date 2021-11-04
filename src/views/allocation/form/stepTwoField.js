@@ -17,11 +17,5 @@ export default [
     placeholder: i18n.t('label.choose_unit'),
     model: 'UoM',
     options: 'unit'
-  },
-  {
-    label: i18n.t('label.purpose'),
-    placeholder: i18n.t('label.input_purpose'),
-    model: 'additional_information',
-    options: 'purpose'
   }
 ]
