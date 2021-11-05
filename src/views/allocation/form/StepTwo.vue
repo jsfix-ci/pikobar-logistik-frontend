@@ -102,7 +102,6 @@ export default {
         instance.allocation_material_requests.push({
           material_id: '',
           qty: '',
-          UoM: '',
           additional_information: ''
         })
       } else {

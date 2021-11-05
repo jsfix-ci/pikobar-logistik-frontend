@@ -29,7 +29,6 @@ const state = {
           {
             material_id: '',
             qty: '',
-            UoM: '',
             additional_information: ''
           }
         ]
