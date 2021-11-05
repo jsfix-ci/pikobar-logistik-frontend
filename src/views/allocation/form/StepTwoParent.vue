@@ -68,9 +68,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('faskes', [
-      'listFaskes'
-    ]),
     ...mapState('faskesType', [
       'listFaskesType'
     ])
