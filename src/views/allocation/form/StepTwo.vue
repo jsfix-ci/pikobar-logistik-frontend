@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import fieldList from './stepTwoField'
 import StepTwoParent from './StepTwoParent.vue'
 import StepTwoChild from './StepTwoChild.vue'
@@ -59,28 +60,24 @@ export default {
       fieldList,
       // @todo: replace listOptions with real data
       listOptions: {
-        instance: [
-          'Instansi 1',
-          'Instansi 2'
-        ],
-        item: [
-          'Item 1',
-          'Item 2'
-        ],
-        count: [
-          'Jumlah 1',
-          'Jumlah 2'
-        ],
-        unit: [
-          'Unit 1',
-          'Unit 2'
-        ],
-        purpose: [
-          'Tujuan 1',
-          'Tujuan 2'
+        material: [],
+        quantity: [
+          '10',
+          '20',
+          '50',
+          '100'
         ]
       }
     }
+  },
+  computed: {
+    ...mapState('vaccine', [
+      'listMaterial'
+    ])
+  },
+  async mounted() {
+    await this.$store.dispatch('vaccine/getListMaterial', { is_paginated: 1 })
+    this.listOptions.material = this.listMaterial
   },
   methods: {
     async createNewInstance() {
@@ -90,7 +87,8 @@ export default {
           agency_id: '',
           agency_type: '',
           allocation_material_requests: [],
-          isExtended: false
+          isExtended: false,
+          listAgency: []
         }
         this.createNewMaterial(instance, true)
         this.form.instance_list.push(instance)
@@ -104,7 +102,6 @@ export default {
         instance.allocation_material_requests.push({
           material_id: '',
           qty: '',
-          UoM: '',
           additional_information: ''
         })
       } else {

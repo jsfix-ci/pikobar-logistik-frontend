@@ -6,15 +6,19 @@
       :label="$t('label.instance_type')"
       :options="listFaskesType"
       :placeholder="'Pilih Jenis Instansi'"
+      item-text="name"
       class="mr-3"
-      @select="onInstanceTypeSelected(instance.agency_type)"
+      @select="onInstanceTypeSelected(instance)"
     />
     <!-- @todo: replace options props with real data -->
     <DropdownInput
+      :key="instance.agency_type"
       v-model="instance.agency_id"
       :label="$t('label.instance_name')"
-      :options="['satu', 'dua']"
+      :options="instance.listAgency"
       :placeholder="'Pilih Instansi'"
+      :disabled="instance.agency_type === ''"
+      item-text="nama_faskes"
       class="mr-3"
     />
     <v-btn
@@ -66,9 +70,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('faskes', [
-      'listFaskes'
-    ]),
     ...mapState('faskesType', [
       'listFaskesType'
     ])
@@ -77,13 +78,14 @@ export default {
     await this.$store.dispatch('faskesType/getListFaskesType')
   },
   methods: {
-    async onInstanceTypeSelected(id) {
+    async onInstanceTypeSelected(instance) {
+      if (instance.agency_id) instance.agency_id = null
       const params = {
-        id_tipe_faskes: id,
-        verification_status: 'verified'
+        id_tipe_faskes: instance.agency_type,
+        is_paginated: 1
       }
-      // @todo: change this API call
-      await this.$store.dispatch('faskes/getListFaskes', params)
+      const res = await this.$store.dispatch('faskes/getListFaskes', params)
+      instance.listAgency = [...res.data]
     }
   }
 }
