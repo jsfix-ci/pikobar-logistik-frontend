@@ -9,6 +9,7 @@
       :value="value"
       :item-text="itemText"
       :item-value="itemValue"
+      :disabled="disabled"
       outlined
       solo
       @input="$emit('input', $event)"
@@ -43,6 +44,10 @@ export default {
     itemValue: {
       type: String,
       default: 'id'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }
