@@ -7,6 +7,8 @@
       :label="field.label"
       :options="optionsList[field.options]"
       :placeholder="field.placeholder"
+      :item-text="field.itemText"
+      :item-value="field.itemValue"
       class="mr-3"
     />
     <div class="d-flex flex-column">

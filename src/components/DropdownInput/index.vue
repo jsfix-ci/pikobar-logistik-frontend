@@ -7,8 +7,8 @@
       :items="options"
       :label="placeholder"
       :value="value"
-      :item-text="displayName"
-      item-value="id"
+      :item-text="itemText"
+      :item-value="itemValue"
       outlined
       solo
       @input="$emit('input', $event)"
@@ -36,9 +36,13 @@ export default {
       type: String,
       default: ''
     },
-    displayName: {
+    itemText: {
       type: String,
-      default: ''
+      default: 'label'
+    },
+    itemValue: {
+      type: String,
+      default: 'id'
     }
   }
 }

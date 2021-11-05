@@ -6,7 +6,7 @@
       :label="$t('label.instance_type')"
       :options="listFaskesType"
       :placeholder="'Pilih Jenis Instansi'"
-      display-name="name"
+      item-text="name"
       class="mr-3"
       @select="onInstanceTypeSelected(instance)"
     />
@@ -16,7 +16,7 @@
       :label="$t('label.instance_name')"
       :options="instance.listAgency"
       :placeholder="'Pilih Instansi'"
-      display-name="nama_faskes"
+      item-text="nama_faskes"
       class="mr-3"
     />
     <v-btn
