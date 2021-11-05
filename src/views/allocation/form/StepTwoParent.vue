@@ -17,6 +17,7 @@
       :label="$t('label.instance_name')"
       :options="instance.listAgency"
       :placeholder="'Pilih Instansi'"
+      :disabled="instance.agency_type === ''"
       item-text="nama_faskes"
       class="mr-3"
     />
