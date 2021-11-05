@@ -61,17 +61,11 @@ export default {
       // @todo: replace listOptions with real data
       listOptions: {
         material: [],
-        count: [
-          'Jumlah 1',
-          'Jumlah 2'
-        ],
-        unit: [
-          'Unit 1',
-          'Unit 2'
-        ],
-        purpose: [
-          'Tujuan 1',
-          'Tujuan 2'
+        quantity: [
+          '10',
+          '20',
+          '50',
+          '100'
         ]
       }
     }

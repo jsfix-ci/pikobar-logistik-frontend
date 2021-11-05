@@ -12,12 +12,6 @@ export default [
     label: i18n.t('label.item_count'),
     placeholder: i18n.t('label.input_total'),
     model: 'qty',
-    options: 'count'
-  },
-  {
-    label: i18n.t('label.item_unit'),
-    placeholder: i18n.t('label.choose_unit'),
-    model: 'UoM',
-    options: 'unit'
+    options: 'quantity'
   }
 ]
