@@ -12,6 +12,7 @@
     />
     <!-- @todo: replace options props with real data -->
     <DropdownInput
+      :key="instance.agency_type"
       v-model="instance.agency_id"
       :label="$t('label.instance_name')"
       :options="instance.listAgency"
