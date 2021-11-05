@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import fieldList from './stepTwoField'
 import StepTwoParent from './StepTwoParent.vue'
 import StepTwoChild from './StepTwoChild.vue'
@@ -59,10 +60,7 @@ export default {
       fieldList,
       // @todo: replace listOptions with real data
       listOptions: {
-        item: [
-          'Item 1',
-          'Item 2'
-        ],
+        material: [],
         count: [
           'Jumlah 1',
           'Jumlah 2'
@@ -77,6 +75,15 @@ export default {
         ]
       }
     }
+  },
+  computed: {
+    ...mapState('vaccine', [
+      'listMaterial'
+    ])
+  },
+  async mounted() {
+    await this.$store.dispatch('vaccine/getListMaterial', { is_paginated: 1 })
+    this.listOptions.material = this.listMaterial
   },
   methods: {
     async createNewInstance() {
