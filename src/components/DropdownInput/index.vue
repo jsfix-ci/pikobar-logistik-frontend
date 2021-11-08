@@ -6,9 +6,14 @@
     <v-select
       :items="options"
       :label="placeholder"
+      :value="value"
+      :item-text="itemText"
+      :item-value="itemValue"
+      :disabled="disabled"
       outlined
       solo
-      @select="$emit('select')"
+      @input="$emit('input', $event)"
+      @change="$emit('select')"
     />
   </div>
 </template>
@@ -16,6 +21,10 @@
 <script>
 export default {
   props: {
+    value: {
+      type: String,
+      default: null
+    },
     options: {
       type: Array,
       default: () => []
@@ -27,6 +36,18 @@ export default {
     label: {
       type: String,
       default: ''
+    },
+    itemText: {
+      type: String,
+      default: 'label'
+    },
+    itemValue: {
+      type: String,
+      default: 'id'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }
