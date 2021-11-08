@@ -210,7 +210,8 @@ export default {
       }
     },
     toDetail(data) {
-      this.$router.push(`/vaksin/detail/${data.id}`)
+      // this is sample for detail with static id
+      this.$router.push(`/vaksin/detail/2408`)
     },
     async exportData() {
       const response = await this.$store.dispatch('logistics/logisticRequestExportData', this.listQuery)
