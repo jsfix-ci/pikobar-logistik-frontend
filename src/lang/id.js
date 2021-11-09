@@ -42,7 +42,8 @@ export default {
     incoming_mail: 'Surat Masuk',
     outgoing_mail_detail: 'Detail Surat Perintah',
     incoming_mail_detail: 'Detail Surat Masuk',
-    allocation: 'Alokasi Salur Logistik'
+    allocation: 'Alokasi Salur Logistik',
+    other_instance: 'Instansi Lainnya'
   },
   label: {
     preview: 'Preview',

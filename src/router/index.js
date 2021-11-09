@@ -15,6 +15,7 @@ import formPemohonAdmin from './modules/formPemohonAdmin'
 import letterRouter from './modules/letter'
 import reports from './modules/reports'
 import allocation from './modules/allocation'
+import otherInstace from './modules/otherInstance'
 
 /* Sentry */
 import * as Sentry from '@sentry/core'
@@ -96,6 +97,7 @@ export const asyncRoutes = [
   allocation,
   letterRouter,
   faskesRouter,
+  otherInstace,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/', hidden: true }
 ]
