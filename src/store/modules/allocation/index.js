@@ -25,7 +25,6 @@ const state = {
         agency_type: '',
         agency_id: '',
         agency_name: '',
-        agency_type: '',
         delivery_date: '',
         additional_information: '',
         isExtended: false,
