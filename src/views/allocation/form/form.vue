@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       stepHeader,
-      stepModel: 1
+      stepModel: 2
     }
   },
   computed: {
@@ -79,8 +79,9 @@ export default {
   methods: {
     async onNext() {
       // @todo: next function conditional based on current step
-      const isValid = await this.$refs.firstStep[0].validate()
-      if (isValid) this.stepModel++
+      // const isValid = await this.$refs.firstStep[0].validate()
+      // if (isValid) this.stepModel++
+      this.stepModel++
     },
     onCancel() {
       this.stepModel === 1 ? this.$router.go(-1) : this.stepModel--

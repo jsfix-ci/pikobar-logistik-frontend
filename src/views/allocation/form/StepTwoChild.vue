@@ -7,8 +7,26 @@
       :label="field.label"
       :options="optionsList[field.options]"
       :placeholder="field.placeholder"
+      :item-text="field.itemText"
+      :item-value="field.itemValue"
+      :is-return-object="field.isReturnObject"
       class="mr-3"
+      @input="(item) => onChildSelected(material, field, item)"
     />
+    <div class="d-flex flex-column mr-3">
+      <span class="input-label">
+        {{ $t('label.item_count') }}
+      </span>
+      <v-text-field
+        v-model.number="material.qty"
+        :placeholder="$t('label.input_total')"
+        class="align-self-center"
+        outlined
+        solo-inverted
+        type="number"
+        :rules="[numberRule]"
+      />
+    </div>
     <v-icon
       v-if="arrayLength-1 === index"
       color="green"
@@ -59,6 +77,28 @@ export default {
       type: Number,
       default: null
     }
+  },
+  methods: {
+    onChildSelected(material, field, item) {
+      if (field.isReturnObject) { // material dropdown
+        material.material_id = item.material_id
+        material.material_name = item.material_name
+      } else {
+        material[field.model] = item
+      }
+    },
+    numberRule(val) {
+      console.log(isNaN(val))
+      if (typeof val !== 'number') return this.$t('errors.number_only')
+      if (val <= 0) return this.$t('errors.not_minus')
+      return true
+    }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.input-label {
+  font-weight: 500;
+}
+</style>

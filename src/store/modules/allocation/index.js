@@ -23,13 +23,17 @@ const state = {
     instance_list: [
       {
         agency_id: '',
+        agency_name: '',
+        agency_type: '',
+        delivery_date: '',
+        additional_information: '',
         isExtended: false,
+        listAgency: [],
         allocation_material_requests: [
           {
             material_id: '',
-            qty: '',
-            UoM: '',
-            additional_information: ''
+            material_name: '',
+            qty: ''
           }
         ]
       }

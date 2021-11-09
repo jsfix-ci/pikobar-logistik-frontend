@@ -9,6 +9,10 @@
       :value="value"
       outlined
       solo
+      :return-object="isReturnObject"
+      :item-text="itemText"
+      :item-value="itemValue"
+      :disabled="disabled"
       @input="$emit('input', $event)"
       @select="$emit('select')"
     />
@@ -33,6 +37,22 @@ export default {
     label: {
       type: String,
       default: ''
+    },
+    itemText: {
+      type: String,
+      default: 'label'
+    },
+    itemValue: {
+      type: String,
+      default: 'id'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    isReturnObject: {
+      type: Boolean,
+      default: false
     }
   }
 }

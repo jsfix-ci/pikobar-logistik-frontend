@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import fieldList from './stepTwoField'
 import StepTwoParent from './StepTwoParent.vue'
 import StepTwoChild from './StepTwoChild.vue'
@@ -59,28 +60,18 @@ export default {
       fieldList,
       // @todo: replace listOptions with real data
       listOptions: {
-        instance: [
-          'Instansi 1',
-          'Instansi 2'
-        ],
-        item: [
-          'Item 1',
-          'Item 2'
-        ],
-        count: [
-          'Jumlah 1',
-          'Jumlah 2'
-        ],
-        unit: [
-          'Unit 1',
-          'Unit 2'
-        ],
-        purpose: [
-          'Tujuan 1',
-          'Tujuan 2'
-        ]
+        material: []
       }
     }
+  },
+  computed: {
+    ...mapState('vaccine', [
+      'listMaterial'
+    ])
+  },
+  async mounted() {
+    await this.$store.dispatch('vaccine/getListMaterial', { is_paginated: 0 })
+    this.listOptions.material = this.listMaterial
   },
   methods: {
     createNewInstance() {
@@ -88,6 +79,9 @@ export default {
       if (this.form.instance_list[this.form.instance_list.length - 1].agency_id) {
         const instance = {
           agency_id: '',
+          agency_type: '',
+          delivery_date: '',
+          additional_information: '',
           allocation_material_requests: [],
           isExtended: false
         }
@@ -100,14 +94,28 @@ export default {
       if (isInitiate || (!isInitiate && instance.allocation_material_requests[instance.allocation_material_requests.length - 1].material_id)) {
         instance.allocation_material_requests.push({
           material_id: '',
-          qty: '',
-          UoM: '',
-          additional_information: ''
+          qty: ''
         })
       }
     },
     deleteArray(array, index) {
       array.splice(index, 1)
+    },
+    isInstanceValid() {
+      // @todo: create function description
+      return this.form.instance_list[this.form.instance_list.length - 1].agency_type &&
+        this.form.instance_list[this.form.instance_list.length - 1].agency_id &&
+        this.form.instance_list[this.form.instance_list.length - 1].delivery_date &&
+        this.form.instance_list[this.form.instance_list.length - 1].additional_information
+    },
+    isMaterialValid(instance, isInitiate) {
+      // @todo: create function description
+      return isInitiate ||
+        (
+          !isInitiate &&
+          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].material_id &&
+          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].qty
+        )
     }
   }
 }
