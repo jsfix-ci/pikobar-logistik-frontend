@@ -63,7 +63,7 @@ const requestVaccine = {
     },
     {
       path: '/vaksin/detail/:id',
-      component: () => import('@/views/requestVaccine/detail'),
+      component: () => import('@/views/pengajuanLogistik/detail'),
       hidden: true,
       meta: {
         title: 'applicant_medical_tools_list_title',
