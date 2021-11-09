@@ -79,7 +79,7 @@ export default {
   data() {
     return {
       menu: false,
-      startDate: this.initialStartDate || '2020-01-01',
+      startDate: this.initialStartDate || '2021-01-01',
       endDate: this.initialEndDate || this.$moment(Date.now()).format('YYYY-MM-DD'),
       dateFormatted: this.initialStartDate && this.initialEndDate
         ? `${this.$moment(this.initialStartDate).format('DD MMMM YYYY')} - ${this.$moment(this.initialEndDate).format('DD MMMM YYYY')}`

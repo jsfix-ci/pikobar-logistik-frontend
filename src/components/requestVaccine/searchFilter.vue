@@ -12,7 +12,7 @@
               solo-inverted
               flat
               hide-details
-              :placeholder="$t('label.search_data')"
+              :placeholder="$t('label.search_instance_name')"
               prepend-inner-icon="search"
               @change="handleSearch"
             />
