@@ -7,7 +7,7 @@
       :placeholder="'Pilih Jenis Instansi'"
       item-text="name"
       class="mr-3"
-      @select="() => onInstanceTypeSelected(instance)"
+      @select="onInstanceTypeSelected(instance)"
     />
     <DropdownInput
       :key="instance.agency_type"

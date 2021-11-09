@@ -7,14 +7,14 @@
       :items="options"
       :label="placeholder"
       :value="value"
-      outlined
-      solo
-      :return-object="isReturnObject"
       :item-text="itemText"
       :item-value="itemValue"
       :disabled="disabled"
+      outlined
+      solo
+      :return-object="isReturnObject"
       @input="$emit('input', $event)"
-      @select="$emit('select')"
+      @change="$emit('select')"
     />
   </div>
 </template>

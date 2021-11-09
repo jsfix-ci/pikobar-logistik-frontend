@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import tableHeader from './tableHeader'
+import { tableHeader } from './tableHeader'
 export default {
   props: {
     listData: {

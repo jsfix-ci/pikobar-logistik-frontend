@@ -30,7 +30,7 @@
     <v-icon
       v-if="arrayLength-1 === index"
       color="green"
-      class="mr-3"
+      class="ml-3"
       @click="$emit('addChild')"
     >
       mdi-plus-circle
@@ -38,7 +38,7 @@
     <v-icon
       v-if="arrayLength > 1"
       color="red"
-      class="mr-3"
+      class="mx-3"
       @click="$emit('delete', index)"
     >
       mdi-delete-circle
