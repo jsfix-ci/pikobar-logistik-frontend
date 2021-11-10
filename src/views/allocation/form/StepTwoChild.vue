@@ -88,7 +88,6 @@ export default {
       }
     },
     numberRule(val) {
-      console.log(isNaN(val))
       if (typeof val !== 'number') return this.$t('errors.number_only')
       if (val <= 0) return this.$t('errors.not_minus')
       return true

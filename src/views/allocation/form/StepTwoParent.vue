@@ -100,7 +100,6 @@ export default {
   },
   methods: {
     async onInstanceTypeSelected(instance) {
-      console.log('masuk')
       const params = {
         id_tipe_faskes: instance.agency_type,
         is_paginated: 0
