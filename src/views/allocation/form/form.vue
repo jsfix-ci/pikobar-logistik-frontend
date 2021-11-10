@@ -83,10 +83,13 @@ export default {
   },
   methods: {
     async onNext() {
-      // @todo: next function conditional based on current step
-      // const isValid = await this.$refs.firstStep[0].validate()
-      // if (isValid) this.stepModel++
-      this.stepModel++
+      if (this.stepModel === 1) {
+        const isValid = await this.$refs.firstStep[0].validate()
+        if (isValid) this.stepModel++
+      } else {
+        // @todo: next function conditional for step 2 and 3
+        this.stepModel++
+      }
     },
     onCancel() {
       this.stepModel === 1 ? this.$router.go(-1) : this.stepModel--
