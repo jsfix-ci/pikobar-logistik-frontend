@@ -76,7 +76,7 @@ export default {
     ])
   },
   async mounted() {
-    await this.$store.dispatch('vaccine/getListMaterial', { is_paginated: 1 })
+    await this.$store.dispatch('vaccine/getListMaterial', { is_paginated: 0 })
     this.listOptions.material = this.listMaterial
   },
   methods: {
@@ -86,6 +86,8 @@ export default {
         const instance = {
           agency_id: '',
           agency_type: '',
+          delivery_date: '',
+          additional_information: '',
           allocation_material_requests: [],
           isExtended: false,
           listAgency: []
@@ -101,8 +103,7 @@ export default {
       if (this.isMaterialValid(instance, isInitiate)) {
         instance.allocation_material_requests.push({
           material_id: '',
-          qty: '',
-          additional_information: ''
+          qty: ''
         })
       } else {
         await this.$store.dispatch('toast/errorToast', this.$t('errors.please_complete_current_material_first'))
@@ -114,7 +115,9 @@ export default {
     isInstanceValid() {
       // @todo: create function description
       return this.form.instance_list[this.form.instance_list.length - 1].agency_type &&
-        this.form.instance_list[this.form.instance_list.length - 1].agency_id
+        this.form.instance_list[this.form.instance_list.length - 1].agency_id &&
+        this.form.instance_list[this.form.instance_list.length - 1].delivery_date &&
+        this.form.instance_list[this.form.instance_list.length - 1].additional_information
     },
     isMaterialValid(instance, isInitiate) {
       // @todo: create function description
@@ -122,9 +125,7 @@ export default {
         (
           !isInitiate &&
           instance.allocation_material_requests[instance.allocation_material_requests.length - 1].material_id &&
-          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].qty &&
-          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].UoM &&
-          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].additional_information
+          instance.allocation_material_requests[instance.allocation_material_requests.length - 1].qty
         )
     }
   }

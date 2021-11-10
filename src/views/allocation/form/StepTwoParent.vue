@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex flex-row align-center">
-    <!-- @todo: replace options props with real data and confirm model name with BE -->
     <DropdownInput
       v-model="instance.agency_type"
       :label="$t('label.instance_type')"
@@ -10,7 +9,6 @@
       class="mr-3"
       @select="onInstanceTypeSelected(instance)"
     />
-    <!-- @todo: replace options props with real data -->
     <DropdownInput
       :key="instance.agency_type"
       v-model="instance.agency_id"
@@ -18,9 +16,32 @@
       :options="instance.listAgency"
       :placeholder="'Pilih Instansi'"
       :disabled="instance.agency_type === ''"
+      :is-return-object="true"
       item-text="nama_faskes"
       class="mr-3"
+      @input="(item) => onAgencySelected(instance, item)"
     />
+    <div class="d-flex flex-column mr-3">
+      <span class="input-label">
+        {{ $t('label.planned_delivery_date') }}
+      </span>
+      <date-picker
+        v-model="instance.delivery_date"
+        @selected="(value) => instance.delivery_date = value"
+      />
+    </div>
+    <div class="d-flex flex-column mr-3">
+      <span class="input-label">
+        {{ $t('label.note') }}
+      </span>
+      <v-text-field
+        v-model="instance.additional_information"
+        :label="$t('label.input_note')"
+        class="align-self-center"
+        outlined
+        solo-inverted
+      />
+    </div>
     <v-btn
       large
       depressed
@@ -79,13 +100,20 @@ export default {
   },
   methods: {
     async onInstanceTypeSelected(instance) {
-      if (instance.agency_id) instance.agency_id = null
       const params = {
         id_tipe_faskes: instance.agency_type,
-        is_paginated: 1
+        is_paginated: 0
       }
       const res = await this.$store.dispatch('faskes/getListFaskes', params)
+      if (instance.agency_id) {
+        instance.agency_id = null
+        instance.agency_name = null
+      }
       instance.listAgency = [...res.data]
+    },
+    onAgencySelected(instance, item) {
+      instance.agency_id = item.id
+      instance.agency_name = item.nama_faskes
     }
   }
 }
@@ -99,5 +127,8 @@ export default {
   border-radius: 8px;
   font-size: 14px;
   text-transform: none !important;
+}
+.input-label {
+  font-weight: 500;
 }
 </style>

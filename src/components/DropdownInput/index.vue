@@ -12,6 +12,7 @@
       :disabled="disabled"
       outlined
       solo
+      :return-object="isReturnObject"
       @input="$emit('input', $event)"
       @change="$emit('select')"
     />
@@ -46,6 +47,10 @@ export default {
       default: 'id'
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    isReturnObject: {
       type: Boolean,
       default: false
     }

@@ -31,6 +31,9 @@
             v-if="step.step === 2"
             :form="allocationForm"
           />
+          <StepThree
+            v-if="step.step === 3"
+          />
         </v-stepper-content>
       </v-stepper-items>
       <div class="d-flex flex-row justify-end mr-8 mb-5">
@@ -60,10 +63,12 @@ import { mapState } from 'vuex'
 import stepHeader from './stepHeader'
 import StepOne from './StepOne.vue'
 import StepTwo from './StepTwo.vue'
+import StepThree from './StepThree.vue'
 export default {
   components: {
     StepOne,
-    StepTwo
+    StepTwo,
+    StepThree
   },
   data() {
     return {
@@ -78,9 +83,13 @@ export default {
   },
   methods: {
     async onNext() {
-      // @todo: next function conditional based on current step
-      const isValid = await this.$refs.firstStep[0].validate()
-      if (isValid) this.stepModel++
+      if (this.stepModel === 1) {
+        const isValid = await this.$refs.firstStep[0].validate()
+        if (isValid) this.stepModel++
+      } else {
+        // @todo: next function conditional for step 2 and 3
+        this.stepModel++
+      }
     },
     onCancel() {
       this.stepModel === 1 ? this.$router.go(-1) : this.stepModel--

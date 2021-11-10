@@ -24,12 +24,16 @@ const state = {
       {
         agency_type: '',
         agency_id: '',
+        agency_name: '',
+        delivery_date: '',
+        additional_information: '',
         isExtended: false,
+        listAgency: [],
         allocation_material_requests: [
           {
             material_id: '',
-            qty: '',
-            additional_information: ''
+            material_name: '',
+            qty: ''
           }
         ]
       }
