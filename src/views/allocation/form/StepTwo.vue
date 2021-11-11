@@ -23,7 +23,7 @@
             @delete="(index) => deleteArray(form.instance_list, index)"
           />
           <!-- Child (material) -->
-          <div v-if="instance.isExtended">
+          <div v-show="instance.isExtended">
             <StepTwoChild
               v-for="(material, childIndex) in instance.allocation_material_requests"
               :key="material.material_id"
