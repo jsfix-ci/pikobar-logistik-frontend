@@ -1,32 +1,47 @@
 <template>
   <div class="d-flex flex-row align-center">
-    <DropdownInput
-      v-model="instance.agency_type"
-      :label="$t('label.instance_type')"
-      :options="listFaskesType"
-      :placeholder="'Pilih Jenis Instansi'"
-      item-text="name"
-      class="mr-3"
-      @select="onInstanceTypeSelected(instance)"
-    />
-    <DropdownInput
-      :key="instance.agency_type"
-      v-model="instance.agency_id"
-      :label="$t('label.instance_name')"
-      :options="instance.listAgency"
-      :placeholder="'Pilih Instansi'"
-      :disabled="instance.agency_type === ''"
-      :is-return-object="true"
-      item-text="nama_faskes"
-      class="mr-3"
-      @input="(item) => onAgencySelected(instance, item)"
-    />
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      :name="$t('label.instance_type')"
+    >
+      <DropdownInput
+        v-model="instance.agency_type"
+        :label="$t('label.instance_type')"
+        :options="listFaskesType"
+        :placeholder="'Pilih Jenis Instansi'"
+        :error-messages="errors"
+        item-text="name"
+        class="mr-3"
+        @select="onInstanceTypeSelected(instance)"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      :name="$t('label.instance_name')"
+    >
+      <DropdownInput
+        :key="instance.agency_type"
+        v-model="instance.agency_id"
+        :label="$t('label.instance_name')"
+        :options="instance.listAgency"
+        :placeholder="'Pilih Instansi'"
+        :disabled="instance.agency_type === ''"
+        :is-return-object="true"
+        :error-messages="errors"
+        item-text="nama_faskes"
+        class="mr-3"
+        @input="(item) => onAgencySelected(instance, item)"
+      />
+    </ValidationProvider>
     <div class="d-flex flex-column mr-3">
       <span class="input-label">
         {{ $t('label.planned_delivery_date') }}
       </span>
       <date-picker
         v-model="instance.delivery_date"
+        rule="required"
         @selected="(value) => instance.delivery_date = value"
       />
     </div>
@@ -72,8 +87,10 @@
 <script>
 import { mapState } from 'vuex'
 import DropdownInput from '../../../components/DropdownInput'
+import { ValidationProvider } from 'vee-validate'
 export default {
   components: {
+    ValidationProvider,
     DropdownInput
   },
   props: {

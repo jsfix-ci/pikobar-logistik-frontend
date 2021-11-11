@@ -10,6 +10,7 @@
       :item-text="itemText"
       :item-value="itemValue"
       :disabled="disabled"
+      :error-messages="errorMessages"
       outlined
       solo
       :return-object="isReturnObject"
@@ -53,6 +54,10 @@ export default {
     isReturnObject: {
       type: Boolean,
       default: false
+    },
+    errorMessages: {
+      type: String,
+      default: ''
     }
   }
 }

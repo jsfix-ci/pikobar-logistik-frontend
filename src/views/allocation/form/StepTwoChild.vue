@@ -1,19 +1,31 @@
 <template>
   <div class="d-flex flex-row ml-10 align-center">
-    <DropdownInput
+    <ValidationProvider
       v-for="field in fieldList"
       :key="field.label"
-      v-model="material[field.model]"
-      :label="field.label"
-      :options="optionsList[field.options]"
-      :placeholder="field.placeholder"
-      :item-text="field.itemText"
-      :item-value="field.itemValue"
-      :is-return-object="field.isReturnObject"
-      class="mr-3"
-      @input="(item) => onChildSelected(material, field, item)"
-    />
-    <div class="d-flex flex-column mr-3">
+      v-slot="{ errors }"
+      :rules="field.rules"
+      :name="field.label"
+    >
+      <DropdownInput
+        v-model="material[field.model]"
+        :label="field.label"
+        :options="optionsList[field.options]"
+        :placeholder="field.placeholder"
+        :item-text="field.itemText"
+        :item-value="field.itemValue"
+        :is-return-object="field.isReturnObject"
+        :error-messages="errors"
+        class="mr-3"
+        @input="(item) => onChildSelected(material, field, item)"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      :name="$t('label.item_count')"
+      class="d-flex flex-column mr-3"
+    >
       <span class="input-label">
         {{ $t('label.item_count') }}
       </span>
@@ -25,8 +37,9 @@
         solo-inverted
         type="number"
         :rules="[numberRule]"
+        :error-messages="errors"
       />
-    </div>
+    </ValidationProvider>
     <v-icon
       v-if="arrayLength-1 === index"
       color="green"
@@ -48,9 +61,11 @@
 
 <script>
 import DropdownInput from '../../../components/DropdownInput'
+import { ValidationProvider } from 'vee-validate'
 export default {
   components: {
-    DropdownInput
+    DropdownInput,
+    ValidationProvider
   },
   props: {
     value: {
