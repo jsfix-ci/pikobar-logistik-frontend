@@ -41,6 +41,7 @@
       </span>
       <date-picker
         v-model="instance.delivery_date"
+        :required="true"
         rule="required"
         @selected="(value) => instance.delivery_date = value"
       />
