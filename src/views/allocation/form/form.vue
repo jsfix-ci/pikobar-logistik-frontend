@@ -29,6 +29,7 @@
           />
           <StepTwo
             v-if="step.step === 2"
+            ref="secondStep"
             :form="allocationForm"
           />
           <StepThree
@@ -86,8 +87,10 @@ export default {
       if (this.stepModel === 1) {
         const isValid = await this.$refs.firstStep[0].validate()
         if (isValid) this.stepModel++
+      } else if (this.stepModel === 2) {
+        const isValid = await this.$refs.secondStep[0].validate()
+        if (isValid) this.stepModel++
       } else {
-        // @todo: next function conditional for step 2 and 3
         this.stepModel++
       }
     },

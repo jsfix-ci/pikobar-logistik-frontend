@@ -12,6 +12,7 @@
       <ValidationProvider
         v-slot="{ errors }"
         :rules="required ? rule : ''"
+        :name="name || $t('label.date')"
       >
         <v-text-field
           v-model="dateFormatted"
@@ -48,6 +49,10 @@ export default {
       default: false
     },
     rule: {
+      type: String,
+      default: ''
+    },
+    name: {
       type: String,
       default: ''
     }

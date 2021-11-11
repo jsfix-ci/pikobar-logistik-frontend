@@ -7,35 +7,39 @@
       Enim ut etiam phasellus aliquet amet, eget placerat sapien tempus.
       Rhoncus ut eu id integer risus lobortis
     </p>
-    <div
-      v-for="(instance, parentIndex) in form.instance_list"
-      :key="instance.agency_id"
-      class="d-flex flex-column mb-5"
-    >
-      <!-- Parent (instance) -->
-      <StepTwoParent
-        :instance="instance"
-        :array-length="form.instance_list.length"
-        :index="parentIndex"
-        @addParent="createNewInstance()"
-        @delete="(index) => deleteArray(form.instance_list, index)"
-      />
-      <!-- Child (material) -->
-      <div v-if="instance.isExtended">
-        <StepTwoChild
-          v-for="(material, childIndex) in instance.allocation_material_requests"
-          :key="material.material_id"
-          :material="material"
-          :field-list="fieldList"
-          :options-list="listOptions"
-          :index="childIndex"
-          :array-length="instance.allocation_material_requests.length"
-          @addChild="createNewMaterial(instance)"
-          @delete="(index) => deleteArray(instance.allocation_material_requests, index)"
-        />
-      </div>
-      <hr>
-    </div>
+    <ValidationObserver ref="observer">
+      <v-form>
+        <div
+          v-for="(instance, parentIndex) in form.instance_list"
+          :key="instance.agency_id"
+          class="d-flex flex-column mb-5"
+        >
+          <!-- Parent (instance) -->
+          <StepTwoParent
+            :instance="instance"
+            :array-length="form.instance_list.length"
+            :index="parentIndex"
+            @addParent="createNewInstance()"
+            @delete="(index) => deleteArray(form.instance_list, index)"
+          />
+          <!-- Child (material) -->
+          <div v-show="instance.isExtended">
+            <StepTwoChild
+              v-for="(material, childIndex) in instance.allocation_material_requests"
+              :key="material.material_id"
+              :material="material"
+              :field-list="fieldList"
+              :options-list="listOptions"
+              :index="childIndex"
+              :array-length="instance.allocation_material_requests.length"
+              @addChild="createNewMaterial(instance)"
+              @delete="(index) => deleteArray(instance.allocation_material_requests, index)"
+            />
+          </div>
+          <hr>
+        </div>
+      </v-form>
+    </ValidationObserver>
   </div>
 </template>
 
@@ -44,8 +48,10 @@ import { mapState } from 'vuex'
 import fieldList from './stepTwoField'
 import StepTwoParent from './StepTwoParent.vue'
 import StepTwoChild from './StepTwoChild.vue'
+import { ValidationObserver } from 'vee-validate'
 export default {
   components: {
+    ValidationObserver,
     StepTwoParent,
     StepTwoChild
   },
@@ -116,8 +122,7 @@ export default {
       // @todo: create function description
       return this.form.instance_list[this.form.instance_list.length - 1].agency_type &&
         this.form.instance_list[this.form.instance_list.length - 1].agency_id &&
-        this.form.instance_list[this.form.instance_list.length - 1].delivery_date &&
-        this.form.instance_list[this.form.instance_list.length - 1].additional_information
+        this.form.instance_list[this.form.instance_list.length - 1].delivery_date
     },
     isMaterialValid(instance, isInitiate) {
       // @todo: create function description
@@ -127,6 +132,9 @@ export default {
           instance.allocation_material_requests[instance.allocation_material_requests.length - 1].material_id &&
           instance.allocation_material_requests[instance.allocation_material_requests.length - 1].qty
         )
+    },
+    async validate() {
+      return await this.$refs.observer.validate()
     }
   }
 }

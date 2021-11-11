@@ -7,6 +7,7 @@ export default [
     options: 'material',
     itemText: 'material_name',
     itemValue: 'material_id',
+    rules: 'required',
     isReturnObject: true
   }
 ]

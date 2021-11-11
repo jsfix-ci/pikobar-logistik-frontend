@@ -10,6 +10,7 @@
       :item-text="itemText"
       :item-value="itemValue"
       :disabled="disabled"
+      :error-messages="errorMessages"
       outlined
       solo
       :return-object="isReturnObject"
@@ -23,7 +24,7 @@
 export default {
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: null
     },
     options: {
@@ -53,6 +54,10 @@ export default {
     isReturnObject: {
       type: Boolean,
       default: false
+    },
+    errorMessages: {
+      type: Array,
+      default: () => []
     }
   }
 }
