@@ -79,12 +79,6 @@ export default {
     getTableRowNumbering(value) {
       const index = this.items.indexOf(value)
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
-    },
-    updateData(value) {
-      return value
-    },
-    toDetail(value) {
-      return value
     }
   }
 }
