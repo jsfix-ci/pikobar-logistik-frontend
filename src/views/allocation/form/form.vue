@@ -88,7 +88,7 @@ export default {
         const isValid = await this.$refs.firstStep[0].validate()
         if (isValid) this.stepModel++
       } else if (this.stepModel === 2) {
-        const isValid = await this.$refs.secondStep[0].validate())
+        const isValid = await this.$refs.secondStep[0].validate()
         if (isValid) this.stepModel++
       } else {
         this.stepModel++

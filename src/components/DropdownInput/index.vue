@@ -24,7 +24,7 @@
 export default {
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: null
     },
     options: {
@@ -56,8 +56,8 @@ export default {
       default: false
     },
     errorMessages: {
-      type: String,
-      default: ''
+      type: Array,
+      default: () => []
     }
   }
 }
