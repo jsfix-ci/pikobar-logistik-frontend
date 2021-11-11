@@ -12,31 +12,12 @@ const otherInstance = {
   active: false,
   children: [
     {
-      path: '/instansi/belum-terdaftar',
-      component: () => import('@/views/masterData/instance/list'),
-      name: 'FaskesBelumTerdaftar',
-      meta: {
-        title: 'not_registered_title',
-        noCache: true,
-        roles: ['superadmin', 'dinkesprov']
-      }
-    },
-    {
       path: '/instansi/terdaftar',
-      component: () => import('@/views/masterData/faskes/list'),
-      name: 'FaskesTerdaftar',
+      component: () => import('@/views/masterData/instance/list'),
+      name: 'InstansiTerdaftar',
       meta: {
-        title: 'registered_title',
-        noCache: true,
-        roles: ['superadmin', 'dinkesprov']
-      }
-    },
-    {
-      path: '/instansi/ditolak',
-      component: () => import('@/views/masterData/faskes/list'),
-      name: 'FaskesDitolak',
-      meta: {
-        title: 'rejected_title',
+        title: 'other_instance',
+        icon: 'corporate_fare',
         noCache: true,
         roles: ['superadmin', 'dinkesprov']
       }

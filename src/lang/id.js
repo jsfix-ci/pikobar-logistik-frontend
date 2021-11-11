@@ -403,6 +403,7 @@ export default {
     capital_email: 'Email',
     applicant_letter: 'Surat Permohonan',
     list_applicant_logistic_medic: 'Daftar Fasilitas Kesehatan',
+    list_instance: 'Daftar Instansi',
     registration_number: 'No. Registrasi',
     regis_number: 'Nomor Registrasi',
     regis_number_placeholder: 'Masukkan Nomor Registrasi Faskes',

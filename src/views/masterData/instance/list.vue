@@ -1,79 +1,15 @@
 <template>
   <div>
-    <v-row>
-      <v-col cols="12" sm="2">
-        <v-label class="title">{{ $t('label.sort') }}</v-label>
-        <v-select
-          v-model="listQuery.sort"
-          :items="sortOption"
-          solo
-          item-text="label"
-          item-value="value"
-          :clearable="true"
-          :placeholder="$t('label.sort')"
-          @change="handleSearch"
-        />
-      </v-col>
-      <v-col cols="12" sm="5">
-        <br>
-        <v-card outlined>
-          <search
-            :handle-search="handleSearch"
-            :list-query="listQuery"
-            solo
-          />
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-card outlined>
-      <v-card-text>
-        <span class="table-title">{{ $t('label.list_applicant_logistic_medic') }}</span>
-      </v-card-text>
-      <hr class="thin">
-      <v-row>
-        <v-col auto>
-          <!-- <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.instance_name').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.city_district').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.number_phone').toUpperCase() }}</th>
-                  <th v-if="verificationStatusDefault != 'verified'" class="text-left">{{ $t('label.action').toUpperCase() }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(faskes, index) in faskesList" :key="faskes.index">
-                  <td>{{ getTableRowNumbering(index) }}</td>
-                  <td>{{ faskes.nomor_izin_sarana }}</td>
-                  <td>{{ faskes.nomor_registrasi }}</td>
-                  <td>{{ faskes.nama_faskes }}</td>
-                  <td v-if="verificationStatusDefault != 'verified'" class="text-link">
-                    <v-btn v-if="verificationStatusDefault === 'rejected'" text small color="info" @click="handleDetail(faskes)">{{ $t('label.detail') }}</v-btn>
-                    <v-btn v-if="verificationStatusDefault === 'not_verified'" text small color="info" @click="handleVerification(faskes)">{{ $t('label.verification') }}</v-btn>
-                  </td>
-                </tr>
-                <tr v-if="faskesList.length === 0">
-                  <td colspan="6" class="text-center">{{ $t('label.no_data') }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table> -->
-          <v-data-table
-            :headers="headers"
-            :items="faskesList"
-            :loading-text="$t('label.loading')"
-            :no-data-text="$t('label.no_data')"
-            hide-default-footer
-          >
-            <template v-slot:[`item.numbering_item`]="{ item }">
-              {{ getTableRowNumbering(item) }}
-            </template>
-          </v-data-table>
-        </v-col>
-      </v-row>
-    </v-card>
+    <search-filter-instance
+      :list-query="listQuery"
+      @handle-search="handleSearch"
+    />
+    <data-table-instance
+      :headers="headers"
+      :items="faskesList"
+      :list-query="listQuery"
+      @get-table-row-numbering="getTableRowNumbering"
+    />
     <pagination
       :total="totalList"
       :page.sync="listQuery.page"
@@ -93,10 +29,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import dataVerification from '@/views/masterData/faskes/verification.vue'
+import SearchFilterInstance from './searchFilter.vue'
+import DataTableInstance from './dataTable.vue'
 export default {
   name: 'ListOtherInstance',
   components: {
-    dataVerification
+    dataVerification,
+    DataTableInstance,
+    SearchFilterInstance
   },
   data() {
     return {
@@ -105,12 +45,25 @@ export default {
           text: this.$t('label.number').toUpperCase(),
           align: 'start',
           sortable: false,
-          value: 'test'
+          value: 'numbering_item',
+          width: 75
         },
-        { text: this.$t('label.instance_name').toUpperCase(), value: 'nama_faskes' },
-        { text: this.$t('label.city_district').toUpperCase(), value: 'nomor_izin_sarana' },
-        { text: this.$t('label.number_phone').toUpperCase(), value: 'nomor_registrasi' },
-        { text: this.$t('label.action').toUpperCase(), value: 'action' }
+        { text: this.$t('label.instance_name').toUpperCase(),
+          value: 'nama_faskes',
+          width: 300
+        },
+        { text: this.$t('label.city_district').toUpperCase(),
+          value: 'village.kemendagri_kabupaten_nama',
+          width: 300
+        },
+        { text: this.$t('label.number_phone').toUpperCase(),
+          value: 'nomor_telepon',
+          width: 300
+        },
+        { text: this.$t('label.action').toUpperCase(),
+          value: 'actions',
+          align: 'center'
+        }
       ],
       sortOption: [
         { value: 'asc', label: 'A-Z' },
@@ -119,10 +72,11 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        sort: '',
-        search: '',
-        nama_faskes: '',
-        verification_status: ''
+        sort: null,
+        search: null,
+        is_faskes: 0,
+        nama_faskes: null,
+        verification_status: null
       },
       verificationStatusDefault: '',
       showVerification: false,
@@ -149,16 +103,6 @@ export default {
     }
   },
   created() {
-    if (this.$route.name === 'FaskesTerdaftar') {
-      this.listQuery.verification_status = 'verified'
-      this.verificationStatusDefault = 'verified'
-    } else if (this.$route.name === 'FaskesBelumTerdaftar') {
-      this.listQuery.verification_status = 'not_verified'
-      this.verificationStatusDefault = 'not_verified'
-    } else if (this.$route.name === 'FaskesDitolak') {
-      this.listQuery.verification_status = 'rejected'
-      this.verificationStatusDefault = 'rejected'
-    }
     this.getListFaskes()
   },
   methods: {
@@ -179,9 +123,9 @@ export default {
       this.showVerification = true
       this.verificationData = value
     },
-    getTableRowNumbering(index) {
-      // const index = this.items.indexOf(value)
-      console.log(((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1))
+    getTableRowNumbering(value) {
+      const index = this.faskesList.indexOf(value)
+      return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     }
   }
 }

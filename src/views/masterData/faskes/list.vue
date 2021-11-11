@@ -102,6 +102,7 @@ export default {
         limit: 10,
         sort: '',
         search: '',
+        is_faskes: 1,
         nama_faskes: '',
         verification_status: ''
       },
