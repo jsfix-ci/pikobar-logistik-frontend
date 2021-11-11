@@ -8,7 +8,6 @@
       :headers="headers"
       :items="faskesList"
       :list-query="listQuery"
-      @get-table-row-numbering="getTableRowNumbering"
     />
     <pagination
       :total="totalList"
@@ -16,25 +15,16 @@
       :limit.sync="listQuery.limit"
       :on-next="onNext"
     />
-    <dataVerification
-      :show="showVerification"
-      :close.sync="showVerification"
-      :close-detail.sync="isDetail"
-      :verification-data="verificationData"
-      :is-detail="isDetail"
-    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import dataVerification from '@/views/masterData/faskes/verification.vue'
 import SearchFilterInstance from './searchFilter.vue'
 import DataTableInstance from './dataTable.vue'
 export default {
   name: 'ListOtherInstance',
   components: {
-    dataVerification,
     DataTableInstance,
     SearchFilterInstance
   },
@@ -75,13 +65,8 @@ export default {
         sort: null,
         search: null,
         is_faskes: 0,
-        nama_faskes: null,
-        verification_status: null
-      },
-      verificationStatusDefault: '',
-      showVerification: false,
-      isDetail: false,
-      verificationData: {}
+        nama_faskes: null
+      }
     }
   },
   computed: {
@@ -114,18 +99,6 @@ export default {
     },
     async onNext() {
       await this.getListFaskes()
-    },
-    handleDetail(value) {
-      this.isDetail = true
-      this.verificationData = value
-    },
-    handleVerification(value) {
-      this.showVerification = true
-      this.verificationData = value
-    },
-    getTableRowNumbering(value) {
-      const index = this.faskesList.indexOf(value)
-      return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     }
   }
 }
