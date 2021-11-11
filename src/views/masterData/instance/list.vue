@@ -11,6 +11,7 @@
     />
     <pagination
       :total="totalList"
+      :total-data="totalData"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
       :on-next="onNext"
@@ -72,7 +73,8 @@ export default {
   computed: {
     ...mapGetters('faskes', [
       'faskesList',
-      'totalList'
+      'totalList',
+      'totalData'
     ])
   },
   watch: {
