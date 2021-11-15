@@ -10,6 +10,7 @@ const state = {
   totalDraft: null,
   detailAllocationInfo: null,
   detailAllocationData: null,
+  // @todo: adjust this payload to API needs
   allocationForm: {
     letter_number: '',
     letter_date: '',
@@ -23,6 +24,7 @@ const state = {
     instance_list: [
       {
         agency_type: '',
+        agency_type_name: '',
         agency_id: '',
         agency_name: '',
         delivery_date: '',

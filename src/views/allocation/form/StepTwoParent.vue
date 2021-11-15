@@ -11,9 +11,10 @@
         :options="listFaskesType"
         :placeholder="'Pilih Jenis Instansi'"
         :error-messages="errors"
+        :is-return-object="true"
         item-text="name"
         class="mr-3"
-        @select="onInstanceTypeSelected(instance)"
+        @input="(item) => onInstanceTypeSelected(instance, item)"
       />
     </ValidationProvider>
     <ValidationProvider
@@ -117,7 +118,9 @@ export default {
     await this.$store.dispatch('faskesType/getListFaskesType')
   },
   methods: {
-    async onInstanceTypeSelected(instance) {
+    async onInstanceTypeSelected(instance, item) {
+      instance.agency_type = item.id
+      instance.agency_type_name = item.name
       const params = {
         id_tipe_faskes: instance.agency_type,
         is_paginated: 0
