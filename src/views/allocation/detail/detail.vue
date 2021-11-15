@@ -73,7 +73,7 @@ export default {
           label: this.detailAllocationInfo.letter_number
         },
         {
-          label: this.detailAllocationInfo.letter_date
+          label: this.$moment(this.detailAllocationInfo.letter_date).format('DD MMMM YYYY')
         },
         {
           label: this.detailAllocationInfo.applicant_name

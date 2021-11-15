@@ -548,6 +548,7 @@ export default {
     incoming_mail_add: 'Tambah Surat Masuk',
     total_applicant: 'Total Permohonan',
     total_recipient: 'Total Penerima',
+    total_order: 'Total Pemesanan',
     total_allocation: 'Total Alokasi Barang',
     detail_logistic_allocation_info: 'Detail Info Alokasi Salur Logistik',
     outgoing_mail_print: 'Cetak Surat',

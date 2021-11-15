@@ -1,50 +1,92 @@
 <template>
   <div class="d-flex flex-column">
-    <span class="step-three__title">
-      {{ $t('label.detail_logistic_allocation_info') }}
-    </span>
-    <!-- @todo: add more props in AllocationTableDetail component -->
-    <AllocationTableDetail
-      :table-header="tableHeader"
-      :table-data="allocationForm.instance_list"
-    />
+    <div class="d-flex px-7 py-3 step-three__header">
+      <span class="step-three__header__item">
+        {{ $t('label.instance_type') }}
+      </span>
+      <span class="step-three__header__item">
+        {{ $t('label.instance_name') }}
+      </span>
+      <span class="step-three__header__item">
+        {{ $t('label.planned_delivery_date') }}
+      </span>
+      <span class="step-three__header__item">
+        {{ $t('label.total_order') }}
+      </span>
+    </div>
+    <v-expansion-panels>
+      <v-expansion-panel
+        v-for="(instance, i) in allocationForm.instance_list"
+        :key="i"
+      >
+        <v-expansion-panel-header class="step-three__label">
+          <span class="step-three__label__item">
+            {{ instance.agency_type_name }}
+          </span>
+          <span class="step-three__label__item">
+            {{ instance.agency_name }}
+          </span>
+          <span class="step-three__label__item">
+            {{ $moment(instance.delivery_date).format('DD MMMM YYYY') }}
+          </span>
+          <span class="step-three__label__item">
+            {{ instance.allocation_material_requests.length }} {{ $t('label.goods') }}
+          </span>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="step-three__label">
+          <div class="d-flex flex-column">
+            <div
+              v-for="(material, j) in instance.allocation_material_requests"
+              :key="j"
+              class="d-flex flex-row justify-space-between mb-2 step-three__material"
+            >
+              <span>
+                {{ material.material_name }}
+              </span>
+              <span>
+                {{ material.qty }} {{ $t('label.tracking_data_prefix') }}
+              </span>
+            </div>
+          </div>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import AllocationTableDetail from '../AllocationTableDetail.vue'
-import listHeader from '../detail/tableHeader'
 export default {
-  components: {
-    AllocationTableDetail
-  },
-  data() {
-    return {
-      listHeader,
-      tableHeader: [],
-      tableData: {
-        allocation_distribution_requests: [],
-        allocation_material_requests: []
-      }
-    }
-  },
   computed: {
     ...mapState('allocation', [
       'allocationForm'
     ])
-  },
-  created() {
-    this.tableHeader = [...this.listHeader]
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .step-three {
-  &__title {
-    font-weight: 700;
+  &__header {
     font-size: 16px;
+    font-weight: 500;
+
+    &__item {
+      width: 23%;
+    }
   }
+
+  &__label {
+    font-size: 16px;
+
+    &__item {
+      max-width: 23%;
+    }
+  }
+
+  &__material {
+    border-bottom: 1px solid gray;
+  }
+
 }
 </style>

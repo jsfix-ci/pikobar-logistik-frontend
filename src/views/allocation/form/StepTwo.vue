@@ -92,6 +92,7 @@ export default {
         const instance = {
           agency_id: '',
           agency_type: '',
+          agency_type_name: '',
           delivery_date: '',
           additional_information: '',
           allocation_material_requests: [],
