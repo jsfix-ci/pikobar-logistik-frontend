@@ -42,7 +42,7 @@
                 v-else
                 :key="form[field.key]"
                 v-model="form[field.model]"
-                :label="$t('label.instance_type')"
+                :label="field.label"
                 :options="field.options === 'listFaskesType' ? listFaskesType : listFaskes"
                 :placeholder="field.placeholder"
                 :error-messages="errors"
