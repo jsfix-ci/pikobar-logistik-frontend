@@ -93,7 +93,7 @@ export default {
           agency_id: '',
           agency_type: '',
           agency_type_name: '',
-          delivery_date: '',
+          distribution_plan_date: '',
           additional_information: '',
           allocation_material_requests: [],
           isExtended: false,
@@ -110,7 +110,10 @@ export default {
       if (this.isMaterialValid(instance, isInitiate)) {
         instance.allocation_material_requests.push({
           material_id: '',
-          qty: ''
+          material_name: '',
+          matg_id: '',
+          qty: '',
+          UoM: ''
         })
       } else {
         await this.$store.dispatch('toast/errorToast', this.$t('errors.please_complete_current_material_first'))
@@ -123,7 +126,7 @@ export default {
       // @todo: create function description
       return this.form.instance_list[this.form.instance_list.length - 1].agency_type &&
         this.form.instance_list[this.form.instance_list.length - 1].agency_id &&
-        this.form.instance_list[this.form.instance_list.length - 1].delivery_date
+        this.form.instance_list[this.form.instance_list.length - 1].distribution_plan_date
     },
     isMaterialValid(instance, isInitiate) {
       // @todo: create function description

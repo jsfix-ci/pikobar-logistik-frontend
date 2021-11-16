@@ -98,6 +98,8 @@ export default {
       if (field.isReturnObject) { // material dropdown
         material.material_id = item.material_id
         material.material_name = item.material_name
+        material.matg_id = item.matg_id
+        material.UoM = item.UoM
       } else {
         material[field.model] = item
       }

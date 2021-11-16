@@ -27,7 +27,7 @@
             {{ instance.agency_name }}
           </span>
           <span class="step-three__label__item">
-            {{ $moment(instance.delivery_date).format('DD MMMM YYYY') }}
+            {{ $moment(instance.distribution_plan_date).format('DD MMMM YYYY') }}
           </span>
           <span class="step-three__label__item">
             {{ instance.allocation_material_requests.length }} {{ $t('label.goods') }}
