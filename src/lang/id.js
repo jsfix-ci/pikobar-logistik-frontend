@@ -387,6 +387,7 @@ export default {
     allocation_detail: 'Detail Alokasi Salur Logistik',
     allocation_outgoing_letter_number: 'Nomor Surat Keluar Alokasi',
     allocation_official_letter_number: 'Nomor Nota Surat Dinas',
+    allocation_loading_done: 'Laporan Alokasi Barang Anda Berhasil Disimpan. Proses membutuhkan waktu 1x24 Jam.',
     general_information: 'Informasi Umum',
     choose_item: 'Pilih Barang',
     outgoing_letter_number: 'Nomor Surat Keluar',
