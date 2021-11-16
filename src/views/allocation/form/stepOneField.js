@@ -35,19 +35,29 @@ export default [
   },
   {
     id: 5,
-    label: i18n.t('label.applicant_instance_code'),
-    model: 'applicant_agency_code',
-    type: 'text',
+    label: i18n.t('label.instance_type'),
+    model: 'applicant_agency_type',
+    type: 'dropdown',
     isRequired: true,
-    rules: 'required'
+    rules: 'required',
+    options: 'listFaskesType',
+    placeholder: i18n.t('label.select_instance_type'),
+    itemText: 'name',
+    itemValue: 'id'
   },
   {
     id: 6,
     label: i18n.t('label.applicant_instance_name'),
-    model: 'applicant_agency_name',
-    type: 'text',
+    model: 'applicant_agency_id',
+    type: 'dropdown',
     isRequired: true,
-    rules: 'required'
+    rules: 'required',
+    options: 'listFaskes',
+    placeholder: i18n.t('label.choose_instance'),
+    itemText: 'nama_faskes',
+    itemValue: 'id',
+    key: 'applicant_agency_type',
+    isReturnObject: true
   },
   {
     id: 7,
