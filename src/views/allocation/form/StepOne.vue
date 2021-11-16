@@ -88,9 +88,6 @@ export default {
       'listFaskesType'
     ])
   },
-  mounted() {
-    this.options.listFaskesType = this.listFaskesType
-  },
   methods: {
     async validate() {
       return await this.$refs.observer.validate()
