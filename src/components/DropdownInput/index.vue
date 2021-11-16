@@ -1,8 +1,11 @@
 <template>
   <div>
-    <span class="dropdown__label">
-      {{ label }}
-    </span>
+    <label>
+      <span class="dropdown__label">
+        {{ label }}
+      </span>
+      <i v-if="required">{{ $t('label.should_be_filled') }}</i>
+    </label>
     <v-select
       :items="options"
       :label="placeholder"
@@ -58,6 +61,10 @@ export default {
     errorMessages: {
       type: Array,
       default: () => []
+    },
+    required: {
+      type: Boolean,
+      default: false
     }
   }
 }
