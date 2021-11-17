@@ -35,16 +35,19 @@
           <StepThree
             v-if="step.step === 3"
           />
+          <StepFour
+            v-if="step.step === 4"
+          />
         </v-stepper-content>
       </v-stepper-items>
-      <div class="d-flex flex-row justify-end mr-8 mb-5">
+      <div v-if="stepModel !== 4" class="d-flex flex-row justify-end mr-8 mb-5">
         <v-btn
           large
           depressed
           class="form-btn__cancel mr-2"
           @click="onCancel"
         >
-          {{ $t('label.cancel') }}
+          {{ stepModel === 1 ? $t('label.cancel') : $t('label.back') }}
         </v-btn>
         <v-btn
           large
@@ -52,7 +55,17 @@
           class="form-btn__next"
           @click="onNext"
         >
-          {{ $t('label.next') }}
+          {{ stepModel !== 3 ? $t('label.next') : $t('label.save') }}
+        </v-btn>
+      </div>
+      <div v-else class="text-center mb-5">
+        <v-btn
+          large
+          depressed
+          class="form-btn__next"
+          @click="onDone"
+        >
+          {{ $t('label.done') }}
         </v-btn>
       </div>
     </v-stepper>
@@ -65,11 +78,13 @@ import stepHeader from './stepHeader'
 import StepOne from './StepOne.vue'
 import StepTwo from './StepTwo.vue'
 import StepThree from './StepThree.vue'
+import StepFour from './StepFour.vue'
 export default {
   components: {
     StepOne,
     StepTwo,
-    StepThree
+    StepThree,
+    StepFour
   },
   data() {
     return {
@@ -90,12 +105,22 @@ export default {
       } else if (this.stepModel === 2) {
         const isValid = await this.$refs.secondStep[0].validate()
         if (isValid) this.stepModel++
-      } else {
-        this.stepModel++
+      } else if (this.stepModel === 3) {
+        for (let i = 0; i < this.allocationForm.instance_list.length; i++) {
+          const instance = this.allocationForm.instance_list[i]
+          delete instance.listAgency
+        }
+        const res = await this.$store.dispatch('allocation/postAllocationForm', this.allocationForm)
+        if (res.status === 200) {
+          this.stepModel++
+        }
       }
     },
     onCancel() {
       this.stepModel === 1 ? this.$router.go(-1) : this.stepModel--
+    },
+    onDone() {
+      this.$router.push(`/allocation/list`)
     }
   }
 }

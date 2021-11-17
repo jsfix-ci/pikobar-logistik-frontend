@@ -9,7 +9,7 @@
         v-model="instance.agency_type"
         :label="$t('label.instance_type')"
         :options="listFaskesType"
-        :placeholder="'Pilih Jenis Instansi'"
+        :placeholder="$t('label.select_instance_type')"
         :error-messages="errors"
         :is-return-object="true"
         item-text="name"
@@ -27,7 +27,7 @@
         v-model="instance.agency_id"
         :label="$t('label.instance_name')"
         :options="instance.listAgency"
-        :placeholder="'Pilih Instansi'"
+        :placeholder="$t('label.choose_instance')"
         :disabled="instance.agency_type === ''"
         :is-return-object="true"
         :error-messages="errors"
@@ -41,10 +41,10 @@
         {{ $t('label.planned_delivery_date') }}
       </span>
       <date-picker
-        v-model="instance.delivery_date"
+        v-model="instance.distribution_plan_date"
         :required="true"
         rule="required"
-        @selected="(value) => instance.delivery_date = value"
+        @selected="(value) => instance.distribution_plan_date = value"
       />
     </div>
     <div class="d-flex flex-column mr-3">

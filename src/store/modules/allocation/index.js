@@ -16,7 +16,7 @@ const state = {
     letter_date: '',
     applicant_name: '',
     applicant_position: '',
-    applicant_agency_code: '',
+    applicant_agency_id: '',
     applicant_agency_name: '',
     distribution_description: '',
     letter_url: '',
@@ -27,7 +27,7 @@ const state = {
         agency_type_name: '',
         agency_id: '',
         agency_name: '',
-        delivery_date: '',
+        distribution_plan_date: '',
         additional_information: '',
         isExtended: false,
         listAgency: [],
@@ -35,7 +35,9 @@ const state = {
           {
             material_id: '',
             material_name: '',
-            qty: ''
+            matg_id: '',
+            qty: '',
+            UoM: ''
           }
         ]
       }

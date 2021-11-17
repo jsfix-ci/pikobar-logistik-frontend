@@ -1,4 +1,4 @@
-import { fetchList } from '@/api'
+import { fetchList, doPostUpdate } from '@/api'
 
 export default {
   async getListAllocation({ commit }, params) {
@@ -33,6 +33,14 @@ export default {
     try {
       const response = await fetchList(`/api/v1/allocation-distribution-vaccine-request`, 'GET', params)
       commit('SET_DETAIL_ALLOCATION_DATA', response.data)
+    } catch (e) {
+      return e
+    }
+  },
+  async postAllocationForm({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/allocation-vaccine-request', 'POST', params)
+      return response
     } catch (e) {
       return e
     }
