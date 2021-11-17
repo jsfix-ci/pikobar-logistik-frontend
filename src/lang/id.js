@@ -42,7 +42,8 @@ export default {
     incoming_mail: 'Surat Masuk',
     outgoing_mail_detail: 'Detail Surat Perintah',
     incoming_mail_detail: 'Detail Surat Masuk',
-    allocation: 'Alokasi Salur Logistik'
+    allocation: 'Alokasi Salur Logistik',
+    other_instance: 'Instansi Lainnya'
   },
   label: {
     preview: 'Preview',
@@ -402,6 +403,7 @@ export default {
     capital_email: 'Email',
     applicant_letter: 'Surat Permohonan',
     list_applicant_logistic_medic: 'Daftar Fasilitas Kesehatan',
+    list_instance: 'Daftar Instansi',
     registration_number: 'No. Registrasi',
     regis_number: 'Nomor Registrasi',
     regis_number_placeholder: 'Masukkan Nomor Registrasi Faskes',

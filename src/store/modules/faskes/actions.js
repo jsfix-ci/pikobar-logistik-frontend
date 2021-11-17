@@ -6,6 +6,7 @@ export default {
       const response = await fetchList('/api/v1/master-faskes', 'GET', params)
       commit('SET_TOTAL_LIST_FASKES', response.data.last_page)
       commit('SET_LIST_FASKES', response.data.data)
+      commit('SET_TOTAL_DATA_FASKES', response.data.total)
       return response
     } catch (error) {
       return error.response

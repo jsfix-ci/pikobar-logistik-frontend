@@ -5,7 +5,8 @@ import getters from './getters'
 const state = {
   listFaskes: [],
   detailFaskes: [],
-  totalList: 0
+  totalList: 0,
+  totalData: 0
 }
 
 export default {

@@ -7,5 +7,8 @@ export default {
   },
   SET_DETAIL_FASKES: (state, data) => {
     state.detailFaskes = data
+  },
+  SET_TOTAL_DATA_FASKES: (state, data) => {
+    state.totalData = data
   }
 }
