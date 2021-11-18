@@ -1,7 +1,8 @@
 <template>
   <div class="d-flex flex-column">
-    <!-- @todo: replace this p tag content -->
-    <p class="text-center mx-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna pulvinar lacus tortor, erat. Enim ut etiam phasellus aliquet amet, eget placerat sapien tempus. Rhoncus ut eu id integer risus lobortis</p>
+    <p class="text-center mx-16">
+      {{ $t('label.allocation_step_one_description') }}
+    </p>
     <ValidationObserver ref="observer">
       <v-form>
         <v-row no-gutters>
