@@ -8,7 +8,9 @@
             :complete="stepModel > step.step"
             :step="step.step"
           >
-            {{ step.label }}
+            <span class="text-center">
+              {{ step.label }}
+            </span>
           </v-stepper-step>
           <v-divider
             v-if="(index + 1) !== stepHeader.length"

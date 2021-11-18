@@ -10,7 +10,6 @@ const state = {
   totalDraft: null,
   detailAllocationInfo: null,
   detailAllocationData: null,
-  // @todo: adjust this payload to API needs
   allocationForm: {
     letter_number: '',
     letter_date: '',
@@ -20,7 +19,6 @@ const state = {
     applicant_agency_name: '',
     distribution_description: '',
     letter_url: '',
-    // @todo: remove this dummy instance_list array
     instance_list: [
       {
         agency_type: '',

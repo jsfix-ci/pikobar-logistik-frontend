@@ -2,15 +2,15 @@ import i18n from '@/lang'
 export default [
   {
     step: 1,
-    label: i18n.t('label.general_information')
+    label: i18n.t('label.allocation_step_one_title')
   },
   {
     step: 2,
-    label: i18n.t('label.choose_item')
+    label: i18n.t('label.allocation_step_two_title')
   },
   {
     step: 3,
-    label: i18n.t('label.preview')
+    label: i18n.t('label.allocation_step_three_title')
   },
   {
     step: 4,
