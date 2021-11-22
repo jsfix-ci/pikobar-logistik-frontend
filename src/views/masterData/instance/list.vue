@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-btn color="primary" class="white--text mb-5" @click="addInstance">{{ $t('label.add_instance') }}</v-btn>
     <search-filter-instance
       :list-query="listQuery"
       @handle-search="handleSearch"
@@ -16,6 +17,10 @@
       :limit.sync="listQuery.limit"
       :on-next="onNext"
     />
+    <add-instance
+      :dialog="isAddInstance"
+      @close-dialog="closeDialog"
+    />
   </div>
 </template>
 
@@ -23,11 +28,13 @@
 import { mapGetters } from 'vuex'
 import SearchFilterInstance from './searchFilter.vue'
 import DataTableInstance from './dataTable.vue'
+import AddInstance from './add.vue'
 export default {
   name: 'ListOtherInstance',
   components: {
     DataTableInstance,
-    SearchFilterInstance
+    SearchFilterInstance,
+    AddInstance
   },
   data() {
     return {
@@ -67,7 +74,8 @@ export default {
         search: null,
         is_faskes: 0,
         nama_faskes: null
-      }
+      },
+      isAddInstance: false
     }
   },
   computed: {
@@ -93,6 +101,9 @@ export default {
     this.getListFaskes()
   },
   methods: {
+    closeDialog() {
+      this.isAddInstance = false
+    },
     async getListFaskes() {
       await this.$store.dispatch('faskes/getListFaskes', this.listQuery)
     },
@@ -101,6 +112,9 @@ export default {
     },
     async onNext() {
       await this.getListFaskes()
+    },
+    addInstance() {
+      this.isAddInstance = true
     }
   }
 }
