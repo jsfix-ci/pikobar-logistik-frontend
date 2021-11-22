@@ -20,6 +20,7 @@
           persistent-hint
           clearable
           solo
+          readonly
           :placeholder="$t('label.date_placeholder')"
           prepend-icon="event"
           :error-messages="errors"
