@@ -100,7 +100,7 @@ export default {
     applicant_instance_code: 'Kode Instansi Pemohon',
     applicant_instance_name: 'Nama Instansi Pemohon',
     allocation_step_one_title: 'Identitas Instansi Asal Alokasi',
-    allocation_step_one_description: 'Silahkan isi identitas Alokasi Salur Logistik Vaksin dengan mengisi form berikut. Data-data pada form tersebut dapat disapatkan dari surat alokasi salur logistik vaksin.',
+    allocation_step_one_description: 'Silakan isi identitas Alokasi Salur Logistik Vaksin dengan mengisi form berikut. Data-data pada form tersebut dapat disapatkan dari surat alokasi salur logistik vaksin.',
     allocation_step_two_title: 'Tujuan dan Item Alokasi',
     allocation_step_two_description: 'Silakan isi tujuan dan item alokasi salur logistik vaksin dengan mengisi form dibawah ini.',
     allocation_step_three_title: 'Konfirmasi Alokasi',

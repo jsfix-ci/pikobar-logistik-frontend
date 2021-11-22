@@ -1,92 +1,64 @@
 <template>
   <div class="d-flex flex-column">
-    <div class="d-flex px-7 py-3 step-three__header">
-      <span class="step-three__header__item">
-        {{ $t('label.instance_type') }}
-      </span>
-      <span class="step-three__header__item">
-        {{ $t('label.instance_name') }}
-      </span>
-      <span class="step-three__header__item">
-        {{ $t('label.planned_delivery_date') }}
-      </span>
-      <span class="step-three__header__item">
-        {{ $t('label.total_order') }}
-      </span>
-    </div>
-    <v-expansion-panels>
-      <v-expansion-panel
-        v-for="(instance, i) in allocationForm.instance_list"
-        :key="i"
-      >
-        <v-expansion-panel-header class="step-three__label">
-          <span class="step-three__label__item">
-            {{ instance.agency_type_name }}
-          </span>
-          <span class="step-three__label__item">
-            {{ instance.agency_name }}
-          </span>
-          <span class="step-three__label__item">
-            {{ $moment(instance.distribution_plan_date).format('DD MMMM YYYY') }}
-          </span>
-          <span class="step-three__label__item">
-            {{ instance.allocation_material_requests.length }} {{ $t('label.goods') }}
-          </span>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="step-three__label">
-          <div class="d-flex flex-column">
-            <div
-              v-for="(material, j) in instance.allocation_material_requests"
-              :key="j"
-              class="d-flex flex-row justify-space-between mb-2 step-three__material"
-            >
-              <span>
-                {{ material.material_name }}
-              </span>
-              <span>
-                {{ material.qty }} {{ $t('label.tracking_data_prefix') }}
-              </span>
-            </div>
-          </div>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+    <DetailInfo
+      :list-label="infoLabelList"
+      :list-value="infoValueList"
+    />
+    <StepThreeDetail
+      :list-instance="allocationForm.instance_list"
+    />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import infoLabelList from '../detail/infoLabel'
+import DetailInfo from '../detail/DetailInfo.vue'
+import StepThreeDetail from './StepThreeDetail.vue'
 export default {
+  components: {
+    DetailInfo,
+    StepThreeDetail
+  },
+  data() {
+    return {
+      infoLabelList,
+      infoValueList: []
+    }
+  },
   computed: {
     ...mapState('allocation', [
       'allocationForm'
     ])
+  },
+  mounted() {
+    this.infoValueList = [
+      {
+        label: this.allocationForm.letter_number
+      },
+      {
+        label: this.$moment(this.allocationForm.letter_date).format('DD MMMM YYYY')
+      },
+      {
+        label: this.allocationForm.applicant_name
+      },
+      {
+        label: this.allocationForm.applicant_position
+      },
+      {
+        label: this.allocationForm.applicant_agency_id
+      },
+      {
+        label: this.allocationForm.applicant_agency_name
+      },
+      {
+        label: this.allocationForm.distribution_description
+      },
+      {
+        label: this.allocationForm.letter_url,
+        isUrl: true
+      }
+    ]
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.step-three {
-  &__header {
-    font-size: 16px;
-    font-weight: 500;
-
-    &__item {
-      width: 23%;
-    }
-  }
-
-  &__label {
-    font-size: 16px;
-
-    &__item {
-      max-width: 23%;
-    }
-  }
-
-  &__material {
-    border-bottom: 1px solid gray;
-  }
-
-}
-</style>
