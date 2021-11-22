@@ -31,34 +31,39 @@ export default {
       'allocationForm'
     ])
   },
-  mounted() {
-    this.infoValueList = [
-      {
-        label: this.allocationForm.letter_number
-      },
-      {
-        label: this.$moment(this.allocationForm.letter_date).format('DD MMMM YYYY')
-      },
-      {
-        label: this.allocationForm.applicant_name
-      },
-      {
-        label: this.allocationForm.applicant_position
-      },
-      {
-        label: this.allocationForm.applicant_agency_id
-      },
-      {
-        label: this.allocationForm.applicant_agency_name
-      },
-      {
-        label: this.allocationForm.distribution_description
-      },
-      {
-        label: this.allocationForm.letter_url,
-        isUrl: true
+  watch: {
+    allocationForm: {
+      deep: true,
+      handler: function() {
+        this.infoValueList = [
+          {
+            label: this.allocationForm?.letter_number
+          },
+          {
+            label: this.$moment(this.allocationForm?.letter_date).format('DD MMMM YYYY')
+          },
+          {
+            label: this.allocationForm?.applicant_name
+          },
+          {
+            label: this.allocationForm?.applicant_position
+          },
+          {
+            label: this.allocationForm?.applicant_agency_id
+          },
+          {
+            label: this.allocationForm?.applicant_agency_name
+          },
+          {
+            label: this.allocationForm?.distribution_description
+          },
+          {
+            label: this.allocationForm?.letter_url,
+            isUrl: true
+          }
+        ]
       }
-    ]
+    }
   }
 }
 </script>
