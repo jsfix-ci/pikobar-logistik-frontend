@@ -34,7 +34,7 @@
                 v-model="form.phoneNumber"
                 outlined
                 :error-messages="errors"
-                :placeholder="$t('label.phone_number')"
+                :placeholder="$t('label.number_phone')"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -149,7 +149,14 @@ export default {
   },
   data() {
     return {
-      form: {},
+      form: {
+        name: null,
+        fullAddress: null,
+        cityNameId: null,
+        villageNameId: null,
+        phoneNumber: null,
+        districtNameId: null
+      },
       loading: false,
       isFailed: false,
       isSuccess: false,
@@ -172,16 +179,37 @@ export default {
       this.$emit('close-dialog')
     },
     closeAlert() {
-      this.isFailed = false
-      this.isSuccess = false
+      this.isFailed = this.isSuccess = false
     },
     async submit() {
       this.loading = true
       const valid = await this.$refs.observer.validate()
       if (!valid) return
+      const body = [
+        'alamat',
+        'nama_faskes',
+        'nomor_telepon',
+        'id_tipe_faskes',
+        'verification_status',
+        'kode_kab_kemendagri',
+        'kode_kec_kemendagri',
+        'kode_kel_kemendagri'
+      ]
+      const value = [
+        this.form.fullAddress,
+        this.form.name,
+        this.form.phoneNumber,
+        5,
+        'verified',
+        this.form.cityNameId.id,
+        this.form.districtNameId.id,
+        this.form.villageNameId.id
+      ]
       const formInstance = new FormData()
-      formInstance.append('instance_name', this.form.name)
-      const response = await this.$store.dispatch('logistics/postAddInstance', formInstance)
+      for (let i = 0; i < body.length; i++) {
+        formInstance.append(body[i], value[i])
+      }
+      const response = await this.$store.dispatch('logistics/postAddFaskes', formInstance)
       if (response.status === 200) {
         this.isSuccess = true
       } else {

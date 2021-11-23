@@ -210,14 +210,6 @@ export default {
       return e
     }
   },
-  async postAddInstance({ commit }, params) {
-    try {
-      const response = await doPostUpdate('/api/v1/master-faskes', 'POST', params)
-      return response
-    } catch (e) {
-      return e
-    }
-  },
   async postUpdateLogisticNeeds({ commit }, params) {
     try {
       params.realization_quantity = parseInt(params.realization_quantity)
