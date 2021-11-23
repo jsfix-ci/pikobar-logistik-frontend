@@ -10,93 +10,98 @@
           {{ $t('label.add_instance') }}
         </v-card-title>
         <v-card-text>
-          <ValidationObserver ref="observer">
-            <ValidationProvider
-              v-slot="{ errors }"
-              rules="required"
-              :name="$t('label.instance_name')"
-            >
-              <v-label class="title"><b>{{ $t('label.instance_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-              <v-text-field
-                v-model="form.name"
-                placeholder="Nama instansi"
-                :error-messages="errors"
-                outlined
-              />
-            </ValidationProvider>
-            <ValidationProvider
-              v-slot="{ errors }"
-              rules="required|isPhoneNumber"
-              :name="$t('label.instance_phone_number')"
-            >
-              <v-label class="title"><b>{{ $t('label.instance_phone_number') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-              <v-text-field
-                v-model="form.phoneNumber"
-                outlined
-                :error-messages="errors"
-                :placeholder="$t('label.number_phone')"
-              />
-            </ValidationProvider>
-            <ValidationProvider
-              v-slot="{ errors }"
-              rules="required"
-              :name="$t('label.city_name')"
-            >
-              <v-label class="title"><b>{{ $t('label.city_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-              <v-autocomplete
-                v-model="form.cityNameId"
-                outlined
-                :error-messages="errors"
-                :items="applicantListCity"
-                :placeholder="$t('label.autocomplete_city_placeholder')"
-                @change="getListDistrict"
-              />
-            </ValidationProvider>
-            <ValidationProvider
-              v-slot="{ errors }"
-              rules="required"
-              :name="$t('label.district_name')"
-            >
-              <v-label class="title"><b>{{ $t('label.district_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-              <v-autocomplete
-                v-model="form.districtNameId"
-                outlined
-                :error-messages="errors"
-                :items="applicantListDistrict"
-                :placeholder="$t('label.autocomplete_capital_placeholder')"
-                @change="getListVillage"
-              />
-            </ValidationProvider>
-            <ValidationProvider
-              v-slot="{ errors }"
-              rules="required"
-              :name="$t('label.village_name')"
-            >
-              <v-label class="title"><b>{{ $t('label.village_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-              <v-autocomplete
-                v-model="form.villageNameId"
-                outlined
-                :error-messages="errors"
-                :items="applicantListVillage"
-                :placeholder="$t('label.autocomplete_capital_placeholder')"
-              />
-            </ValidationProvider>
-            <ValidationProvider
-              v-slot="{ errors }"
-              rules="required"
-              :name="$t('label.full_address')"
-            >
-              <v-label class="title"><b>{{ $t('label.full_address') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-              <v-textarea
-                v-model="form.fullAddress"
-                outlined
-                :height="100"
-                :no-resize="true"
-                :error-messages="errors"
-                :placeholder="$t('label.example_full_address')"
-              />
-            </ValidationProvider>
-          </ValidationObserver>
+          <v-form
+            ref="formInstance"
+            lazy-validation
+          >
+            <ValidationObserver ref="observer">
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required"
+                :name="$t('label.instance_name')"
+              >
+                <v-label class="title"><b>{{ $t('label.instance_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-text-field
+                  v-model="form.name"
+                  placeholder="Nama instansi"
+                  :error-messages="errors"
+                  outlined
+                />
+              </ValidationProvider>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required|isPhoneNumber"
+                :name="$t('label.instance_phone_number')"
+              >
+                <v-label class="title"><b>{{ $t('label.instance_phone_number') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-text-field
+                  v-model="form.phoneNumber"
+                  outlined
+                  :error-messages="errors"
+                  :placeholder="$t('label.number_phone')"
+                />
+              </ValidationProvider>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required"
+                :name="$t('label.city_name')"
+              >
+                <v-label class="title"><b>{{ $t('label.city_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-autocomplete
+                  v-model="form.cityNameId"
+                  outlined
+                  :error-messages="errors"
+                  :items="applicantListCity"
+                  :placeholder="$t('label.autocomplete_city_placeholder')"
+                  @change="getListDistrict"
+                />
+              </ValidationProvider>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required"
+                :name="$t('label.district_name')"
+              >
+                <v-label class="title"><b>{{ $t('label.district_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-autocomplete
+                  v-model="form.districtNameId"
+                  outlined
+                  :error-messages="errors"
+                  :items="applicantListDistrict"
+                  :placeholder="$t('label.autocomplete_capital_placeholder')"
+                  @change="getListVillage"
+                />
+              </ValidationProvider>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required"
+                :name="$t('label.village_name')"
+              >
+                <v-label class="title"><b>{{ $t('label.village_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-autocomplete
+                  v-model="form.villageNameId"
+                  outlined
+                  :error-messages="errors"
+                  :items="applicantListVillage"
+                  :placeholder="$t('label.autocomplete_capital_placeholder')"
+                />
+              </ValidationProvider>
+              <ValidationProvider
+                v-slot="{ errors }"
+                rules="required"
+                :name="$t('label.full_address')"
+              >
+                <v-label class="title"><b>{{ $t('label.full_address') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+                <v-textarea
+                  v-model="form.fullAddress"
+                  outlined
+                  :height="100"
+                  :no-resize="true"
+                  :error-messages="errors"
+                  :placeholder="$t('label.example_full_address')"
+                />
+              </ValidationProvider>
+            </ValidationObserver>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <div class="mx-auto">
@@ -176,15 +181,16 @@ export default {
   },
   methods: {
     close() {
+      this.$refs.formInstance.reset()
       this.$emit('close-dialog')
     },
     closeAlert() {
       this.isFailed = this.isSuccess = false
     },
     async submit() {
-      this.loading = true
       const valid = await this.$refs.observer.validate()
       if (!valid) return
+      this.loading = true
       const body = [
         'alamat',
         'nama_faskes',
@@ -216,6 +222,7 @@ export default {
         this.isFailed = true
       }
       this.loading = false
+      this.close()
     },
     async getListCity() {
       await this.$store.dispatch('region/getApplicantFormListCity')

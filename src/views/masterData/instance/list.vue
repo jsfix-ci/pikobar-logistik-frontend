@@ -103,6 +103,7 @@ export default {
   methods: {
     closeDialog() {
       this.isAddInstance = false
+      this.getListFaskes()
     },
     async getListFaskes() {
       await this.$store.dispatch('faskes/getListFaskes', this.listQuery)
