@@ -361,6 +361,7 @@ export default {
   font-weight: bold;
   font-size: 24px;
   line-height: 29px;
+  text-align: center;
   letter-spacing: 0.05em;
 }
 .text-dialog-success-add-instance {
