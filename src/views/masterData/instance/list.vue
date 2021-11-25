@@ -1,15 +1,36 @@
 <template>
   <div>
-    <v-btn color="primary" class="white--text mb-5" @click="addInstance">{{ $t('label.add_instance') }}</v-btn>
-    <search-filter-instance
-      :list-query="listQuery"
-      @handle-search="handleSearch"
-    />
-    <data-table-instance
-      :headers="headers"
-      :items="faskesList"
-      :list-query="listQuery"
-    />
+    <v-card outlined>
+      <v-card-title class="d-flex justify-space-between">
+        <span class="font-weight-bold">{{ $t('label.list_instance') }}</span>
+        <v-btn
+          large
+          depressed
+          color="primary"
+          @click="addInstance"
+        >
+          <v-icon
+            color="white"
+            class="mr-3"
+          >
+            mdi-plus
+          </v-icon>
+          <span>{{ $t('label.add_instance') }}</span>
+        </v-btn>
+      </v-card-title>
+      <hr class="thin">
+      <search-filter-instance
+        class="ma-2"
+        :list-query="listQuery"
+        @handle-search="handleSearch"
+      />
+      <hr class="thin">
+      <data-table-instance
+        :headers="headers"
+        :items="faskesList"
+        :list-query="listQuery"
+      />
+    </v-card>
     <pagination
       :total="totalList"
       :total-data="totalData"

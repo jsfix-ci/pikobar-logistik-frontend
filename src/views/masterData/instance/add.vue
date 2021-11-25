@@ -215,12 +215,14 @@ export default {
       for (let i = 0; i < body.length; i++) {
         formInstance.append(body[i], value[i])
       }
-      const response = await this.$store.dispatch('logistics/postAddFaskes', formInstance)
-      if (response.status === 200) {
+
+      try {
+        await this.$store.dispatch('logistics/postAddFaskes', formInstance)
         this.isSuccess = true
-      } else {
+      } catch {
         this.isFailed = true
       }
+
       this.loading = false
       this.close()
     },
