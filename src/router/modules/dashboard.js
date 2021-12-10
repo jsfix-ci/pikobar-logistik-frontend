@@ -1,6 +1,6 @@
 import Layout from '@/layout'
 
-const dashboardRouter = {
+const dashboard = {
   path: '/',
   component: Layout,
   redirect: 'dashboard',
@@ -24,4 +24,4 @@ const dashboardRouter = {
   ]
 }
 
-export default dashboardRouter
+export default dashboard

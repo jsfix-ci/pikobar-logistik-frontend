@@ -163,7 +163,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .titel-chart {
+  .title-chart {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: bold;
@@ -173,14 +173,6 @@ export default {
   }
   .chart-data {
     margin-top: 5rem;
-  }
-  .titel-chart {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 26px;
-    color: #212121;
   }
   .total-title {
     margin-top: 1rem;

@@ -200,11 +200,4 @@ export default {
 .float-right-fourth-step {
   float: right;
 }
-@media (max-width: 1199px) and (min-width: 960px) {
-}
-@media (max-width: 768px) and (min-width: 320px) {
-}
-
-@media (max-width: 588px) and (min-width: 320px) {
-}
 </style>

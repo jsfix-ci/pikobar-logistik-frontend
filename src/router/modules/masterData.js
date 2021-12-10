@@ -1,6 +1,6 @@
 import Layout from '@/layout'
 
-const masterDataRouter = {
+const masterData = {
   path: '/master-data',
   component: Layout,
   redirect: '/master-data/fasilitas-kesehatan/terdaftar',
@@ -14,4 +14,4 @@ const masterDataRouter = {
   children: []
 }
 
-export default masterDataRouter
+export default masterData
