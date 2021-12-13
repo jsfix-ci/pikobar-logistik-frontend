@@ -187,11 +187,11 @@
                     <span v-if="data.applicant.verified_at">{{ $moment(data.applicant.verified_at).format('D MMMM YYYY') }}</span>
                     <span v-else class="red--text">{{ $t('label.not_verified') }}</span>
                   </td>
-                  <td align="center">
+                  <td class="text-center">
                     <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
                     <v-btn v-else outlined small color="error" @click="completenessDetail(data)">{{ $t('label.not_complete') }}</v-btn>
                   </td>
-                  <td align="center">
+                  <td class="text-center">
                     <v-btn v-if="data.applicant.is_urgency === 1" outlined small color="warning">{{ $t('label.important') }}</v-btn>
                   </td>
                   <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>

@@ -1,7 +1,6 @@
 <template>
   <div class="background-landing-page">
     <div class="full-landing-page">
-      <!-- <div class="header-landing-page"> -->
       <div class="header-landing-page">
         <v-row align="center">
           <v-col>

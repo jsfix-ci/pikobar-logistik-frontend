@@ -4,7 +4,7 @@
       class="sidebar"
       color="primary"
     >
-      <div v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+      <div v-if="hasOneShowingChild(item, item.children) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
         <v-list-item v-if="!onlyOneChild.hidden && onlyOneChild.meta" :to="resolvePath(item.path)">
           <v-list-item-icon>
             <v-icon v-text="onlyOneChild.meta.icon" />
@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     generateTitle,
-    hasOneShowingChild(children = [], parent) {
+    hasOneShowingChild(parent, children = []) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
           return false

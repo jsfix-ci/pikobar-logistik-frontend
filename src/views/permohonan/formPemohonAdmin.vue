@@ -103,11 +103,6 @@ export default {
 .btn-mobile {
   display: none;
 }
-@media (max-width: 1199px) and (min-width: 960px) {
-}
-@media (max-width: 768px) and (min-width: 320px) {
-}
-
 @media (max-width: 588px) and (min-width: 320px) {
   .main-card-form-pemohon {
     margin: 150px 0px -30px 0px;

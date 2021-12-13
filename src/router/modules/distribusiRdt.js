@@ -1,6 +1,6 @@
 import Layout from '@/layout'
 
-const surveyRouter = {
+const distribusiRdt = {
   path: '/distribusi-rdt',
   component: Layout,
   redirect: '/distribusi-rdt/index',
@@ -23,4 +23,4 @@ const surveyRouter = {
   ]
 }
 
-export default surveyRouter
+export default distribusiRdt

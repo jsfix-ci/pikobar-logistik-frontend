@@ -1,6 +1,6 @@
 import Layout from '@/layout'
 
-const reports = {
+const allocation = {
   path: '/allocation',
   component: Layout,
   redirect: '/allocation/list',
@@ -45,4 +45,4 @@ const reports = {
   ]
 }
 
-export default reports
+export default allocation

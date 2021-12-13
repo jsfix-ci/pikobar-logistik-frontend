@@ -78,14 +78,14 @@
                 <tr v-for="(data, index) in listOutgoingMail" :key="data.index">
                   <td>{{ getTableRowNumbering(index) }}</td>
                   <td>{{ data.letter_name }}</td>
-                  <td align="center">{{ data.letter_number }}</td>
-                  <td align="center">{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
-                  <td align="center">{{ data.request_letter_total }}</td>
-                  <td align="center">
+                  <td class="text-center">{{ data.letter_number }}</td>
+                  <td class="text-center">{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
+                  <td class="text-center">{{ data.request_letter_total }}</td>
+                  <td class="text-center">
                     <span v-if="data.file" class="green--text">{{ $t('label.outgoing_mail_ready') }}</span>
                     <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
                   </td>
-                  <td align="center">
+                  <td class="text-center">
                     <v-card-actions class="justify-center">
                       <v-menu
                         :close-on-content-click="false"
