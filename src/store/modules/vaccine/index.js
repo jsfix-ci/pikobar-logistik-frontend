@@ -7,7 +7,15 @@ const state = {
   dataListVaccineRequest: [],
   totalListVaccineRequest: 0,
   totalDataVaccineRequest: 0,
-  listMaterial: []
+  listMaterial: [],
+  // Detail Vaccine Request
+  dataDetailVaccineRequest: {},
+  dataListDetailVaccineNeeds: [],
+  totalDetailVaccineNeeds: 0,
+  listRealization: [],
+  totalListRealization: 0,
+  totalDataRealization: 0,
+  listStock: []
 }
 
 export default {

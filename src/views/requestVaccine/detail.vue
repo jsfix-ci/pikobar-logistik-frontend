@@ -3,7 +3,7 @@
     <div>
       <v-row>
         <v-col cols="12" sm="12">
-          <span class="table-title">{{ $t('label.detail_request_logistic_medic') }}</span>
+          <span class="table-title">{{ $t('label.detail_request_Vaccine_medic') }}</span>
         </v-col>
       </v-row>
       <v-row>
@@ -29,7 +29,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
-                  <span class="sub-title-verified-card-detail-logistic-needs white--text text-wrap">{{ $t('label.alert_verified_title_card_logistic_needs_1') }} <b>{{ $t('label.alert_verified_title_card_logistic_needs_2') }}</b></span>
+                  <span class="sub-title-verified-card-detail-Vaccine-needs white--text text-wrap">{{ $t('label.alert_verified_title_card_Vaccine_needs_1') }} <b>{{ $t('label.alert_verified_title_card_Vaccine_needs_2') }}</b></span>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -48,9 +48,9 @@
         </span>
         <span class="text-data-green">:
           {{
-            detailLogisticRequest.created_at === null
+            detailVaccineRequest.created_at === null
               ? $t('label.stripe')
-              : $moment.utc(detailLogisticRequest.created_at).tz('Asia/Jakarta').format('LLL')
+              : $moment.utc(detailVaccineRequest.created_at).tz('Asia/Jakarta').format('LLL')
           }}
         </span>
       </div>
@@ -85,9 +85,9 @@
             'ml-6': $vuetify.breakpoint.xsOnly
           }"
         >
-          : {{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.name + picHandphone : '-' }}
+          : {{ detailVaccineRequest.finalized_by !== null ? detailVaccineRequest.finalized_by.name + picHandphone : '-' }}
           <br>
-          {{ detailLogisticRequest.applicant.finalized_by !== null ? detailLogisticRequest.applicant.finalized_by.agency_name : '-' }}
+          {{ detailVaccineRequest.finalized_by !== null ? detailVaccineRequest.finalized_by.agency_name : '-' }}
         </span>
       </div>
       <div v-else-if="isApproved" class="d-flex flex-row my-8">
@@ -104,9 +104,9 @@
             'ml-6': $vuetify.breakpoint.xsOnly
           }"
         >
-          : {{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.name + picHandphone : '-' }}
+          : {{ detailVaccineRequest.approved_by !== null ? detailVaccineRequest.approved_by.name + picHandphone : '-' }}
           <br>
-          {{ detailLogisticRequest.applicant.approved_by !== null ? detailLogisticRequest.applicant.approved_by.agency_name : '-' }}
+          {{ detailVaccineRequest.approved_by !== null ? detailVaccineRequest.approved_by.agency_name : '-' }}
         </span>
       </div>
       <v-row
@@ -180,14 +180,14 @@
       </v-row>
       <rejectKebutuhanLogistik
         :show="showDialogReject"
-        :item="detailLogisticRequest"
-        :total="listLogisticNeeds.length > 0 ? listLogisticNeeds[0].logistic_item_summary : null"
+        :item="detailVaccineRequest"
+        :total="listVaccineNeeds.length > 0 ? listVaccineNeeds[0].Vaccine_item_summary : null"
         @submitReject="rejectData"
       />
-      <reasonDeniedLogisticNeeds
+      <reasonDeniedVaccineNeeds
         :show="showDialogReasonReject"
-        :item="detailLogisticRequest"
-        :total="listLogisticNeeds.length > 0 ? listLogisticNeeds[0].logistic_item_summary : null"
+        :item="detailVaccineRequest"
+        :total="listVaccineNeeds.length > 0 ? listVaccineNeeds[0].Vaccine_item_summary : null"
       />
     </div>
     <div>
@@ -223,7 +223,7 @@
                 :class="{
                   'mt-3': $vuetify.breakpoint.xsOnly
                 }"
-                @click="urgencyChange(detailLogisticRequest.applicant.id, 0)"
+                @click="urgencyChange(detailVaccineRequest.id, 0)"
               >
                 {{ $t('label.important') }}
               </v-btn>
@@ -246,7 +246,7 @@
                 :class="{
                   'mt-3': $vuetify.breakpoint.xsOnly
                 }"
-                @click="urgencyChange(detailLogisticRequest.applicant.id, 1)"
+                @click="urgencyChange(detailVaccineRequest.id, 1)"
               >
                 {{ $t('label.button_applicant_urgency_important') }}
               </v-btn>
@@ -276,7 +276,7 @@
               }"
             >
               <span>
-                {{ $t('label.applicant_status_description') }} <b>{{ detailLogisticRequest.step_label }}</b>
+                {{ $t('label.applicant_status_description') }} <b>{{ detailVaccineRequest.step_label }}</b>
               </span>
               <v-btn
                 outlined
@@ -284,7 +284,7 @@
                 :class="{
                   'mt-3': $vuetify.breakpoint.xsOnly
                 }"
-                @click="returnChange(detailLogisticRequest.id)"
+                @click="returnChange(detailVaccineRequest.id)"
               >
                 {{ $t('label.return') }}
               </v-btn>
@@ -317,7 +317,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.master_faskes_type ? detailLogisticRequest.master_faskes_type.name : '-' }}
+                      {{ detailVaccineRequest.master_faskes_type ? detailVaccineRequest.master_faskes_type.name : '-' }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -326,7 +326,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.city ? detailLogisticRequest.city.kemendagri_kabupaten_nama : '-' }}
+                      {{ detailVaccineRequest.village ? detailVaccineRequest.village.kemendagri_kabupaten_nama : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -337,7 +337,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.agency_name }}
+                      {{ detailVaccineRequest.agency_name }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -346,7 +346,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.sub_district ? detailLogisticRequest.sub_district.kemendagri_kecamatan_nama : '-' }}
+                      {{ detailVaccineRequest.village ? detailVaccineRequest.village.kemendagri_kecamatan_nama : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -357,7 +357,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.phone_number || '-' }}
+                      {{ detailVaccineRequest.agency_phone_number || '-' }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -366,7 +366,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.village ? detailLogisticRequest.village.kemendagri_desa_nama : '-' }}
+                      {{ detailVaccineRequest.village ? detailVaccineRequest.village.kemendagri_desa_nama : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -385,7 +385,7 @@
                 </span>
                 <br>
                 <v-label>
-                  {{ detailLogisticRequest.location_address }}
+                  {{ detailVaccineRequest.agency_address }}
                 </v-label>
               </v-col>
               <v-col
@@ -425,7 +425,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.applicant_name : '-' }}
+                      {{ detailVaccineRequest.applicant ? detailVaccineRequest.applicant_name : '-' }}
                     </v-label>
                   </v-col>
                   <v-col :class="{ 'max-width__email': $vuetify.breakpoint.xsOnly }">
@@ -434,7 +434,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.email : '-' }}
+                      {{ detailVaccineRequest.applicant ? detailVaccineRequest.email : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -445,7 +445,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.applicants_office : '-' }}
+                      {{ detailVaccineRequest.applicant ? detailVaccineRequest.applicants_office : '-' }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -454,7 +454,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.primary_phone_number : '-' }}
+                      {{ detailVaccineRequest.applicant ? detailVaccineRequest.primary_phone_number : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -465,7 +465,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.secondary_phone_number : '-' }}
+                      {{ detailVaccineRequest.applicant ? detailVaccineRequest.secondary_phone_number : '-' }}
                     </v-label>
                   </v-col>
                 </v-row>
@@ -485,15 +485,15 @@
                     'ml-5': $vuetify.breakpoint.xsOnly
                   }"
                 >
-                  <v-label v-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file === '-'">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</v-label>
-                  <a v-else-if="detailLogisticRequest.applicant && detailLogisticRequest.applicant.file.substr(0, 4) === 'https'" class="letter-class" :href="detailLogisticRequest.applicant.file" target="_blank">{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : '-' }}</a>
+                  <v-label v-if="detailVaccineRequest.applicant && detailVaccineRequest.file === '-'">{{ detailVaccineRequest.applicant ? detailVaccineRequest.file : '-' }}</v-label>
+                  <a v-else-if="detailVaccineRequest.applicant && detailVaccineRequest.file.substr(0, 4) === 'https'" class="letter-class" :href="detailVaccineRequest.file" target="_blank">{{ detailVaccineRequest.applicant ? detailVaccineRequest.file : '-' }}</a>
                   <v-img
                     v-else
                     :class="{
                       'image-large': $vuetify.breakpoint.smAndUp,
                       'image-small': $vuetify.breakpoint.xsOnly
                     }"
-                    :src="detailLogisticRequest.applicant ? detailLogisticRequest.applicant.file : noImage"
+                    :src="detailVaccineRequest.applicant ? detailVaccineRequest.file : noImage"
                     @error="errorHandler"
                   />
                 </v-row>
@@ -525,11 +525,11 @@
             }"
           >
             <a
-              :href="detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#'"
+              :href="detailVaccineRequest.letter ? detailVaccineRequest.letter.letter : '#'"
               target="_blank"
               class="blue--text letter-class"
             >
-              <u>{{ detailLogisticRequest.applicant ? detailLogisticRequest.applicant.application_letter_number : '-' }}</u>
+              <u>{{ detailVaccineRequest.applicant ? detailVaccineRequest.application_letter_number : '-' }}</u>
             </a>
             <div :class="{ 'mt-4': $vuetify.breakpoint.xsOnly }">
               <v-btn
@@ -537,7 +537,7 @@
                 outlined
                 color="success"
                 class="pa-5"
-                @click="downloadFile(detailLogisticRequest.letter ? detailLogisticRequest.letter.letter : '#')"
+                @click="downloadFile(detailVaccineRequest.letter ? detailVaccineRequest.letter.letter : '#')"
               >
                 <v-icon left small dark>mdi-download</v-icon>
                 <span>{{ $t('label.download') }}</span>
@@ -558,7 +558,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <div v-if="detailLogisticRequest.agency_type <= 3">
+    <div v-if="detailVaccineRequest.agency_type <= 3">
       <v-row>
         <v-col>
           <span class="text-data-green">Detail Kondisi Fasilitas Kesehatan</span>
@@ -577,14 +577,14 @@
                     <span class="text-title-green">Jumlah Pasien COVID-19 yang ditangani</span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.total_covid_patients }} Orang
+                      {{ detailVaccineRequest.total_covid_patients }} Orang
                     </v-label>
                   </v-col>
                   <v-col>
                     <span class="text-title-green">Jumlah Tempat Tidur</span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.total_bedroom }} Tempat Tidur
+                      {{ detailVaccineRequest.total_bedroom }} Tempat Tidur
                     </v-label>
                   </v-col>
                 </v-row>
@@ -593,14 +593,14 @@
                     <span class="text-title-green">Jumlah Ruang Isolasi</span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.total_isolation_room }} Ruangan
+                      {{ detailVaccineRequest.total_isolation_room }} Ruangan
                     </v-label>
                   </v-col>
                   <v-col>
                     <span class="text-title-green">Jumlah Tenaga Kesehatan</span>
                     <br>
                     <v-label>
-                      {{ detailLogisticRequest.total_health_worker }} Orang
+                      {{ detailVaccineRequest.total_health_worker }} Orang
                     </v-label>
                   </v-col>
                 </v-row>
@@ -614,7 +614,7 @@
       <v-row class="mt-5">
         <v-col>
           <span class="text-data-green">
-            {{ $t('label.list_logistic_need') }}
+            {{ $t('label.list_Vaccine_need') }}
           </span>
         </v-col>
       </v-row>
@@ -654,10 +654,10 @@
                   </tr>
                 </thead>
                 <tbody v-if="loaded">
-                  <tr v-if="listLogisticNeeds.length === 0">
+                  <tr v-if="listVaccineNeeds.length === 0">
                     <td class="text-center" :colspan="21">{{ $t('label.no_data') }}</td>
                   </tr>
-                  <tr v-for="(item, index) in listLogisticNeeds" v-else :key="item.index">
+                  <tr v-for="(item, index) in listVaccineNeeds" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
                     <td>{{ item.product ? item.product.name : '-' }}</td>
                     <td class="text-no-wrap">
@@ -721,7 +721,7 @@
             <br>
             <v-pagination
               v-model="listQuery.page"
-              :length="totalLogisticNeeds"
+              :length="totalVaccineNeeds"
               :total-visible="3"
               @input="onNext"
             />
@@ -967,14 +967,14 @@ import PicInfo from '@/components/PicInfo'
 import CheckStockDialog from './stock'
 import EventBus from '@/utils/eventBus'
 import rejectKebutuhanLogistik from './reject'
-import reasonDeniedLogisticNeeds from './reasonReject'
+import reasonDeniedVaccineNeeds from './reasonReject'
 
 export default {
   name: 'ListDetailPengajuanLogistik',
   components: {
     updateKebutuhanLogistik,
     rejectKebutuhanLogistik,
-    reasonDeniedLogisticNeeds,
+    reasonDeniedVaccineNeeds,
     CheckStockDialog,
     DialogDelete,
     PicInfo,
@@ -1007,7 +1007,7 @@ export default {
       dataDelete: null,
       dialogPic: false,
       dataPic: null,
-      logisticNeeds: [],
+      VaccineNeeds: [],
       picHandphone: '',
       dataUrgencyConfirmation: {
         id: null,
@@ -1028,9 +1028,9 @@ export default {
   },
   computed: {
     ...mapGetters('vaccine', [
-      'detailLogisticRequest',
-      'listLogisticNeeds',
-      'totalLogisticNeeds',
+      'detailVaccineRequest',
+      'listVaccineNeeds',
+      'totalVaccineNeeds',
       'listRealization',
       'totalListRealization',
       'totalDataRealization',
@@ -1046,21 +1046,7 @@ export default {
       return this.roles[0] !== 'dinkeskota'
     },
     statusLabel() {
-      if (this.isVerified && !this.isApproved && !this.isRejectedApproval) {
-        return this.detailLogisticRequest.applicant
-          ? this.detailLogisticRequest.status
-          : '-'
-      } else if (this.isFinalized) {
-        return this.$t('label.finalized')
-      } else if (this.isApproved || this.isRejectedApproval) {
-        return this.detailLogisticRequest.applicant
-          ? this.detailLogisticRequest.applicant.approval_status
-          : '-'
-      } else {
-        return this.detailLogisticRequest.applicant
-          ? this.detailLogisticRequest.status
-          : '-'
-      }
+      return this.$t('label.' + this.detailVaccineRequest.status)
     },
     verifyButton() {
       return this.$vuetify.breakpoint.smAndUp ? 'btn-sm' : 'btn-xs__verify'
@@ -1136,9 +1122,9 @@ export default {
     rejectData(value) {
       const formData = new FormData()
       this.showDialogReject = false
-      formData.append('agency_id', this.detailLogisticRequest.id)
-      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
-      if (this.detailLogisticRequest.status === 'Terverifikasi') {
+      formData.append('agency_id', this.detailVaccineRequest.id)
+      formData.append('applicant_id', this.detailVaccineRequest.id)
+      if (this.detailVaccineRequest.status === 'verified') {
         formData.append('approval_status', 'rejected')
         formData.append('approval_note', value)
         this.postRejectApproval(formData)
@@ -1160,31 +1146,31 @@ export default {
       if (type === true) {
         this.$refs.updateForm.setDialog(type, this.listQuery.agency_id, null, recommendation, realization)
       } else if (type === false) {
-        this.$refs.updateForm.setDialog(type, this.listLogisticNeeds[index], value.id, recommendation, realization)
+        this.$refs.updateForm.setDialog(type, this.listVaccineNeeds[index], value.id, recommendation, realization)
       } else {
         this.$refs.updateForm.setDialog(null, this.listRealization[value], null, recommendation, realization)
       }
     },
     urgencyChange(id, value) {
       this.showUrgencyForm = true
-      this.dataUrgencyConfirmation = this.detailLogisticRequest
+      this.dataUrgencyConfirmation = this.detailVaccineRequest
       this.$refs.dialogUrgencyForm.setData(id, value, this.dataUrgencyConfirmation)
     },
     returnChange(id) {
       this.showReturnForm = true
-      this.dataReturnConfirmation = this.detailLogisticRequest
+      this.dataReturnConfirmation = this.detailVaccineRequest
       this.$refs.dialogReturnForm.setData(id, this.dataReturnConfirmation)
     },
     showAgencyIdentityDialog() {
-      this.$refs.agencyIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
+      this.$refs.agencyIdentityForm.setData(this.detailVaccineRequest.id, this.detailVaccineRequest)
       this.showAgencyIdentity = true
     },
     showApplicantIdentityDialog() {
-      this.$refs.dialogApplicantIdentityForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
+      this.$refs.dialogApplicantIdentityForm.setData(this.detailVaccineRequest.id, this.detailVaccineRequest)
       this.showApplicantIdentity = true
     },
     updateLetter() {
-      this.$refs.dialogUpdateLetterForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
+      this.$refs.dialogUpdateLetterForm.setData(this.detailVaccineRequest.id, this.detailVaccineRequest)
       this.updateLetterForm = true
     },
     async deleteRealization(item, recommendation, realization) {
@@ -1211,7 +1197,7 @@ export default {
     },
     async getListRealizationAdmin() {
       this.loaded = false
-      await this.$store.dispatch('vaccine/getLogisticNeedsAdmin', this.listQuery)
+      await this.$store.dispatch('vaccine/getVaccineNeedsAdmin', this.listQuery)
       this.listRealization.forEach(element => {
         element.recommendBy = element.recommend_by ? element.recommend_by.name : null
         element.realizedBy = element.realized_by ? element.realized_by.name : null
@@ -1269,46 +1255,46 @@ export default {
       await this.$store.dispatch('vaccine/getListDetailVaccineRequest', this.$route.params.id)
 
       // uncomment after ready
-      // const res = await this.$store.dispatch('vaccine/getListDetailLogisticRequest', this.$route.params.id)
+      // const res = await this.$store.dispatch('vaccine/getListDetailVaccineRequest', this.$route.params.id)
       // if (!res.data) {
       //   this.$router.push('/dashboard')
       //   return
       // }
 
-      if (this.detailLogisticRequest.letter !== null) {
-        const temp = this.detailLogisticRequest.letter.letter.split('.')
+      if (this.detailVaccineRequest.letter_file_url !== null) {
+        const temp = this.detailVaccineRequest.letter_file_url.split('.')
         this.letterFileType = temp[temp.length - 1]
       }
-      this.isVerified = this.detailLogisticRequest.status === 'Terverifikasi'
-      this.isRejected = this.detailLogisticRequest.status === 'Pengajuan Ditolak'
-      this.isRejectedApproval = this.detailLogisticRequest.applicant.approval_status === 'Permohonan Ditolak'
-      this.isApproved = this.detailLogisticRequest.applicant.approval_status === 'Telah Disetujui'
-      this.isFinalized = this.detailLogisticRequest.applicant.finalized_by !== null
+      this.isVerified = this.detailVaccineRequest.status === 'verified'
+      this.isRejected = this.detailVaccineRequest.status === 'verification_rejected'
+      this.isRejectedApproval = this.detailVaccineRequest.status === 'approval_rejected'
+      this.isApproved = this.detailVaccineRequest.status === 'approved'
+      this.isFinalized = this.detailVaccineRequest.status === 'finalized'
       // Cek Step Permohonan
-      this.detailLogisticRequest.step = 'verifikasi'
-      this.detailLogisticRequest.step_label = 'Verifikasi Administrasi'
+      this.detailVaccineRequest.step = 'verifikasi'
+      this.detailVaccineRequest.step_label = 'Verifikasi Administrasi'
       if (this.isRejectedApproval) {
-        this.detailLogisticRequest.step = 'ditolak rekomendasi'
-        this.detailLogisticRequest.step_label = 'Ditolak pada Rekomendasi salur'
+        this.detailVaccineRequest.step = 'ditolak rekomendasi'
+        this.detailVaccineRequest.step_label = 'Ditolak pada Rekomendasi salur'
       } else if (this.isRejected) {
-        this.detailLogisticRequest.step = 'ditolak verifikasi'
-        this.detailLogisticRequest.step_label = 'Ditolak pada Verifikasi Administrasi'
+        this.detailVaccineRequest.step = 'ditolak verifikasi'
+        this.detailVaccineRequest.step_label = 'Ditolak pada Verifikasi Administrasi'
       } else if (this.isFinalized) {
-        this.picHandphone = this.detailLogisticRequest.applicant.finalized_by !== null ? this.detailLogisticRequest.applicant.finalized_by.handphone : '-'
-        this.detailLogisticRequest.step = 'final'
-        this.detailLogisticRequest.step_label = 'Selesai Realisasi Salur'
+        this.picHandphone = this.detailVaccineRequest.finalized_by !== null ? this.detailVaccineRequest.finalized_by.handphone : '-'
+        this.detailVaccineRequest.step = 'final'
+        this.detailVaccineRequest.step_label = 'Selesai Realisasi Salur'
       } else if (this.isVerified && this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.approved_by !== null ? this.detailLogisticRequest.applicant.approved_by.handphone : '-'
-        this.detailLogisticRequest.step = 'realisasi'
-        this.detailLogisticRequest.step_label = 'Realisasi Salur'
+        this.picHandphone = this.detailVaccineRequest.approved_by !== null ? this.detailVaccineRequest.approved_by.handphone : '-'
+        this.detailVaccineRequest.step = 'realisasi'
+        this.detailVaccineRequest.step_label = 'Realisasi Salur'
       } else if (this.isVerified && !this.isApproved) {
-        this.picHandphone = this.detailLogisticRequest.applicant.verified_by !== null ? this.detailLogisticRequest.applicant.verified_by.handphone : '-'
-        this.detailLogisticRequest.step = 'rekomendasi'
-        this.detailLogisticRequest.step_label = 'Rekomendasi Salur'
+        this.picHandphone = this.detailVaccineRequest.verified_by !== null ? this.detailVaccineRequest.verified_by.handphone : '-'
+        this.detailVaccineRequest.step = 'rekomendasi'
+        this.detailVaccineRequest.step_label = 'Rekomendasi Salur'
       }
       this.picHandphone = this.picHandphone !== null ? this.picHandphone : '-'
       this.picHandphone = ' (' + this.picHandphone + ')'
-      this.isUrgent = this.detailLogisticRequest.applicant.is_urgency === 1
+      this.isUrgent = this.detailVaccineRequest.is_urgency === 1
     },
     async getStock(value) {
       const param = {
@@ -1318,8 +1304,8 @@ export default {
     },
     async getListDetailNeeds() {
       this.loaded = false
-      await this.$store.dispatch('vaccine/getListDetailLogisticNeeds', this.listQuery)
-      this.listLogisticNeeds.forEach(element => {
+      await this.$store.dispatch('vaccine/getListDetailVaccineNeeds', this.listQuery)
+      this.listVaccineNeeds.forEach(element => {
         element.recommendBy = element.recommend_by ? element.recommend_by.name : null
         element.realizedBy = element.realized_by ? element.realized_by.name : null
         element.recommendationDate = element.recommendation_date ? this.$moment.utc(element.recommendation_date).tz('Asia/Jakarta').format('DD MMMM YYYY') : '-'
@@ -1379,8 +1365,8 @@ export default {
     },
     async postVerification() {
       const formData = new FormData()
-      formData.append('agency_id', this.detailLogisticRequest.id)
-      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
+      formData.append('agency_id', this.detailVaccineRequest.id)
+      formData.append('applicant_id', this.detailVaccineRequest.id)
       formData.append('verification_status', 'verified')
       formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('vaccine/postVerificationStatus', formData)
@@ -1402,14 +1388,14 @@ export default {
     },
     setTotal() {
       this.totalAPD = 0
-      this.listLogisticNeeds.forEach(element => {
+      this.listVaccineNeeds.forEach(element => {
         this.totalAPD += parseInt(element.quantity)
       })
     },
     async submitApprove() {
       const formData = new FormData()
-      formData.append('agency_id', this.detailLogisticRequest.id)
-      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
+      formData.append('agency_id', this.detailVaccineRequest.id)
+      formData.append('applicant_id', this.detailVaccineRequest.id)
       formData.append('approval_status', 'approved')
       formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('vaccine/postApprovalStatus', formData)
@@ -1421,8 +1407,8 @@ export default {
     },
     async submitFinal() {
       const formData = new FormData()
-      formData.append('agency_id', this.detailLogisticRequest.id)
-      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
+      formData.append('agency_id', this.detailVaccineRequest.id)
+      formData.append('applicant_id', this.detailVaccineRequest.id)
       formData.append('approval_status', 'approved')
       formData.append('url', location.host + '/#')
       const response = await this.$store.dispatch('vaccine/postFinalStatus', formData)
@@ -1460,7 +1446,7 @@ export default {
       }
     },
     errorHandler() {
-      this.detailLogisticRequest.applicant.file = this.noImage
+      this.detailVaccineRequest.file = this.noImage
       this.$forceUpdate()
     }
   }
@@ -1535,7 +1521,7 @@ export default {
   line-height: 19px;
   text-decoration: underline;
 }
-.sub-title-verified-card-detail-logistic-needs {
+.sub-title-verified-card-detail-Vaccine-needs {
   font-size: 13px;
 }
 .mb-15 {
