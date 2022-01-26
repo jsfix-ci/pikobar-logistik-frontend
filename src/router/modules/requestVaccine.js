@@ -66,7 +66,7 @@ const requestVaccine = {
       component: () => import('@/views/requestVaccine/detail'),
       hidden: true,
       meta: {
-        title: 'applicant_medical_tools_list_title',
+        title: 'vaccine_request_detail_title',
         icon: 'library_books',
         noCache: true,
         roles: ['superadmin', 'dinkesprov', 'dinkeskota']

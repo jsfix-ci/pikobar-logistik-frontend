@@ -9,9 +9,8 @@ const state = {
   totalDataVaccineRequest: 0,
   listMaterial: [],
   // Detail Vaccine Request
-  dataDetailVaccineRequest: {},
-  dataListDetailVaccineNeeds: [],
-  totalDetailVaccineNeeds: 0,
+  vaccineRequest: {},
+  vaccineProductRequests: [],
   listRealization: [],
   totalListRealization: 0,
   totalDataRealization: 0,

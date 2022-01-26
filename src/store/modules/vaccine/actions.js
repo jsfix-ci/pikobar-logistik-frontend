@@ -21,7 +21,7 @@ export default {
     }
   },
   // API Detail Vaccine
-  async getListDetailVaccineRequest({ commit }, params) {
+  async getVaccineRequestById({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/vaccine-request/' + params, 'GET')
       commit('SET_DETAIL_VACCINE_REQUEST', response.data)
@@ -30,11 +30,10 @@ export default {
       return e
     }
   },
-  async getListDetailVaccineNeeds({ commit }, params) {
+  async getVaccineProductRequests({ commit }, params) {
     try {
-      const response = await fetchList('/api/v1/vaccine-request/need/list', 'GET', params)
-      commit('SET_LIST_DETAIL_VACCINE_NEEDS', response.data.data)
-      commit('SET_TOTAL_DETAIL_VACCINE_NEEDS', response.data.last_page)
+      const response = await fetchList('/api/v1/vaccine-product-request', 'GET', params)
+      commit('SET_VACCINE_PRODUCT_REQUESTS', response)
     } catch (e) {
       return e
     }

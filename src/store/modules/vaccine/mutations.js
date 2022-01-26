@@ -16,12 +16,9 @@ export default {
   },
   // Detail Vaccine Request
   SET_DETAIL_VACCINE_REQUEST: (state, data) => {
-    state.dataDetailVaccineRequest = data
+    state.vaccineRequest = data
   },
-  SET_LIST_DETAIL_VACCINE_NEEDS: (state, data) => {
-    state.dataListDetailVaccineNeeds = data
-  },
-  SET_TOTAL_DETAIL_VACCINE_NEEDS: (state, data) => {
-    state.totalDetailVaccineNeeds = data
+  SET_VACCINE_PRODUCT_REQUESTS: (state, data) => {
+    state.vaccineProductRequests = data
   }
 }

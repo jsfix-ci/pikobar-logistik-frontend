@@ -9,13 +9,10 @@ export default {
     return state.totalDataVaccineRequest
   },
   // Detail Vaccine Request
-  detailVaccineRequest: (state, getters) => {
-    return state.dataDetailVaccineRequest
+  vaccineRequest: (state) => {
+    return state.vaccineRequest
   },
-  listVaccineNeeds: (state, getters) => {
-    return state.dataListDetailVaccineNeeds
-  },
-  totalVaccineNeeds: (state, getters) => {
-    return state.totalDetailVaccineNeeds
+  vaccineProductRequests: (state) => {
+    return state.vaccineProductRequests
   }
 }
