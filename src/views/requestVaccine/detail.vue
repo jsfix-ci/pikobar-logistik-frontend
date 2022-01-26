@@ -25,7 +25,7 @@
               </v-list-item>
             </v-card>
             <v-card
-              v-else
+              v-else-if="status > 0"
               class="mx-auti"
               color="#219653"
             ><!-- Alert Verification Phase -->
@@ -57,6 +57,15 @@
           </v-col>
           <v-col>
             <span :class="(status < 2 ? 'red--text' : 'green--text text--darken-2') + ' font-weight-bold'">: {{ $t('status.' + vaccineRequest.status) }}</span>
+          </v-col>
+        </v-row>
+
+        <v-row v-if="status < 0" class="mt-n5">
+          <v-col cols="2" class="mr-3">
+            <span class="text-title">{{ $t('label.reason_reject') }}</span>
+          </v-col>
+          <v-col>
+            <span>: {{ vaccineRequest.note }}</span>
           </v-col>
         </v-row>
       </div>
@@ -619,9 +628,6 @@ export default {
           result = this.unrealizationItemTotal > 0
         }
       }
-      console.log('this.status', this.status)
-      console.log('this.tempStatus', this.tempStatus)
-      console.log('result', result)
       return result
     },
     getStockItem(item) {
