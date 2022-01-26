@@ -53,10 +53,10 @@
 
         <v-row class="mt-n5">
           <v-col cols="2" class="mr-3">
-            <span class="text-title">Status</span>
+            <span class="text-title">{{ $t('label.status') }}</span>
           </v-col>
           <v-col>
-            <span class="red--text font-weight-bold">: {{ $t('label.' + vaccineRequest.status) }}</span>
+            <span :class="(status < 2 ? 'red--text ' : 'green--text text--darken-2') + 'font-weight-bold'">: {{ $t('status.' + vaccineRequest.status) }}</span>
           </v-col>
         </v-row>
       </div>
@@ -69,27 +69,66 @@
               class="mx-3 my-1 font-weight-bold"
               color="success"
               outlined
-            >VERIFIKASI SEKARANG</v-btn>
+              @click="showConfirmDialog(2)"
+            >{{ $t('label.verif_now') }}</v-btn>
             <v-btn
               v-else-if="status == 2"
               class="mx-3 my-1 font-weight-bold"
               color="success"
               outlined
-            >REKOMENDASI SEKARANG</v-btn>
+              @click="showConfirmDialog(3)"
+            >{{ $t('label.approve') }}</v-btn>
             <v-btn
               v-else-if="status == 3"
               class="mx-3 my-1 font-weight-bold"
               color="success"
               outlined
-            >REALISASI SEKARANG</v-btn>
+              @click="showConfirmDialog(4)"
+            >{{ $t('label.final') }}</v-btn>
             <v-btn
               v-if="status == 1 || status == 2"
               class="mx-3 my-1 font-weight-bold"
               color="red"
               outlined
-            >DITOLAK</v-btn>
+              @click="showConfirmDialog((status == 1 ? -1 : -2))"
+            >{{ $t('route.rejected_title') }}</v-btn>
           </v-col>
         </v-row>
+
+        <template><!-- Confirm Change Status Dialog -->
+          <v-row justify="center">
+            <v-dialog
+              v-model="confirmDialog"
+              persistent
+              max-width="80%"
+            >
+              <v-card>
+                <v-card-title class="text-h5">
+                  Konfirmasi Perubahan Status Permohonan
+                </v-card-title>
+                <v-card-text>Apakah Anda yakin akan mengubah status permohonan ini menjadi <span class="font-weight-bold">{{ $t('status.' + statusTarget) }}</span> ?</v-card-text>
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn
+                    color="error"
+                    dark
+                    @click="confirmDialog = false"
+                  >
+                    Kembali
+                  </v-btn>
+                  <v-btn
+                    color="success"
+                    dark
+                    @click="updateStatus"
+                  >
+                    Ya, Ubah status!
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-row>
+        </template>
+
       </div>
 
       <div><!-- Agency Identity -->
@@ -296,6 +335,14 @@
                     <td>{{ item.unit.unit }}</td>
                     <td>{{ item.usage }}</td>
                     <td>{{ item.product.material_group }}</td>
+                    <td v-if="status >= 2 && status < 4"><v-btn color="success" dark small>Cek Stok</v-btn></td>
+                    <td v-if="status >= 2">{{ item.allocation_material ? `(${item.allocation_material.material_id}) ` + item.allocation_material.material_name : '-' }}</td>
+                    <td v-if="status >= 2">{{ item.recommendation_quantity || '-' }}</td>
+                    <td v-if="status >= 2">{{ item.recommendation_unit || '-' }}</td>
+                    <td v-if="status >= 2">{{ item.recommendation_date || '-' }}</td>
+                    <td v-if="status >= 2">{{ item.recommendation_status || '-' }}</td>
+                    <td v-if="status >= 2">{{ item.recommendation_by ? item.recommendation_by.name : '-' }}</td>
+                    <td v-if="status >= 2 && status < 4"><v-btn color="info" dark small>{{ $t('label.update') }}</v-btn></td>
                   </tr>
                 </tbody>
               </template>
@@ -327,11 +374,14 @@
 import { mapGetters, mapState } from 'vuex'
 
 export default {
-  name: 'ListDetailPengajuanLogistik',
+  name: 'ListDetailPermohonanVaksin',
   data() {
     return {
       status: 1,
+      statusTarget: null,
       noImage: './img/noimage.gif',
+      confirmDialog: false,
+      tempStatus: null,
       listQuery: {
         page: 1,
         limit: 3,
@@ -394,6 +444,50 @@ export default {
         default:
           this.status = 1
       }
+    },
+    getStatus(status) {
+      let statusLabel = 'not_verified'
+      switch (status) {
+        case -2:
+          statusLabel = 'approval_rejected'
+          break
+        case -1:
+          statusLabel = 'verification_rejected'
+          break
+        case 1:
+          statusLabel = 'not_verified'
+          break
+        case 2:
+          statusLabel = 'verified'
+          break
+        case 3:
+          statusLabel = 'approved'
+          break
+        case 4:
+          statusLabel = 'finalized'
+          break
+        default:
+          statusLabel = 'not_verified'
+      }
+      return statusLabel
+    },
+    showConfirmDialog(status) {
+      this.tempStatus = status
+      this.statusTarget = this.getStatus(status)
+      this.confirmDialog = true
+    },
+    async updateStatus() {
+      const status = this.tempStatus
+      console.log('status', this.getStatus(status) + ' ' + status)
+      const params = {
+        id: this.vaccineRequest.id,
+        status: this.getStatus(status)
+      }
+      const response = await this.$store.dispatch('vaccine/updateVaccineRequestStatus', params)
+      if (response.status === 200) {
+        await this.getVaccineRequestById()
+      }
+      this.confirmDialog = false
     },
     back() {
       this.$router.go(-1)

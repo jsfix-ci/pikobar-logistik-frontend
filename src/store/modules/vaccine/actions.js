@@ -1,4 +1,4 @@
-import { fetchList } from '@/api'
+import { fetchList, doPostUpdate } from '@/api'
 
 export default {
   async getListMaterial({ commit }, params) {
@@ -34,6 +34,15 @@ export default {
     try {
       const response = await fetchList('/api/v1/vaccine-product-request', 'GET', params)
       commit('SET_VACCINE_PRODUCT_REQUESTS', response)
+    } catch (e) {
+      return e
+    }
+  },
+  async updateVaccineRequestStatus({ commit }, params) {
+    console.log(commit)
+    try {
+      const response = await doPostUpdate('/api/v1/vaccine-request/' + params.id, 'PUT', params)
+      return response
     } catch (e) {
       return e
     }

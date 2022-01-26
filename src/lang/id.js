@@ -796,4 +796,12 @@ export default {
       item_proof: 'Foto Barang yang Diterima wajib diisi'
     }
   },
+  status: {
+    verification_rejected: 'Ditolak di Tahap Verifikasi',
+    approval_rejected: 'Ditolak di Tahap Rekomendasi',
+    not_verified: 'Belum Terverifikasi',
+    verified: 'Terverifikasi',
+    approved: 'Direkomendasi',
+    finalized: 'Direalisasi',
+  }
 }
