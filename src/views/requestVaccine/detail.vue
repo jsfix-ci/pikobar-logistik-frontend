@@ -106,7 +106,18 @@
                 <v-card-title class="text-h5">
                   Konfirmasi Perubahan Status Permohonan
                 </v-card-title>
-                <v-card-text>Apakah Anda yakin akan mengubah status permohonan ini menjadi <span class="font-weight-bold">{{ $t('status.' + statusTarget) }}</span> ?</v-card-text>
+                <div class="mx-5 mb-5">
+                  <span>Apakah Anda yakin akan mengubah status permohonan ini menjadi <span class="font-weight-bold">{{ $t('status.' + statusTarget) }}</span> ?</span>
+                  <br>
+                  <v-textarea
+                    v-if="tempStatus < 0"
+                    v-model="note"
+                    class="mt-3"
+                    outlined
+                    :label="$t('errors.field_must_be_filled_reason_reject')"
+                    :rules="[rules.required]"
+                  />
+                </div>
                 <v-card-actions>
                   <v-spacer />
                   <v-btn
@@ -118,7 +129,6 @@
                   </v-btn>
                   <v-btn
                     color="success"
-                    dark
                     @click="updateStatus"
                   >
                     Ya, Ubah status!
@@ -462,6 +472,10 @@ export default {
       tempStatus: null,
       unrecommendItemTotal: 0,
       unrealizationItemTotal: 0,
+      note: null,
+      rules: {
+        required: v => !!v || 'Tidak boleh kosong'
+      },
       listQuery: {
         page: 1,
         limit: 3,
@@ -575,6 +589,10 @@ export default {
       this.confirmDialog = true
     },
     async updateStatus() {
+      if (this.tempStatus < 0 && !this.note) {
+        return false
+      }
+
       if (this.status > 1 && this.cannotUpdate()) {
         this.confirmDialog = false
         this.updateFailedDialog = true
@@ -584,7 +602,8 @@ export default {
       const status = this.tempStatus
       const params = {
         id: this.vaccineRequest.id,
-        status: this.getStatus(status)
+        status: this.getStatus(status),
+        note: this.note
       }
       const response = await this.$store.dispatch('vaccine/updateVaccineRequestStatus', params)
       if (response.status === 200) {
@@ -593,7 +612,7 @@ export default {
       this.confirmDialog = false
     },
     cannotUpdate() {
-      let result = true
+      let result = false
       if (this.tempStatus > 1) {
         result = this.unrecommendItemTotal > 0
         if (this.status === 3) {
