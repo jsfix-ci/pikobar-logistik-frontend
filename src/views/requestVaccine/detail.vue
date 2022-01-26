@@ -9,7 +9,7 @@
       <v-row>
         <v-col cols="12" lg="9" md="12">
           <v-card
-            v-if="detailVaccineRequest.status === 'not_verified'"
+            v-if="!isVerified"
             class="mx-auti"
             color="#219653"
           >
@@ -22,7 +22,7 @@
             </v-list-item>
           </v-card>
           <v-card
-            v-if="detailVaccineRequest.status === 'verified'"
+            v-if="isVerified"
             class="mx-auti"
             color="#219653"
           >
@@ -63,8 +63,8 @@
         </span>
         <span
           :class="{
-            'text-data-green': detailVaccineRequest.status === 'verified' || detailVaccineRequest.status === 'finalized' || detailVaccineRequest.status === 'approved',
-            'text-data-red': detailVaccineRequest.status === 'not_verified' || detailVaccineRequest.status === 'verification_rejected' || detailVaccineRequest.status === 'approval_rejected',
+            'text-data-green': isVerified || isFinalized || isApproved,
+            'text-data-red': !isVerified || isRejected || isRejectedApproval,
             'ml-16': $vuetify.breakpoint.smAndUp,
             'ml-6': $vuetify.breakpoint.xsOnly
           }"
@@ -73,7 +73,7 @@
         </span>
       </div>
 
-      <div v-if="detailVaccineRequest.status === 'finalized'" class="d-flex flex-row my-8">
+      <div v-if="isFinalized" class="d-flex flex-row my-8">
         <span
           class="text-title mr-4"
         >
@@ -81,8 +81,8 @@
         </span>
         <span
           :class="{
-            'text-data-green': detailVaccineRequest.status === 'verified' || detailVaccineRequest.status === 'finalized' || detailVaccineRequest.status === 'approved',
-            'text-data-red': detailVaccineRequest.status === 'not_verified' || detailVaccineRequest.status === 'verification_rejected' || detailVaccineRequest.status === 'approval_rejected',
+            'text-data-green': isVerified || isFinalized || isApproved,
+            'text-data-red': !isVerified|| isRejected || isRejectedApproval,
             'ml-16': $vuetify.breakpoint.smAndUp,
             'ml-6': $vuetify.breakpoint.xsOnly
           }"
@@ -93,7 +93,7 @@
         </span>
       </div>
 
-      <div v-else-if="detailVaccineRequest.status === 'approved'" class="d-flex flex-row my-8">
+      <div v-else-if="isApproved" class="d-flex flex-row my-8">
         <span
           class="text-title mr-4"
         >
@@ -101,8 +101,8 @@
         </span>
         <span
           :class="{
-            'text-data-green': detailVaccineRequest.status === 'verified' || detailVaccineRequest.status === 'finalized' || detailVaccineRequest.status === 'approved',
-            'text-data-red': detailVaccineRequest.status === 'not_verified' || detailVaccineRequest.status === 'verification_rejected' || detailVaccineRequest.status === 'approval_rejected',
+            'text-data-green': isVerified || isFinalized || isApproved,
+            'text-data-red': !isVerified || isRejected || isRejectedApproval,
             'ml-16': $vuetify.breakpoint.smAndUp,
             'ml-6': $vuetify.breakpoint.xsOnly
           }"
@@ -122,7 +122,7 @@
         <div>
           <span>
             <v-btn
-              v-if="detailVaccineRequest.status === 'not_verified'"
+              v-if="!isVerified"
               outlined
               color="#2E7D32"
               :class="verifyButton"
@@ -131,7 +131,7 @@
               {{ $t('label.verif_now') }}
             </v-btn>
             <v-btn
-              v-if="detailVaccineRequest.status === 'verification_rejected' || detailVaccineRequest.status === 'approval_rejected'"
+              v-if="isRejected || isRejectedApproval"
               outlined
               color="#2E7D32"
               :class="verifyButton"
@@ -140,7 +140,7 @@
               {{ $t('label.reason_reject') }}
             </v-btn>
             <v-btn
-              v-if="detailVaccineRequest.status === 'verified'"
+              v-if="isVerified"
               outlined
               color="#2E7D32"
               :class="verifyButton"
@@ -149,7 +149,7 @@
               {{ $t('label.approve') }}
             </v-btn>
             <v-btn
-              v-if="detailVaccineRequest.status === 'approved'"
+              v-if="isApproved"
               outlined
               color="#2E7D32"
               class="btn-sm__done"
@@ -160,7 +160,7 @@
           </span>
           <span class="ml-3">
             <v-btn
-              v-if="detailVaccineRequest.status === 'not_verified'"
+              v-if="!isVerified"
               outlined
               color="#e62929"
               :class="rejectButton"
@@ -169,7 +169,7 @@
               {{ $t('route.rejected_title') }}
             </v-btn>
             <v-btn
-              v-if="detailVaccineRequest.status === 'verified'"
+              v-if="isVerified"
               outlined
               color="#e62929"
               :class="rejectButton"
@@ -181,6 +181,7 @@
           </span>
         </div>
       </v-row>
+
       <rejectKebutuhanLogistik
         :show="showDialogReject"
         :item="detailVaccineRequest"
@@ -258,6 +259,7 @@
           </v-card>
         </v-col>
       </v-row>
+
       <v-row v-if="(isVerified|isRejected|isRejectedApproval) && (phase === 'pimpinan'|phase === 'superadmin')">
         <v-col>
           <span class="text-data-green">
@@ -297,7 +299,8 @@
         </v-col>
       </v-row>
     </div>
-    <div>
+
+    <div><!-- agency/instance identity component -->
       <br>
       <v-row>
         <v-col>
@@ -408,9 +411,9 @@
           </v-card>
         </v-col>
       </v-row>
-    </div><!-- End Agency Component -->
+    </div><!-- End agency/instance identity Component -->
 
-    <div><!-- Applicant Component -->
+    <div><!-- Applicant itentity Component -->
       <v-row class="mt-5">
         <v-col>
           <span class="text-data-green">
@@ -430,7 +433,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailVaccineRequest.applicant_name || '-' }}
+                      {{ detailVaccineRequest.applicant_fullname || '-' }}
                     </v-label>
                   </v-col>
                   <v-col :class="{ 'max-width__email': $vuetify.breakpoint.xsOnly }">
@@ -450,7 +453,7 @@
                     </span>
                     <br>
                     <v-label>
-                      {{ detailVaccineRequest.applicant_office || '-' }}
+                      {{ detailVaccineRequest.applicant_position || '-' }}
                     </v-label>
                   </v-col>
                   <v-col>
@@ -490,21 +493,14 @@
                     'ml-5': $vuetify.breakpoint.xsOnly
                   }"
                 >
-                  <v-label v-if="detailVaccineRequest.applicant_file_url">{{ detailVaccineRequest.applicant_file_url }}</v-label>
-                  <a
-                    v-else-if="detailVaccineRequest.applicant_file_url.substr(0, 4) === 'https'"
-                    class="letter-class"
-                    :href="detailVaccineRequest.applicant_file_url"
-                    target="_blank"
-                  >{{ detailVaccineRequest.applicant_file_url }}</a>
+                  <v-label v-if="detailVaccineRequest.applicant_file_url === ''">{{ detailVaccineRequest.applicant_file_url || '-' }}</v-label>
+                  <a v-else-if="detailVaccineRequest.applicant_file_url.substr(0, 4) === 'https'" class="letter-class" :href="detailVaccineRequest.applicant_file_url" target="_blank">{{ detailVaccineRequest.applicant_file_url || '-' }}</a>
                   <v-img
-                    v-else
                     :class="{
                       'image-large': $vuetify.breakpoint.smAndUp,
                       'image-small': $vuetify.breakpoint.xsOnly
                     }"
-                    :src="detailVaccineRequest.applicant_file_url"
-                    @error="errorHandler"
+                    :src="detailVaccineRequest.applicant_file_url || noImage"
                   />
                 </v-row>
               </v-col>
@@ -515,7 +511,7 @@
           </v-card>
         </v-col>
       </v-row>
-    </div>
+    </div><!-- End Applicant itentity Component -->
     <div>
       <v-row class="mt-5">
         <v-col>
@@ -1454,10 +1450,6 @@ export default {
       } else {
         return '0'
       }
-    },
-    errorHandler() {
-      this.detailVaccineRequest.applicant_file_url = this.noImage
-      this.$forceUpdate()
     }
   }
 }
