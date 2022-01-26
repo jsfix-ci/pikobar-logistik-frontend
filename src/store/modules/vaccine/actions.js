@@ -46,5 +46,26 @@ export default {
     } catch (e) {
       return e
     }
+  },
+  async getStock({ commit }, params) {
+    try {
+      commit('LOAD_DATA_STOCK', true)
+      const response = await fetchList('/api/v1/vaccine-material', 'GET', params)
+      commit('SET_ALLOCATION_MATERIALS', response.data)
+      commit('LOAD_DATA_STOCK', false)
+      return response
+    } catch (e) {
+      commit('LOAD_DATA_STOCK', false)
+      return e
+    }
+  },
+  async clearStock({ commit }, params) {
+    try {
+      commit('LOAD_DATA_STOCK', true)
+      commit('SET_ALLOCATION_MATERIALS', [])
+      commit('LOAD_DATA_STOCK', false)
+    } catch (e) {
+      return e
+    }
   }
 }

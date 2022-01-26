@@ -362,7 +362,7 @@
                     <td>{{ item.unit.unit }}</td>
                     <td>{{ item.usage }}</td>
                     <td>{{ item.product.material_group }}</td>
-                    <td v-if="status >= 2 && status < 4"><v-btn color="success" dark small>Cek Stok</v-btn></td>
+                    <td v-if="status >= 2 && status < 4"><v-btn color="success" dark small @click="getStockItem(item)">Cek Stok</v-btn></td>
                     <td v-if="status >= 2">{{ item.allocation_material ? `(${item.allocation_material.material_id}) ` + item.allocation_material.material_name : '-' }}</td>
                     <td v-if="status >= 2">{{ item.recommendation_quantity || '-' }}</td>
                     <td v-if="status >= 2">{{ item.recommendation_unit || '-' }}</td>
@@ -385,6 +385,52 @@
               @input="onNext"
             />
           </template>
+
+          <template><!-- Stock Dialog -->
+            <div class="text-center">
+              <v-dialog
+                v-model="stockDialog"
+                width="70%"
+                :persistent="true"
+              >
+                <v-card>
+                  <v-card-title
+                    primary-title
+                  >
+                    {{ $t('label.remaining_stock_item') }}
+                  </v-card-title>
+
+                  <v-card-text>
+                    <v-data-table
+                      :headers="stockheaders"
+                      :items="allocationMaterials"
+                      :items-per-page="5"
+                      :no-data-text="$t('label.no_data')"
+                      :loading="loadDataStock"
+                      :loading-text="$t('label.loading_data')"
+                      :footer-props="{
+                        'items-per-page-text':$t('label.stock_data_table')
+                      }"
+                    />
+                  </v-card-text>
+
+                  <v-divider />
+
+                  <v-card-actions>
+                    <div style="display: block; margin: 0 auto">
+                      <v-btn
+                        color="success"
+                        @click="closeStockDialog"
+                      >
+                        {{ $t('label.ok') }}
+                      </v-btn>
+                    </div>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+          </template>
+
         </v-card>
       </div>
     </div>
@@ -412,6 +458,7 @@ export default {
       noImage: './img/noimage.gif',
       confirmDialog: false,
       updateFailedDialog: false,
+      stockDialog: false,
       tempStatus: null,
       unrecommendItemTotal: 0,
       unrealizationItemTotal: 0,
@@ -419,7 +466,14 @@ export default {
         page: 1,
         limit: 3,
         vaccine_request_id: null
-      }
+      },
+      stockheaders: [
+        { text: this.$t('label.apd_id_specification').toUpperCase(), align: 'start', sortable: false, value: 'material_id' },
+        { text: this.$t('label.apd_name_spec').toUpperCase(), align: 'start', sortable: false, value: 'material_name' },
+        { text: this.$t('label.location_stock').toUpperCase(), sortable: false, value: 'soh_location_name' },
+        { text: this.$t('label.remaining_stock').toUpperCase(), sortable: false, align: 'right', value: 'current_stock_formatted' },
+        { text: this.$t('label.unit').toUpperCase(), sortable: false, value: 'uom' }
+      ]
     }
   },
   computed: {
@@ -429,7 +483,8 @@ export default {
       'listRealization',
       'totalListRealization',
       'totalDataRealization',
-      'listStock'
+      'allocationMaterials',
+      'loadDataStock'
     ]),
     ...mapGetters('user', [
       'phase'
@@ -538,7 +593,32 @@ export default {
       this.confirmDialog = false
     },
     cannotUpdate() {
-      return this.unrecommendItemTotal + this.unrealizationItemTotal > 0
+      let result = this.unrecommendItemTotal > 0
+      if (this.status === 3) {
+        result = this.unrealizationItemTotal > 0
+      }
+      return result
+    },
+    getStockItem(item) {
+      this.stockDialog = true
+      this.getStock(item)
+    },
+    async getStock(item) {
+      const param = {
+        matg_id: await item.product.material_group,
+        is_paginated: 0
+      }
+      await this.$store.dispatch('vaccine/getStock', param)
+    },
+    closeStockDialog() {
+      this.clearStock(true)
+      this.stockDialog = false
+    },
+    async clearStock(value) {
+      const param = {
+        id: await value
+      }
+      await this.$store.dispatch('vaccine/clearStock', param)
     },
     back() {
       this.$router.go(-1)

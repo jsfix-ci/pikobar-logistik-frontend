@@ -32,7 +32,7 @@
           <div style="display: block; margin: 0 auto">
             <v-btn
               color="success"
-              @click="closeDialogStock"
+              @click="closeStockDialog"
             >
               {{ $t('label.ok') }}
             </v-btn>
@@ -48,7 +48,7 @@ import EventBus from '@/utils/eventBus'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'CheckStockDialog',
+  name: 'StockDialog',
   props: {
     dialogShow: {
       type: Boolean,
@@ -67,21 +67,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('logistics', [
-      'listStock',
+    ...mapGetters('vaccine', [
+      'allocationMaterials',
       'loadDataStock'
     ])
   },
   methods: {
-    closeDialogStock() {
+    closeStockDialog() {
       this.clearStock(true)
-      EventBus.$emit('closeDialogStock', false)
+      EventBus.$emit('closeStockDialog', false)
     },
     async clearStock(value) {
       const param = {
         id: await value
       }
-      await this.$store.dispatch('logistics/clearStock', param)
+      await this.$store.dispatch('vaccine/clearStock', param)
     }
   }
 }

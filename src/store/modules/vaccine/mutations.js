@@ -20,5 +20,11 @@ export default {
   },
   SET_VACCINE_PRODUCT_REQUESTS: (state, data) => {
     state.vaccineProductRequests = data
+  },
+  SET_ALLOCATION_MATERIALS: (state, data) => {
+    state.allocationMaterials = data
+  },
+  LOAD_DATA_STOCK: (state, data) => {
+    state.loadDataStock = data
   }
 }

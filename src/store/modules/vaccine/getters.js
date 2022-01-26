@@ -14,5 +14,11 @@ export default {
   },
   vaccineProductRequests: (state) => {
     return state.vaccineProductRequests
+  },
+  allocationMaterials: (state) => {
+    return state.allocationMaterials
+  },
+  loadDataStock: (state) => {
+    return state.loadDataStock
   }
 }
