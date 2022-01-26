@@ -56,7 +56,7 @@
             <span class="text-title">{{ $t('label.status') }}</span>
           </v-col>
           <v-col>
-            <span :class="(status < 2 ? 'red--text ' : 'green--text text--darken-2') + 'font-weight-bold'">: {{ $t('status.' + vaccineRequest.status) }}</span>
+            <span :class="(status < 2 ? 'red--text' : 'green--text text--darken-2') + ' font-weight-bold'">: {{ $t('status.' + vaccineRequest.status) }}</span>
           </v-col>
         </v-row>
       </div>
@@ -129,12 +129,39 @@
           </v-row>
         </template>
 
+        <template><!-- Update Status Failed Dialog -->
+          <v-row justify="center">
+            <v-dialog
+              v-model="updateFailedDialog"
+              persistent
+              max-width="40%"
+            >
+              <v-card>
+                <v-card-title class="text-h5">
+                  Ubah Status Gagal!
+                </v-card-title>
+                <v-card-text>Ada <span>{{ unrecommendItemTotal }}</span> barang yang belum di <span>{{ $t('label.not_approved') }}</span></v-card-text>
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn
+                    color="error"
+                    dark
+                    @click="updateFailedDialog = false"
+                  >
+                    Kembali
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-row>
+        </template>
+
       </div>
 
       <div><!-- Agency Identity -->
         <v-row>
           <v-col>
-            <span class="green--text darken-2 font-weight-bold">Identitas Instansi</span>
+            <span class="green--text text--darken-2 font-weight-bold">Identitas Instansi</span>
           </v-col>
         </v-row>
         <v-card
@@ -144,36 +171,36 @@
             <v-col class="mx-3 my-3" cols="12" sm="6" md="6">
               <v-row>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.instance_type') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.instance_type') }}</span>
                   <br>
                   <span>{{ vaccineRequest.master_faskes_type.name }}</span>
                 </v-col>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.city_name') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.city_name') }}</span>
                   <br>
                   <span>{{ vaccineRequest.village.kemendagri_kabupaten_nama }}</span>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.instance_name') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.instance_name') }}</span>
                   <br>
                   <span>{{ vaccineRequest.agency_name }}</span>
                 </v-col>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.select_sub_district_full_name') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.select_sub_district_full_name') }}</span>
                   <br>
                   <span>{{ vaccineRequest.village.kemendagri_kecamatan_nama }}</span>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.number_phone') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.number_phone') }}</span>
                   <br>
                   <span>{{ vaccineRequest.agency_phone_number }}</span>
                 </v-col>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.village') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.village') }}</span>
                   <br>
                   <span>{{ vaccineRequest.village.kemendagri_desa_nama }}</span>
                 </v-col>
@@ -185,7 +212,7 @@
               sm="3"
               md="3"
             >
-              <span class="green--text darken-2 font-weight-bold">{{ $t('label.full_address') }}</span>
+              <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.full_address') }}</span>
               <br>
               <span>{{ vaccineRequest.agency_address }}</span>
             </v-col>
@@ -201,7 +228,7 @@
       <div class="mt-3"><!-- Applicant Identity -->
         <v-row>
           <v-col>
-            <span class="green--text darken-2 font-weight-bold">Identitas Pemohon</span>
+            <span class="green--text text--darken-2 font-weight-bold">Identitas Pemohon</span>
           </v-col>
         </v-row>
         <v-card
@@ -211,24 +238,24 @@
             <v-col class="mx-3 my-3" cols="12" sm="6" md="6">
               <v-row>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.name') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.name') }}</span>
                   <br>
                   <span>{{ vaccineRequest.applicant_fullname }}</span>
                 </v-col>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.capital_email') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.capital_email') }}</span>
                   <br>
                   <span>{{ vaccineRequest.applicant_email }}</span>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.applicant_position_identity') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.applicant_position_identity') }}</span>
                   <br>
                   <span>{{ vaccineRequest.applicant_position }}</span>
                 </v-col>
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.applicant_phone') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.applicant_phone') }}</span>
                   <br>
                   <span>{{ vaccineRequest.applicant_primary_phone_number }}</span>
                 </v-col>
@@ -236,7 +263,7 @@
               <v-row>
                 <v-col class="mr-2" />
                 <v-col class="mr-2">
-                  <span class="green--text darken-2 font-weight-bold">{{ $t('label.applicant_phone_sub') }}</span>
+                  <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.applicant_phone_sub') }}</span>
                   <br>
                   <span>{{ vaccineRequest.secondary_phone_number || '-' }}</span>
                 </v-col>
@@ -248,7 +275,7 @@
               sm="3"
               md="3"
             >
-              <span class="green--text darken-2 font-weight-bold">{{ $t('label.applicant_ktp') }}</span>
+              <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.applicant_ktp') }}</span>
               <br>
               <v-img
                 alt="KTP/Kartu Pegawai/Surat Tugas"
@@ -263,7 +290,7 @@
       <div class="mt-3"><!-- Applicant Letter Section -->
         <v-row>
           <v-col>
-            <span class="green--text darken-2 font-weight-bold">{{ $t('label.applicant_letter') }}</span>
+            <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.applicant_letter') }}</span>
           </v-col>
         </v-row>
         <v-card outlined>
@@ -283,7 +310,7 @@
       <div class="mt-3"><!-- Vaccine Product Request List -->
         <v-row>
           <v-col>
-            <span class="green--text darken-2 font-weight-bold">Daftar Kebutuhan Vaksin</span>
+            <span class="green--text text--darken-2 font-weight-bold">Daftar Kebutuhan Vaksin</span>
           </v-col>
         </v-row>
         <v-card outlined>
@@ -340,7 +367,10 @@
                     <td v-if="status >= 2">{{ item.recommendation_quantity || '-' }}</td>
                     <td v-if="status >= 2">{{ item.recommendation_unit || '-' }}</td>
                     <td v-if="status >= 2">{{ item.recommendation_date || '-' }}</td>
-                    <td v-if="status >= 2">{{ item.recommendation_status || '-' }}</td>
+                    <td v-if="status >= 2">
+                      <span v-if="item.recommendation_status">{{ item.recommendation_status }}</span>
+                      <span v-else class="text-danger">{{ $t('label.not_approved') }}</span>
+                    </td>
                     <td v-if="status >= 2">{{ item.recommendation_by ? item.recommendation_by.name : '-' }}</td>
                     <td v-if="status >= 2 && status < 4"><v-btn color="info" dark small>{{ $t('label.update') }}</v-btn></td>
                   </tr>
@@ -381,7 +411,10 @@ export default {
       statusTarget: null,
       noImage: './img/noimage.gif',
       confirmDialog: false,
+      updateFailedDialog: false,
       tempStatus: null,
+      unrecommendItemTotal: 0,
+      unrealizationItemTotal: 0,
       listQuery: {
         page: 1,
         limit: 3,
@@ -417,6 +450,16 @@ export default {
     },
     async getVaccineProductRequests() {
       await this.$store.dispatch('vaccine/getVaccineProductRequests', this.listQuery)
+
+      for (let i = 0; i < this.vaccineProductRequests.data.length; i++) {
+        const item = this.vaccineProductRequests.data[i]
+        if (!item.recommendation_status) {
+          this.unrecommendItemTotal++
+        }
+        if (!item.realization_status) {
+          this.unrealizationItemTotal++
+        }
+      }
     },
     tableRowNumber(index) {
       return index + this.vaccineProductRequests.from
@@ -477,8 +520,13 @@ export default {
       this.confirmDialog = true
     },
     async updateStatus() {
+      if (this.status > 1 && this.cannotUpdate) {
+        this.confirmDialog = false
+        this.updateFailedDialog = true
+        return false
+      }
+
       const status = this.tempStatus
-      console.log('status', this.getStatus(status) + ' ' + status)
       const params = {
         id: this.vaccineRequest.id,
         status: this.getStatus(status)
@@ -488,6 +536,9 @@ export default {
         await this.getVaccineRequestById()
       }
       this.confirmDialog = false
+    },
+    cannotUpdate() {
+      return this.unrecommendItemTotal + this.unrealizationItemTotal > 0
     },
     back() {
       this.$router.go(-1)
