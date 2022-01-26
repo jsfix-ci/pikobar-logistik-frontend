@@ -575,7 +575,7 @@ export default {
       this.confirmDialog = true
     },
     async updateStatus() {
-      if (this.status > 1 && this.cannotUpdate) {
+      if (this.status > 1 && this.cannotUpdate()) {
         this.confirmDialog = false
         this.updateFailedDialog = true
         return false
@@ -593,10 +593,16 @@ export default {
       this.confirmDialog = false
     },
     cannotUpdate() {
-      let result = this.unrecommendItemTotal > 0
-      if (this.status === 3) {
-        result = this.unrealizationItemTotal > 0
+      let result = true
+      if (this.tempStatus > 1) {
+        result = this.unrecommendItemTotal > 0
+        if (this.status === 3) {
+          result = this.unrealizationItemTotal > 0
+        }
       }
+      console.log('this.status', this.status)
+      console.log('this.tempStatus', this.tempStatus)
+      console.log('result', result)
       return result
     },
     getStockItem(item) {
