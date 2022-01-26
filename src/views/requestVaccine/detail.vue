@@ -512,8 +512,10 @@
         </v-col>
       </v-row>
     </div><!-- End Applicant itentity Component -->
+
     <div>
-      <v-row class="mt-5">
+
+      <v-row class="mt-5"><!-- applicant letter -->
         <v-col>
           <span class="text-data-green">
             {{ $t('label.applicant_letter') }}
@@ -531,11 +533,11 @@
             }"
           >
             <a
-              :href="detailVaccineRequest.letter ? detailVaccineRequest.letter.letter : '#'"
+              :href="detailVaccineRequest.letter_file_url || '#'"
               target="_blank"
               class="blue--text letter-class"
             >
-              <u>{{ detailVaccineRequest.application_letter_number }}</u>
+              <u>{{ detailVaccineRequest.letter_number }}</u>
             </a>
             <div :class="{ 'mt-4': $vuetify.breakpoint.xsOnly }">
               <v-btn
@@ -543,7 +545,7 @@
                 outlined
                 color="success"
                 class="pa-5"
-                @click="downloadFile(detailVaccineRequest.letter ? detailVaccineRequest.letter.letter : '#')"
+                @click="downloadFile(detailVaccineRequest.letter_file_url || '#')"
               >
                 <v-icon left small dark>mdi-download</v-icon>
                 <span>{{ $t('label.download') }}</span>
@@ -564,6 +566,7 @@
         </v-card>
       </v-col>
     </v-row>
+
     <div v-if="detailVaccineRequest.agency_type <= 3">
       <v-row>
         <v-col>
