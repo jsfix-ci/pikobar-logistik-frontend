@@ -47,6 +47,15 @@ export default {
       return e
     }
   },
+  async updateVaccineProductRequest({ commit }, params) {
+    console.log(commit)
+    try {
+      const response = await doPostUpdate('/api/v1/vaccine-product-request/' + params.id, 'PUT', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getStock({ commit }, params) {
     try {
       commit('LOAD_DATA_STOCK', true)

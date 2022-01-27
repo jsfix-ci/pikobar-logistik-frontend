@@ -333,7 +333,7 @@
           </v-col>
         </v-row>
         <v-card outlined>
-          <template>
+          <template><!-- Vaccine Product Request Table -->
             <v-simple-table class="mb-3">
               <template v-slot:default>
                 <thead>
@@ -382,16 +382,16 @@
                     <td>{{ item.usage }}</td>
                     <td>{{ item.product.material_group }}</td>
                     <td v-if="status >= 2 && status < 4"><v-btn color="success" dark small @click="getStockItem(item)">Cek Stok</v-btn></td>
-                    <td v-if="status >= 2">{{ item.allocation_material ? `(${item.allocation_material.material_id}) ` + item.allocation_material.material_name : '-' }}</td>
+                    <td v-if="status >= 2">{{ item.recommendation_product_name || '-' }}</td>
                     <td v-if="status >= 2">{{ item.recommendation_quantity || '-' }}</td>
-                    <td v-if="status >= 2">{{ item.recommendation_unit || '-' }}</td>
-                    <td v-if="status >= 2">{{ item.recommendation_date || '-' }}</td>
+                    <td v-if="status >= 2">{{ item.recommendation_UoM || '-' }}</td>
+                    <td v-if="status >= 2">{{ item.recommendation_date ? $moment.utc(item.recommendation_date).format('DD MMMM YYYY') : '-' }}</td>
                     <td v-if="status >= 2">
-                      <span v-if="item.recommendation_status">{{ item.recommendation_status }}</span>
+                      <span v-if="item.recommendation_status" class="green--text text--darken-2">{{ $t('label.' + item.recommendation_status) }}</span>
                       <span v-else class="text-danger">{{ $t('label.not_approved') }}</span>
                     </td>
                     <td v-if="status >= 2">{{ item.recommendation_by ? item.recommendation_by.name : '-' }}</td>
-                    <td v-if="status >= 2 && status < 4"><v-btn color="info" dark small>{{ $t('label.update') }}</v-btn></td>
+                    <td v-if="status >= 2 && status < 4"><v-btn color="info" dark small @click="updateItem(item)">{{ $t('label.update') }}</v-btn></td>
                   </tr>
                 </tbody>
               </template>
@@ -450,6 +450,129 @@
             </div>
           </template>
 
+          <template><!-- Update Item Dialog -->
+            <div class="text-center">
+              <v-dialog
+                v-model="updateItemDialog"
+                width="70%"
+                :persistent="true"
+              >
+                <v-card>
+                  <v-card-title primary-title>
+                    {{ $t('label.update_vaccine_needs_title') }}
+                  </v-card-title>
+                  <v-divider />
+                  <div class="mx-5">
+                    <v-row>
+                      <v-col cols="3">
+                        <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.apd_spec_name') }}</span>
+                      </v-col>
+                      <v-col>
+                        <span>{{ product.product.name }}</span>
+                      </v-col>
+                    </v-row>
+                    <v-row class="mt-n3">
+                      <v-col cols="3">
+                        <span class="green--text text--darken-2 font-weight-bold">Status Rekomendasi Salur</span>
+                      </v-col>
+                      <v-col cols="3">
+                        <v-autocomplete
+                          v-model="product.recommendation_status"
+                          :items="getRecommendationStatusEnum"
+                          dense
+                          solo
+                        />
+                      </v-col>
+                    </v-row>
+                    <v-row class="mt-n8">
+                      <v-col cols="3">
+                        <span class="green--text text--darken-2 font-weight-bold">Rekomendasi Barang</span>
+                      </v-col>
+                      <v-col cols="5">
+                        <v-autocomplete
+                          v-model="product.recommendation_product_id"
+                          :items="poslogItem"
+                          dense
+                          solo
+                          @change="setUnit(product.recommendation_product_id, 'recommendation')"
+                        />
+                      </v-col>
+                    </v-row>
+                    <v-row class="mt-n8">
+                      <v-col cols="3">
+                        <span class="green--text text--darken-2 font-weight-bold">Jumlah Kebutuhan</span>
+                      </v-col>
+                      <v-col>
+                        <span>{{ product.quantity }}</span>
+                      </v-col>
+                    </v-row>
+
+                    <v-card class="mt-2 pt-3 px-3" outlined>
+                      <v-row>
+                        <v-col cols="3">
+                          <span class="green--text text--darken-2 font-weight-bold">Rekomendasi Barang</span>
+                        </v-col>
+                      </v-row>
+                      <v-row class="mt-n5">
+                        <v-col cols="3">
+                          <v-text-field
+                            v-model="product.recommendation_quantity"
+                            label="Jumlah Rekomendasi"
+                            outlined
+                            dense
+                          />
+                        </v-col>
+                        <v-col cols="2">
+                          <v-text-field
+                            v-model="product.recommendation_UoM"
+                            label="Satuan"
+                            outlined
+                            dense
+                          />
+                        </v-col>
+                        <v-col cols="2">
+                          <v-btn class="mt-1" color="success" dark small @click="getStockItem(product)">Cek Stok</v-btn>
+                        </v-col>
+                      </v-row>
+                      <v-row class="mt-n8">
+                        <v-col cols="3">
+                          <span class="green--text text--darken-2 font-weight-bold">Tanggal Rekomendasi</span>
+                        </v-col>
+                      </v-row>
+                      <v-row class="mt-n5">
+                        <v-col cols="4">
+                          <date-picker-input
+                            :value="product.recommendation_date"
+                            @selected="changeRecommendationDate"
+                          />
+                        </v-col>
+                      </v-row>
+                    </v-card>
+                  </div>
+                  <v-divider />
+                  <v-card-actions>
+                    <div style="display: block; margin: 0 auto">
+                      <v-btn
+                        class="mx-3 my-3"
+                        color="error"
+                        @click="updateItemDialog = false"
+                      >
+                        {{ $t('label.cancel') }}
+                      </v-btn>
+                      <v-btn
+                        class="mx-3 my-3"
+                        color="success"
+                        @click="updateVaccineProductRequest"
+                      >
+                        {{ $t('label.update') }}
+                      </v-btn>
+                    </div>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+          </template>
+
         </v-card>
       </div>
     </div>
@@ -478,6 +601,7 @@ export default {
       confirmDialog: false,
       updateFailedDialog: false,
       stockDialog: false,
+      updateItemDialog: false,
       tempStatus: null,
       unrecommendItemTotal: 0,
       unrealizationItemTotal: 0,
@@ -496,7 +620,47 @@ export default {
         { text: this.$t('label.location_stock').toUpperCase(), sortable: false, value: 'soh_location_name' },
         { text: this.$t('label.remaining_stock').toUpperCase(), sortable: false, align: 'right', value: 'current_stock_formatted' },
         { text: this.$t('label.unit').toUpperCase(), sortable: false, value: 'uom' }
-      ]
+      ],
+      product: {
+        id: null,
+        product_id: null,
+        quantity: null,
+        product: {
+          name: null
+        },
+        recommendation_product_id: null,
+        recommendation_product_name: null,
+        recommendation_quantity: 0,
+        recommendation_UoM: null,
+        recommendation_date: null,
+        recommendation_status: null,
+        finalized_product_id: null,
+        finalized_product_name: null,
+        finalized_quantity: 0,
+        finalized_UoM: null,
+        finalized_date: null,
+        finalized_status: null
+      },
+      getRecommendationStatusEnum: [
+        {
+          text: this.$t('label.approved_item'),
+          value: 'approved'
+        },
+        {
+          text: this.$t('label.not_available'),
+          value: 'not_available'
+        },
+        {
+          text: this.$t('label.replaced'),
+          value: 'replaced'
+        },
+        {
+          text: this.$t('label.not_yet_fulfilled'),
+          value: 'not_yet_fulfilled'
+        }
+      ],
+      poslogItem: [],
+      loading: false
     }
   },
   computed: {
@@ -527,6 +691,7 @@ export default {
       this.setStatus()
     },
     async getVaccineProductRequests() {
+      this.loading = true
       await this.$store.dispatch('vaccine/getVaccineProductRequests', this.listQuery)
 
       for (let i = 0; i < this.vaccineProductRequests.data.length; i++) {
@@ -538,6 +703,7 @@ export default {
           this.unrealizationItemTotal++
         }
       }
+      this.loading = false
     },
     tableRowNumber(index) {
       return index + this.vaccineProductRequests.from
@@ -641,6 +807,11 @@ export default {
       }
       await this.$store.dispatch('vaccine/getStock', param)
     },
+    updateItem(item) {
+      this.updateItemDialog = true
+      this.product = item
+      this.getAllocationMaterial()
+    },
     closeStockDialog() {
       this.clearStock(true)
       this.stockDialog = false
@@ -651,6 +822,54 @@ export default {
       }
       await this.$store.dispatch('vaccine/clearStock', param)
     },
+    async getAllocationMaterial() {
+      this.loading = true
+      await this.getStock(this.product)
+      this.poslogItem = []
+      this.allocationMaterials.forEach(element => {
+        console.log(element.material_id)
+        this.poslogItem.push({
+          value: element.material_id,
+          text: element.material_name
+        })
+      })
+      this.loading = false
+    },
+    setUnit(id, phase) {
+      this.allocationMaterials.forEach(element => {
+        if (id === element.material_id) {
+          if (phase === 'recommendation') {
+            this.product.recommendation_product_name = element.material_name
+            this.product.recommendation_UoM = element.UoM
+          } else {
+            this.product.finalized_product_name = element.material_name
+            this.finalized_UoM = element.UoM
+          }
+          return false
+        }
+      })
+    },
+    changeRecommendationDate(value) {
+      this.product.recommendation_date = value
+    },
+    async updateVaccineProductRequest() {
+      this.loading = true
+      const param = {
+        id: this.product.id,
+        recommendation_product_id: this.product.recommendation_product_id,
+        recommendation_product_name: this.product.recommendation_product_name,
+        recommendation_quantity: this.product.recommendation_quantity,
+        recommendation_UoM: this.product.recommendation_UoM,
+        recommendation_date: this.product.recommendation_date,
+        recommendation_status: this.product.recommendation_status
+      }
+      const response = await this.$store.dispatch('vaccine/updateVaccineProductRequest', param)
+      if (response.status === 200) {
+        await this.getVaccineProductRequests()
+        this.updateItemDialog = false
+      }
+      this.loading = false
+    },
     back() {
       this.$router.go(-1)
     },
@@ -660,3 +879,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .v-autocomplete {
+    font-size: 1em;
+  }
+
+  .date-picker-input {
+    font-size: 1em
+  }
+</style>

@@ -450,6 +450,7 @@ export default {
     allocation_amount: 'Jumlah Alokasi',
     update: 'Update',
     update_logistic_needs_title: 'Update Daftar Kebutuhan Logistik',
+    update_vaccine_needs_title: 'Update Daftar Kebutuhan Vaksin',
     apd_spec_name: 'Nama Barang',
     apd_spec_name_recommended: 'Nama Barang Rekomendasi',
     total_needs: 'Jumlah Kebutuhan',
