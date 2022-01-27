@@ -327,7 +327,7 @@
 import { mapGetters, mapState } from 'vuex'
 
 export default {
-  name: 'ListDetailPengajuanLogistik',
+  name: 'ListDetailPengajuanVaksin',
   data() {
     return {
       status: 1,
