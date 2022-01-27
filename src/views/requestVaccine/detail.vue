@@ -13,7 +13,7 @@
           <v-col cols="12" lg="9" md="12">
             <v-card
               v-if="status == 1"
-              class="mx-auti"
+              class="mx-auto"
               color="#219653"
             ><!-- Alert Administration Phase -->
               <v-list-item>

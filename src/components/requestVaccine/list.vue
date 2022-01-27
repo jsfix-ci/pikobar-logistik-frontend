@@ -210,7 +210,6 @@ export default {
       }
     },
     toDetail(data) {
-      // this is sample for detail with static id
       this.$router.push(`/vaksin/detail/${data.id}`)
     },
     async exportData() {
