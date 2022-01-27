@@ -109,7 +109,7 @@
             <v-dialog
               v-model="confirmDialog"
               persistent
-              max-width="80%"
+              max-width="60%"
             >
               <v-card>
                 <v-card-title class="text-h5">
@@ -382,6 +382,7 @@
                     <td>{{ item.unit.unit }}</td>
                     <td>{{ item.usage }}</td>
                     <td>{{ item.product.material_group }}</td>
+                    <!-- Recommendation Data Section -->
                     <td v-if="status >= 2 && status < 4"><v-btn color="success" dark small @click="getStockItem(item)">Cek Stok</v-btn></td>
                     <td v-if="status >= 2">{{ item.recommendation_product_name || '-' }}</td>
                     <td v-if="status >= 2">{{ item.recommendation_quantity || '-' }}</td>
@@ -393,6 +394,7 @@
                     </td>
                     <td v-if="status >= 2">{{ item.recommendation_by ? item.recommendation_by.name : '-' }}</td>
                     <td v-if="status == 2"><v-btn color="info" dark small @click="updateItem(item, 'recommendation')">{{ $t('label.update') }}</v-btn></td>
+                    <!-- Final Data Section -->
                     <td v-if="status >= 3">{{ item.finalized_product_name || '-' }}</td>
                     <td v-if="status >= 3">{{ item.finalized_quantity || '-' }}</td>
                     <td v-if="status >= 3">{{ item.finalized_UoM || '-' }}</td>
@@ -461,10 +463,10 @@
             </div>
           </template>
 
-          <template><!-- Update Recommendation Phase Vaccine Product Request Dialog -->
+          <template><!-- Form Update Vaccine Product Request Dialog -->
             <div class="text-center">
               <v-dialog
-                v-model="updateRecommendationItemDialog"
+                v-model="formUpdateVaccineProductRequestDialog"
                 width="70%"
                 :persistent="true"
               >
@@ -484,37 +486,6 @@
                     </v-row>
                     <v-row class="mt-n3">
                       <v-col cols="3">
-                        <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_status') }}</span>
-                      </v-col>
-                      <v-col cols="3">
-                        <v-autocomplete
-                          v-model="product.recommendation_status"
-                          :items="recommendationStatusEnum"
-                          dense
-                          solo
-                          @change="setHideUpdateField(product.recommendation_status)"
-                        />
-                      </v-col>
-                    </v-row>
-                    <v-row
-                      v-if="!hideUpdateField"
-                      class="mt-n8"
-                    >
-                      <v-col cols="3">
-                        <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_item') }}</span>
-                      </v-col>
-                      <v-col cols="5">
-                        <v-autocomplete
-                          v-model="product.recommendation_product_id"
-                          :items="poslogItem"
-                          dense
-                          solo
-                          @change="setUnit(product.recommendation_product_id, 'recommendation')"
-                        />
-                      </v-col>
-                    </v-row>
-                    <v-row class="mt-n8">
-                      <v-col cols="3">
                         <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.total_needs') }}</span>
                       </v-col>
                       <v-col>
@@ -524,9 +495,42 @@
 
                     <v-card
                       v-if="!hideUpdateField"
-                      class="mt-2 pt-3 px-3"
+                      class="mt-2 py-3 px-3"
                       outlined
                     ><!-- recommendation field card -->
+                      <v-row class="mt-n3">
+                        <v-col cols="3">
+                          <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_status') }}</span>
+                        </v-col>
+                        <v-col cols="3">
+                          <v-autocomplete
+                            v-model="product.recommendation_status"
+                            :items="recommendationStatusEnum"
+                            dense
+                            solo
+                            :readonly="status == 3"
+                            @change="setHideUpdateField(product.recommendation_status)"
+                          />
+                        </v-col>
+                      </v-row>
+                      <v-row
+                        v-if="!hideUpdateField"
+                        class="mt-n8"
+                      >
+                        <v-col cols="3">
+                          <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_item') }}</span>
+                        </v-col>
+                        <v-col cols="7">
+                          <v-autocomplete
+                            v-model="product.recommendation_product_id"
+                            :items="poslogItem"
+                            dense
+                            solo
+                            :readonly="status == 3"
+                            @change="setUnit(product.recommendation_product_id, 'recommendation')"
+                          />
+                        </v-col>
+                      </v-row>
                       <v-row>
                         <v-col cols="3">
                           <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_item') }}</span>
@@ -539,6 +543,7 @@
                             label="Jumlah Rekomendasi"
                             outlined
                             dense
+                            :readonly="status == 3"
                           />
                         </v-col>
                         <v-col cols="2">
@@ -560,11 +565,20 @@
                         </v-col>
                       </v-row>
                       <v-row class="mt-n5">
-                        <v-col cols="4">
+                        <v-col
+                          v-if="status == 2"
+                          cols="4"
+                        >
                           <date-picker-input
                             :value="product.recommendation_date"
                             @selected="changeRecommendationDate"
                           />
+                        </v-col>
+                        <v-col
+                          v-else
+                          cols="4"
+                        >
+                          <span>{{ $moment.utc(product.recommendation_date).format('DD MMMM YYYY') }}</span>
                         </v-col>
                       </v-row>
                     </v-card>
@@ -621,8 +635,7 @@ export default {
       confirmDialog: false,
       updateFailedDialog: false,
       stockDialog: false,
-      updateRecommendationItemDialog: false,
-      updateFinalItemDialog: false,
+      formUpdateVaccineProductRequestDialog: false,
       tempStatus: null,
       unrecommendItemTotal: 0,
       unfinalizedItemTotal: 0,
@@ -719,6 +732,7 @@ export default {
       this.loading = true
       await this.$store.dispatch('vaccine/getVaccineProductRequests', this.listQuery)
 
+      // Count Vaccine Product List that need to be review first
       this.unrecommendItemTotal = 0
       this.unfinalizedItemTotal = 0
       for (let i = 0; i < this.vaccineProductRequests.data.length; i++) {
@@ -835,19 +849,14 @@ export default {
       await this.$store.dispatch('vaccine/getStock', param)
     },
     updateItem(item, phase) {
-      let status = item.recommendation_status
-      if (phase === 'recommendation') {
-        this.updateRecommendationItemDialog = true
-      } else {
-        status = item.finalized_status
-        this.updateFinalItemDialog = true
-      }
+      const status = phase === 'final' ? item.finalized_status : item.recommendation_status
+      this.formUpdateVaccineProductRequestDialog = true
       this.product = item
       this.setHideUpdateField(status)
       this.getAllocationMaterial()
     },
     async cancelUpdateItem() {
-      this.updateRecommendationItemDialog = false
+      this.formUpdateVaccineProductRequestDialog = false
       await this.getVaccineProductRequests()
     },
     closeStockDialog() {
@@ -903,7 +912,7 @@ export default {
       const response = await this.$store.dispatch('vaccine/updateVaccineProductRequest', param)
       if (response.status === 200) {
         await this.getVaccineProductRequests()
-        this.updateRecommendationItemDialog = false
+        this.formUpdateVaccineProductRequestDialog = false
       }
       this.loading = false
     },
