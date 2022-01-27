@@ -111,7 +111,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('logistics', [
+    ...mapGetters('vaccine', [
       'listVaccineRequest',
       'totalListVaccineRequest',
       'totalDataVaccineRequest'
@@ -164,7 +164,7 @@ export default {
     },
     async getLogisticRequestList() {
       this.loading = true
-      await this.$store.dispatch('logistics/getListVaccineRequest', this.listQuery)
+      await this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
       this.listVaccineRequest.forEach(element => {
         if (element.master_faskes) {
           element.is_reference = element.master_faskes.is_reference
@@ -210,8 +210,7 @@ export default {
       }
     },
     toDetail(data) {
-      // this is sample for detail with static id
-      this.$router.push(`/vaksin/detail/2408`)
+      this.$router.push(`/vaksin/detail/${data.id}`)
     },
     async exportData() {
       const response = await this.$store.dispatch('logistics/logisticRequestExportData', this.listQuery)

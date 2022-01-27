@@ -17,3 +17,5 @@ yarn.lock
 *.sln
 sonar-project.properties
 .scannerwork
+
+.env.development
