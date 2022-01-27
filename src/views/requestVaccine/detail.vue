@@ -4,7 +4,7 @@
     <div>
       <v-row>
         <v-col cols="12" sm="12">
-          <span class="table-title">{{ $t('label.detail_request_vaccine_medic') }}</span>
+          <span class="table-title">{{ $t('route.vaccine_request_detail_title') }}</span>
         </v-col>
       </v-row>
 
@@ -56,7 +56,7 @@
             <span class="text-title">{{ $t('label.status') }}</span>
           </v-col>
           <v-col>
-            <span :class="(status < 2 ? 'red--text' : 'green--text text--darken-2') + ' font-weight-bold'">: {{ $t('status.' + vaccineRequest.status) }}</span>
+            <span :class="(status < 2 ? 'red--text' : 'green--text text--darken-2') + ' font-weight-bold'">: {{ $t('status.' + (vaccineRequest.status || statusTarget)) }}</span>
           </v-col>
         </v-row>
 
@@ -159,7 +159,7 @@
                 <v-card-title class="text-h5">
                   Ubah Status Gagal!
                 </v-card-title>
-                <v-card-text>Ada <span>{{ unrecommendItemTotal }}</span> barang yang belum di <span>{{ $t('label.not_approved') }}</span></v-card-text>
+                <v-card-text>Ada <span>{{ (status == 2 ? unrecommendItemTotal : unfinalizedItemTotal) }}</span> barang yang belum di <span>{{ $t('label.not_approved') }}</span></v-card-text>
                 <v-card-actions>
                   <v-spacer />
                   <v-btn
@@ -341,8 +341,9 @@
                     <th colspan="7" class="text-center green lighten-5">{{ $t('label.request').toUpperCase() }}</th>
                     <th v-if="status >= 2 && status < 4" rowspan="2" class="text-center grey lighten-5">{{ $t('label.remaining_stock_item').toUpperCase() }}</th>
                     <th v-if="status >= 2" colspan="6" class="text-center green lighten-4">{{ $t('label.recommendation').toUpperCase() }}</th>
+                    <th v-if="status == 2" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                     <th v-if="status >= 3" colspan="6" class="text-center green lighten-3">{{ $t('label.realization').toUpperCase() }}</th>
-                    <th v-if="status >= 2 && status < 4" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
+                    <th v-if="status == 3" rowspan="2" class="text-center grey lighten-5">{{ $t('label.action').toUpperCase() }}</th>
                   </tr>
                   <tr>
                     <th class="text-left green lighten-5">{{ $t('label.number').toUpperCase() }}</th>
@@ -391,7 +392,17 @@
                       <span v-else class="text-danger">{{ $t('label.not_approved') }}</span>
                     </td>
                     <td v-if="status >= 2">{{ item.recommendation_by ? item.recommendation_by.name : '-' }}</td>
-                    <td v-if="status >= 2 && status < 4"><v-btn color="info" dark small @click="updateItem(item)">{{ $t('label.update') }}</v-btn></td>
+                    <td v-if="status == 2"><v-btn color="info" dark small @click="updateItem(item, 'recommendation')">{{ $t('label.update') }}</v-btn></td>
+                    <td v-if="status >= 3">{{ item.finalized_product_name || '-' }}</td>
+                    <td v-if="status >= 3">{{ item.finalized_quantity || '-' }}</td>
+                    <td v-if="status >= 3">{{ item.finalized_UoM || '-' }}</td>
+                    <td v-if="status >= 3">{{ item.finalized_date ? $moment.utc(item.finalized_date).format('DD MMMM YYYY') : '-' }}</td>
+                    <td v-if="status >= 3">
+                      <span v-if="item.finalized_status" class="green--text text--darken-2">{{ $t('label.' + item.finalized_status) }}</span>
+                      <span v-else class="text-danger">{{ $t('label.not_approved') }}</span>
+                    </td>
+                    <td v-if="status >= 3">{{ item.finalized_by ? item.finalized_by.name : '-' }}</td>
+                    <td v-if="status == 3"><v-btn color="info" dark small @click="updateItem(item, 'final')">{{ $t('label.update') }}</v-btn></td>
                   </tr>
                 </tbody>
               </template>
@@ -450,10 +461,10 @@
             </div>
           </template>
 
-          <template><!-- Update Item Dialog -->
+          <template><!-- Update Recommendation Phase Vaccine Product Request Dialog -->
             <div class="text-center">
               <v-dialog
-                v-model="updateItemDialog"
+                v-model="updateRecommendationItemDialog"
                 width="70%"
                 :persistent="true"
               >
@@ -473,20 +484,24 @@
                     </v-row>
                     <v-row class="mt-n3">
                       <v-col cols="3">
-                        <span class="green--text text--darken-2 font-weight-bold">Status Rekomendasi Salur</span>
+                        <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_status') }}</span>
                       </v-col>
                       <v-col cols="3">
                         <v-autocomplete
                           v-model="product.recommendation_status"
-                          :items="getRecommendationStatusEnum"
+                          :items="recommendationStatusEnum"
                           dense
                           solo
+                          @change="setHideUpdateField(product.recommendation_status)"
                         />
                       </v-col>
                     </v-row>
-                    <v-row class="mt-n8">
+                    <v-row
+                      v-if="!hideUpdateField"
+                      class="mt-n8"
+                    >
                       <v-col cols="3">
-                        <span class="green--text text--darken-2 font-weight-bold">Rekomendasi Barang</span>
+                        <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_item') }}</span>
                       </v-col>
                       <v-col cols="5">
                         <v-autocomplete
@@ -500,17 +515,21 @@
                     </v-row>
                     <v-row class="mt-n8">
                       <v-col cols="3">
-                        <span class="green--text text--darken-2 font-weight-bold">Jumlah Kebutuhan</span>
+                        <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.total_needs') }}</span>
                       </v-col>
                       <v-col>
-                        <span>{{ product.quantity }}</span>
+                        <span>{{ product.quantity + ' ' + product.unit.unit }}</span>
                       </v-col>
                     </v-row>
 
-                    <v-card class="mt-2 pt-3 px-3" outlined>
+                    <v-card
+                      v-if="!hideUpdateField"
+                      class="mt-2 pt-3 px-3"
+                      outlined
+                    ><!-- recommendation field card -->
                       <v-row>
                         <v-col cols="3">
-                          <span class="green--text text--darken-2 font-weight-bold">Rekomendasi Barang</span>
+                          <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_item') }}</span>
                         </v-col>
                       </v-row>
                       <v-row class="mt-n5">
@@ -528,10 +547,11 @@
                             label="Satuan"
                             outlined
                             dense
+                            readonly
                           />
                         </v-col>
                         <v-col cols="2">
-                          <v-btn class="mt-1" color="success" dark small @click="getStockItem(product)">Cek Stok</v-btn>
+                          <v-btn class="mt-1" color="success" dark small @click="getStockItem(product)">{{ $t('label.check_stock') }}</v-btn>
                         </v-col>
                       </v-row>
                       <v-row class="mt-n8">
@@ -555,7 +575,7 @@
                       <v-btn
                         class="mx-3 my-3"
                         color="error"
-                        @click="updateItemDialog = false"
+                        @click="cancelUpdateItem"
                       >
                         {{ $t('label.cancel') }}
                       </v-btn>
@@ -596,15 +616,16 @@ export default {
   data() {
     return {
       status: 1,
-      statusTarget: null,
+      statusTarget: 'not_verified',
       noImage: './img/noimage.gif',
       confirmDialog: false,
       updateFailedDialog: false,
       stockDialog: false,
-      updateItemDialog: false,
+      updateRecommendationItemDialog: false,
+      updateFinalItemDialog: false,
       tempStatus: null,
       unrecommendItemTotal: 0,
-      unrealizationItemTotal: 0,
+      unfinalizedItemTotal: 0,
       note: null,
       rules: {
         required: v => !!v || 'Tidak boleh kosong'
@@ -628,6 +649,9 @@ export default {
         product: {
           name: null
         },
+        unit: {
+          unit: null
+        },
         recommendation_product_id: null,
         recommendation_product_name: null,
         recommendation_quantity: 0,
@@ -641,7 +665,7 @@ export default {
         finalized_date: null,
         finalized_status: null
       },
-      getRecommendationStatusEnum: [
+      recommendationStatusEnum: [
         {
           text: this.$t('label.approved_item'),
           value: 'approved'
@@ -660,6 +684,7 @@ export default {
         }
       ],
       poslogItem: [],
+      hideUpdateField: true,
       loading: false
     }
   },
@@ -699,8 +724,8 @@ export default {
         if (!item.recommendation_status) {
           this.unrecommendItemTotal++
         }
-        if (!item.realization_status) {
-          this.unrealizationItemTotal++
+        if (!item.finalized_status) {
+          this.unfinalizedItemTotal++
         }
       }
       this.loading = false
@@ -791,7 +816,7 @@ export default {
       if (this.tempStatus > 1) {
         result = this.unrecommendItemTotal > 0
         if (this.status === 3) {
-          result = this.unrealizationItemTotal > 0
+          result = this.unfinalizedItemTotal > 0
         }
       }
       return result
@@ -807,10 +832,21 @@ export default {
       }
       await this.$store.dispatch('vaccine/getStock', param)
     },
-    updateItem(item) {
-      this.updateItemDialog = true
+    updateItem(item, phase) {
+      let status = item.recommendation_status
+      if (phase === 'recommendation') {
+        this.updateRecommendationItemDialog = true
+      } else {
+        status = item.finalized_status
+        this.updateFinalItemDialog = true
+      }
       this.product = item
+      this.setHideUpdateField(status)
       this.getAllocationMaterial()
+    },
+    async cancelUpdateItem() {
+      this.updateRecommendationItemDialog = false
+      await this.getVaccineProductRequests()
     },
     closeStockDialog() {
       this.clearStock(true)
@@ -827,7 +863,6 @@ export default {
       await this.getStock(this.product)
       this.poslogItem = []
       this.allocationMaterials.forEach(element => {
-        console.log(element.material_id)
         this.poslogItem.push({
           value: element.material_id,
           text: element.material_name
@@ -866,9 +901,15 @@ export default {
       const response = await this.$store.dispatch('vaccine/updateVaccineProductRequest', param)
       if (response.status === 200) {
         await this.getVaccineProductRequests()
-        this.updateItemDialog = false
+        this.updateRecommendationItemDialog = false
       }
       this.loading = false
+    },
+    setHideUpdateField(value) {
+      this.hideUpdateField = false
+      if (value === 'not_available' || value === 'not_yet_fulfilled') {
+        this.hideUpdateField = true
+      }
     },
     back() {
       this.$router.go(-1)

@@ -39,7 +39,6 @@ export default {
     }
   },
   async updateVaccineRequestStatus({ commit }, params) {
-    console.log(commit)
     try {
       const response = await doPostUpdate('/api/v1/vaccine-request/' + params.id, 'PUT', params)
       return response
@@ -48,7 +47,6 @@ export default {
     }
   },
   async updateVaccineProductRequest({ commit }, params) {
-    console.log(commit)
     try {
       const response = await doPostUpdate('/api/v1/vaccine-product-request/' + params.id, 'PUT', params)
       return response
