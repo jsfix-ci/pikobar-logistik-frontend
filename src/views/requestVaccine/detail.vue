@@ -4,7 +4,7 @@
     <div>
       <v-row>
         <v-col cols="12" sm="12">
-          <span class="table-title">{{ $t('label.detail_request_vaccine_medic') }}</span>
+          <span class="table-title">{{ $t('route.vaccine_request_detail_title') }}</span>
         </v-col>
       </v-row>
 

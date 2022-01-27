@@ -404,7 +404,6 @@ export default {
     goods_receipt_not_yet_report_total: 'Total Belum Melapor Penerimaan Logistik',
     goods_receipt_report_description: ' Sedang dalam pengembangan lebih lanjut dan akan diperbarui dalam waktu dekat',
     detail_request_logistic_medic: 'Detail Pengajuan Logistik',
-    detail_request_vaccine_medic: 'Detail Pengajuan Vaksin',
     created_date: 'Tanggal Dibuat',
     search_data: 'Cari',
     search_instance_name: 'Cari Nama Instansi',
