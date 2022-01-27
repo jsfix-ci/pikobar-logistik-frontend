@@ -493,19 +493,15 @@
                       </v-col>
                     </v-row>
 
-                    <v-card
-                      v-if="!hideUpdateField"
-                      class="mt-2 py-3 px-3"
-                      outlined
-                    ><!-- recommendation field card -->
+                    <div><!-- recommendation field card -->
                       <v-row class="mt-n3">
-                        <v-col cols="3">
+                        <v-col cols="3" class="mt-2">
                           <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_status') }}</span>
                         </v-col>
                         <v-col cols="3">
                           <v-autocomplete
                             v-model="product.recommendation_status"
-                            :items="recommendationStatusEnum"
+                            :items="vaccineProductRequestStatusEnum"
                             dense
                             solo
                             :readonly="status == 3"
@@ -513,75 +509,161 @@
                           />
                         </v-col>
                       </v-row>
-                      <v-row
+                      <v-card
                         v-if="!hideUpdateField"
-                        class="mt-n8"
+                        class="mt-n7 py-3 px-3"
+                        outlined
                       >
-                        <v-col cols="3">
-                          <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_item') }}</span>
+                        <v-row
+                          v-if="!hideUpdateField"
+                        >
+                          <v-col cols="3" class="mt-2">
+                            <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_item') }}</span>
+                          </v-col>
+                          <v-col cols="7">
+                            <v-autocomplete
+                              v-model="product.recommendation_product_id"
+                              :items="poslogItem"
+                              dense
+                              solo
+                              :readonly="status == 3"
+                              @change="setUnit(product.recommendation_product_id, 'recommendation')"
+                            />
+                          </v-col>
+                        </v-row>
+                        <v-row class="mt-n5">
+                          <v-col cols="3">
+                            <v-text-field
+                              v-model="product.recommendation_quantity"
+                              label="Jumlah Rekomendasi"
+                              outlined
+                              dense
+                              :readonly="status == 3"
+                            />
+                          </v-col>
+                          <v-col cols="2">
+                            <v-text-field
+                              v-model="product.recommendation_UoM"
+                              label="Satuan"
+                              outlined
+                              dense
+                              readonly
+                            />
+                          </v-col>
+                          <v-col cols="2">
+                            <v-btn class="mt-2" color="success" dark small @click="getStockItem(product)">{{ $t('label.check_stock') }}</v-btn>
+                          </v-col>
+                        </v-row>
+                        <v-row class="mt-n8">
+                          <v-col cols="3">
+                            <span class="green--text text--darken-2 font-weight-bold">Tanggal Rekomendasi</span>
+                          </v-col>
+                        </v-row>
+                        <v-row class="mt-n5">
+                          <v-col
+                            v-if="status == 2"
+                            cols="4"
+                          >
+                            <date-picker-input
+                              :value="product.recommendation_date"
+                              @selected="changeRecommendationDate"
+                            />
+                          </v-col>
+                          <v-col
+                            v-else
+                            cols="4"
+                          >
+                            <span>{{ product.recommendation_date ? $moment.utc(product.recommendation_date).format('DD MMMM YYYY') : '-' }}</span>
+                          </v-col>
+                        </v-row>
+                      </v-card>
+                    </div>
+                    <!-- finalized field card -->
+                    <div v-if="status == 3" class="mt-3">
+                      <v-row>
+                        <v-col cols="3" class="mt-2">
+                          <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.finalization_status') }}</span>
                         </v-col>
-                        <v-col cols="7">
+                        <v-col cols="3">
                           <v-autocomplete
-                            v-model="product.recommendation_product_id"
-                            :items="poslogItem"
+                            v-model="product.finalized_status"
+                            :items="vaccineProductRequestStatusEnum"
                             dense
                             solo
-                            :readonly="status == 3"
-                            @change="setUnit(product.recommendation_product_id, 'recommendation')"
+                            :readonly="status == 4"
+                            @change="setHideUpdateField(product.finalized_status)"
                           />
                         </v-col>
                       </v-row>
-                      <v-row>
-                        <v-col cols="3">
-                          <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_item') }}</span>
-                        </v-col>
-                      </v-row>
-                      <v-row class="mt-n5">
-                        <v-col cols="3">
-                          <v-text-field
-                            v-model="product.recommendation_quantity"
-                            label="Jumlah Rekomendasi"
-                            outlined
-                            dense
-                            :readonly="status == 3"
-                          />
-                        </v-col>
-                        <v-col cols="2">
-                          <v-text-field
-                            v-model="product.recommendation_UoM"
-                            label="Satuan"
-                            outlined
-                            dense
-                            readonly
-                          />
-                        </v-col>
-                        <v-col cols="2">
-                          <v-btn class="mt-1" color="success" dark small @click="getStockItem(product)">{{ $t('label.check_stock') }}</v-btn>
-                        </v-col>
-                      </v-row>
-                      <v-row class="mt-n8">
-                        <v-col cols="3">
-                          <span class="green--text text--darken-2 font-weight-bold">Tanggal Rekomendasi</span>
-                        </v-col>
-                      </v-row>
-                      <v-row class="mt-n5">
-                        <v-col
-                          v-if="status == 2"
-                          cols="4"
+                      <v-card
+                        v-if="!hideUpdateField"
+                        class="mt-n7 py-3 px-3"
+                        outlined
+                      >
+                        <v-row
+                          v-if="!hideUpdateField"
                         >
-                          <date-picker-input
-                            :value="product.recommendation_date"
-                            @selected="changeRecommendationDate"
-                          />
-                        </v-col>
-                        <v-col
-                          v-else
-                          cols="4"
-                        >
-                          <span>{{ $moment.utc(product.recommendation_date).format('DD MMMM YYYY') }}</span>
-                        </v-col>
-                      </v-row>
-                    </v-card>
+                          <v-col cols="3" class="mt-2">
+                            <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.realization_item') }}</span>
+                          </v-col>
+                          <v-col cols="7">
+                            <v-autocomplete
+                              v-model="product.finalized_product_id"
+                              :items="poslogItem"
+                              dense
+                              solo
+                              :readonly="status == 4"
+                              @change="setUnit(product.finalized_product_id, 'final')"
+                            />
+                          </v-col>
+                        </v-row>
+                        <v-row class="mt-n5">
+                          <v-col cols="3">
+                            <v-text-field
+                              v-model="product.finalized_quantity"
+                              label="Jumlah Realisasi"
+                              outlined
+                              dense
+                              :readonly="status == 4"
+                            />
+                          </v-col>
+                          <v-col cols="2">
+                            <v-text-field
+                              v-model="product.finalized_UoM"
+                              label="Satuan"
+                              outlined
+                              dense
+                              readonly
+                            />
+                          </v-col>
+                          <v-col cols="2">
+                            <v-btn class="mt-2" color="success" dark small @click="getStockItem(product)">{{ $t('label.check_stock') }}</v-btn>
+                          </v-col>
+                        </v-row>
+                        <v-row class="mt-n8">
+                          <v-col cols="3">
+                            <span class="green--text text--darken-2 font-weight-bold">Tanggal Realisasi</span>
+                          </v-col>
+                        </v-row>
+                        <v-row class="mt-n5">
+                          <v-col
+                            v-if="status == 3"
+                            cols="4"
+                          >
+                            <date-picker-input
+                              :value="product.finalized_date"
+                              @selected="changeFinalizedDate"
+                            />
+                          </v-col>
+                          <v-col
+                            v-else
+                            cols="4"
+                          >
+                            <span>{{ product.finalized_date ? $moment.utc(product.finalized_date).format('DD MMMM YYYY') : '-' }}</span>
+                          </v-col>
+                        </v-row>
+                      </v-card>
+                    </div>
                   </div>
                   <v-divider />
                   <v-card-actions>
@@ -671,14 +753,16 @@ export default {
         recommendation_UoM: null,
         recommendation_date: null,
         recommendation_status: null,
+        recommendation_by: null,
         finalized_product_id: null,
         finalized_product_name: null,
         finalized_quantity: 0,
         finalized_UoM: null,
         finalized_date: null,
-        finalized_status: null
+        finalized_status: null,
+        finalized_by: null
       },
-      recommendationStatusEnum: [
+      vaccineProductRequestStatusEnum: [
         {
           text: this.$t('label.approved_item'),
           value: 'approved'
@@ -917,9 +1001,9 @@ export default {
       this.loading = false
     },
     setHideUpdateField(value) {
-      this.hideUpdateField = false
-      if (value === 'not_available' || value === 'not_yet_fulfilled') {
-        this.hideUpdateField = true
+      this.hideUpdateField = true
+      if (value === 'approved' || value === 'replaced') {
+        this.hideUpdateField = false
       }
     },
     back() {
