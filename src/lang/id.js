@@ -801,7 +801,7 @@ export default {
     approval_rejected: 'Ditolak di Tahap Rekomendasi',
     not_verified: 'Belum Terverifikasi',
     verified: 'Terverifikasi',
-    approved: 'Direkomendasi',
-    finalized: 'Direalisasi',
+    approved: 'Selesai Rekomendasi Salur',
+    finalized: 'Selesai Realisasi Salur',
   }
 }
