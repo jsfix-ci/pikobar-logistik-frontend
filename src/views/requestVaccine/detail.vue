@@ -409,7 +409,7 @@
             </v-simple-table>
             <v-pagination
               v-model="vaccineProductRequests.current_page"
-              :length="vaccineProductRequests.total"
+              :length="vaccineProductRequests.last_page"
               :total-visible="3"
               class="mb-3"
               @input="onNext"
@@ -719,6 +719,8 @@ export default {
       this.loading = true
       await this.$store.dispatch('vaccine/getVaccineProductRequests', this.listQuery)
 
+      this.unrecommendItemTotal = 0
+      this.unfinalizedItemTotal = 0
       for (let i = 0; i < this.vaccineProductRequests.data.length; i++) {
         const item = this.vaccineProductRequests.data[i]
         if (!item.recommendation_status) {
