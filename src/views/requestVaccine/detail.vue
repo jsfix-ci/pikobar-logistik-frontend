@@ -1076,7 +1076,7 @@ export default {
       await this.allocationMaterials.forEach(element => {
         this.poslogItem.push({
           value: element.material_id,
-          text: '(' + element.material_id + ') ' + element.material_name
+          text: `(${element.material_id}) ${element.material_name}`
         })
       })
       this.loading = false
