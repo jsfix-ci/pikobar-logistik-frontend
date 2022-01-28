@@ -503,7 +503,7 @@
                           <v-col cols="3" class="mt-2">
                             <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_status') }}</span>
                           </v-col>
-                          <v-col cols="3">
+                          <v-col v-if="status == 2" cols="3">
                             <ValidationProvider
                               v-slot="{ errors }"
                               rules="requiredStatus"
@@ -513,16 +513,18 @@
                                 :items="vaccineProductRequestStatusEnum"
                                 dense
                                 solo
-                                :readonly="status == 3"
                                 :error-messages="errors"
                                 @change="setAllocationMaterial"
                               />
                             </ValidationProvider>
                           </v-col>
+                          <v-col v-else cols="3" class="mt-2">
+                            <span>{{ product.recommendation_status ? $t(`label.${product.recommendation_status}`) : '-' }}</span>
+                          </v-col>
                         </v-row>
                         <v-card
                           v-if="!hideRecommendationField"
-                          class="mt-n7 py-3 px-3"
+                          :class="`${status == 2 ? 'mt-n7' : 'mt-1'} py-3 px-3`"
                           outlined
                         >
                           <v-row
@@ -552,7 +554,7 @@
                               <span>{{ product.recommendation_product_name }}</span>
                             </v-col>
                           </v-row>
-                          <v-row class="mt-n5">
+                          <v-row v-if="status == 2" class="mt-n5">
                             <v-col cols="3">
                               <ValidationProvider
                                 v-slot="{ errors }"
@@ -585,30 +587,32 @@
                                 />
                               </ValidationProvider>
                             </v-col>
-                            <v-col v-if="status == 2" cols="2">
+                            <v-col cols="2">
                               <v-btn class="mt-2" color="success" dark small @click="getStockItem(product, 'update')">{{ $t('label.check_stock') }}</v-btn>
                             </v-col>
                           </v-row>
-                          <v-row class="mt-n8">
+                          <v-row v-else class="mt-n8">
+                            <v-col cols="3">
+                              <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.total_needs') }}</span>
+                            </v-col>
+                            <v-col>
+                              <span>{{ product.recommendation_quantity + ' ' + product.recommendation_UoM }}</span>
+                            </v-col>
+                          </v-row>
+                          <v-row class="mt-n2">
                             <v-col cols="3">
                               <span class="green--text text--darken-2 font-weight-bold">Tanggal Rekomendasi</span>
                             </v-col>
+                            <v-col v-if="status != 2">
+                              <span>{{ product.recommendation_date ? $moment.utc(product.recommendation_date).format('DD MMMM YYYY') : '-' }}</span>
+                            </v-col>
                           </v-row>
-                          <v-row class="mt-n5">
-                            <v-col
-                              v-if="status == 2"
-                              cols="4"
-                            >
+                          <v-row v-if="status == 2" class="mt-n5">
+                            <v-col cols="4">
                               <date-picker-input
                                 :value="product.recommendation_date"
                                 @selected="changeRecommendationDate"
                               />
-                            </v-col>
-                            <v-col
-                              v-else
-                              cols="4"
-                            >
-                              <span>{{ product.recommendation_date ? $moment.utc(product.recommendation_date).format('DD MMMM YYYY') : '-' }}</span>
                             </v-col>
                           </v-row>
                         </v-card>
@@ -1017,15 +1021,17 @@ export default {
       }
       await this.$store.dispatch('vaccine/getStock', param)
     },
-    updateItem(item) {
+    async updateItem(item) {
       this.sethideRecommendationField(item.recommendation_status)
       this.sethideFinalizedField(item.finalized_status)
       this.formUpdateVaccineProductRequestDialog = true
       this.product = item
       if (this.status === 2) {
-        this.setAllocationMaterial(item.recommendation_status)
+        await this.setAllocationMaterial(item.recommendation_status)
+        this.setUnit(this.product.recommendation_product_id, 'recommendation')
       } else if (this.status === 3) {
-        this.setAllocationMaterial(item.finalized_status)
+        await this.setAllocationMaterial(item.finalized_status)
+        this.setUnit(this.product.finalized_product_id, 'final')
       }
     },
     async cancelUpdateItem() {
