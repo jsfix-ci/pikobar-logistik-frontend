@@ -1,4 +1,4 @@
-import { fetchList } from '@/api'
+import { fetchList, doPostUpdate } from '@/api'
 
 export default {
   async getListMaterial({ commit }, params) {
@@ -34,6 +34,43 @@ export default {
     try {
       const response = await fetchList('/api/v1/vaccine-product-request', 'GET', params)
       commit('SET_VACCINE_PRODUCT_REQUESTS', response)
+    } catch (e) {
+      return e
+    }
+  },
+  async updateVaccineRequestStatus({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/vaccine-request/' + params.id, 'PUT', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async updateVaccineProductRequest({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/vaccine-product-request/' + params.id, 'PUT', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
+  async getStock({ commit }, params) {
+    try {
+      commit('LOAD_DATA_STOCK', true)
+      const response = await fetchList('/api/v1/vaccine-material', 'GET', params)
+      commit('SET_ALLOCATION_MATERIALS', response.data)
+      commit('LOAD_DATA_STOCK', false)
+      return response
+    } catch (e) {
+      commit('LOAD_DATA_STOCK', false)
+      return e
+    }
+  },
+  async clearStock({ commit }, params) {
+    try {
+      commit('LOAD_DATA_STOCK', true)
+      commit('SET_ALLOCATION_MATERIALS', [])
+      commit('LOAD_DATA_STOCK', false)
     } catch (e) {
       return e
     }

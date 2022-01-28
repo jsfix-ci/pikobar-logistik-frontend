@@ -14,7 +14,8 @@ const state = {
   listRealization: [],
   totalListRealization: 0,
   totalDataRealization: 0,
-  listStock: []
+  allocationMaterials: [],
+  loadDataStock: false
 }
 
 export default {

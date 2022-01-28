@@ -14,7 +14,7 @@ const requestVaccine = {
     {
       path: '/vaksin/belum-terverifikasi',
       component: () => import('@/views/requestVaccine'),
-      name: 'notVerified',
+      name: 'notVerifiedVaccine',
       meta: {
         title: 'not_verified_title',
         noCache: true,
@@ -24,7 +24,7 @@ const requestVaccine = {
     {
       path: '/vaksin/terverifikasi',
       component: () => import('@/views/requestVaccine'),
-      name: 'verified',
+      name: 'verifiedVaccine',
       meta: {
         title: 'verified_title',
         noCache: true,
@@ -34,7 +34,7 @@ const requestVaccine = {
     {
       path: '/vaksin/belum-realisasi',
       component: () => import('@/views/requestVaccine'),
-      name: 'approved',
+      name: 'approvedVaccine',
       meta: {
         title: 'not_yet_realized_title',
         noCache: true,
@@ -44,7 +44,7 @@ const requestVaccine = {
     {
       path: '/vaksin/selesai-realisasi',
       component: () => import('@/views/requestVaccine'),
-      name: 'finalized',
+      name: 'finalizedVaccine',
       meta: {
         title: 'realized_title',
         noCache: true,
@@ -54,7 +54,7 @@ const requestVaccine = {
     {
       path: '/vaksin/ditolak',
       component: () => import('@/views/requestVaccine'),
-      name: 'rejected',
+      name: 'rejectedVaccine',
       meta: {
         title: 'rejected_title',
         noCache: true,
