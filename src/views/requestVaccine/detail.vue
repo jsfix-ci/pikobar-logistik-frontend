@@ -26,7 +26,7 @@
             </v-card>
             <v-card
               v-else-if="status > 0"
-              class="mx-auti"
+              class="mx-auto"
               color="#219653"
             ><!-- Alert Verification Phase -->
               <v-list-item>
