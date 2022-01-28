@@ -387,7 +387,7 @@
                     <td>{{ item.usage }}</td>
                     <td>{{ item.product.material_group }}</td>
                     <!-- Recommendation Data Section -->
-                    <td v-if="status >= 2 && status < 4"><v-btn color="success" dark small @click="getStockItem(item)">Cek Stok</v-btn></td>
+                    <td v-if="status >= 2 && status < 4"><v-btn color="success" dark small @click="getStockItem(item, 'table')">{{ $t('label.check_stock') }}</v-btn></td>
                     <td v-if="status >= 2">{{ item.recommendation_product_name || '-' }}</td>
                     <td v-if="status >= 2">{{ item.recommendation_quantity || '-' }}</td>
                     <td v-if="status >= 2">{{ item.recommendation_UoM || '-' }}</td>
@@ -503,7 +503,7 @@
                           <v-col cols="3" class="mt-2">
                             <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.recommendation_status') }}</span>
                           </v-col>
-                          <v-col cols="3">
+                          <v-col v-if="status == 2" cols="3">
                             <ValidationProvider
                               v-slot="{ errors }"
                               rules="requiredStatus"
@@ -513,16 +513,18 @@
                                 :items="vaccineProductRequestStatusEnum"
                                 dense
                                 solo
-                                :readonly="status == 3"
                                 :error-messages="errors"
                                 @change="setAllocationMaterial"
                               />
                             </ValidationProvider>
                           </v-col>
+                          <v-col v-else cols="3" class="mt-2">
+                            <span>{{ product.recommendation_status ? $t(`label.${product.recommendation_status}`) : '-' }}</span>
+                          </v-col>
                         </v-row>
                         <v-card
                           v-if="!hideRecommendationField"
-                          class="mt-n7 py-3 px-3"
+                          :class="`${status == 2 ? 'mt-n7' : 'mt-1'} py-3 px-3`"
                           outlined
                         >
                           <v-row
@@ -539,7 +541,7 @@
                               >
                                 <v-autocomplete
                                   v-model="product.recommendation_product_id"
-                                  :items="allocationMaterials"
+                                  :items="poslogItem"
                                   dense
                                   solo
                                   :error-messages="errors"
@@ -552,7 +554,7 @@
                               <span>{{ product.recommendation_product_name }}</span>
                             </v-col>
                           </v-row>
-                          <v-row class="mt-n5">
+                          <v-row v-if="status == 2" class="mt-n5">
                             <v-col cols="3">
                               <ValidationProvider
                                 v-slot="{ errors }"
@@ -585,30 +587,32 @@
                                 />
                               </ValidationProvider>
                             </v-col>
-                            <v-col v-if="status == 2" cols="2">
-                              <v-btn class="mt-2" color="success" dark small @click="getStockItem(product)">{{ $t('label.check_stock') }}</v-btn>
+                            <v-col cols="2">
+                              <v-btn class="mt-2" color="success" dark small @click="getStockItem(product, 'update')">{{ $t('label.check_stock') }}</v-btn>
                             </v-col>
                           </v-row>
-                          <v-row class="mt-n8">
+                          <v-row v-else class="mt-n8">
+                            <v-col cols="3">
+                              <span class="green--text text--darken-2 font-weight-bold">{{ $t('label.total_needs') }}</span>
+                            </v-col>
+                            <v-col>
+                              <span>{{ product.recommendation_quantity + ' ' + product.recommendation_UoM }}</span>
+                            </v-col>
+                          </v-row>
+                          <v-row class="mt-n2">
                             <v-col cols="3">
                               <span class="green--text text--darken-2 font-weight-bold">Tanggal Rekomendasi</span>
                             </v-col>
+                            <v-col v-if="status != 2">
+                              <span>{{ product.recommendation_date ? $moment.utc(product.recommendation_date).format('DD MMMM YYYY') : '-' }}</span>
+                            </v-col>
                           </v-row>
-                          <v-row class="mt-n5">
-                            <v-col
-                              v-if="status == 2"
-                              cols="4"
-                            >
+                          <v-row v-if="status == 2" class="mt-n5">
+                            <v-col cols="4">
                               <date-picker-input
                                 :value="product.recommendation_date"
                                 @selected="changeRecommendationDate"
                               />
-                            </v-col>
-                            <v-col
-                              v-else
-                              cols="4"
-                            >
-                              <span>{{ product.recommendation_date ? $moment.utc(product.recommendation_date).format('DD MMMM YYYY') : '-' }}</span>
                             </v-col>
                           </v-row>
                         </v-card>
@@ -656,7 +660,7 @@
                               >
                                 <v-autocomplete
                                   v-model="product.finalized_product_id"
-                                  :items="allocationMaterials"
+                                  :items="poslogItem"
                                   dense
                                   solo
                                   :readonly="status == 4"
@@ -701,7 +705,7 @@
                               </ValidationProvider>
                             </v-col>
                             <v-col v-if="status == 3" cols="2">
-                              <v-btn class="mt-2" color="success" dark small @click="getStockItem(product)">{{ $t('label.check_stock') }}</v-btn>
+                              <v-btn class="mt-2" color="success" dark small @click="getStockItem(product, 'update')">{{ $t('label.check_stock') }}</v-btn>
                             </v-col>
                           </v-row>
                           <v-row class="mt-n8">
@@ -853,7 +857,8 @@ export default {
       ],
       hideRecommendationField: true,
       hideFinalizedField: true,
-      loading: false
+      loading: false,
+      poslogItem: []
     }
   },
   computed: {
@@ -992,22 +997,42 @@ export default {
       }
       return result
     },
-    getStockItem(item) {
+    async getStockItem(item, onEvent) {
       this.stockDialog = true
-      this.getStock(item)
+      await this.getStock(item, onEvent)
     },
-    async getStock(item) {
-      const param = {
-        matg_id: await item.product.material_group,
-        is_paginated: 0
+    async getStock(item, onEvent) {
+      const param = {}
+      param.is_paginated = 0
+
+      if (onEvent === 'update') {
+        let status = item.recommendation_status
+        param.material_id = item.recommendation_product_id
+        if (this.status === 3) {
+          status = item.finalized_status
+          param.material_id = item.finalized_product_id
+        }
+
+        if (status === 'approved') {
+          param.matg_id = item.product.material_group
+        }
+      } else {
+        param.matg_id = item.product.material_group
       }
       await this.$store.dispatch('vaccine/getStock', param)
     },
-    updateItem(item) {
+    async updateItem(item) {
       this.sethideRecommendationField(item.recommendation_status)
       this.sethideFinalizedField(item.finalized_status)
       this.formUpdateVaccineProductRequestDialog = true
       this.product = item
+      if (this.status === 2) {
+        await this.setAllocationMaterial(item.recommendation_status)
+        this.setUnit(this.product.recommendation_product_id, 'recommendation')
+      } else if (this.status === 3) {
+        await this.setAllocationMaterial(item.finalized_status)
+        this.setUnit(this.product.finalized_product_id, 'final')
+      }
     },
     async cancelUpdateItem() {
       this.formUpdateVaccineProductRequestDialog = false
@@ -1047,14 +1072,17 @@ export default {
     async getAllocationMaterial(param) {
       this.loading = true
       await this.$store.dispatch('vaccine/getStock', param)
-      this.allocationMaterials.forEach(element => {
-        element.value = element.material_id
-        element.text = '(' + element.material_id + ') ' + element.material_name
+      this.poslogItem = []
+      await this.allocationMaterials.forEach(element => {
+        this.poslogItem.push({
+          value: element.material_id,
+          text: `(${element.material_id}) ${element.material_name}`
+        })
       })
       this.loading = false
     },
-    setUnit(id, phase) {
-      this.allocationMaterials.forEach(element => {
+    async setUnit(id, phase) {
+      await this.allocationMaterials.forEach(element => {
         if (id === element.material_id) {
           if (phase === 'recommendation') {
             this.product.recommendation_product_name = element.material_name
@@ -1063,7 +1091,6 @@ export default {
             this.product.finalized_product_name = element.material_name
             this.product.finalized_UoM = element.UoM
           }
-          return false
         }
       })
     },
