@@ -56,7 +56,11 @@
             <span class="text-title">{{ $t('label.status') }}</span>
           </v-col>
           <v-col>
-            <span :class="(status < 2 ? 'red--text' : 'green--text text--darken-2') + ' font-weight-bold'">: {{ $t('status.' + (vaccineRequest.status || statusTarget)) }}</span>
+            <span
+              :class="`${(status < 2 ? 'red--text' : 'green--text text--darken-2')} font-weight-bold`"
+            >
+              : {{ $t(`status.${(vaccineRequest.status || statusTarget)}`) }}
+            </span>
           </v-col>
         </v-row>
 
