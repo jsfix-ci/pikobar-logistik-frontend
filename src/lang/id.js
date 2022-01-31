@@ -11,6 +11,7 @@ export default {
     master_data_title: 'Master Data',
     applicant_medical_tools_title: 'Permohonan',
     applicant_medical_tools_list_title: 'Daftar Permohonan',
+    vaccine_request_detail_title: 'Detail Pengajuan Vaksin',
     applicant_form: 'Form Pemohon',
     applicant_form_edit: 'Edit Permohonan',
     medical_facility_title: 'Fasilitas Kesehatan',
@@ -357,6 +358,7 @@ export default {
     applicant_phone_sub: 'No. HP Pemohon Pengganti',
     applicant_ktp: 'KTP/Kartu Pegawai/Surat Tugas',
     list_logistic_need: 'Daftar Kebutuhan Logistik',
+    list_vaccine_need: 'Daftar Kebutuhan Logistik Vaksin',
     apd_id_specification: 'ID Barang',
     apd_name_specification: 'Nama Barang',
     wait: 'Harap Tunggu',
@@ -447,6 +449,7 @@ export default {
     allocation_amount: 'Jumlah Alokasi',
     update: 'Update',
     update_logistic_needs_title: 'Update Daftar Kebutuhan Logistik',
+    update_vaccine_needs_title: 'Update Daftar Kebutuhan Vaksin',
     apd_spec_name: 'Nama Barang',
     apd_spec_name_recommended: 'Nama Barang Rekomendasi',
     total_needs: 'Jumlah Kebutuhan',
@@ -793,4 +796,12 @@ export default {
       item_proof: 'Foto Barang yang Diterima wajib diisi'
     }
   },
+  status: {
+    verification_rejected: 'Ditolak di Tahap Verifikasi',
+    approval_rejected: 'Ditolak di Tahap Rekomendasi',
+    not_verified: 'Belum Terverifikasi',
+    verified: 'Terverifikasi',
+    approved: 'Selesai Rekomendasi Salur',
+    finalized: 'Selesai Realisasi Salur',
+  }
 }

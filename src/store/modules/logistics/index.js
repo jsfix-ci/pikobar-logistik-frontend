@@ -9,10 +9,6 @@ const state = {
   dataListLogisticRequest: [],
   totalListLogisticRequest: 0,
   totalDataLogisticRequest: 0,
-  // vaccine
-  dataListVaccineRequest: [],
-  totalListVaccineRequest: 0,
-  totalDataVaccineRequest: 0,
   // Acceptance Report
   listAcceptanceReport: [],
   totalListAcceptanceReport: 0,
