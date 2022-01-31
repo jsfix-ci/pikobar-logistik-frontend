@@ -626,7 +626,8 @@ export default {
           product_id: element.apd,
           brand: element.brand,
           quantity: element.total,
-          unit: element.unitId
+          unit: element.unitId,
+          description: element.description
         })
       })
 
@@ -660,7 +661,10 @@ export default {
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'pikobar')
       formData.append('url', location.host + '/#')
-      const response = await this.$store.dispatch('logistics/postApplicantForm', formData)
+      const actionName = this.logisticRequestType === 'vaksin'
+        ? 'logistics/postApplicantVaksinAdmin'
+        : 'logistics/postApplicantForm'
+      const response = await this.$store.dispatch(actionName, formData)
       if (response.status === 200) {
         this.isDone = true
       } else {

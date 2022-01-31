@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <v-row>
-      <v-col :md="isAdmin === true ? '5' : '10'" offset-md="1">
+      <v-col md="5" offset-md="1">
         <div class="d-flex justify-center">
           <v-img
             src="../../static/apd.svg"
@@ -21,7 +21,7 @@
           </v-btn>
         </div>
       </v-col>
-      <v-col v-if="isAdmin" md="5">
+      <v-col md="5">
         <div class="d-flex justify-center">
           <v-img
             src="../../static/apd.svg"
