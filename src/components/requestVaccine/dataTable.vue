@@ -22,22 +22,22 @@
         {{ $moment(value).format('DD MMMM YYYY') }}
       </template>
 
-      <template v-slot:[`item.applicant.approved_by`]="{ value }">
+      <template v-slot:[`item.approved_by`]="{ value }">
         <span v-if="value" class="green--text">{{ value.name }}</span>
         <span v-else class="red--text">{{ $t('label.not_approved') }}</span>
       </template>
 
-      <template v-slot:[`item.applicant.finalized_by`]="{ value }">
+      <template v-slot:[`item.finalized_by`]="{ value }">
         <span v-if="value" class="green--text">{{ value.name }}</span>
         <span v-else class="red--text">{{ $t('label.not_approved') }}</span>
       </template>
 
-      <template v-slot:[`item.applicant.verified_by`]="{ value }">
+      <template v-slot:[`item.verified_by`]="{ value }">
         <span v-if="value" class="green--text">{{ value.name }}</span>
         <span v-else class="red--text">{{ $t('label.not_verified') }}</span>
       </template>
 
-      <template v-slot:[`item.applicant.verified_at`]="{ value }">
+      <template v-slot:[`item.verified_at`]="{ value }">
         {{ $moment(value).format('DD MMMM YYYY') }}
       </template>
 
@@ -133,27 +133,27 @@ export default {
         },
         {
           text: this.$t('label.approved_by').toUpperCase(),
-          value: 'applicant.approved_by',
+          value: 'approved_by',
           width: 150
         },
         {
           text: this.$t('label.finalized_by').toUpperCase(),
-          value: 'applicant.finalized_by',
+          value: 'finalized_by',
           width: 200
         },
         {
           text: this.$t('label.status').toUpperCase(),
-          value: 'applicant.status',
+          value: 'status',
           width: 200
         },
         {
           text: this.$t('label.verified_by').toUpperCase(),
-          value: 'applicant.verified_by',
+          value: 'verified_by',
           width: 200
         },
         {
           text: this.$t('label.verified_date').toUpperCase(),
-          value: 'applicant.verified_at',
+          value: 'verified_at',
           width: 200
         },
         {
@@ -181,27 +181,27 @@ export default {
     headerFilter() {
       if (this.listQuery.status === 'not_verified') {
         return this.headers.filter(head =>
-          head.value !== 'applicant.finalized_by' &&
-          head.value !== 'applicant.verified_by' &&
-          head.value !== 'applicant.verified_at' &&
-          head.value !== 'applicant.approved_by' &&
-          head.value !== 'applicant.status')
+          head.value !== 'finalized_by' &&
+          head.value !== 'verified_by' &&
+          head.value !== 'verified_at' &&
+          head.value !== 'approved_by' &&
+          head.value !== 'status')
       } else if (this.listQuery.status === 'verified') {
         return this.headers.filter(head =>
-          head.value !== 'applicant.finalized_by' &&
-          head.value !== 'applicant.approved_by' &&
-          head.value !== 'applicant.status')
+          head.value !== 'finalized_by' &&
+          head.value !== 'approved_by' &&
+          head.value !== 'status')
       } else if (this.listQuery.status === 'approved' || this.listQuery.status === 'finalized') {
         return this.headers.filter(head =>
-          head.value !== 'applicant.verified_by' &&
-          head.value !== 'applicant.verified_at' &&
-          head.value !== 'applicant.status')
+          head.value !== 'verified_by' &&
+          head.value !== 'verified_at' &&
+          head.value !== 'status')
       } else if (this.listQuery.status === 'rejected') {
         return this.headers.filter(head =>
-          head.value !== 'applicant.finalized_by' &&
-          head.value !== 'applicant.verified_by' &&
-          head.value !== 'applicant.verified_at' &&
-          head.value !== 'applicant.approved_by')
+          head.value !== 'finalized_by' &&
+          head.value !== 'verified_by' &&
+          head.value !== 'verified_at' &&
+          head.value !== 'approved_by')
       }
       return this.headers
     }
