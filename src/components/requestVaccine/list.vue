@@ -123,15 +123,15 @@ export default {
     ])
   },
   async created() {
-    if (this.$route.name === 'notVerified') {
+    if (this.$route.name === 'notVerifiedVaccine') {
       this.listQuery.status = 'not_verified'
-    } else if (this.$route.name === 'verified') {
+    } else if (this.$route.name === 'verifiedVaccine') {
       this.listQuery.status = 'verified'
-    } else if (this.$route.name === 'approved') {
+    } else if (this.$route.name === 'approvedVaccine') {
       this.listQuery.status = 'approved'
-    } else if (this.$route.name === 'finalized') {
+    } else if (this.$route.name === 'finalizedVaccine') {
       this.listQuery.status = 'finalized'
-    } else if (this.$route.name === 'rejected') {
+    } else if (this.$route.name === 'rejectedVaccine') {
       this.listQuery.status = 'rejected'
     }
 
