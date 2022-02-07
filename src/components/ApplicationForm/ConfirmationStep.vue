@@ -671,11 +671,7 @@ export default {
         ? 'logistics/postApplicantVaksinAdmin'
         : 'logistics/postApplicantForm'
       const response = await this.$store.dispatch(actionName, formData)
-      if (response.status === 200) {
-        this.isDone = true
-      } else {
-        this.isDone = false
-      }
+      this.isDone = response.status === 200 || response.status === 201
       this.isLoading = false
     },
     onDone() {
