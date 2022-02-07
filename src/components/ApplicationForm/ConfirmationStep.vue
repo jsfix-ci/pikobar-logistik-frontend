@@ -545,6 +545,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import EventBus from '@/utils/eventBus'
 
 export default {
@@ -582,6 +583,11 @@ export default {
       isLoading: false,
       isDone: false
     }
+  },
+  computed: {
+    ...mapState('logistics', [
+      'logisticRequestType'
+    ])
   },
   mounted() {
     this.letterName = this.applicantLetter.name

@@ -223,11 +223,9 @@ export default {
     ])
   },
   watch: {
-    logisticRequestType(newVal, oldVal) {
-      if (newVal !== oldVal) {
-        this.listQueryAPD.category = newVal === 'vaksin' ? newVal : null
-        this.getListAPD()
-      }
+    logisticRequestType(val) {
+      this.listQueryAPD.category = val
+      this.getListAPD()
     }
   },
   async created() {
