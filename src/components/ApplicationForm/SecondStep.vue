@@ -58,9 +58,9 @@
             >
               <upload-file
                 :suffix-title="isAdmin ? null : $t('label.must_fill')"
-                :empty-file="$t('label.not_yet_upload_file')"
+                :empty-file="$t('label.file_input_placeholder')"
                 :title="$t('label.upload_applicant_ktp')"
-                note="JPG, JPEG, PNG up to 10MB"
+                note="(JPG, JPEG, PNG, DOC, PDF) max 10MB"
                 accept=".jpg, .jpeg, .png"
                 :is-upload="isUpload"
                 :selected-file-name="selectedFileName"
@@ -151,7 +151,7 @@
               outlined
               text
               @click="onPrev"
-            >{{ $t('label.cancel') }}</v-btn>
+            >{{ $t('label.back') }}</v-btn>
           </v-col>
         </v-container>
       </v-form>

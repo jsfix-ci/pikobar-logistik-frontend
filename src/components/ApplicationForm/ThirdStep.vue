@@ -173,7 +173,7 @@
           outlined
           text
           @click="onPrev"
-        >{{ $t('label.cancel') }}</v-btn>
+        >{{ $t('label.back') }}</v-btn>
       </v-col>
     </v-container>
   </v-container>

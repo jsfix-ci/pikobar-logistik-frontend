@@ -18,10 +18,11 @@
               <v-autocomplete
                 v-model="formApplicant.instanceType"
                 outlined
+                clearable
                 :error-messages="errors"
                 item-value="id"
                 item-text="name"
-                :items="faskesTypeList"
+                :items="instanceTypeList"
                 :placeholder="$t('label.autocomplete_instance_placeholder')"
                 @change="onSelectFaskesType"
               />
@@ -34,13 +35,14 @@
               <v-label class="title"><b>{{ $t('label.instance_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <v-autocomplete
                 v-model="formApplicant.instance"
-                :items="faskesList"
+                :items="instanceNameList"
                 item-value="id"
                 item-text="nama_faskes"
                 single-line
                 solo
                 outlined
                 autocomplete
+                clearable
                 :error-messages="errors"
                 :placeholder="instanceNamePlaceholder"
                 @input.native="querySearchFaskes"
@@ -189,7 +191,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import EventBus from '@/utils/eventBus'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'IdentitasInstansiPemohon',
@@ -217,7 +219,31 @@ export default {
       },
       showForm: false,
       isEtc: false,
-      instanceNamePlaceholder: this.$t('label.example_instance_name')
+      instanceNamePlaceholder: this.$t('label.example_instance_name'),
+      vaccineInstanceOptions: [ // @todo: request this data from BE
+        {
+          id: 1,
+          name: 'Dinas Kesehatan'
+        },
+        {
+          id: 2,
+          name: 'TNI'
+        },
+        {
+          id: 3,
+          name: 'POLRI'
+        },
+        {
+          id: 4,
+          name: 'Instansi Lainnya'
+        }
+      ],
+      vaccineInstanceNameOptions: [ // @todo: request this data from BE
+        {
+          id: 1,
+          nama_faskes: 'Under Development from Backend...'
+        }
+      ]
     }
   },
   computed: {
@@ -232,7 +258,20 @@ export default {
     ]),
     ...mapGetters('faskesType', [
       'faskesTypeList'
-    ])
+    ]),
+    ...mapState('logistics', [
+      'formType'
+    ]),
+    instanceTypeList() {
+      return this.formType === 'alkes'
+        ? this.faskesTypeList
+        : this.vaccineInstanceOptions
+    },
+    instanceNameList() {
+      return this.formType === 'alkes'
+        ? this.faskesList
+        : this.vaccineInstanceNameOptions
+    }
   },
   async created() {
     await this.getListCity()

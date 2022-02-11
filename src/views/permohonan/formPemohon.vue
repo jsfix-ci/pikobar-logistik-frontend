@@ -9,7 +9,13 @@
                 <v-img :max-width="40" src="../../static/logistik_logo_lingkar.svg" />
               </router-link>
               <router-link to="/landing-page">
-                <div class="title-page-form-pemohon">{{ $t('label.applicant_form_title') }}</div>
+                <div class="title-page-form-pemohon">
+                  {{
+                    formType === 'alkes'
+                      ? $t('label.applicant_med_form_title')
+                      : $t('label.applicant_vaccine_form_title')
+                  }}
+                </div>
               </router-link>
             </v-row>
           </v-col>
@@ -107,6 +113,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import EventBus from '@/utils/eventBus'
 
 export default {
@@ -121,6 +128,11 @@ export default {
       isConfirm: false,
       isAdmin: false
     }
+  },
+  computed: {
+    ...mapState('logistics', [
+      'formType'
+    ])
   },
   created() {
     EventBus.$on('nextStep', (value) => {

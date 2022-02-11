@@ -91,6 +91,9 @@ export default {
   },
   SET_DATA_UNREPORTED_RECEIPT: (state, data) => {
     state.unReportedReceipt = data
+  },
+  // Form Request
+  SET_FORM_TYPE: (state, data) => {
+    state.formType = data
   }
-
 }

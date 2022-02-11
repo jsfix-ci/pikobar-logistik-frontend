@@ -9,7 +9,13 @@
                 <v-img :max-width="40" src="../../static/logistik_logo_lingkar.svg" />
               </router-link>
               <router-link to="/landing-page">
-                <div class="title-page-data-confirmation">{{ $t('label.applicant_form_title') }}</div>
+                <div class="title-page-data-confirmation">
+                  {{
+                    formType === 'alkes'
+                      ? $t('label.applicant_med_form_title')
+                      : $t('label.applicant_vaccine_form_title')
+                  }}
+                </div>
               </router-link>
             </v-row>
           </v-col>
@@ -586,7 +592,8 @@ export default {
   },
   computed: {
     ...mapState('logistics', [
-      'logisticRequestType'
+      'logisticRequestType', // @todo: ini sudah tidak dipakai
+      'formType'
     ])
   },
   mounted() {

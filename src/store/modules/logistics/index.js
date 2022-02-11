@@ -35,7 +35,9 @@ const state = {
   logisticRequestType: null,
   // Statistic
   reportedReceipt: 0,
-  unReportedReceipt: 0
+  unReportedReceipt: 0,
+  // Form Request
+  formType: 'alkes'
 }
 
 export default {
