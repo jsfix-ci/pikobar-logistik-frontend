@@ -592,7 +592,6 @@ export default {
   },
   computed: {
     ...mapState('logistics', [
-      'logisticRequestType', // @todo: ini sudah tidak dipakai
       'formType'
     ])
   },
@@ -674,7 +673,7 @@ export default {
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'pikobar')
       formData.append('url', location.host + '/#')
-      const actionName = this.logisticRequestType === 'vaksin'
+      const actionName = this.formType === 'vaksin'
         ? 'logistics/postApplicantVaksinAdmin'
         : 'logistics/postApplicantForm'
       const response = await this.$store.dispatch(actionName, formData)
