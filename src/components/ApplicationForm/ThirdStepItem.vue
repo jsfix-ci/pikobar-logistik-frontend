@@ -4,7 +4,7 @@
       cols="12"
       sm="12"
       md="1"
-      class="d-flex flex-column align-center"
+      class="d-flex flex-column align-center justify-center"
     >
       <span>{{ index + 1 }}</span>
       <v-icon
@@ -18,7 +18,7 @@
     <v-col
       cols="12"
       sm="12"
-      md="3"
+      md="2"
     >
       <ValidationProvider
         v-slot="{ errors }"
@@ -30,10 +30,11 @@
         <v-autocomplete
           v-model="data.apd"
           :placeholder="$t('label.choose_apd')"
-          :items="dataListAPD"
+          :items="listApd"
           item-text="name"
           item-value="id"
           :error-messages="errors"
+          :hide-details="errors.length === 0"
           outlined
           solo-inverted
           @change="setUnit(data)"
@@ -41,6 +42,7 @@
       </ValidationProvider>
     </v-col>
     <v-col
+      v-if="!hideDescription"
       cols="12"
       sm="12"
       md="2"
@@ -56,6 +58,7 @@
           v-model="data.description"
           :placeholder="$t('label.input_description')"
           :error-messages="errors"
+          :hide-details="errors.length === 0"
           outlined
           solo-inverted
         />
@@ -64,7 +67,7 @@
     <v-col
       cols="4"
       sm="4"
-      md="2"
+      md="1"
     >
       <ValidationProvider
         v-slot="{ errors }"
@@ -79,6 +82,7 @@
           solo-inverted
           type="number"
           :error-messages="errors"
+          :hide-details="errors.length === 0"
           @change="setTotalAPD"
         />
       </ValidationProvider>
@@ -102,6 +106,7 @@
           outlined
           solo-inverted
           :error-messages="errors"
+          :hide-details="errors.length === 0"
           item-value="unit_id"
           item-text="unit"
         />
@@ -125,8 +130,28 @@
           outlined
           solo-inverted
           :error-messages="errors"
+          :hide-details="errors.length === 0"
         />
       </ValidationProvider>
+    </v-col>
+    <v-col
+      v-if="isVaccine"
+      cols="12"
+      sm="12"
+      md="2"
+    >
+      <v-label>
+        <strong>{{ $t('label.note') }}</strong>
+      </v-label>
+      <!-- @todo: adjust this model naming with BE -->
+      <v-text-field
+        v-model="data.note"
+        :placeholder="$t('label.input_note')"
+        :error-messages="errors"
+        hide-details
+        outlined
+        solo-inverted
+      />
     </v-col>
   </v-row>
 </template>
@@ -147,17 +172,44 @@ export default {
       type: Object,
       default: () => ({}),
       required: true
+    },
+    isVaccine: {
+      type: Boolean,
+      default: false
+    },
+    hideDescription: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      data: {}
+      data: {},
+      vaccineList: [ // @todo: request this data from BE
+        {
+          id: 1,
+          name: 'SINOVAC'
+        },
+        {
+          id: 2,
+          name: 'MODERNA'
+        },
+        {
+          id: 3,
+          name: 'PFIZER'
+        }
+      ]
     }
   },
   computed: {
     ...mapState('logistics', [
       'dataListAPD'
-    ])
+    ]),
+    listApd() {
+      return this.isVaccine
+        ? this.vaccineList
+        : this.dataListAPD
+    }
   },
   watch: {
     data: {

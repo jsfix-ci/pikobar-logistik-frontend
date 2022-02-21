@@ -1,10 +1,18 @@
 <template>
-  <v-container>
+  <div class="mx-10">
     <ValidationObserver ref="observer">
       <v-form
         ref="form"
         lazy-validation
       >
+        <span
+          v-if="isVaccineContent"
+          class="h4 font-weight-bold ml-16 mb-6"
+        >
+          {{ $t('label.vaccine') }}
+        </span>
+
+        <!-- Item Input List -->
         <div
           v-for="(data, index) in logisticNeeds"
           :key="index"
@@ -13,21 +21,28 @@
             :key="logisticNeeds.length"
             :index="index"
             :input-data="data"
+            :is-vaccine="isVaccineContent"
+            :hide-description="isVaccineContent"
+            class="ma-0"
             @change="(updateData) => onRequestChange(index, updateData)"
             @delete="deleteData"
             @onTotalChange="setTotalAPD"
           />
         </div>
-        <v-row>
-          <v-col cols="12" sm="12" md="3" offset-md="1">
+
+        <!-- Total Display -->
+        <v-row v-if="!isVaccineContent" class="mx-16">
+          <v-col cols="12" sm="12" md="3" class="pl-0">
             <v-label>
               {{ $t('label.logistic_total') }}
               {{ totalLogistic }}
             </v-label>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="12" sm="12" md="2" offset-md="1">
+
+        <!-- Add More Button -->
+        <v-row class="mx-16">
+          <v-col cols="12" sm="12" md="2" class="pl-0">
             <center>
               <v-btn
                 color="#2E7D32"
@@ -38,7 +53,7 @@
               </v-btn>
             </center>
           </v-col>
-          <v-col cols="12" sm="12" md="3" offset-md="1">
+          <v-col cols="12" sm="12" md="3">
             <v-alert
               v-if="showAlert"
               type="error"
@@ -47,8 +62,23 @@
             </v-alert>
           </v-col>
         </v-row>
+
+        <!-- Add Vaccine Support Alert -->
+        <v-alert
+          v-if="isVaccineContent"
+          dense
+          text
+          type="info"
+          class="mx-16 my-5"
+        >
+          {{ $t('label.add_vaccine_supporter_message') }}
+        </v-alert>
+        <hr v-if="isVaccineContent">
+        <VaccineSupporterInput v-if="isVaccineContent" />
       </v-form>
     </ValidationObserver>
+
+    <!-- Navigation Button -->
     <v-container fluid>
       <v-col cols="6" sm="6" md="6" class="float-right-third-step">
         <v-btn
@@ -68,19 +98,21 @@
         </v-btn>
       </v-col>
     </v-container>
-  </v-container>
+  </div>
 </template>
 <script>
 import { ValidationObserver } from 'vee-validate'
 import EventBus from '@/utils/eventBus'
 import { mapGetters, mapState } from 'vuex'
 import ThirdStepItem from './ThirdStepItem.vue'
+import VaccineSupporterInput from './VaccineSupporterInput.vue'
 
 export default {
   name: 'KebutuhanLogistik',
   components: {
     ValidationObserver,
-    ThirdStepItem
+    ThirdStepItem,
+    VaccineSupporterInput
   },
   props: {
     logisticNeeds: {
@@ -115,7 +147,10 @@ export default {
     ]),
     ...mapState('logistics', [
       'formType'
-    ])
+    ]),
+    isVaccineContent() {
+      return this.formType === 'vaksin'
+    }
   },
   async created() {
     this.listQueryAPD.category = this.formType
