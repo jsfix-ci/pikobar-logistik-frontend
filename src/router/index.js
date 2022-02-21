@@ -53,6 +53,22 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/landing-page-vaccine',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/',
+        component: () => import('@/views/landingPageVaccine/index'),
+        hidden: true,
+        meta: {
+          title: 'landing_page_vaccine',
+          isVaccineContent: true
+        }
+      }
+    ]
+  },
+  {
     path: '/tracking',
     component: () => import('@/views/tracking/index'),
     hidden: true
