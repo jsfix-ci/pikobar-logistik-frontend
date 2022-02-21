@@ -55,7 +55,12 @@
           </v-btn>
         </v-col>
         <v-col cols="12" md="6" sm="12" class="d-flex justify-center">
-          <img src="../../../public/img/icons/vaccination.svg" alt="vaccination">
+          <img
+            width="358px"
+            height="262px"
+            src="../../../public/img/icons/vaccination.png"
+            alt="vaccination"
+          >
         </v-col>
       </v-row>
     </section>
