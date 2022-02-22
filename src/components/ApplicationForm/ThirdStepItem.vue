@@ -33,6 +33,7 @@
           :items="listApd"
           item-text="name"
           item-value="id"
+          :return-object="isVaccine"
           :error-messages="errors"
           :hide-details="errors.length === 0"
           outlined
@@ -107,8 +108,8 @@
           solo-inverted
           :error-messages="errors"
           :hide-details="errors.length === 0"
-          item-value="unit_id"
-          item-text="unit"
+          :item-value="isVaccine ? 'id' : 'unit_id'"
+          :item-text="isVaccine ? 'name' : 'unit'"
         />
       </ValidationProvider>
     </v-col>
@@ -147,7 +148,6 @@
       <v-text-field
         v-model="data.note"
         :placeholder="$t('label.input_note')"
-        :error-messages="errors"
         hide-details
         outlined
         solo-inverted
@@ -184,31 +184,21 @@ export default {
   },
   data() {
     return {
-      data: {},
-      vaccineList: [ // @todo: request this data from BE
-        {
-          id: 1,
-          name: 'SINOVAC'
-        },
-        {
-          id: 2,
-          name: 'MODERNA'
-        },
-        {
-          id: 3,
-          name: 'PFIZER'
-        }
-      ]
+      data: {}
     }
   },
   computed: {
     ...mapState('logistics', [
-      'dataListAPD'
+      'dataListAPD',
+      'listVaccine',
+      'listVaccineSupport'
     ]),
     listApd() {
-      return this.isVaccine
-        ? this.vaccineList
-        : this.dataListAPD
+      if (this.isVaccine) {
+        return this.hideDescription ? this.listVaccine : this.listVaccineSupport
+      } else {
+        return this.dataListAPD
+      }
     }
   },
   watch: {
@@ -224,15 +214,22 @@ export default {
   },
   methods: {
     async setUnit(value) {
-      value.unitId = ''
-      value.unitName = ''
-      const listApd = await this.$store.dispatch('logistics/getListApdUnitMaterialGroup', value.apd)
-      value.unitList = listApd.map(element => {
-        return {
-          unit_id: element.unit_id,
-          unit: element.unit
-        }
-      })
+      if (!this.isVaccine) {
+        value.unitId = ''
+        value.unitName = ''
+        const listApd = await this.$store.dispatch('logistics/getListApdUnitMaterialGroup', value.apd)
+        value.unitList = listApd.map(element => {
+          return {
+            unit_id: element.unit_id,
+            unit: element.unit
+          }
+        })
+      } else {
+        value.unitId = value.apd.id
+        value.unitName = value.apd.name
+        value.unitList = value.apd.unit
+        value.apd = value.apd.id
+      }
     },
     setTotalAPD() {
       this.$emit('onTotalChange')

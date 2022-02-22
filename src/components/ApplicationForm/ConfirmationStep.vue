@@ -567,7 +567,11 @@ export default {
     },
     logisticNeeds: {
       type: Array,
-      default: null
+      default: () => []
+    },
+    vaccineSupportList: {
+      type: Array,
+      default: () => []
     },
     applicantLetter: {
       type: Object,
@@ -643,8 +647,11 @@ export default {
         })
       })
 
+      const dataVaccineSupportList = [...this.vaccineSupportList] // @todo: adjust this model with BE needs
+
       const formData = new FormData()
       formData.append('logistic_request', JSON.stringify(dataLogistics))
+      formData.append('vaccine_support_list', JSON.stringify(dataVaccineSupportList)) // @todo: adjust this model with BE needs
       formData.append('agency_type', this.formApplicant.instanceType)
       if (this.formApplicant.instanceEtc) {
         formData.append('agency_name', this.formApplicant.instanceEtc)

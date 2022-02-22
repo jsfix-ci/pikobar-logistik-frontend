@@ -37,7 +37,7 @@
                 v-model="formApplicant.instance"
                 :items="instanceNameList"
                 item-value="id"
-                item-text="nama_faskes"
+                :item-text="itemText"
                 single-line
                 solo
                 outlined
@@ -215,35 +215,12 @@ export default {
       nameFaskes: '',
       listQueryFaskes: {
         nama_faskes: null,
-        id_tipe_faskes: null
+        id_tipe_faskes: null,
+        medical_facility_type_id: null
       },
       showForm: false,
       isEtc: false,
-      instanceNamePlaceholder: this.$t('label.example_instance_name'),
-      vaccineInstanceOptions: [ // @todo: request this data from BE
-        {
-          id: 1,
-          name: 'Dinas Kesehatan'
-        },
-        {
-          id: 2,
-          name: 'TNI'
-        },
-        {
-          id: 3,
-          name: 'POLRI'
-        },
-        {
-          id: 4,
-          name: 'Instansi Lainnya'
-        }
-      ],
-      vaccineInstanceNameOptions: [ // @todo: request this data from BE
-        {
-          id: 1,
-          nama_faskes: 'Under Development from Backend...'
-        }
-      ]
+      instanceNamePlaceholder: this.$t('label.example_instance_name')
     }
   },
   computed: {
@@ -262,15 +239,24 @@ export default {
     ...mapState('logistics', [
       'formType'
     ]),
+    ...mapState('faskesType', [
+      'listVaccineFaskesType'
+    ]),
+    ...mapState('faskes', [
+      'listFaskesVaccine'
+    ]),
     instanceTypeList() {
       return this.formType === 'alkes'
         ? this.faskesTypeList
-        : this.vaccineInstanceOptions
+        : this.listVaccineFaskesType
     },
     instanceNameList() {
       return this.formType === 'alkes'
         ? this.faskesList
-        : this.vaccineInstanceNameOptions
+        : this.listFaskesVaccine
+    },
+    itemText() {
+      return this.formType === 'alkes' ? 'nama_faskes' : 'name'
     }
   },
   async created() {
@@ -278,7 +264,8 @@ export default {
     if (this.isAdmin) {
       await this.$store.dispatch('faskesType/getListFaskesType', { non_public: 1 })
     } else {
-      await this.$store.dispatch('faskesType/getListFaskesType')
+      const actionName = this.formType === 'alkes' ? 'getListFaskesType' : 'getVaccineListFaskesType'
+      await this.$store.dispatch(`faskesType/${actionName}`)
     }
     await this.getListFaskes()
     EventBus.$on('dialogHide', (value) => {
@@ -335,11 +322,14 @@ export default {
       })
     },
     async onSelectFaskesType(id) {
-      this.listQueryFaskes.id_tipe_faskes = id
-      this.isEtc = false
-      if (this.formApplicant.instanceType === 4 || this.formApplicant.instanceType === 5) {
-        this.isEtc = true
+      if (this.formType === 'alkes') {
+        this.listQueryFaskes.id_tipe_faskes = id
+      } else {
+        this.listQueryFaskes.medical_facility_type_id = id
       }
+      this.isEtc = this.formApplicant.instanceType === 4 ||
+        this.formApplicant.instanceType === 5 ||
+        this.formApplicant.instanceType === 99
       this.onChangeInstanceNamePlaceholder(id)
       await this.getListFaskes()
     },
@@ -365,11 +355,11 @@ export default {
       }
     },
     async getListFaskes() {
-      if (this.isAdmin) {
+      if (this.formType === 'alkes') {
+        if (this.isAdmin) this.listQueryFaskes.is_imported = 0
         await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
       } else {
-        this.listQueryFaskes.is_imported = 0
-        await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
+        await this.$store.dispatch('faskes/getListFaskesVaccine', this.listQueryFaskes)
       }
     },
     async querySearchFaskes(event) {
