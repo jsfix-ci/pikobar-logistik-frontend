@@ -74,7 +74,10 @@
           {{ $t('label.add_vaccine_supporter_message') }}
         </v-alert>
         <hr v-if="isVaccineContent">
-        <VaccineSupporterInput v-if="isVaccineContent" />
+        <VaccineSupporterInput
+          v-if="isVaccineContent"
+          :vaccine-support-list.sync="vaccineSupportList"
+        />
       </v-form>
     </ValidationObserver>
 
@@ -117,7 +120,7 @@ export default {
   props: {
     logisticNeeds: {
       type: Array,
-      default: null
+      default: () => []
     },
     isAdmin: {
       type: Boolean,
@@ -137,7 +140,8 @@ export default {
       listQueryAPD: {
         user_filter: null,
         category: null
-      }
+      },
+      vaccineSupportList: []
     }
   },
   computed: {
@@ -152,9 +156,14 @@ export default {
       return this.formType === 'vaksin'
     }
   },
+  watch: {
+    vaccineSupportList(val) {
+      this.$emit('update:vaccineSupportList', val)
+    }
+  },
   async created() {
     this.listQueryAPD.category = this.formType
-    await this.getListAPD()
+    this.isVaccineContent ? await this.getListVaccineAndSupport() : await this.getListAPD()
   },
   methods: {
     async getData(data) {
@@ -205,6 +214,10 @@ export default {
           name: element.name
         }
       })
+    },
+    getListVaccineAndSupport() {
+      this.$store.dispatch('logistics/getListVaccineAndSupport', { category: 'vaccine' })
+      this.$store.dispatch('logistics/getListVaccineAndSupport', { category: 'vaccine_support' })
     },
     async onNext() {
       if (!this.logisticNeeds.length) {

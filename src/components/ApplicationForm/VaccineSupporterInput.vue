@@ -57,6 +57,7 @@ export default {
      */
     onRequestChange(index, data) {
       this.listVaccineSupporter[index] = { ...data }
+      this.$emit('update:vaccineSupportList', this.listVaccineSupporter)
     },
     addMore() {
       this.listVaccineSupporter.push({

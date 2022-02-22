@@ -95,5 +95,11 @@ export default {
   // Form Request
   SET_FORM_TYPE: (state, data) => {
     state.formType = data
+  },
+  SET_LIST_VACCINE: (state, data) => {
+    state.listVaccine = data
+  },
+  SET_LIST_VACCINE_SUPPORT: (state, data) => {
+    state.listVaccineSupport = data
   }
 }
