@@ -45,7 +45,7 @@
       <v-card class="main-card-landing-page" outlined>
         <div class="back">
           <span>
-            <a href="#/landing-page">
+            <a @click="onBack">
               <img class="back-image" width="15px" src="../../static/back_icon.png">
             </a>
             <span class="back-text">{{ $t('label.back') }}</span>
@@ -343,6 +343,9 @@ export default {
     async resetData() {
       this.$refs.form.reset()
       this.clicked = false
+    },
+    onBack() {
+      this.$router.go(-1)
     }
   }
 }
