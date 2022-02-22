@@ -215,9 +215,9 @@ export default {
         }
       })
     },
-    async getListVaccineAndSupport() {
-      await this.$store.dispatch('logistics/getListVaccineAndSupport', { category: 'vaccine' })
-      await this.$store.dispatch('logistics/getListVaccineAndSupport', { category: 'vaccine_support' })
+    getListVaccineAndSupport() {
+      this.$store.dispatch('logistics/getListVaccineAndSupport', { category: 'vaccine' })
+      this.$store.dispatch('logistics/getListVaccineAndSupport', { category: 'vaccine_support' })
     },
     async onNext() {
       if (!this.logisticNeeds.length) {
