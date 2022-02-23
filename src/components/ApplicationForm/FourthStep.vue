@@ -1,10 +1,19 @@
 <template>
   <v-container>
-    <v-row>
-      <v-alert v-if="formApplicant.instanceType <= 3" icon="mdi-alert-circle" text outlined type="info">Untuk memudahkan proses rekomendasi logistik yang diajukan oleh pemohon. Permohonan dari Fasyankes (Rumah Sakit, Klinik, Puskesmas) harap melengkapi data berikut:</v-alert>
+    <div>
+      <v-alert v-if="formApplicant.instanceType <= 3" text outlined type="info">
+        <strong class="alert__text">{{ $t('label.applicant_letter_note') }}</strong>
+        <br>
+        <p class="alert__text">Jika Anda mengunggah <strong>Surat yang Belum Ditandatangi <em>(draft)</em></strong> maka:</p>
+        <ol>
+          <li class="alert__text">Jumlah permohonan barang pada surat yang belum ditandatangi <em>(draft)</em> yang diunggah tidak dapat diubah pada surat telah ditandatangi (final).</li>
+          <li class="alert__text">Batas waktu pengiriman surat final adalah <strong>1x24</strong> jam surat <em>draft</em> disimpan.</li>
+          <li class="alert__text">Kirim surat final Anda melalui <strong>WhatsApp Hotline PIKOBAR (08112093306)</strong>.</li>
+        </ol>
+      </v-alert>
       <center v-else><v-label class="title"><b>{{ $t('label.applicant_form_header_step_2') }}</b></v-label></center>
       <br>
-    </v-row>
+    </div>
     <ValidationObserver ref="observer">
       <v-form
         ref="form"
@@ -25,6 +34,29 @@
                 :placeholder="$t('label.applicant_letter_number_placeholder')"
                 solo-inverted
               />
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="required"
+              :name="$t('label.signing_status')"
+            >
+              <v-label class="title">
+                <b>{{ $t('label.is_signed_by_head_of_instance') }}</b>
+                <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
+              </v-label>
+              <v-radio-group
+                v-model="applicantLetter.is_application_letter_number_final"
+                :error-messages="errors"
+              >
+                <v-radio
+                  :label="$t('label.done_final')"
+                  value="1"
+                />
+                <v-radio
+                  :label="$t('label.not_yet_draft')"
+                  value="0"
+                />
+              </v-radio-group>
             </ValidationProvider>
             <ValidationProvider
               v-slot="{ errors }"
@@ -196,8 +228,14 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
 .float-right-fourth-step {
   float: right;
+}
+.alert {
+  &__text {
+    color: #212121 !important;
+    font-weight: normal !important;
+  }
 }
 </style>

@@ -673,6 +673,7 @@ export default {
       formData.append('secondary_phone_number', this.formIdentityApplicant.applicantPhoneNumber2)
       formData.append('letter_file', this.applicantLetter.dataFile)
       formData.append('application_letter_number', this.formApplicant.letterNumber)
+      formData.append('is_application_letter_number_final', this.applicantLetter.is_application_letter_number_final)
       formData.append('total_covid_patients', this.applicantLetter.total_covid_patients ?? 0)
       formData.append('total_isolation_room', this.applicantLetter.total_isolation_room ?? 0)
       formData.append('total_bedroom', this.applicantLetter.total_bedroom ?? 0)
