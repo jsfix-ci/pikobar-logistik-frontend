@@ -19,6 +19,7 @@
                 v-model="formApplicant.instanceType"
                 outlined
                 clearable
+                return-object
                 :error-messages="errors"
                 item-value="id"
                 item-text="name"
@@ -43,7 +44,7 @@
                 outlined
                 autocomplete
                 clearable
-                :return-object="formType === 'vaksin'"
+                return-object
                 :error-messages="errors"
                 :placeholder="instanceNamePlaceholder"
                 @input.native="querySearchFaskes"
@@ -104,6 +105,7 @@
               <v-autocomplete
                 v-model="formApplicant.cityNameId"
                 outlined
+                return-object
                 :error-messages="errors"
                 :items="cityList"
                 :placeholder="$t('label.autocomplete_city_placeholder')"
@@ -118,6 +120,7 @@
               <v-autocomplete
                 v-model="formApplicant.districtNameId"
                 outlined
+                return-object
                 :error-messages="errors"
                 :items="districtList"
                 :placeholder="$t('label.autocomplete_capital_placeholder')"
@@ -132,6 +135,7 @@
               <v-autocomplete
                 v-model="formApplicant.villageNameId"
                 outlined
+                return-object
                 :error-messages="errors"
                 :items="villageList"
                 :placeholder="$t('label.autocomplete_capital_placeholder')"
@@ -142,7 +146,18 @@
               v-slot="{ errors }"
               rules="requiredFullAddress"
             >
-              <v-label class="title"><b>{{ $t('label.full_address') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title">
+                <b>
+                  {{
+                    formType === 'vaksin'
+                      ? $t('label.pharmacy_installation_full_address')
+                      : $t('label.full_address')
+                  }}
+                </b>
+                <i class="text-small-first-step">
+                  {{ $t('label.must_fill') }}
+                </i>
+              </v-label>
               <v-textarea
                 v-model="formApplicant.fullAddress"
                 outlined
@@ -277,17 +292,6 @@ export default {
   },
   methods: {
     async onNext() {
-      this.faskesTypeList.forEach(element => {
-        if (element.id === this.formApplicant.instanceType) {
-          this.formApplicant.instanceTypeName = element.name
-        }
-      })
-      this.faskesList.forEach(element => {
-        if (element.id === this.formApplicant.instance) {
-          this.formApplicant.instanceName = element.nama_faskes
-          return
-        }
-      })
       const valid = await this.$refs.firtstep.validate()
       if (!valid) {
         return
@@ -324,7 +328,9 @@ export default {
         }
       })
     },
-    async onSelectFaskesType(id) {
+    async onSelectFaskesType(value) {
+      const { id, name } = value
+      this.formApplicant.instanceTypeName = name
       if (this.formType === 'alkes') {
         this.listQueryFaskes.id_tipe_faskes = id
       } else {
@@ -370,9 +376,13 @@ export default {
       await this.getListFaskes()
     },
     onSelectFaskes(val) {
+      const { id } = val
       if (this.formType === 'alkes' && val) {
-        this.$store.dispatch('faskes/getDetailFaskes', val)
+        this.formApplicant.instanceName = val.nama_faskes
+        this.$store.dispatch('faskes/getDetailFaskes', id)
       } else {
+        this.formApplicant.instanceName = val.name
+        this.formApplicant.fullAddress = val.address
         this.formApplicant.cityNameId = {
           text: val.city.name,
           value: val.city.kemendagri_kabupaten_kode,
