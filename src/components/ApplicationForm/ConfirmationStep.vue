@@ -103,7 +103,7 @@
                       <v-col>
                         <span class="main-color-data-confirmation">{{ $t('label.city_district') }}</span>
                         <br>
-                        <v-label>{{ formApplicant.cityNameId.name }}</v-label>
+                        <v-label>{{ formApplicant.cityNameId.text || formApplicant.cityNameId.name }}</v-label>
                       </v-col>
                       <v-col>
                         <span class="main-color-data-confirmation">{{ $t('label.full_address') }}</span>
@@ -121,7 +121,7 @@
                       <v-col>
                         <span class="main-color-data-confirmation">{{ $t('label.select_sub_district_full_name') }}</span>
                         <br>
-                        <v-label>{{ formApplicant.districtNameId.name }}</v-label>
+                        <v-label>{{ formApplicant.districtNameId.text || formApplicant.districtNameId.name }}</v-label>
                       </v-col>
                       <v-col />
                     </v-row>
@@ -134,7 +134,7 @@
                       <v-col>
                         <span class="main-color-data-confirmation">{{ $t('label.village') }}</span>
                         <br>
-                        <v-label>{{ formApplicant.villageNameId.name }}</v-label>
+                        <v-label>{{ formApplicant.villageNameId.text || formApplicant.villageNameId.name }}</v-label>
                       </v-col>
                       <v-col />
                     </v-row>
@@ -250,7 +250,7 @@
               </v-col>
             </v-card>
           </div>
-          <div class="main-color-data-confirmation">{{ $t('label.list_logistic_need') }}</div>
+          <div class="main-color-data-confirmation">{{ formType === 'vaksin' ? $t('label.list_vaccine_need') : $t('label.list_logistic_need') }}</div>
           <v-card outlined>
             <v-simple-table>
               <template v-slot:default>
@@ -270,11 +270,41 @@
                   </tr>
                   <tr v-for="(item, index) in dataShow" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
-                    <td>{{ item.unitList[0].name }}</td>
-                    <td>{{ item.brand }}</td>
-                    <td>{{ item.total }}</td>
-                    <td>{{ item.unitList[0].unit }}</td>
-                    <td>{{ item.purpose }}</td>
+                    <td>{{ item.unitName || '-' }}</td>
+                    <td>{{ item.description || '-' }}</td>
+                    <td>{{ item.total || '-' }}</td>
+                    <td>{{ formType === 'vaksin' ? item.unitId : item.unitList[0].unit }}</td>
+                    <td>{{ item.purpose || '-' }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-card>
+          <div v-if="formType === 'vaksin'" class="main-color-data-confirmation">{{ $t('label.list_vaccine_support_need') }}</div>
+          <v-card v-if="formType === 'vaksin'" outlined>
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.apd_name_specification') }}</th>
+                    <th class="text-left">{{ $t('label.description') }}</th>
+                    <th class="text-left">{{ $t('label.total') }}</th>
+                    <th class="text-left">{{ $t('label.unit') }}</th>
+                    <th class="text-left">{{ $t('label.purpose') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-if="vaccineSupportList.length === 0">
+                    <td class="text-center-data-confirmation" :colspan="7">{{ $t('label.no_data') }}</td>
+                  </tr>
+                  <tr v-for="(item, index) in vaccineSupportList" v-else :key="item.index">
+                    <td>{{ getTableRowNumbering(index) }}</td>
+                    <td>{{ item.unitName || '-' }}</td>
+                    <td>{{ item.description || '-' }}</td>
+                    <td>{{ item.total || '-' }}</td>
+                    <td>{{ item.unitName || '-' }}</td>
+                    <td>{{ item.purpose || '-' }}</td>
                   </tr>
                 </tbody>
               </template>
