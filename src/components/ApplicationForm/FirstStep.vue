@@ -43,6 +43,7 @@
                 outlined
                 autocomplete
                 clearable
+                :return-object="formType === 'vaksin'"
                 :error-messages="errors"
                 :placeholder="instanceNamePlaceholder"
                 @input.native="querySearchFaskes"
@@ -104,7 +105,7 @@
                 v-model="formApplicant.cityNameId"
                 outlined
                 :error-messages="errors"
-                :items="applicantListCity"
+                :items="cityList"
                 :placeholder="$t('label.autocomplete_city_placeholder')"
                 @change="getListDistrict"
               />
@@ -118,7 +119,7 @@
                 v-model="formApplicant.districtNameId"
                 outlined
                 :error-messages="errors"
-                :items="applicantListDistrict"
+                :items="districtList"
                 :placeholder="$t('label.autocomplete_capital_placeholder')"
                 @change="getListVillage"
               />
@@ -132,7 +133,7 @@
                 v-model="formApplicant.villageNameId"
                 outlined
                 :error-messages="errors"
-                :items="applicantListVillage"
+                :items="villageList"
                 :placeholder="$t('label.autocomplete_capital_placeholder')"
               />
             </ValidationProvider>
@@ -220,7 +221,10 @@ export default {
       },
       showForm: false,
       isEtc: false,
-      instanceNamePlaceholder: this.$t('label.example_instance_name')
+      instanceNamePlaceholder: this.$t('label.example_instance_name'),
+      cityList: [],
+      districtList: [],
+      villageList: []
     }
   },
   computed: {
@@ -267,7 +271,6 @@ export default {
       const actionName = this.formType === 'alkes' ? 'getListFaskesType' : 'getVaccineListFaskesType'
       await this.$store.dispatch(`faskesType/${actionName}`)
     }
-    await this.getListFaskes()
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
     })
@@ -293,32 +296,32 @@ export default {
     },
     async getListCity() {
       await this.$store.dispatch('region/getApplicantFormListCity')
-      this.applicantListCity.forEach(element => {
-        element.value = {
+      this.cityList = this.applicantListCity.map(element => {
+        return {
           id: element.kemendagri_kabupaten_kode,
-          name: element.kemendagri_kabupaten_nama
+          value: element.kemendagri_kabupaten_kode,
+          text: element.kemendagri_kabupaten_nama
         }
-        element.text = element.kemendagri_kabupaten_nama
       })
     },
     async getListDistrict() {
       await this.$store.dispatch('region/getApplicantFormListDistrict', { city_code: this.formApplicant.cityNameId.id })
-      this.applicantListDistrict.forEach(element => {
-        element.value = {
+      this.districtList = this.applicantListDistrict.map(element => {
+        return {
           id: element.kemendagri_kecamatan_kode,
-          name: element.kemendagri_kecamatan_nama
+          value: element.kemendagri_kecamatan_kode,
+          text: element.kemendagri_kecamatan_nama
         }
-        element.text = element.kemendagri_kecamatan_nama
       })
     },
     async getListVillage() {
       await this.$store.dispatch('region/getApplicantFormListVillage', { subdistrict_code: this.formApplicant.districtNameId.id, area_type: 'village' })
-      this.applicantListVillage.forEach(element => {
-        element.value = {
+      this.villageList = this.applicantListVillage.map(element => {
+        return {
           id: element.kemendagri_desa_kode,
-          name: element.kemendagri_desa_nama
+          value: element.kemendagri_desa_kode,
+          text: element.kemendagri_desa_nama
         }
-        element.text = element.kemendagri_desa_nama
       })
     },
     async onSelectFaskesType(id) {
@@ -366,13 +369,29 @@ export default {
       this.listQueryFaskes.nama_faskes = event.target.value
       await this.getListFaskes()
     },
-    async onSelectFaskes(id) {
-      if (id) {
-        await this.$store.dispatch('faskes/getDetailFaskes', id)
+    onSelectFaskes(val) {
+      if (this.formType === 'alkes' && val) {
+        this.$store.dispatch('faskes/getDetailFaskes', val)
+      } else {
+        this.formApplicant.cityNameId = {
+          text: val.city.name,
+          value: val.city.kemendagri_kabupaten_kode,
+          id: val.city.kemendagri_kabupaten_kode
+        }
+        this.formApplicant.districtNameId = {
+          text: val.district.name,
+          value: val.district.kemendagri_kecamatan_kode,
+          id: val.district.kemendagri_kecamatan_kode
+        }
+        this.formApplicant.villageNameId = {
+          text: val.village.name,
+          value: val.village.kemendagri_desa_kode,
+          id: val.village.kemendagri_desa_kode
+        }
+        this.getListCity()
+        this.getListDistrict()
+        this.getListVillage()
       }
-    },
-    hideDialog(value) {
-
     },
     showInstanceDialog() {
       this.showForm = true
