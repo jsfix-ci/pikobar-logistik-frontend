@@ -8,7 +8,7 @@
         height="38px"
         min-width="0px"
         class="landing-page__btn green-dark white--text py-2 px-4"
-        @click="onInfoClicked"
+        @click="onInfoClick"
       >
         <v-icon
           right
@@ -113,8 +113,8 @@ export default {
     onTracking() {
       this.$router.push('/tracking')
     },
-    onInfoClicked() {
-      // @todo: create info clicked function
+    onInfoClick() {
+      // @todo: create info click function
     }
   }
 }

@@ -33,7 +33,7 @@
           :items="listApd"
           item-text="name"
           item-value="id"
-          :return-object="isVaccine"
+          return-object
           :error-messages="errors"
           :hide-details="errors.length === 0"
           outlined
@@ -215,8 +215,9 @@ export default {
   methods: {
     async setUnit(value) {
       if (!this.isVaccine) {
-        value.unitId = ''
-        value.unitName = ''
+        value.unitId = value.apd.id
+        value.unitName = value.apd.name
+        value.apd = value.apd.id
         const listApd = await this.$store.dispatch('logistics/getListApdUnitMaterialGroup', value.apd)
         value.unitList = listApd.map(element => {
           return {
