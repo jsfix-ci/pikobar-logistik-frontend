@@ -664,30 +664,55 @@ export default {
     },
     async submitData() {
       this.isLoading = true
-      const dataLogistics = []
-      this.logisticNeeds.forEach(element => {
-        dataLogistics.push({
-          usage: element.purpose,
-          priority: element.urgency,
-          product_id: element.apd,
-          brand: element.brand,
-          quantity: element.total,
-          unit: element.unitId,
-          description: element.description
-        })
-      })
+      let dataLogistics = []
+      let dataVaccineSupportList = []
 
-      const dataVaccineSupportList = [...this.vaccineSupportList] // @todo: adjust this model with BE needs
+      if (this.formType === 'vaksin') {
+        dataLogistics = this.logisticNeeds.map(element => {
+          return {
+            usage: element.purpose,
+            priority: element.urgency,
+            product_id: element.apd,
+            brand: element.brand,
+            quantity: element.total,
+            unit: element.unitId,
+            description: element.description,
+            category: 'vaccine'
+          }
+        })
+        dataVaccineSupportList = this.vaccineSupportList.map(element => {
+          return {
+            usage: element.purpose,
+            product_id: element.apd,
+            quantity: element.total,
+            unit: element.unitId,
+            description: element.description,
+            purpose: element.purpose,
+            category: 'vaccine_support'
+          }
+        })
+      } else {
+        dataLogistics = this.logisticNeeds.map(element => {
+          return {
+            usage: element.purpose,
+            priority: element.urgency,
+            product_id: element.apd,
+            brand: element.brand,
+            quantity: element.total,
+            unit: element.unitId,
+            description: element.description
+          }
+        })
+      }
 
       const formData = new FormData()
-      formData.append('logistic_request', JSON.stringify(dataLogistics))
-      formData.append('vaccine_support_list', JSON.stringify(dataVaccineSupportList)) // @todo: adjust this model with BE needs
-      formData.append('agency_type', this.formApplicant.instanceType)
+      formData.append('logistic_request', JSON.stringify([...dataLogistics, ...dataVaccineSupportList]))
+      formData.append('agency_type', this.formApplicant.instanceType.id)
       if (this.formApplicant.instanceEtc) {
         formData.append('agency_name', this.formApplicant.instanceEtc)
       } else {
         formData.append('agency_name', this.formApplicant.instanceName)
-        formData.append('master_faskes_id', this.formApplicant.instance)
+        formData.append('master_faskes_id', this.formApplicant.instance.id)
       }
       if (this.formApplicant.instancePhoneNumber != null) {
         formData.append('phone_number', this.formApplicant.instancePhoneNumber)
@@ -703,7 +728,7 @@ export default {
       formData.append('secondary_phone_number', this.formIdentityApplicant.applicantPhoneNumber2)
       formData.append('letter_file', this.applicantLetter.dataFile)
       formData.append('application_letter_number', this.formApplicant.letterNumber)
-      formData.append('is_application_letter_number_final', this.applicantLetter.is_application_letter_number_final)
+      formData.append('is_letter_file_final', this.applicantLetter.is_letter_file_final)
       formData.append('total_covid_patients', this.applicantLetter.total_covid_patients ?? 0)
       formData.append('total_isolation_room', this.applicantLetter.total_isolation_room ?? 0)
       formData.append('total_bedroom', this.applicantLetter.total_bedroom ?? 0)

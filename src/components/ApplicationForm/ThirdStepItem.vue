@@ -144,7 +144,6 @@
       <v-label>
         <strong>{{ $t('label.note') }}</strong>
       </v-label>
-      <!-- @todo: adjust this model naming with BE -->
       <v-text-field
         v-model="data.note"
         :placeholder="$t('label.input_note')"
