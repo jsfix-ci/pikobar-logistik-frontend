@@ -8,7 +8,7 @@
         height="38px"
         min-width="0px"
         class="landing-page__btn green-dark white--text py-2 px-4"
-        @click="onNext"
+        @click="onInfoClicked"
       >
         <v-icon
           right
@@ -88,18 +88,33 @@
       </div>
       <img src="../../../public/img/icons/vaccine-track-right.svg" alt="vaccine track">
     </section>
+
+    <v-dialog v-model="showRequirement" max-width="800px">
+      <RequirementPopUp @close="showRequirement = false" />
+    </v-dialog>
   </div>
 </template>
 
 <script>
+import RequirementPopUp from './RequirementPopUp.vue'
 export default {
+  components: {
+    RequirementPopUp
+  },
+  data() {
+    return {
+      showRequirement: false
+    }
+  },
   methods: {
     onRequest() {
-      this.$store.dispatch('logistics/setFormRequestType', 'vaksin')
-      this.$router.push('/form-pemohon')
+      this.showRequirement = true
     },
     onTracking() {
       this.$router.push('/tracking')
+    },
+    onInfoClicked() {
+      // @todo: create info clicked function
     }
   }
 }

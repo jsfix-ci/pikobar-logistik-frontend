@@ -551,6 +551,9 @@ export default {
     applicant_letter_number_upload: 'Upload Surat Permohonan',
     download: 'Unduh',
     download_letter: 'Unduh Surat',
+    download_letter_template: 'Unduh Template Surat',
+    request_letter_detail: 'Detail Surat Permohonan',
+    request_letter_requirements: 'Surat permohonan diwajibkan memuat informasi berikut',
     download_data: 'Download Data',
     outgoing_mail_data: 'Data Surat Perintah',
     incoming_mail_data: 'Data Surat Masuk',
@@ -677,6 +680,7 @@ export default {
     recommendation: 'Rekomendasi Salur',
     distribution_realization: 'Realisasi Salur',
     realization: 'Realisasi',
+    request_requirement: 'Syarat Permohonan',
     acceptance_report: {
       already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
       logistic_acceptance_report_title: 'Informasi Penerima Barang',

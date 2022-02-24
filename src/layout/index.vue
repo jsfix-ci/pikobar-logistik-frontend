@@ -5,7 +5,7 @@
     <app-header v-if="!isVaccineContent" />
     <div class="wrapper d-flex flex-column justify-space-between">
       <!-- App Main Content -->
-      <v-content>
+      <v-main>
         <!-- Breadcrumbs -->
         <v-row v-if="!isVaccineContent" style="padding: 5px 20px;">
           <breadcrumb />
@@ -16,7 +16,7 @@
             <router-view :key="key" />
           </transition>
         </div>
-      </v-content>
+      </v-main>
       <!-- App Footer -->
       <app-footer v-if="isVaccineContent" />
       <!-- App Back To Top -->
