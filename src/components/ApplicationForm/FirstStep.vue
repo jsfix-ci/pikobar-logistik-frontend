@@ -383,6 +383,7 @@ export default {
       } else {
         this.formApplicant.instanceName = val.name
         this.formApplicant.fullAddress = val.address
+        this.formApplicant.instancePhoneNumber = val.phone
         this.formApplicant.cityNameId = {
           text: val.city.name,
           value: val.city.kemendagri_kabupaten_kode,

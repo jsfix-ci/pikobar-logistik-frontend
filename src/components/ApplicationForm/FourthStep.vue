@@ -45,7 +45,7 @@
                 <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
               </v-label>
               <v-radio-group
-                v-model="applicantLetter.is_application_letter_number_final"
+                v-model="applicantLetter.is_applicant_file_final"
                 :error-messages="errors"
               >
                 <v-radio
