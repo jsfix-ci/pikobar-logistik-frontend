@@ -68,6 +68,7 @@ export default {
         unitId: '',
         unitName: '',
         unitList: [],
+        purposeList: [],
         purpose: '',
         urgency: ''
       })
