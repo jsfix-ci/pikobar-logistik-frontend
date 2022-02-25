@@ -3,7 +3,7 @@
     <span class="success__title mb-6">
       {{ $t('label.vaccine_save_success') }}
     </span>
-    <img height="200" src="../../static/berhasil.svg">
+    <img height="200" src="../../static/berhasil.svg" alt="success-icon">
     <div class="d-flex flex-row align-center my-6">
       <span class="success__request-id">
         {{ $t('label.request_id') }}
