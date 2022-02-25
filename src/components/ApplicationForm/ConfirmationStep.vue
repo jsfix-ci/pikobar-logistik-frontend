@@ -67,6 +67,10 @@
             {{ $t('label.loading_step_two') }}
           </v-row>
         </div>
+        <VaccineSuccess
+          v-else-if="showVaccineSuccessPage"
+          :request-id="requestId"
+        />
         <div v-else-if="isDone" class="mt-n5">
           <v-row align="center" justify="center">
             <img height="200" src="../../static/berhasil.svg">
@@ -583,9 +587,13 @@
 <script>
 import { mapState } from 'vuex'
 import EventBus from '@/utils/eventBus'
+import VaccineSuccess from './VaccineSuccess.vue'
 
 export default {
   name: 'TahapKonfirmasi',
+  components: {
+    VaccineSuccess
+  },
   props: {
     formApplicant: {
       type: Object,
@@ -621,13 +629,17 @@ export default {
       urlLetter: null,
       letterName: '',
       isLoading: false,
-      isDone: false
+      isDone: false,
+      requestId: null
     }
   },
   computed: {
     ...mapState('logistics', [
       'formType'
-    ])
+    ]),
+    showVaccineSuccessPage() {
+      return this.formType === 'vaksin' && this.isDone
+    }
   },
   mounted() {
     this.letterName = this.applicantLetter.name
@@ -740,6 +752,7 @@ export default {
         ? 'logistics/postApplicantVaksinAdmin'
         : 'logistics/postApplicantForm'
       const response = await this.$store.dispatch(actionName, formData)
+      this.requestId = response.data.id
       this.isDone = response.status === 200 || response.status === 201
       this.isLoading = false
     },
