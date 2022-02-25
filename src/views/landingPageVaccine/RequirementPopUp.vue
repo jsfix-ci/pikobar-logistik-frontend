@@ -155,7 +155,7 @@ export default {
   background-color: white;
 
   &__title {
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     font-weight: 700;
     font-size: 16px;
     color: #424242;
@@ -168,13 +168,13 @@ export default {
     &__content {
 
       &__title {
-        font-family: 'Lora';
+        font-family: 'Lora', serif;
         font-size: 24px;
         font-weight: 700;
         color: white;
 
         &__text {
-          font-family: 'Roboto';
+          font-family: 'Roboto', sans-serif;
           font-size: 16px;
           color: white;
         }
@@ -184,14 +184,14 @@ export default {
 
   &__detail {
     &__title {
-      font-family: 'Lora';
+      font-family: 'Lora', serif;
       font-size: 28px;
       font-weight: 700;
       color: #9E9E9E;
     }
 
     &__text {
-      font-family: 'Roboto';
+      font-family: 'Roboto', sans-serif;
       font-size: 16px;
       color: #757575;
     }
@@ -202,13 +202,13 @@ export default {
     border-radius: 8px;
 
     &__title {
-      font-family: 'Roboto';
+      font-family: 'Roboto', sans-serif;
       font-weight: 900;
       font-size: 16px;
     }
 
     &__text {
-      font-family: 'Roboto';
+      font-family: 'Roboto', sans-serif;
       font-size: 16px;
       color: #424242;
     }
