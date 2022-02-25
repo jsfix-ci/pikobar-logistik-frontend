@@ -37,7 +37,7 @@ const state = {
   reportedReceipt: 0,
   unReportedReceipt: 0,
   // Form Request
-  formType: 'alkes',
+  formType: 'vaksin',
   listVaccine: [],
   listVaccineSupport: []
 }

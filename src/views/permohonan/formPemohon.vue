@@ -89,6 +89,7 @@
               <kebutuhan-logistik
                 ref="updateData"
                 :logistic-needs="logisticNeeds"
+                :vaccine-support-list.sync="vaccineSupportList"
               />
             </v-stepper-content>
             <v-stepper-content step="4">
@@ -107,6 +108,7 @@
       :form-applicant="formApplicant"
       :form-identity-applicant="formIdentityApplicant"
       :logistic-needs="logisticNeeds"
+      :vaccine-support-list="vaccineSupportList"
       :applicant-letter="applicantLetter"
     />
   </div>
@@ -124,6 +126,7 @@ export default {
       formApplicant: {},
       formIdentityApplicant: {},
       logisticNeeds: [],
+      vaccineSupportList: [],
       applicantLetter: {},
       isConfirm: false,
       isAdmin: false
