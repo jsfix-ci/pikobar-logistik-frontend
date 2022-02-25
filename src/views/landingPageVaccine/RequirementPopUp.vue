@@ -23,7 +23,7 @@
         <div class="d-flex flex-column">
           <span class="requirement__header__content__title__text d-flex flex-row align-center">
             <img
-              src="../../../public/img/icons/check-white.svg"
+              src="/img/icons/check-white.svg"
               alt="check"
               class="mr-2"
             >
@@ -31,7 +31,7 @@
           </span>
           <span class="requirement__header__content__title__text d-flex flex-row align-center">
             <img
-              src="../../../public/img/icons/check-white.svg"
+              src="/img/icons/check-white.svg"
               alt="check"
               class="mr-2"
             >
@@ -39,7 +39,7 @@
           </span>
         </div>
       </div>
-      <img src="../../../public/img/icons/icon-stamp.svg" alt="stamp">
+      <img src="/img/icons/icon-stamp.svg" alt="stamp">
     </div>
 
     <!-- Detail Title -->
@@ -66,7 +66,7 @@
           class="requirement__instance__text d-flex flex-row align-center mb-2"
         >
           <img
-            src="../../../public/img/icons/check-green.svg"
+            src="/img/icons/check-green.svg"
             alt="check"
             class="mr-2"
           >
