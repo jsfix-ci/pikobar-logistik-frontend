@@ -2,7 +2,7 @@
   <div class="landing-page">
     <!-- Header -->
     <section class="d-flex flex-row justify-space-between py-5">
-      <img src="../../../public/img/icons/pengajuan-logistik.svg" alt="pengajuan logistik">
+      <img src="/img/icons/pengajuan-logistik.svg" alt="pengajuan logistik">
       <v-btn
         depressed
         height="38px"
@@ -58,7 +58,7 @@
           <img
             width="358px"
             height="262px"
-            src="../../../public/img/icons/vaccination.png"
+            src="/img/icons/vaccination.png"
             alt="vaccination"
           >
         </v-col>
@@ -67,7 +67,7 @@
 
     <!-- Vaccine Tracking -->
     <section class="landing-page__main-section--grey d-flex flex-row justify-space-between">
-      <img src="../../../public/img/icons/vaccine-track-left.svg" alt="vaccine track">
+      <img src="/img/icons/vaccine-track-left.svg" alt="vaccine track">
       <div class="d-flex flex-column align-center">
         <span class="landing-page__vaccination-track__title">Lacak Pengajuan Vaksin</span>
         <p align="center" class="landing-page__vaccination-track__text">
@@ -86,17 +86,29 @@
           {{ $t('label.track_request') }}
         </v-btn>
       </div>
-      <img src="../../../public/img/icons/vaccine-track-right.svg" alt="vaccine track">
+      <img src="/img/icons/vaccine-track-right.svg" alt="vaccine track">
     </section>
+
+    <v-dialog v-model="showRequirement" max-width="800px">
+      <RequirementPopUp @close="showRequirement = false" />
+    </v-dialog>
   </div>
 </template>
 
 <script>
+import RequirementPopUp from './RequirementPopUp.vue'
 export default {
+  components: {
+    RequirementPopUp
+  },
+  data() {
+    return {
+      showRequirement: false
+    }
+  },
   methods: {
     onRequest() {
-      this.$store.dispatch('logistics/setFormRequestType', 'vaksin')
-      this.$router.push('/form-pemohon')
+      this.showRequirement = true
     },
     onTracking() {
       this.$router.push('/tracking')
