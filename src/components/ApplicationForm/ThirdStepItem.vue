@@ -125,7 +125,20 @@
         <v-label>
           <strong>{{ $t('label.purpose') }}</strong>
         </v-label>
+        <v-autocomplete
+          v-if="isVaccine"
+          :key="data.purposeList.length"
+          v-model="data.purpose"
+          :items="data.purposeList"
+          outlined
+          solo-inverted
+          :error-messages="errors"
+          :hide-details="errors.length === 0"
+          item-value="id"
+          item-text="name"
+        />
         <v-text-field
+          v-else
           v-model="data.purpose"
           :placeholder="$t('label.input_purpose')"
           outlined
@@ -228,6 +241,7 @@ export default {
         value.unitId = value.apd.id
         value.unitName = value.apd.name
         value.unitList = value.apd.unit
+        value.purposeList = value.apd.purposes
         value.apd = value.apd.id
       }
     },
