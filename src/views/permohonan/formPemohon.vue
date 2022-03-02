@@ -11,7 +11,7 @@
               <router-link to="/landing-page">
                 <div class="title-page-form-pemohon">
                   {{
-                    formType === 'alkes'
+                    !isVaccineContent
                       ? $t('label.applicant_med_form_title')
                       : $t('label.applicant_vaccine_form_title')
                   }}
@@ -115,7 +115,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import EventBus from '@/utils/eventBus'
 
 export default {
@@ -133,9 +132,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('logistics', [
-      'formType'
-    ])
+    isVaccineContent() {
+      return this.$route.query.type === 'vaksin'
+    }
   },
   created() {
     EventBus.$on('nextStep', (value) => {
