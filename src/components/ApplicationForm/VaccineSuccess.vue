@@ -8,12 +8,20 @@
       <span class="success__request-id">
         {{ $t('label.request_id') }}
       </span>
-      <strong class="mx-5">
+      <strong class="success__id mx-5 px-3 py-1">
         {{ requestId }}
       </strong>
-      <v-icon @click="onCopy">
-        mdi-content-copy
-      </v-icon>
+      <v-tooltip
+        v-model="showTooltip"
+        right
+      >
+        <template #activator="{}">
+          <v-icon @click="onCopy">
+            mdi-content-copy
+          </v-icon>
+        </template>
+        ID Permohonan berhasil di salin
+      </v-tooltip>
     </div>
 
     <strong class="success__section-title">
@@ -70,8 +78,13 @@
 export default {
   props: {
     requestId: {
-      type: String,
+      type: [String, Number],
       default: ''
+    }
+  },
+  data() {
+    return {
+      showTooltip: false
     }
   },
   methods: {
@@ -80,6 +93,8 @@ export default {
     },
     onCopy() {
       navigator.clipboard.writeText(this.requestId)
+      this.showTooltip = true
+      setTimeout(() => { this.showTooltip = false }, 2000)
     },
     goWhatsapp() {
       window.open(`https://wa.me/${process.env.VUE_APP_HOTLINE_PIKOBAR}`, '_blank')
@@ -99,6 +114,13 @@ export default {
   &__request-id {
     font-family: 'Roboto', sans-serif;
     font-size: 20px;
+  }
+
+  &__id {
+    border-style: solid;
+    border-color: #424242;
+    border-radius: 8px;
+    border-width: 1px;
   }
 
   &__section-title {
