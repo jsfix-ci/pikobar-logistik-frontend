@@ -106,7 +106,7 @@
 <script>
 import { ValidationObserver } from 'vee-validate'
 import EventBus from '@/utils/eventBus'
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import ThirdStepItem from './ThirdStepItem.vue'
 import VaccineSupporterInput from './VaccineSupporterInput.vue'
 
@@ -149,11 +149,8 @@ export default {
       'listAPD',
       'listApdUnit'
     ]),
-    ...mapState('logistics', [
-      'formType'
-    ]),
     isVaccineContent() {
-      return this.formType === 'vaksin'
+      return this.$route.query.type === 'vaksin'
     }
   },
   watch: {
@@ -162,7 +159,7 @@ export default {
     }
   },
   async created() {
-    this.listQueryAPD.category = this.formType
+    this.listQueryAPD.category = this.$route.query.type
     this.isVaccineContent ? await this.getListVaccineAndSupport() : await this.getListAPD()
   },
   methods: {

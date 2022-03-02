@@ -140,8 +140,7 @@ export default {
   },
   methods: {
     onNext() {
-      this.$store.dispatch('logistics/setFormRequestType', 'vaksin')
-      this.$router.push('/form-pemohon')
+      this.$router.push({ path: '/form-pemohon', query: { type: 'vaksin' }})
     },
     onDownload() {
       // @todo: create on download function

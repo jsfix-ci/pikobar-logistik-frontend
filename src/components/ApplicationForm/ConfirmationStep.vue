@@ -11,7 +11,7 @@
               <router-link to="/landing-page">
                 <div class="title-page-data-confirmation">
                   {{
-                    formType === 'alkes'
+                    !isVaccineContent
                       ? $t('label.applicant_med_form_title')
                       : $t('label.applicant_vaccine_form_title')
                   }}
@@ -254,7 +254,12 @@
               </v-col>
             </v-card>
           </div>
-          <div class="main-color-data-confirmation">{{ formType === 'vaksin' ? $t('label.list_vaccine_need') : $t('label.list_logistic_need') }}</div>
+          <div class="main-color-data-confirmation">
+            {{ isVaccineContent
+              ? $t('label.list_vaccine_need')
+              : $t('label.list_logistic_need')
+            }}
+          </div>
           <v-card outlined>
             <v-simple-table>
               <template v-slot:default>
@@ -277,15 +282,17 @@
                     <td>{{ item.unitName || '-' }}</td>
                     <td>{{ item.description || '-' }}</td>
                     <td>{{ item.total || '-' }}</td>
-                    <td>{{ formType === 'vaksin' ? item.unitId : item.unitList[0].unit }}</td>
+                    <td>{{ isVaccineContent ? item.unitId : item.unitList[0].unit }}</td>
                     <td>{{ item.purpose || '-' }}</td>
                   </tr>
                 </tbody>
               </template>
             </v-simple-table>
           </v-card>
-          <div v-if="formType === 'vaksin'" class="main-color-data-confirmation">{{ $t('label.list_vaccine_support_need') }}</div>
-          <v-card v-if="formType === 'vaksin'" outlined>
+          <div v-if="isVaccineContent" class="main-color-data-confirmation">
+            {{ $t('label.list_vaccine_support_need') }}
+          </div>
+          <v-card v-if="isVaccineContent" outlined>
             <v-simple-table>
               <template v-slot:default>
                 <thead>
@@ -585,7 +592,6 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 import EventBus from '@/utils/eventBus'
 import VaccineSuccess from './VaccineSuccess.vue'
 
@@ -634,11 +640,11 @@ export default {
     }
   },
   computed: {
-    ...mapState('logistics', [
-      'formType'
-    ]),
     showVaccineSuccessPage() {
-      return this.formType === 'vaksin' && this.isDone
+      return this.isVaccineContent && this.isDone
+    },
+    isVaccineContent() {
+      return this.$route.query.type === 'vaksin'
     }
   },
   mounted() {
@@ -679,7 +685,7 @@ export default {
       let dataLogistics = []
       let dataVaccineSupportList = []
 
-      if (this.formType === 'vaksin') {
+      if (this.isVaccineContent) {
         dataLogistics = this.logisticNeeds.map(element => {
           return {
             usage: element.purpose,
@@ -748,7 +754,7 @@ export default {
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'pikobar')
       formData.append('url', location.host + '/#')
-      const actionName = this.formType === 'vaksin'
+      const actionName = this.isVaccineContent
         ? 'logistics/postApplicantVaksinAdmin'
         : 'logistics/postApplicantForm'
       const response = await this.$store.dispatch(actionName, formData)
