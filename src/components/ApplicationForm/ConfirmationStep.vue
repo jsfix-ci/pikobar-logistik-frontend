@@ -191,7 +191,7 @@
             </v-row>
           </v-card>
           <div class="main-color-data-confirmation">{{ $t('label.step_title_4') }}</div>
-          <v-card outlined>
+          <v-card outlined class="py-3">
             <v-row class="ml-2">
               <v-col cols="1" md="1">
                 <span class="main-color-data-confirmation">#</span>
@@ -207,11 +207,15 @@
               <v-col cols="3" md="3">
                 <span class="grey--text">{{ formApplicant.letterNumber }}</span>
               </v-col>
-              <v-col cols="4" md="4">
-                <a :href="urlLetter" target="_blank" class="blue--text"><u>{{ applicantLetter.name }}</u></a>
-              </v-col>
               <v-col>
-                <span class="main-color-data-confirmation">{{ $t('label.download') }}</span>
+                <a
+                  :href="urlLetter"
+                  target="_blank"
+                  class="download-button py-1 px-3"
+                  download
+                >
+                  {{ $t('label.download') }}
+                </a>
               </v-col>
             </v-row>
           </v-card>
@@ -836,5 +840,13 @@ export default {
   .bg-mobile-data-confirmation {
     background-color: white !important;
   }
+}
+</style>
+<style lang="scss" scoped>
+.download-button {
+  border-style: solid;
+  border-radius: 8px;
+  border-color: #4caf50;
+  border-width: 1px;
 }
 </style>
