@@ -62,17 +62,9 @@
                   class="white--text"
                   min-width="140px"
                   color="#16A75C"
-                  @click="goApplicant('alkes')"
+                  @click="goApplicant()"
                 >
                   {{ $t('label.start_med_request') }}
-                </v-btn>
-                <v-btn
-                  class="white--text ml-3"
-                  min-width="140px"
-                  color="#16A75C"
-                  @click="goApplicant('vaksin')"
-                >
-                  {{ $t('label.start_vaccine_request') }}
                 </v-btn>
               </div>
             </v-col>
@@ -90,8 +82,7 @@
                 {{ $t('label.landing_page_logistic_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}</span> <span>{{ $t('label.landing_page_here') }}</span>
               </div>
               <p class="text-center font-text card-text-landing-page card-text-layout">{{ $t('label.landing_page_text') }}</p>
-              <center><v-btn class="white--text" min-width="140px" color="#16A75C" @click="goApplicant('alkes')">{{ $t('label.start_med_request') }}</v-btn></center>
-              <center><v-btn class="white--text" min-width="140px" color="#16A75C" @click="goApplicant('vaksin')">{{ $t('label.start_vaccine_request') }}</v-btn></center>
+              <center><v-btn class="white--text" min-width="140px" color="#16A75C" @click="goApplicant()">{{ $t('label.start_med_request') }}</v-btn></center>
             </v-col>
           </v-row>
           <v-row>
@@ -310,13 +301,11 @@ export default {
     openPopup() {
       this.dialog = true
     },
-    goApplicant(type) {
-      this.requestType = type
+    goApplicant() {
       this.applicantDialog = true
     },
     goForm() {
-      this.$store.dispatch('logistics/setFormRequestType', this.requestType)
-      this.$router.push('/form-pemohon')
+      this.$router.push({ path: '/form-pemohon', query: { type: 'alkes' }})
     }
   }
 }

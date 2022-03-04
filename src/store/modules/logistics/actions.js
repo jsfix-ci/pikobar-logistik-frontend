@@ -451,9 +451,6 @@ export default {
   logisticRequestType({ commit }, payload) {
     commit('SET_LOGISTIC_REQUEST_TYPE', payload)
   },
-  setFormRequestType({ commit }, type) {
-    commit('SET_FORM_TYPE', type)
-  },
   async getListVaccineAndSupport({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/vaccine-product', 'GET', params)

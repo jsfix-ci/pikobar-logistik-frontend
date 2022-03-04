@@ -149,7 +149,7 @@
               <v-label class="title">
                 <b>
                   {{
-                    formType === 'vaksin'
+                    isVaccineContent
                       ? $t('label.pharmacy_installation_full_address')
                       : $t('label.full_address')
                   }}
@@ -255,9 +255,6 @@ export default {
     ...mapGetters('faskesType', [
       'faskesTypeList'
     ]),
-    ...mapState('logistics', [
-      'formType'
-    ]),
     ...mapState('faskesType', [
       'listVaccineFaskesType'
     ]),
@@ -265,17 +262,20 @@ export default {
       'listFaskesVaccine'
     ]),
     instanceTypeList() {
-      return this.formType === 'alkes'
+      return !this.isVaccineContent
         ? this.faskesTypeList
         : this.listVaccineFaskesType
     },
     instanceNameList() {
-      return this.formType === 'alkes'
+      return !this.isVaccineContent
         ? this.faskesList
         : this.listFaskesVaccine
     },
     itemText() {
-      return this.formType === 'alkes' ? 'nama_faskes' : 'name'
+      return !this.isVaccineContent ? 'nama_faskes' : 'name'
+    },
+    isVaccineContent() {
+      return this.$route.query.type === 'vaksin'
     }
   },
   async created() {
@@ -283,7 +283,7 @@ export default {
     if (this.isAdmin) {
       await this.$store.dispatch('faskesType/getListFaskesType', { non_public: 1 })
     } else {
-      const actionName = this.formType === 'alkes' ? 'getListFaskesType' : 'getVaccineListFaskesType'
+      const actionName = !this.isVaccineContent ? 'getListFaskesType' : 'getVaccineListFaskesType'
       await this.$store.dispatch(`faskesType/${actionName}`)
     }
     EventBus.$on('dialogHide', (value) => {
@@ -331,7 +331,7 @@ export default {
     async onSelectFaskesType(value) {
       const { id, name } = value
       this.formApplicant.instanceTypeName = name
-      if (this.formType === 'alkes') {
+      if (!this.isVaccineContent) {
         this.listQueryFaskes.id_tipe_faskes = id
       } else {
         this.listQueryFaskes.medical_facility_type_id = id
@@ -364,7 +364,7 @@ export default {
       }
     },
     async getListFaskes() {
-      if (this.formType === 'alkes') {
+      if (!this.isVaccineContent) {
         if (this.isAdmin) this.listQueryFaskes.is_imported = 0
         await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
       } else {
@@ -377,7 +377,7 @@ export default {
     },
     onSelectFaskes(val) {
       const { id } = val
-      if (this.formType === 'alkes' && val) {
+      if (!this.isVaccineContent && val) {
         this.formApplicant.instanceName = val.nama_faskes
         this.$store.dispatch('faskes/getDetailFaskes', id)
       } else {
