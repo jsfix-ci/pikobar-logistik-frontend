@@ -23,6 +23,7 @@ export default {
     realized_title: 'Selesai Realisasi',
     not_yet_realized_title: 'Belum Realisasi',
     not_verified_title: 'Administrasi',
+    immunization: 'Imunisasi',
     rdt: 'Test Masif',
     create_rdt: 'Input hasil test',
     list_rdt: 'List hasil test',
@@ -44,7 +45,8 @@ export default {
     outgoing_mail_detail: 'Detail Surat Perintah',
     incoming_mail_detail: 'Detail Surat Masuk',
     allocation: 'Alokasi Salur Logistik',
-    other_instance: 'Instansi Lainnya'
+    other_instance: 'Instansi Lainnya',
+    admin_verification: 'Verifikasi Administrasi'
   },
   label: {
     preview: 'Preview',

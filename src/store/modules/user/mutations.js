@@ -19,5 +19,8 @@ export default {
   },
   SET_PHASE: (state, phase) => {
     state.phase = phase
+  },
+  SET_APP: (state, app) => {
+    state.app = app
   }
 }
