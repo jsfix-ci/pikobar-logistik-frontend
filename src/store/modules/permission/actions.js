@@ -13,7 +13,7 @@ function hasPermission(roles, route, isVaccineModule) {
       }
       return route.meta.roles.includes(role) &&
       /**
-       * can't state 'route.meta.isVaccineModule === isVaccineModul',
+       * can't state 'route.meta.isVaccineModule === isVaccineModule',
        * because route.meta.isVaccineModule could be undefined
        */
         (
