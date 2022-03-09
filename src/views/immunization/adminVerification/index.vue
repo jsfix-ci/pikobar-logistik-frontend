@@ -95,7 +95,7 @@ export default {
       totalData: 'totalDataVaccineRequest'
     })
   },
-  async mounted() {
+  mounted() {
     this.fetchData()
   },
   methods: {
