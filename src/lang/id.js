@@ -669,6 +669,7 @@ export default {
     recommendation: 'Rekomendasi Salur',
     distribution_realization: 'Realisasi Salur',
     realization: 'Realisasi',
+    under_development_feature: 'Fitur ini sedang dalam tahap pengembangan',
     acceptance_report: {
       already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
       logistic_acceptance_report_title: 'Informasi Penerima Barang',
