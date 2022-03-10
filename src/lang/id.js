@@ -408,6 +408,7 @@ export default {
     detail_request_logistic_medic: 'Detail Pengajuan Logistik',
     created_date: 'Tanggal Dibuat',
     search_data: 'Cari',
+    search_placeholder: 'Masukkan kata kunci apa saja',
     search_instance_name: 'Cari Nama Instansi',
     search_application_letter: 'Masukan No. Surat Permohonan',
     verif_now: 'Verifikasi Sekarang',
@@ -543,6 +544,7 @@ export default {
     applicant_letter_number_upload: 'Upload Surat Permohonan',
     download: 'Unduh',
     download_letter: 'Unduh Surat',
+    download_excel: 'Unduh Data (Excel)',
     download_data: 'Download Data',
     outgoing_mail_data: 'Data Surat Perintah',
     incoming_mail_data: 'Data Surat Masuk',
@@ -669,6 +671,7 @@ export default {
     recommendation: 'Rekomendasi Salur',
     distribution_realization: 'Realisasi Salur',
     realization: 'Realisasi',
+    vaccine_request_list: 'Daftar Seluruh Surat Permohonan Vaksin',
     under_development_feature: 'Fitur ini sedang dalam tahap pengembangan',
     acceptance_report: {
       already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
