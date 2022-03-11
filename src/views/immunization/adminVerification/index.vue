@@ -1,6 +1,6 @@
 <template>
   <div class="admin-verification">
-    <h1 class="admin-verification__title">Verifikasi</h1>
+    <h1 class="admin-verification__title">{{ $t('label.verification') }}</h1>
 
     <!-- search section -->
     <div class="d-flex flex-row mb-10">
@@ -50,7 +50,7 @@
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         :on-next="fetchData"
-        :page-sizes="[5, 10, 20]"
+        :page-sizes="[5, 10]"
       />
     </div>
   </div>
@@ -58,10 +58,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getTableRowNumbering, filterQuery } from '../../../helpers/tableDisplay'
-import JDSTable from '../../../components/Base/JDSTable'
-import JDSButton from '../../../components/Base/JDSButton'
-import SearchInput from '../../../components/Base/SearchInput'
+import { getTableRowNumbering, filterQuery } from '@/helpers/tableDisplay'
+import JDSTable from '@/components/Base/JDSTable'
+import JDSButton from '@/components/Base/JDSButton'
+import SearchInput from '@/components/Base/SearchInput'
 export default {
   components: {
     JDSTable,
@@ -84,7 +84,8 @@ export default {
         page: parseInt(this.$route.query?.page || 1),
         limit: parseInt(this.$route.query?.limit || 5),
         sort: this.$route.query?.sort || '',
-        search: this.$route.query?.search || ''
+        search: this.$route.query?.search || '',
+        status: 'not_verified'
       }
     }
   },
