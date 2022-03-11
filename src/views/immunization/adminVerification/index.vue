@@ -58,10 +58,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getTableRowNumbering, filterQuery } from '../../../helpers/tableDisplay'
-import JDSTable from '../../../components/Base/JDSTable'
-import JDSButton from '../../../components/Base/JDSButton'
-import SearchInput from '../../../components/Base/SearchInput'
+import { getTableRowNumbering, filterQuery } from '@/helpers/tableDisplay'
+import JDSTable from '@/components/Base/JDSTable'
+import JDSButton from '@/components/Base/JDSButton'
+import SearchInput from '@/components/Base/SearchInput'
 export default {
   components: {
     JDSTable,
