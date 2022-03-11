@@ -105,7 +105,7 @@ export default {
     getTableRowNumbering,
     filterQuery,
     async fetchData() {
-      await this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery) // @todo: change API source
+      await this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
       this.$router.replace({
         query: {
           ...this.filterQuery(this.listQuery)
