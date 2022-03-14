@@ -18,10 +18,12 @@
               <v-autocomplete
                 v-model="formApplicant.instanceType"
                 outlined
+                clearable
+                return-object
                 :error-messages="errors"
                 item-value="id"
                 item-text="name"
-                :items="faskesTypeList"
+                :items="instanceTypeList"
                 :placeholder="$t('label.autocomplete_instance_placeholder')"
                 @change="onSelectFaskesType"
               />
@@ -34,13 +36,15 @@
               <v-label class="title"><b>{{ $t('label.instance_name') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
               <v-autocomplete
                 v-model="formApplicant.instance"
-                :items="faskesList"
+                :items="instanceNameList"
                 item-value="id"
-                item-text="nama_faskes"
+                :item-text="itemText"
                 single-line
                 solo
                 outlined
                 autocomplete
+                clearable
+                return-object
                 :error-messages="errors"
                 :placeholder="instanceNamePlaceholder"
                 @input.native="querySearchFaskes"
@@ -101,8 +105,9 @@
               <v-autocomplete
                 v-model="formApplicant.cityNameId"
                 outlined
+                return-object
                 :error-messages="errors"
-                :items="applicantListCity"
+                :items="cityList"
                 :placeholder="$t('label.autocomplete_city_placeholder')"
                 @change="getListDistrict"
               />
@@ -115,8 +120,9 @@
               <v-autocomplete
                 v-model="formApplicant.districtNameId"
                 outlined
+                return-object
                 :error-messages="errors"
-                :items="applicantListDistrict"
+                :items="districtList"
                 :placeholder="$t('label.autocomplete_capital_placeholder')"
                 @change="getListVillage"
               />
@@ -129,8 +135,9 @@
               <v-autocomplete
                 v-model="formApplicant.villageNameId"
                 outlined
+                return-object
                 :error-messages="errors"
-                :items="applicantListVillage"
+                :items="villageList"
                 :placeholder="$t('label.autocomplete_capital_placeholder')"
               />
             </ValidationProvider>
@@ -139,7 +146,18 @@
               v-slot="{ errors }"
               rules="requiredFullAddress"
             >
-              <v-label class="title"><b>{{ $t('label.full_address') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
+              <v-label class="title">
+                <b>
+                  {{
+                    isVaccineContent
+                      ? $t('label.pharmacy_installation_full_address')
+                      : $t('label.full_address')
+                  }}
+                </b>
+                <i class="text-small-first-step">
+                  {{ $t('label.must_fill') }}
+                </i>
+              </v-label>
               <v-textarea
                 v-model="formApplicant.fullAddress"
                 outlined
@@ -189,7 +207,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import EventBus from '@/utils/eventBus'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'IdentitasInstansiPemohon',
@@ -213,11 +231,15 @@ export default {
       nameFaskes: '',
       listQueryFaskes: {
         nama_faskes: null,
-        id_tipe_faskes: null
+        id_tipe_faskes: null,
+        medical_facility_type_id: null
       },
       showForm: false,
       isEtc: false,
-      instanceNamePlaceholder: this.$t('label.example_instance_name')
+      instanceNamePlaceholder: this.$t('label.example_instance_name'),
+      cityList: [],
+      districtList: [],
+      villageList: []
     }
   },
   computed: {
@@ -232,33 +254,44 @@ export default {
     ]),
     ...mapGetters('faskesType', [
       'faskesTypeList'
-    ])
+    ]),
+    ...mapState('faskesType', [
+      'listVaccineFaskesType'
+    ]),
+    ...mapState('faskes', [
+      'listFaskesVaccine'
+    ]),
+    instanceTypeList() {
+      return !this.isVaccineContent
+        ? this.faskesTypeList
+        : this.listVaccineFaskesType
+    },
+    instanceNameList() {
+      return !this.isVaccineContent
+        ? this.faskesList
+        : this.listFaskesVaccine
+    },
+    itemText() {
+      return !this.isVaccineContent ? 'nama_faskes' : 'name'
+    },
+    isVaccineContent() {
+      return this.$route.query.type === 'vaksin'
+    }
   },
   async created() {
     await this.getListCity()
     if (this.isAdmin) {
       await this.$store.dispatch('faskesType/getListFaskesType', { non_public: 1 })
     } else {
-      await this.$store.dispatch('faskesType/getListFaskesType')
+      const actionName = !this.isVaccineContent ? 'getListFaskesType' : 'getVaccineListFaskesType'
+      await this.$store.dispatch(`faskesType/${actionName}`)
     }
-    await this.getListFaskes()
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
     })
   },
   methods: {
     async onNext() {
-      this.faskesTypeList.forEach(element => {
-        if (element.id === this.formApplicant.instanceType) {
-          this.formApplicant.instanceTypeName = element.name
-        }
-      })
-      this.faskesList.forEach(element => {
-        if (element.id === this.formApplicant.instance) {
-          this.formApplicant.instanceName = element.nama_faskes
-          return
-        }
-      })
       const valid = await this.$refs.firtstep.validate()
       if (!valid) {
         return
@@ -267,40 +300,45 @@ export default {
     },
     async getListCity() {
       await this.$store.dispatch('region/getApplicantFormListCity')
-      this.applicantListCity.forEach(element => {
-        element.value = {
+      this.cityList = this.applicantListCity.map(element => {
+        return {
           id: element.kemendagri_kabupaten_kode,
-          name: element.kemendagri_kabupaten_nama
+          value: element.kemendagri_kabupaten_kode,
+          text: element.kemendagri_kabupaten_nama
         }
-        element.text = element.kemendagri_kabupaten_nama
       })
     },
     async getListDistrict() {
       await this.$store.dispatch('region/getApplicantFormListDistrict', { city_code: this.formApplicant.cityNameId.id })
-      this.applicantListDistrict.forEach(element => {
-        element.value = {
+      this.districtList = this.applicantListDistrict.map(element => {
+        return {
           id: element.kemendagri_kecamatan_kode,
-          name: element.kemendagri_kecamatan_nama
+          value: element.kemendagri_kecamatan_kode,
+          text: element.kemendagri_kecamatan_nama
         }
-        element.text = element.kemendagri_kecamatan_nama
       })
     },
     async getListVillage() {
       await this.$store.dispatch('region/getApplicantFormListVillage', { subdistrict_code: this.formApplicant.districtNameId.id, area_type: 'village' })
-      this.applicantListVillage.forEach(element => {
-        element.value = {
+      this.villageList = this.applicantListVillage.map(element => {
+        return {
           id: element.kemendagri_desa_kode,
-          name: element.kemendagri_desa_nama
+          value: element.kemendagri_desa_kode,
+          text: element.kemendagri_desa_nama
         }
-        element.text = element.kemendagri_desa_nama
       })
     },
-    async onSelectFaskesType(id) {
-      this.listQueryFaskes.id_tipe_faskes = id
-      this.isEtc = false
-      if (this.formApplicant.instanceType === 4 || this.formApplicant.instanceType === 5) {
-        this.isEtc = true
+    async onSelectFaskesType(value) {
+      const { id, name } = value
+      this.formApplicant.instanceTypeName = name
+      if (!this.isVaccineContent) {
+        this.listQueryFaskes.id_tipe_faskes = id
+      } else {
+        this.listQueryFaskes.medical_facility_type_id = id
       }
+      this.isEtc = this.formApplicant.instanceType === 4 ||
+        this.formApplicant.instanceType === 5 ||
+        this.formApplicant.instanceType === 99
       this.onChangeInstanceNamePlaceholder(id)
       await this.getListFaskes()
     },
@@ -326,24 +364,45 @@ export default {
       }
     },
     async getListFaskes() {
-      if (this.isAdmin) {
+      if (!this.isVaccineContent) {
+        if (this.isAdmin) this.listQueryFaskes.is_imported = 0
         await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
       } else {
-        this.listQueryFaskes.is_imported = 0
-        await this.$store.dispatch('faskes/getListFaskes', this.listQueryFaskes)
+        await this.$store.dispatch('faskes/getListFaskesVaccine', this.listQueryFaskes)
       }
     },
     async querySearchFaskes(event) {
       this.listQueryFaskes.nama_faskes = event.target.value
       await this.getListFaskes()
     },
-    async onSelectFaskes(id) {
-      if (id) {
-        await this.$store.dispatch('faskes/getDetailFaskes', id)
+    onSelectFaskes(val) {
+      const { id } = val
+      if (!this.isVaccineContent && val) {
+        this.formApplicant.instanceName = val.nama_faskes
+        this.$store.dispatch('faskes/getDetailFaskes', id)
+      } else {
+        this.formApplicant.instanceName = val.name
+        this.formApplicant.fullAddress = val.address
+        this.formApplicant.instancePhoneNumber = val.phone
+        this.formApplicant.cityNameId = {
+          text: val.city.name,
+          value: val.city.kemendagri_kabupaten_kode,
+          id: val.city.kemendagri_kabupaten_kode
+        }
+        this.formApplicant.districtNameId = {
+          text: val.district.name,
+          value: val.district.kemendagri_kecamatan_kode,
+          id: val.district.kemendagri_kecamatan_kode
+        }
+        this.formApplicant.villageNameId = {
+          text: val.village.name,
+          value: val.village.kemendagri_desa_kode,
+          id: val.village.kemendagri_desa_kode
+        }
+        this.getListCity()
+        this.getListDistrict()
+        this.getListVillage()
       }
-    },
-    hideDialog(value) {
-
     },
     showInstanceDialog() {
       this.showForm = true

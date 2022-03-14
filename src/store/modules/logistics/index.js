@@ -35,7 +35,10 @@ const state = {
   logisticRequestType: null,
   // Statistic
   reportedReceipt: 0,
-  unReportedReceipt: 0
+  unReportedReceipt: 0,
+  // Form Request
+  listVaccine: [],
+  listVaccineSupport: []
 }
 
 export default {

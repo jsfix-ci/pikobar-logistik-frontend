@@ -9,7 +9,13 @@
                 <v-img :max-width="40" src="../../static/logistik_logo_lingkar.svg" />
               </router-link>
               <router-link to="/landing-page">
-                <div class="title-page-form-pemohon">{{ $t('label.applicant_form_title') }}</div>
+                <div class="title-page-form-pemohon">
+                  {{
+                    !isVaccineContent
+                      ? $t('label.applicant_med_form_title')
+                      : $t('label.applicant_vaccine_form_title')
+                  }}
+                </div>
               </router-link>
             </v-row>
           </v-col>
@@ -83,6 +89,7 @@
               <kebutuhan-logistik
                 ref="updateData"
                 :logistic-needs="logisticNeeds"
+                :vaccine-support-list.sync="vaccineSupportList"
               />
             </v-stepper-content>
             <v-stepper-content step="4">
@@ -101,6 +108,7 @@
       :form-applicant="formApplicant"
       :form-identity-applicant="formIdentityApplicant"
       :logistic-needs="logisticNeeds"
+      :vaccine-support-list="vaccineSupportList"
       :applicant-letter="applicantLetter"
     />
   </div>
@@ -117,9 +125,15 @@ export default {
       formApplicant: {},
       formIdentityApplicant: {},
       logisticNeeds: [],
+      vaccineSupportList: [],
       applicantLetter: {},
       isConfirm: false,
       isAdmin: false
+    }
+  },
+  computed: {
+    isVaccineContent() {
+      return this.$route.query.type === 'vaksin'
     }
   },
   created() {

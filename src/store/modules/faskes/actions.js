@@ -12,6 +12,15 @@ export default {
       return error.response
     }
   },
+  async getListFaskesVaccine({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/medical-facility', 'GET', params)
+      commit('SET_LIST_FASKES_VACCINE', response.data)
+      return response
+    } catch (error) {
+      // silent error
+    }
+  },
   async getDetailFaskes({ commit }, faskesId) {
     try {
       const response = await fetchList(`/api/v1/master-faskes/${faskesId}`, 'GET')
