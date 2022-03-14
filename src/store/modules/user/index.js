@@ -11,7 +11,8 @@ const state = {
   district_user: '',
   fullname: '',
   phase: '',
-  district_name: ''
+  district_name: '',
+  app: ''
 }
 
 export default {

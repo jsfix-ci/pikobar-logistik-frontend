@@ -1,5 +1,8 @@
 <template>
-  <v-container fluid grid-list-xl py-0>
+  <div v-if="app === 'vaccine'">
+    <UnderDevelopment class="mt-16" />
+  </div>
+  <v-container v-else fluid grid-list-xl py-0>
     <div>
       <v-row>
         <v-col>
@@ -173,9 +176,13 @@
 import { mapGetters, mapState } from 'vuex'
 import EventBus from '@/utils/eventBus'
 import FormatingNumber from '../../helpers/formattingNumber'
+import UnderDevelopment from '../../components/UnderDevelopment'
 
 export default {
   name: 'Dashboard',
+  components: {
+    UnderDevelopment
+  },
   data() {
     return {
       baseURL: process.env.VUE_APP_URL,
@@ -190,7 +197,8 @@ export default {
       'dataLogisticRequestSummary'
     ]),
     ...mapState('user', [
-      'roles'
+      'roles',
+      'app'
     ])
   },
   methods: {

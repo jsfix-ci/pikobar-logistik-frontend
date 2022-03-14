@@ -16,6 +16,8 @@ import letterRouter from './modules/letter'
 import reports from './modules/reports'
 import allocation from './modules/allocation'
 import otherInstace from './modules/otherInstance'
+/* Router Vaccine Modules */
+import immunization from './modules/vaccine/immunization'
 
 /* Sentry */
 import * as Sentry from '@sentry/core'
@@ -114,6 +116,7 @@ export const asyncRoutes = [
   letterRouter,
   faskesRouter,
   otherInstace,
+  immunization,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/', hidden: true }
 ]
