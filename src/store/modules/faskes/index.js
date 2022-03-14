@@ -4,6 +4,7 @@ import getters from './getters'
 
 const state = {
   listFaskes: [],
+  listFaskesVaccine: [],
   detailFaskes: [],
   totalList: 0,
   totalData: 0

@@ -2,21 +2,25 @@
 <template>
   <div>
     <!-- App Header -->
-    <app-header />
-    <!-- App Main Content -->
-    <v-content>
-      <!-- Breadcrumbs -->
-      <v-row style="padding: 5px 20px;">
-        <breadcrumb />
-      </v-row>
-      <!-- App Router -->
-      <div class="app-container">
-        <transition name="fade" mode="out-in">
-          <router-view :key="key" />
-        </transition>
-      </div>
-    </v-content>
-    <!-- App Back To Top -->
+    <app-header v-if="!isVaccineContent" />
+    <div class="wrapper d-flex flex-column justify-space-between">
+      <!-- App Main Content -->
+      <v-main>
+        <!-- Breadcrumbs -->
+        <v-row v-if="!isVaccineContent" style="padding: 5px 20px;">
+          <breadcrumb />
+        </v-row>
+        <!-- App Router -->
+        <div :class="{ 'app-container': !isVaccineContent }">
+          <transition name="fade" mode="out-in">
+            <router-view :key="key" />
+          </transition>
+        </div>
+      </v-main>
+      <!-- App Footer -->
+      <app-footer v-if="isVaccineContent" />
+      <!-- App Back To Top -->
+    </div>
     <vm-back-top style="bottom: 10px;" />
   </div>
 </template>
@@ -24,9 +28,11 @@
 <script>
 /* eslint-disable */
 import Header from "./Header/Header.vue"
+import Footer from "./Footer/Footer.vue"
 export default {
   components: {
-    appHeader: Header
+    appHeader: Header,
+    appFooter: Footer
   },
   data: () => ({
       itemsBreadcrumbs: [
@@ -40,6 +46,9 @@ export default {
   computed: {
     key() {
       return this.$route.fullPath
+    },
+    isVaccineContent() {
+      return this.$route.meta.isVaccineContent
     }
   },
   mounted() {
@@ -60,5 +69,8 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+.wrapper {
+  height: 100vh;
 }
 </style>

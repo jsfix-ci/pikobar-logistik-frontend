@@ -450,5 +450,17 @@ export default {
   },
   logisticRequestType({ commit }, payload) {
     commit('SET_LOGISTIC_REQUEST_TYPE', payload)
+  },
+  async getListVaccineAndSupport({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/vaccine-product', 'GET', params)
+      const commitName = params.category === 'vaccine_support'
+        ? 'SET_LIST_VACCINE_SUPPORT'
+        : 'SET_LIST_VACCINE'
+      commit(commitName, response.data)
+      return response.data
+    } catch (e) {
+      // silent error
+    }
   }
 }
