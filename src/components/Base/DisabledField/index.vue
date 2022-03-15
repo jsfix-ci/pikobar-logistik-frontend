@@ -1,11 +1,15 @@
 <template>
   <div class="disabled-field">
-    <span class="disabled-field__label">
-      {{ label }}
-    </span>
-    <span class="disabled-field__value">
-      {{ value }}
-    </span>
+    <slot name="prepend" />
+    <div class="d-flex flex-column">
+      <span class="disabled-field__label">
+        {{ label }}
+      </span>
+      <span class="disabled-field__value">
+        {{ value }}
+      </span>
+    </div>
+    <slot name="append" />
   </div>
 </template>
 
@@ -28,13 +32,15 @@ export default {
 
 .disabled-field {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   background: #FAFAFA;
   border-color: #E0E0E0;
   border-style: solid;
   border-width: 1px;
   border-radius: 8px;
-  padding: 16px;
+  padding: 8px 16px;
 
   &__label {
     font-family: 'Lato', sans-serif;
