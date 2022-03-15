@@ -5,8 +5,11 @@
     min-width="0px"
     :class="{
       'jds-button py-4 px-6': true,
-      'green-dark white--text': !inverted,
-      'jds-button__inverted green-dark--text': inverted
+      'jds-button__inverted': inverted,
+      'green-dark white--text': !inverted && !danger,
+      'red-dark white--text': !inverted && danger,
+      'green-dark--text': inverted && !danger,
+      'jds-button__inverted--danger red-dark--text': inverted && danger
     }"
     @click="$emit('click')"
   >
@@ -18,6 +21,10 @@
 export default {
   props: {
     inverted: {
+      type: Boolean,
+      default: false
+    },
+    danger: {
       type: Boolean,
       default: false
     },
@@ -43,6 +50,10 @@ export default {
     border-style: solid;
     border-width: 1px;
     background: transparent !important;
+
+    &--danger {
+      border-color: #D32F2F;
+    }
   }
 }
 </style>
