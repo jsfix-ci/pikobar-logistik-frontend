@@ -36,7 +36,7 @@ const immunization = {
     },
     {
       path: '/admin-verification/detail/:id',
-      component: () => import('@/views/immunization/adminVerification/detail'),
+      component: () => import('@/views/immunization/detail'),
       hidden: true,
       meta: {
         title: 'request_detail',
