@@ -10,7 +10,7 @@
     <LetterSection
       :letter="vaccineRequest.letter_number"
     />
-    <TableSection />
+    <RequestTableSection />
     <ActionButton />
   </div>
 </template>
@@ -19,13 +19,13 @@
 import { mapState } from 'vuex'
 import IdentitySection from './IdentitySection'
 import LetterSection from './LetterSection'
-import TableSection from './TableSection'
+import RequestTableSection from './RequestTableSection'
 import ActionButton from './ActionButton'
 export default {
   components: {
     IdentitySection,
     LetterSection,
-    TableSection,
+    RequestTableSection,
     ActionButton
   },
   data() {

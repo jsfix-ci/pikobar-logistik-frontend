@@ -2,7 +2,9 @@
   <div class="d-flex flex-column">
     <!-- Section Title -->
     <div class="d-flex flex-row align-center mb-6">
-      <span class="detail-table__section-title">{{ $t('label.request') }}</span>
+      <span class="detail-table__section-title">
+        {{ `${$t('label.request')} (${$t('label.immunization')})` }}
+      </span>
       <img
         src="/img/icons/arrow-down.svg"
         alt="arrow-down"
@@ -27,7 +29,7 @@
             <td>{{ item.quantity || '-' }}</td>
             <td>{{ item.unit || '-' }}</td>
             <td>{{ item.usage || '-' }}</td>
-            <td>{{ item.description || '-' }}</td>
+            <td>{{ item.note || '-' }}</td>
           </tr>
         </template>
       </JDSTable>
@@ -49,7 +51,7 @@
             <td>{{ item.quantity || '-' }}</td>
             <td>{{ item.unit || '-' }}</td>
             <td>{{ item.usage || '-' }}</td>
-            <td>{{ item.description || '-' }}</td>
+            <td>{{ item.note || '-' }}</td>
           </tr>
         </template>
       </JDSTable>
