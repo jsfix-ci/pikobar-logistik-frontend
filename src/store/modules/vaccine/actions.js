@@ -33,7 +33,7 @@ export default {
   async getVaccineProductRequests({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/vaccine-product-request', 'GET', params)
-      commit('SET_VACCINE_PRODUCT_REQUESTS', response)
+      commit('SET_VACCINE_PRODUCT_REQUESTS', response.data)
     } catch (e) {
       return e
     }

@@ -46,7 +46,8 @@ export default {
     incoming_mail_detail: 'Detail Surat Masuk',
     allocation: 'Alokasi Salur Logistik',
     other_instance: 'Instansi Lainnya',
-    admin_verification: 'Verifikasi Administrasi'
+    admin_verification: 'Verifikasi Administrasi',
+    request_detail: 'Detail Permohonan'
   },
   label: {
     preview: 'Preview',
@@ -226,6 +227,7 @@ export default {
     instance_phone_number: 'Nomor Telepon Instansi',
     village_name: 'Nama Desa/Kelurahan',
     full_address: 'Alamat Lengkap',
+    delivery_address: 'Alamat Kirim',
     pharmacy_installation_full_address: 'Alamat Lengkap Instalasi Farmasi/Instansi',
     example_full_address: 'Masukkan alamat lengkap instansi kesehatan/faskes disertai dengan nomor rumah, RT, RW, dan Kode Pos',
     step_title_1: 'Identitas Instansi Pemohon',
@@ -363,14 +365,17 @@ export default {
     confirm_data: 'Konfirmasi Data',
     instance_identity: 'Identitas Instansi',
     number_phone: 'Nomor Telepon',
+    phone_number_sub: 'No. Pengganti',
     city_district: 'Kota/Kabupaten',
     village: 'Kelurahan',
     please_input: 'Masukkan',
     applicant_position_identity: 'Jabatan Pemohon',
-    email: 'email',
+    position: 'Jabatan',
+    email: 'Email',
     applicant_phone: 'No. HP Pemohon',
     applicant_phone_sub: 'No. HP Pemohon Pengganti',
     applicant_ktp: 'KTP/Kartu Pegawai/Surat Tugas',
+    ktp_or_employee_card: 'KTP/Kartu Pegawai',
     list_logistic_need: 'Daftar Kebutuhan Logistik',
     list_vaccine_need: 'Daftar Kebutuhan Logistik Vaksin',
     list_vaccine_support_need: 'Daftar Kebutuhan Penunjang Vaksin',
@@ -395,6 +400,8 @@ export default {
     pic: 'PIC',
     vaccine: 'Vaksin',
     vaccine_supporter: 'Penunjang Vaksin',
+    logistic_vaccine_supporter: 'Logistik Penunjang Vaksin',
+    soon: 'Segera',
     add_vaccine_supporter_message: 'Jangan lupa tambahkan logistik penunjang vaksin Anda',
     recommendation_status: 'Status Rekomendasi Salur',
     realization_status: 'Status Realisasi',
@@ -567,6 +574,8 @@ export default {
     is_signed_by_head_of_instance: 'Telah Ditandangani Pimpinan Instansi?',
     done_final: 'Sudah (Final)',
     not_yet_draft: 'Belum/Menyusul (Draft)',
+    draft: 'Draft',
+    final_2: 'Final',
     download: 'Unduh',
     download_letter: 'Unduh Surat',
     download_excel: 'Unduh Data (Excel)',
@@ -703,6 +712,7 @@ export default {
     vaccine_request_list: 'Daftar Seluruh Surat Permohonan Vaksin',
     under_development_feature: 'Fitur ini sedang dalam tahap pengembangan',
     request_requirement: 'Syarat Permohonan',
+    request_detail: 'Detail Permohonan',
     acceptance_report: {
       already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
       logistic_acceptance_report_title: 'Informasi Penerima Barang',
@@ -748,7 +758,8 @@ export default {
     goods_registration: 'Pendataan Barang',
     goods_being_prepared: 'Barang Dipersiapkan',
     goods_being_packed: 'Barang Dipacking',
-    distributed: 'Sudah Distribusi'
+    distributed: 'Sudah Distribusi',
+    immunization: 'Imunisasi'
   },
   success: {
     login_success: 'Login Berhasil',

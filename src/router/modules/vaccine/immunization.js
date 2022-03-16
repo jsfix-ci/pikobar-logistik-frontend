@@ -33,6 +33,17 @@ const immunization = {
         roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
         isVaccineModule: true
       }
+    },
+    {
+      path: '/admin-verification/detail/:id',
+      component: () => import('@/views/immunization/detail'),
+      hidden: true,
+      meta: {
+        title: 'request_detail',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
+        isVaccineModule: true
+      }
     }
   ]
 }
