@@ -1,14 +1,24 @@
 <template>
-  <div class="d-flex flex-row justify-space-between mt-8">
-    <JDSButton inverted height="42px" @click="onBack()">
-      {{ $t('label.back') }}
-    </JDSButton>
-    <div>
-      <JDSButton danger height="42px" class="mr-4" @click="onReject()">
-        {{ $t('label.reject') }}
+  <div>
+    <div v-if="stage === 'admin-verification'" class="d-flex flex-row justify-space-between mt-8">
+      <JDSButton inverted height="42px" @click="onBack()">
+        {{ $t('label.back') }}
       </JDSButton>
-      <JDSButton height="42px" @click="onVerify()">
-        {{ $t('label.verification') }}
+      <div>
+        <JDSButton danger height="42px" class="mr-4" @click="onReject()">
+          {{ $t('label.reject') }}
+        </JDSButton>
+        <JDSButton height="42px" @click="onVerify()">
+          {{ $t('label.verification') }}
+        </JDSButton>
+      </div>
+    </div>
+    <div v-if="stage === 'recommendation'" class="d-flex flex-row justify-end mt-8">
+      <JDSButton inverted height="42px" class="mr-4" @click="onBack()">
+        {{ $t('label.back') }}
+      </JDSButton>
+      <JDSButton height="42px" @click="onRecommend()">
+        {{ $t('label.give_recommendation') }}
       </JDSButton>
     </div>
   </div>
@@ -20,6 +30,12 @@ export default {
   components: {
     JDSButton
   },
+  props: {
+    stage: {
+      type: String,
+      default: ''
+    }
+  },
   methods: {
     onBack() {
       this.$router.go(-1)
@@ -29,6 +45,9 @@ export default {
     },
     onVerify() {
       // @todo: create onVerify function
+    },
+    onRecommend() {
+      // @todo: create onRecommend function
     }
   }
 }

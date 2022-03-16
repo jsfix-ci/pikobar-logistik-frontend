@@ -38,7 +38,7 @@
             <td>{{ $t(`label.${item.status}`) }}</td>
             <td>-</td>
             <td>
-              <JDSButton inverted height="25px" @click="onDetail">
+              <JDSButton inverted height="25px" @click="onDetail(item.id)">
                 {{ $t('label.detail') }}
               </JDSButton>
             </td>
@@ -99,7 +99,7 @@ export default {
     })
   },
   mounted() {
-    this.fetchData()
+    this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
   },
   methods: {
     getTableRowNumbering,
@@ -119,8 +119,8 @@ export default {
     onDownload() {
       // @todo: create onDownload function
     },
-    onDetail() {
-      // @todo: create onDetail function
+    onDetail(id) {
+      this.$router.push(`/recommendation/detail/${id}`)
     }
   }
 }

@@ -10,8 +10,9 @@
     <LetterSection
       :letter="vaccineRequest.letter_number"
     />
-    <TableSection />
-    <ActionButton />
+    <RequestTableSection />
+    <RecommendationTableSection v-if="stage === 'recommendation'" />
+    <ActionButton :stage="stage" />
   </div>
 </template>
 
@@ -19,13 +20,15 @@
 import { mapState } from 'vuex'
 import IdentitySection from './IdentitySection'
 import LetterSection from './LetterSection'
-import TableSection from './TableSection'
+import RequestTableSection from './RequestTableSection'
+import RecommendationTableSection from './RecommendationTableSection'
 import ActionButton from './ActionButton'
 export default {
   components: {
     IdentitySection,
     LetterSection,
-    TableSection,
+    RequestTableSection,
+    RecommendationTableSection,
     ActionButton
   },
   data() {
