@@ -30,6 +30,7 @@
       </v-col>
     </v-row>
 
+    <!-- KTP -->
     <span class="detail__ktp">{{ $t('label.ktp_or_employee_card') }}</span>
     <ImageViewer
       :src="vaccineRequest.applicant_file_url"
@@ -89,7 +90,7 @@
           <template v-slot:item-prop="{ item, index }">
             <tr>
               <td>{{ index + 1 }}</td>
-              <td>{{ item.product || '-' }}</td>
+              <td>{{ item.vaccine_product.name || '-' }}</td>
               <td>{{ item.quantity || '-' }}</td>
               <td>{{ item.unit || '-' }}</td>
               <td>{{ item.usage || '-' }}</td>
@@ -111,7 +112,7 @@
           <template v-slot:item-prop="{ item, index }">
             <tr>
               <td>{{ index + 1 }}</td>
-              <td>{{ item.product || '-' }}</td>
+              <td>{{ item.vaccine_product.name || '-' }}</td>
               <td>{{ item.quantity || '-' }}</td>
               <td>{{ item.unit || '-' }}</td>
               <td>{{ item.usage || '-' }}</td>
@@ -206,7 +207,7 @@ export default {
         },
         {
           label: this.$t('label.instance_type'),
-          value: '-',
+          value: this.vaccineRequest.agency_type_name || '-',
           col: 4
         },
         {
@@ -221,17 +222,17 @@ export default {
         },
         {
           label: this.$t('label.city_district'),
-          value: this.vaccineRequest.village.kemendagri_kabupaten_nama || '-',
+          value: this.vaccineRequest.agency_city_name || '-',
           col: 4
         },
         {
           label: this.$t('label.select_sub_district_full_name'),
-          value: this.vaccineRequest.village.kemendagri_kecamatan_nama || '-',
+          value: this.vaccineRequest.agency_district_name || '-',
           col: 4
         },
         {
           label: this.$t('label.village'),
-          value: this.vaccineRequest.village.kemendagri_desa_nama || '-',
+          value: this.vaccineRequest.agency_village_name || '-',
           col: 4
         },
         {
