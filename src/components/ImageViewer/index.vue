@@ -9,7 +9,7 @@
         contain
         :max-width="previewWidth"
         :max-height="previewHeight"
-        :src="onLoadPicture"
+        :src="imageSource"
         :alt="alt"
         @error="onImgError"
       >
@@ -36,7 +36,7 @@
         cover
         :width="thumbWidth"
         :height="thumbHeight"
-        :src="onLoadPicture"
+        :src="imageSource"
         :alt="alt"
         class="rounded-lg"
         @error="onImgError"
@@ -102,7 +102,7 @@ export default {
     }
   },
   computed: {
-    onLoadPicture() {
+    imageSource() {
       return this.failed_image ? imageDefault : this.src
     }
   },
