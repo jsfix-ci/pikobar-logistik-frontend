@@ -758,7 +758,8 @@ export default {
     goods_registration: 'Pendataan Barang',
     goods_being_prepared: 'Barang Dipersiapkan',
     goods_being_packed: 'Barang Dipacking',
-    distributed: 'Sudah Distribusi'
+    distributed: 'Sudah Distribusi',
+    immunization: 'Imunisasi'
   },
   success: {
     login_success: 'Login Berhasil',
