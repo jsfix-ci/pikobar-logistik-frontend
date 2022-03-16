@@ -30,7 +30,7 @@
             <td>{{ item.unit || '-' }}</td>
             <td>{{ item.usage || '-' }}</td>
             <td>{{ item.note || '-' }}</td>
-            <td>{{ item.status || '-' }}</td>
+            <td>{{ item.recommendation_status || '-' }}</td>
             <td>{{ item.leader_note || '-' }}</td>
             <td>
               <JDSButton inverted height="25px" @click="onUpdate()">
@@ -68,7 +68,7 @@
             <td>{{ item.unit || '-' }}</td>
             <td>{{ item.usage || '-' }}</td>
             <td>{{ item.note || '-' }}</td>
-            <td>{{ item.status || '-' }}</td>
+            <td>{{ item.recommendation_status || '-' }}</td>
             <td>{{ item.leader_note || '-' }}</td>
             <td>
               <JDSButton inverted height="25px" @click="onUpdate()">
