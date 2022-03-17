@@ -3,6 +3,7 @@
     :headers="headers"
     :items="items"
     :no-data-text="$t('label.no_data')"
+    mobile-breakpoint="0"
     hide-default-footer
   >
     <template v-slot:item="{ item, index }">

@@ -759,7 +759,11 @@ export default {
     goods_being_prepared: 'Barang Dipersiapkan',
     goods_being_packed: 'Barang Dipacking',
     distributed: 'Sudah Distribusi',
-    immunization: 'Imunisasi'
+    immunization: 'Imunisasi',
+    leader_note: 'Catatan Pimpinan',
+    add_vaccine_recommendation: 'Tambahkan Rekomendasi Vaksin',
+    add_vaccine_support_recommendation: 'Tambahkan Rekomendasi Logistik Penunjang Vaksin',
+    give_recommendation: 'Rekomendasikan'
   },
   success: {
     login_success: 'Login Berhasil',
