@@ -699,6 +699,7 @@ export default {
             quantity: element.total,
             unit: element.unitId,
             description: element.description,
+            note: element.note,
             category: 'vaccine'
           }
         })
@@ -709,7 +710,7 @@ export default {
             quantity: element.total,
             unit: element.unitId,
             description: element.description,
-            purpose: element.purpose,
+            note: element.note,
             category: 'vaccine_support'
           }
         })

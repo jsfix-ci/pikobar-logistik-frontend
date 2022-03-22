@@ -5,10 +5,10 @@
         {{ $t('label.back') }}
       </JDSButton>
       <div>
-        <JDSButton danger height="42px" class="mr-4" @click="onReject()">
-          {{ $t('label.reject') }}
+        <JDSButton danger height="42px" class="mr-4" @click="$emit('confirm', 'verifWithNote')">
+          {{ $t('label.approved_with_notes') }}
         </JDSButton>
-        <JDSButton height="42px" @click="onVerify()">
+        <JDSButton height="42px" @click="$emit('confirm', 'verifConfirmation')">
           {{ $t('label.verification') }}
         </JDSButton>
       </div>
@@ -42,9 +42,6 @@ export default {
     },
     onReject() {
       // @todo: create onReject function
-    },
-    onVerify() {
-      // @todo: create onVerify function
     },
     onRecommend() {
       // @todo: create onRecommend function

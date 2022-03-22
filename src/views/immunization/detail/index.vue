@@ -12,7 +12,14 @@
     />
     <RequestTableSection />
     <RecommendationTableSection v-if="stage === 'recommendation'" />
-    <ActionButton :stage="stage" />
+    <ActionButton :stage="stage" @confirm="onConfirm" />
+    <DialogSection
+      :key="showDialog"
+      v-model="showDialog"
+      :type="dialogType"
+      @close="showDialog = false"
+      @verify="onVerify"
+    />
   </div>
 </template>
 
@@ -23,17 +30,21 @@ import LetterSection from './LetterSection'
 import RequestTableSection from './RequestTableSection'
 import RecommendationTableSection from './RecommendationTableSection'
 import ActionButton from './ActionButton'
+import DialogSection from './Dialog'
 export default {
   components: {
     IdentitySection,
     LetterSection,
     RequestTableSection,
     RecommendationTableSection,
-    ActionButton
+    ActionButton,
+    DialogSection
   },
   data() {
     return {
-      stage: ''
+      stage: '',
+      showDialog: false,
+      dialogType: '' // verifConfirmation, success, verifWithNote, verifWithNoteSuccess
     }
   },
   computed: {
@@ -49,6 +60,16 @@ export default {
     getStages() {
       const splittedPath = this.$route.path.split('/')
       this.stage = splittedPath[1]
+    },
+    onConfirm(type) {
+      this.dialogType = type
+      this.showDialog = true
+    },
+    async onVerify(isVerifWithNote) {
+      this.showDialog = false
+      // @todo: submit verification API here
+      this.dialogType = isVerifWithNote ? 'verifWithNoteSuccess' : 'success'
+      this.showDialog = true
     }
   }
 }
