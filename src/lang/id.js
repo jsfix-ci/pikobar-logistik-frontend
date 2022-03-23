@@ -47,6 +47,8 @@ export default {
     allocation: 'Alokasi Salur Logistik',
     other_instance: 'Instansi Lainnya',
     admin_verification: 'Verifikasi Administrasi',
+    pharmacy: 'Farmasi',
+    realization: 'Realisasi',
     request_detail: 'Detail Permohonan'
   },
   label: {
@@ -481,6 +483,7 @@ export default {
     apd_spec_name_recommended: 'Nama Barang Rekomendasi',
     total_needs: 'Jumlah Kebutuhan',
     recommendation_date: 'Tanggal Rekomendasi Salur',
+    recommendation_date_2: 'Tanggal Rekomendasi',
     realization_date: 'Tanggal Realisasi',
     allocation_date: 'Tanggal Alokasi',
     planned_delivery_date: 'Tanggal Rencana Pengiriman',
