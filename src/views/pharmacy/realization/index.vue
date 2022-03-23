@@ -1,6 +1,6 @@
 <template>
-  <div class="admin-verification">
-    <h1 class="admin-verification__title">{{ $t('label.verification') }}</h1>
+  <div class="realization">
+    <h1 class="realization__title">{{ $t('label.realization') }}</h1>
 
     <!-- search section -->
     <div class="d-flex flex-row mb-10">
@@ -12,8 +12,8 @@
     </div>
 
     <!-- table section -->
-    <div class="admin-verification__table">
-      <h2 class="admin-verification__subtitle">{{ $t('label.vaccine_request_list') }}</h2>
+    <div class="realization__table">
+      <h2 class="realization__subtitle">{{ $t('label.vaccine_request_list') }}</h2>
       <JDSTable
         :headers="headers"
         :items="listRequest"
@@ -21,9 +21,11 @@
         <template v-slot:item-prop="{ item, index }">
           <tr>
             <td>{{ getTableRowNumbering(index, listQuery.page, listQuery.limit) }}</td>
+            <td>{{ item.verified_at ? $moment(item.verified_at).format('D MMMM YYYY') : '-' }}</td>
             <td>{{ item.created_at ? $moment(item.created_at).format('D MMMM YYYY') : '-' }}</td>
-            <td>{{ item.agency_city_name || '-' }}</td>
             <td>{{ item.agency_name || '-' }}</td>
+            <td>{{ item.letter_number || '-' }}</td>
+            <td>{{ item.id || '-' }}</td>
             <td>
               <span
                 :class="{
@@ -34,7 +36,6 @@
                 {{ item.is_urgency ? 'Segera' : 'Biasa' }}
               </span>
             </td>
-            <td>{{ item.letter_number || '-' }}</td>
             <td>{{ item.is_completed ? 'Final' : 'Draft' }}</td>
             <td>
               <JDSButton inverted height="25px" @click="onDetail(item.id)">
@@ -72,11 +73,12 @@ export default {
     return {
       headers: [
         { text: this.$t('label.print_mail_no'), sortable: false },
-        { text: this.$t('label.letter_date'), sortable: false },
-        { text: this.$t('label.city_district'), sortable: false },
+        { text: this.$t('label.recommendation_date_2'), sortable: false },
+        { text: this.$t('label.requested_date'), sortable: false },
         { text: this.$t('label.agency_name'), sortable: false },
-        { text: this.$t('label.print_mail_nature'), sortable: false },
         { text: this.$t('label.applicant_letter_number'), sortable: false },
+        { text: this.$t('label.request_id'), sortable: false },
+        { text: this.$t('label.print_mail_nature'), sortable: false },
         { text: this.$t('label.status'), sortable: false },
         { text: this.$t('label.action'), sortable: false }
       ],
@@ -85,7 +87,7 @@ export default {
         limit: parseInt(this.$route.query?.limit || 5),
         sort: this.$route.query?.sort || '',
         search: this.$route.query?.search || '',
-        status: 'not_verified'
+        status: 'approved'
       }
     }
   },
@@ -118,13 +120,13 @@ export default {
       // @todo: create onDownload function
     },
     onDetail(id) {
-      this.$router.push(`/admin-verification/detail/${id}`)
+      this.$router.push(`/realization/detail/${id}`)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.admin-verification {
+.realization {
   background: white;
   height: 100%;
   padding: 16px 24px;
