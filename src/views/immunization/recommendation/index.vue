@@ -35,8 +35,8 @@
               </span>
             </td>
             <td>{{ item.letter_number || '-' }}</td>
+            <td>{{ item.is_completed ? 'Final' : 'Draft' }}</td>
             <td>{{ $t(`label.${item.status}`) }}</td>
-            <td>-</td>
             <td>
               <JDSButton inverted height="25px" @click="onDetail(item.id)">
                 {{ $t('label.detail') }}
@@ -79,7 +79,7 @@ export default {
         { text: this.$t('label.print_mail_nature'), sortable: false },
         { text: this.$t('label.applicant_letter_number'), sortable: false },
         { text: this.$t('label.status'), sortable: false },
-        { text: this.$t('label.leader_approval'), sortable: false },
+        { text: `${this.$t('label.status')} ${this.$t('label.verification')}`, sortable: false },
         { text: this.$t('label.action'), sortable: false }
       ],
       listQuery: {

@@ -18,6 +18,8 @@ import allocation from './modules/allocation'
 import otherInstace from './modules/otherInstance'
 /* Router Vaccine Modules */
 import immunization from './modules/vaccine/immunization'
+import pharmacy from './modules/vaccine/pharmacy'
+import logisticPost from './modules/vaccine/logisticPost'
 
 /* Sentry */
 import * as Sentry from '@sentry/core'
@@ -117,6 +119,8 @@ export const asyncRoutes = [
   faskesRouter,
   otherInstace,
   immunization,
+  pharmacy,
+  logisticPost,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/', hidden: true }
 ]
