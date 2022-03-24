@@ -723,6 +723,7 @@ export default {
     under_development_feature: 'Fitur ini sedang dalam tahap pengembangan',
     request_requirement: 'Syarat Permohonan',
     request_detail: 'Detail Permohonan',
+    approved_with_notes: 'Diterima dengan Catatan',
     acceptance_report: {
       already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
       logistic_acceptance_report_title: 'Informasi Penerima Barang',

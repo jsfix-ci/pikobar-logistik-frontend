@@ -12,7 +12,14 @@
     />
     <RequestTableSection />
     <RecommendationTableSection v-if="stage === 'recommendation'" />
-    <ActionButton :stage="stage" />
+    <ActionButton :stage="stage" @confirm="onConfirm" />
+    <DialogSection
+      :key="showDialog"
+      v-model="showDialog"
+      :type="dialogType"
+      @close="showDialog = false"
+      @verify="onVerify"
+    />
   </div>
 </template>
 
@@ -23,17 +30,21 @@ import LetterSection from './LetterSection'
 import RequestTableSection from './RequestTableSection'
 import RecommendationTableSection from './RecommendationTableSection'
 import ActionButton from './ActionButton'
+import DialogSection from './Dialog'
 export default {
   components: {
     IdentitySection,
     LetterSection,
     RequestTableSection,
     RecommendationTableSection,
-    ActionButton
+    ActionButton,
+    DialogSection
   },
   data() {
     return {
-      stage: ''
+      stage: '',
+      showDialog: false,
+      dialogType: '' // verifConfirmation, success, verifWithNote, verifWithNoteSuccess
     }
   },
   computed: {
@@ -49,6 +60,32 @@ export default {
     getStages() {
       const splittedPath = this.$route.path.split('/')
       this.stage = splittedPath[1]
+    },
+    onConfirm(type) {
+      this.dialogType = type
+      this.showDialog = true
+    },
+    async onVerify(value) {
+      this.showDialog = false
+      let payload = {}
+      if (value.isVerifWithNote) {
+        payload = {
+          id: this.$route.params.id,
+          status: 'approved',
+          vaccine_status_note: value.note,
+          note: value.extraNote
+        }
+      } else {
+        payload = {
+          id: this.$route.params.id,
+          status: 'approved'
+        }
+      }
+      const res = await this.$store.dispatch('vaccine/updateVaccineRequestStatus', payload)
+      if (res.status === 200 || res.status === 201) {
+        this.dialogType = value.isVerifWithNote ? 'verifWithNoteSuccess' : 'success'
+        this.showDialog = true
+      }
     }
   }
 }
