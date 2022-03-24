@@ -72,7 +72,7 @@ export default {
     return {
       headers: [
         { text: this.$t('label.print_mail_no'), sortable: false },
-        { text: this.$t('label.letter_date'), sortable: false },
+        { text: this.$t('label.requested_date'), sortable: false },
         { text: this.$t('label.city_district'), sortable: false },
         { text: this.$t('label.agency_name'), sortable: false },
         { text: this.$t('label.print_mail_nature'), sortable: false },
