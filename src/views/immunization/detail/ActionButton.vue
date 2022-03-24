@@ -40,9 +40,6 @@ export default {
     onBack() {
       this.$router.go(-1)
     },
-    onReject() {
-      // @todo: create onReject function
-    },
     onRecommend() {
       // @todo: create onRecommend function
     }
