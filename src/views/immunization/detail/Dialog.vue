@@ -9,8 +9,8 @@
       <img
         src="/img/confirmation.svg"
         alt="confirmation"
-        width="320px"
-        height="187px"
+        width="320"
+        height="187"
       >
       <span class="detail-dialog__title">
         Anda yakin permohonan ini diterima dengan catatan? Mengapa?
