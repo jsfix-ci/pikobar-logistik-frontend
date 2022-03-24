@@ -5,7 +5,7 @@
         {{ $t('label.back') }}
       </JDSButton>
       <div>
-        <JDSButton danger height="42px" class="mr-4" @click="$emit('confirm', 'verifWithNote')">
+        <JDSButton inverted height="42px" class="mr-4" @click="$emit('confirm', 'verifWithNote')">
           {{ $t('label.approved_with_notes') }}
         </JDSButton>
         <JDSButton height="42px" @click="$emit('confirm', 'verifConfirmation')">

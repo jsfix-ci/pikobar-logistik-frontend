@@ -65,11 +65,27 @@ export default {
       this.dialogType = type
       this.showDialog = true
     },
-    async onVerify(isVerifWithNote) {
+    async onVerify(value) {
       this.showDialog = false
-      // @todo: submit verification API here
-      this.dialogType = isVerifWithNote ? 'verifWithNoteSuccess' : 'success'
-      this.showDialog = true
+      let payload = {}
+      if (value.isVerifWithNote) {
+        payload = {
+          id: this.$route.params.id,
+          status: 'approved',
+          vaccine_status_note: value.note,
+          note: value.extraNote
+        }
+      } else {
+        payload = {
+          id: this.$route.params.id,
+          status: 'approved'
+        }
+      }
+      const res = await this.$store.dispatch('vaccine/updateVaccineRequestStatus', payload)
+      if (res.status === 200 || res.status === 201) {
+        this.dialogType = value.isVerifWithNote ? 'verifWithNoteSuccess' : 'success'
+        this.showDialog = true
+      }
     }
   }
 }

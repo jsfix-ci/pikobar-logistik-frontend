@@ -74,5 +74,13 @@ export default {
     } catch (e) {
       return e
     }
+  },
+  async getVaccineStatusNote({ commit }) {
+    try {
+      const response = await fetchList('/api/v1/vaccine-status-note/', 'GET')
+      return response.data
+    } catch (e) {
+      // silent error
+    }
   }
 }
