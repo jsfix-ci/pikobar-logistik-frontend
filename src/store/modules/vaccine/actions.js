@@ -75,7 +75,7 @@ export default {
       return e
     }
   },
-  async getVaccineStatusNote({ commit }) {
+  async getVaccineStatusNote() {
     try {
       const response = await fetchList('/api/v1/vaccine-status-note/', 'GET')
       return response.data
