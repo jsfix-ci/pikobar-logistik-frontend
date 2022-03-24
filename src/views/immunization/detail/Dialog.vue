@@ -4,55 +4,8 @@
     max-width="500px"
     persistent
   >
-    <!-- @TODO: REFACTOR THIS COMPONENT -->
-
-    <!-- Verification Confirmation Dialog -->
-    <div v-if="type === 'verifConfirmation'" class="detail-dialog">
-      <img
-        src="/img/confirmation.svg"
-        alt="confirmation"
-        width="320px"
-        height="187px"
-      >
-      <span class="detail-dialog__title">
-        Anda yakin permohonan ini lolos verifikasi?
-      </span>
-      <div class="d-flex flex-row justify-space-between mt-10" style="width: 100%">
-        <JDSButton inverted height="42px" width="200px" @click="$emit('close')">
-          Cek Kembali
-        </JDSButton>
-        <JDSButton height="42px" width="200px" @click="$emit('verify', { isVerifWithNote: false })">
-          Ya, Verifikasi!
-        </JDSButton>
-      </div>
-    </div>
-
-    <!-- Verified Success Dialog -->
-    <div v-else-if="type === 'success'" class="detail-dialog">
-      <img
-        src="/img/verified.svg"
-        alt="success"
-        width="320px"
-        height="187px"
-      >
-      <span class="detail-dialog__title">
-        Permohonan telah diverifikasi
-      </span>
-      <span class="detail-dialog__subtitle">
-        Selanjutnya silakan cek menu rekomendasi
-      </span>
-      <div class="d-flex flex-row justify-space-between mt-10" style="width: 100%">
-        <JDSButton inverted height="42px" width="200px" @click="$router.push('/admin-verification')">
-          Kembali ke Verifikasi
-        </JDSButton>
-        <JDSButton height="42px" width="200px" @click="$router.push('/recommendation')">
-          Lanjut ke Rekomendasi
-        </JDSButton>
-      </div>
-    </div>
-
-    <!-- Verified with Note Dialog -->
-    <div v-else-if="type === 'verifWithNote'" class="detail-dialog">
+    <!-- Dialog with form -->
+    <div v-if="type === 'verifWithNote'" class="detail-dialog">
       <img
         src="/img/confirmation.svg"
         alt="confirmation"
@@ -92,26 +45,36 @@
       </div>
     </div>
 
-    <!-- Verified with Note Success Dialog -->
-    <div v-else-if="type === 'verifWithNoteSuccess'" class="detail-dialog">
+    <!-- Default Dialog -->
+    <div v-else class="detail-dialog">
       <img
-        src="/img/warning.svg"
-        alt="rejected"
-        width="320px"
-        height="187px"
+        :src="content.image"
+        alt="dialog-image"
+        width="320"
+        height="187"
       >
-      <span class="detail-dialog__title">
-        Permohonan telah <br> diterima dengan catatan!
+      <span class="detail-dialog__title" style="white-space:pre-wrap;">
+        {{ content.title }}
       </span>
-      <span class="detail-dialog__subtitle">
-        Silakan update permohonan yang <br> diterima dengan catatan pada menu “Arsip”
+      <span v-if="content.subtitle" class="detail-dialog__subtitle" style="white-space:pre-wrap;">
+        {{ content.subtitle }}
       </span>
       <div class="d-flex flex-row justify-space-between mt-10" style="width: 100%">
-        <JDSButton inverted height="42px" width="200px" @click="$router.push('/admin-verification')">
-          Kembali ke Verifikasi
+        <JDSButton
+          :inverted="content.buttonLeft.isInverted"
+          height="42px"
+          width="200px"
+          @click="content.buttonLeft.onClick"
+        >
+          {{ content.buttonLeft.label }}
         </JDSButton>
-        <JDSButton height="42px" width="200px" @click="$router.push('/recommendation')">
-          Lanjut ke Rekomendasi
+        <JDSButton
+          :inverted="content.buttonRight.isInverted"
+          height="42px"
+          width="200px"
+          @click="content.buttonRight.onClick"
+        >
+          {{ content.buttonRight.label }}
         </JDSButton>
       </div>
     </div>
@@ -139,7 +102,51 @@ export default {
       note: [],
       noteList: [],
       extraNote: '',
-      showError: false
+      showError: false,
+      content: {},
+      listContent: {
+        verifConfirmation: {
+          image: '/img/confirmation.svg',
+          title: 'Anda yakin permohonan ini lolos verifikasi?',
+          buttonLeft: {
+            label: 'Cek Kembali',
+            isInverted: true,
+            onClick: () => { this.$emit('close') }
+          },
+          buttonRight: {
+            label: 'Ya, Verifikasi!',
+            onClick: () => { this.$emit('verify', { isVerifWithNote: false }) }
+          }
+        },
+        success: {
+          image: '/img/verified.svg',
+          title: 'Permohonan telah diverifikasi',
+          subtitle: 'Selanjutnya silakan cek menu rekomendasi',
+          buttonLeft: {
+            label: 'Kembali ke Verifikasi',
+            isInverted: true,
+            onClick: () => { this.$router.push('/admin-verification') }
+          },
+          buttonRight: {
+            label: 'Lanjut ke Rekomendasi',
+            onClick: () => { this.$router.push('/recommendation') }
+          }
+        },
+        verifWithNoteSuccess: {
+          image: '/img/warning.svg',
+          title: 'Permohonan telah \n diterima dengan catatan!',
+          subtitle: 'Silakan update permohonan yang \n diterima dengan catatan pada menu “Arsip”',
+          buttonLeft: {
+            label: 'Kembali ke Verifikasi',
+            isInverted: true,
+            onClick: () => { this.$router.push('/admin-verification') }
+          },
+          buttonRight: {
+            label: 'Lanjut ke Rekomendasi',
+            onClick: () => { this.$router.push('/recommendation') }
+          }
+        }
+      }
     }
   },
   watch: {
@@ -153,6 +160,8 @@ export default {
   async mounted() {
     if (this.type === 'verifWithNote') {
       this.noteList = await this.$store.dispatch('vaccine/getVaccineStatusNote')
+    } else {
+      this.content = { ...this.listContent[this.type] }
     }
   },
   methods: {
