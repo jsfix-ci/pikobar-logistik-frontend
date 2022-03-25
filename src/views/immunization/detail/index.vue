@@ -71,14 +71,14 @@ export default {
       if (value.isVerifWithNote) {
         payload = {
           id: this.$route.params.id,
-          status: 'approved',
+          status: 'verified',
           vaccine_status_note: value.note,
           note: value.extraNote
         }
       } else {
         payload = {
           id: this.$route.params.id,
-          status: 'approved'
+          status: 'verified'
         }
       }
       const res = await this.$store.dispatch('vaccine/updateVaccineRequestStatus', payload)
