@@ -11,7 +11,8 @@
       :letter="vaccineRequest.letter_number"
     />
     <RequestTableSection />
-    <RecommendationTableSection v-if="stage === 'recommendation'" />
+    <RecommendationTableSection v-if="showRecommendation" :stage="stage" />
+    <RealizationTableSection v-if="showRealization" />
     <ActionButton :stage="stage" @confirm="onConfirm" />
     <DialogSection
       :key="showDialog"
@@ -29,6 +30,7 @@ import IdentitySection from './IdentitySection'
 import LetterSection from './LetterSection'
 import RequestTableSection from './RequestTableSection'
 import RecommendationTableSection from './RecommendationTableSection'
+import RealizationTableSection from './RealizationTableSection'
 import ActionButton from './ActionButton'
 import DialogSection from './Dialog'
 export default {
@@ -37,6 +39,7 @@ export default {
     LetterSection,
     RequestTableSection,
     RecommendationTableSection,
+    RealizationTableSection,
     ActionButton,
     DialogSection
   },
@@ -50,7 +53,13 @@ export default {
   computed: {
     ...mapState('vaccine', [
       'vaccineRequest'
-    ])
+    ]),
+    showRecommendation() {
+      return this.stage === 'recommendation' || this.stage === 'realization'
+    },
+    showRealization() {
+      return this.stage === 'realization'
+    }
   },
   async mounted() {
     await this.$store.dispatch('vaccine/getVaccineRequestById', this.$route.params.id)

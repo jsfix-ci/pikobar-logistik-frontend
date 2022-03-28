@@ -724,6 +724,7 @@ export default {
     request_requirement: 'Syarat Permohonan',
     request_detail: 'Detail Permohonan',
     approved_with_notes: 'Diterima dengan Catatan',
+    pharmacy: 'Farmasi',
     acceptance_report: {
       already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
       logistic_acceptance_report_title: 'Informasi Penerima Barang',
@@ -773,8 +774,11 @@ export default {
     immunization: 'Imunisasi',
     leader_note: 'Catatan Pimpinan',
     add_vaccine_recommendation: 'Tambahkan Rekomendasi Vaksin',
+    add_vaccine_realization: 'Tambahkan Realisasi Vaksin',
     add_vaccine_support_recommendation: 'Tambahkan Rekomendasi Logistik Penunjang Vaksin',
-    give_recommendation: 'Rekomendasikan'
+    add_vaccine_support_realization: 'Tambahkan Realisasi Logistik Penunjang Vaksin',
+    give_recommendation: 'Rekomendasikan',
+    give_realization: 'Realisasikan'
   },
   success: {
     login_success: 'Login Berhasil',
