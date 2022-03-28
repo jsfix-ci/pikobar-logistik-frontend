@@ -22,6 +22,10 @@
 <script>
 export default {
   props: {
+    value: {
+      type: [String, Number],
+      default: null
+    },
     label: {
       type: String,
       default: ''
