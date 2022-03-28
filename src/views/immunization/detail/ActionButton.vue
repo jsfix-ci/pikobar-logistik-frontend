@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Verification -->
     <div v-if="stage === 'admin-verification'" class="d-flex flex-row justify-space-between mt-8">
       <JDSButton inverted height="42px" @click="onBack()">
         {{ $t('label.back') }}
@@ -13,12 +14,24 @@
         </JDSButton>
       </div>
     </div>
+
+    <!-- Recommendation -->
     <div v-if="stage === 'recommendation'" class="d-flex flex-row justify-end mt-8">
       <JDSButton inverted height="42px" class="mr-4" @click="onBack()">
         {{ $t('label.back') }}
       </JDSButton>
       <JDSButton height="42px" @click="onRecommend()">
         {{ $t('label.give_recommendation') }}
+      </JDSButton>
+    </div>
+
+    <!-- Realization -->
+    <div v-if="stage === 'realization'" class="d-flex flex-row justify-end mt-8">
+      <JDSButton inverted height="42px" class="mr-4" @click="onBack()">
+        {{ $t('label.back') }}
+      </JDSButton>
+      <JDSButton height="42px" @click="onRealize()">
+        {{ $t('label.give_realization') }}
       </JDSButton>
     </div>
   </div>
@@ -42,6 +55,9 @@ export default {
     },
     onRecommend() {
       // @todo: create onRecommend function
+    },
+    onRealize() {
+      // @todo: create onRealize function
     }
   }
 }

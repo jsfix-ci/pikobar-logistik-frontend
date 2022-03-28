@@ -22,6 +22,17 @@ const pharmacy = {
         roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
         isVaccineModule: true
       }
+    },
+    {
+      path: '/realization/detail/:id',
+      component: () => import('@/views/immunization/detail'),
+      hidden: true,
+      meta: {
+        title: 'request_detail',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
+        isVaccineModule: true
+      }
     }
   ]
 }

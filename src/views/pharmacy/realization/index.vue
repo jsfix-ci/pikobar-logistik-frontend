@@ -120,8 +120,7 @@ export default {
       // @todo: create onDownload function
     },
     onDetail(id) {
-      // @todo: create detail page
-      // this.$router.push(`/realization/detail/${id}`)
+      this.$router.push(`/realization/detail/${id}`)
     }
   }
 }

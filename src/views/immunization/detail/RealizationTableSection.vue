@@ -3,7 +3,7 @@
     <!-- Section Title -->
     <div class="d-flex flex-row align-center mb-6">
       <span class="detail-table__section-title">
-        {{ `${$t('label.recommend')} (${$t('label.immunization')})` }}
+        {{ `${$t('label.realization')} (${$t('label.pharmacy')})` }}
       </span>
       <img
         src="/img/icons/arrow-down.svg"
@@ -30,7 +30,7 @@
             <td>{{ item.unit || '-' }}</td>
             <td>{{ item.usage || '-' }}</td>
             <td>{{ item.note || '-' }}</td>
-            <td v-if="stage === 'recommendation'">
+            <td>
               <JDSButton inverted height="25px" @click="onUpdate()">
                 {{ $t('label.update') }}
               </JDSButton>
@@ -39,13 +39,12 @@
         </template>
       </JDSTable>
       <JDSButton
-        v-if="stage === 'recommendation'"
         inverted
         height="25px"
         class="mt-6"
         @click="onAddVaccine()"
       >
-        {{ $t('label.add_vaccine_recommendation') }}
+        {{ $t('label.add_vaccine_realization') }}
       </JDSButton>
     </div>
 
@@ -67,7 +66,7 @@
             <td>{{ item.unit || '-' }}</td>
             <td>{{ item.usage || '-' }}</td>
             <td>{{ item.note || '-' }}</td>
-            <td v-if="stage === 'recommendation'">
+            <td>
               <JDSButton inverted height="25px" @click="onUpdate()">
                 {{ $t('label.update') }}
               </JDSButton>
@@ -76,15 +75,21 @@
         </template>
       </JDSTable>
       <JDSButton
-        v-if="stage === 'recommendation'"
         inverted
         height="25px"
         class="mt-6"
         @click="onAddVaccineSupport()"
       >
-        {{ $t('label.add_vaccine_support_recommendation') }}
+        {{ $t('label.add_vaccine_support_realization') }}
       </JDSButton>
     </div>
+
+    <!-- Form Input -->
+    <span class="detail-table__input__label">{{ $t('label.delivery_plan_date') }}</span>
+    <date-picker-input
+      :value="date"
+      @selected="(value) => date = value"
+    />
   </div>
 </template>
 
@@ -97,23 +102,19 @@ export default {
     JDSTable,
     JDSButton
   },
-  props: {
-    stage: {
-      type: String,
-      default: ''
-    }
-  },
   data() {
     return {
       listVaccine: [],
       listVaccineSupport: [],
+      date: null,
       vaccineHeaders: [
         { text: this.$t('label.print_mail_no'), sortable: false },
         { text: this.$t('label.print_mail_material_name'), sortable: false },
         { text: this.$t('label.total'), sortable: false },
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
-        { text: this.$t('label.note'), sortable: false }
+        { text: this.$t('label.note'), sortable: false },
+        { text: this.$t('label.action'), sortable: false }
       ],
       vaccineSupportHeaders: [
         { text: this.$t('label.print_mail_no'), sortable: false },
@@ -122,7 +123,8 @@ export default {
         { text: this.$t('label.total'), sortable: false },
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
-        { text: this.$t('label.note'), sortable: false }
+        { text: this.$t('label.note'), sortable: false },
+        { text: this.$t('label.action'), sortable: false }
       ]
     }
   },
@@ -134,10 +136,6 @@ export default {
   async mounted() {
     await this.$store.dispatch('vaccine/getVaccineProductRequests', { vaccine_request_id: this.$route.params.id })
     this.mapVaccineItem()
-    if (this.stage === 'recommendation') {
-      this.vaccineHeaders.push({ text: this.$t('label.action'), sortable: false })
-      this.vaccineSupportHeaders.push({ text: this.$t('label.action'), sortable: false })
-    }
   },
   methods: {
     mapVaccineItem() {
@@ -188,5 +186,17 @@ export default {
       margin-bottom: 24px;
     }
   }
+
+  &__input {
+    &__label {
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      color: #424242;
+      margin-top: 32px;
+    }
+  }
+}
+.theme--light.v-text-field--solo-inverted > .v-input__control > .v-input__slot {
+  background: #FAFAFA !important;
 }
 </style>
