@@ -31,7 +31,7 @@
             <td>{{ item.usage || '-' }}</td>
             <td>{{ item.note || '-' }}</td>
             <td v-if="stage === 'recommendation'">
-              <JDSButton inverted height="25px" @click="onUpdate()">
+              <JDSButton inverted height="25px" @click="onUpdate(item.id)">
                 {{ $t('label.update') }}
               </JDSButton>
             </td>
@@ -68,7 +68,7 @@
             <td>{{ item.usage || '-' }}</td>
             <td>{{ item.note || '-' }}</td>
             <td v-if="stage === 'recommendation'">
-              <JDSButton inverted height="25px" @click="onUpdate()">
+              <JDSButton inverted height="25px" @click="onUpdate(item.id)">
                 {{ $t('label.update') }}
               </JDSButton>
             </td>
@@ -150,8 +150,8 @@ export default {
     onClick() {
       // @todo: create onClick function
     },
-    onUpdate() {
-      // @todo: create onUpdate function
+    onUpdate(id) {
+      this.$router.push(`/recommendation/update/${id}`)
     },
     onAddVaccine() {
       // @todo: create onAddVaccine function
