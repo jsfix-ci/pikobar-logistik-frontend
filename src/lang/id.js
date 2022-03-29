@@ -51,7 +51,8 @@ export default {
     realization: 'Realisasi',
     request_detail: 'Detail Permohonan',
     delivery_plan: 'Rencana Pengiriman',
-    logistic_post: 'Pos Logistik'
+    logistic_post: 'Pos Logistik',
+    vaccine_recommendation_update: 'Update Rekomendasi Vaksin'
   },
   label: {
     preview: 'Preview',
@@ -313,6 +314,7 @@ export default {
     upload_error_message: 'Ukuran foto tidak boleh lebih dari 10MB',
     upload_letter_error_message: 'Ukuran file tidak boleh lebih dari 10MB',
     apd_name_spec: 'Nama Barang',
+    apd_name_spec_placeholder: 'Pilih Nama Barang',
     description: 'Deskripsi',
     input_description: 'Deskripsi (Jika ada)',
     brand: 'Merk',
@@ -778,7 +780,8 @@ export default {
     add_vaccine_support_recommendation: 'Tambahkan Rekomendasi Logistik Penunjang Vaksin',
     add_vaccine_support_realization: 'Tambahkan Realisasi Logistik Penunjang Vaksin',
     give_recommendation: 'Rekomendasikan',
-    give_realization: 'Realisasikan'
+    give_realization: 'Realisasikan',
+    vaccine_recommendation_update: 'Update Rekomendasi Vaksin'
   },
   success: {
     login_success: 'Login Berhasil',
