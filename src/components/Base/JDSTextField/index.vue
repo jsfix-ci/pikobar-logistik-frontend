@@ -1,6 +1,6 @@
 <template>
   <div class="jds-text-field">
-    <span class="jds-text-field">
+    <span class="jds-text-field__label">
       {{ label }}
     </span>
     <v-text-field
