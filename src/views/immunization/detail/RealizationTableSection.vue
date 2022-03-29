@@ -25,7 +25,7 @@
         <template v-slot:item-prop="{ item, index }">
           <tr>
             <td>{{ index + 1 }}</td>
-            <td>{{ item.vaccine_product.name || '-' }}</td>
+            <td>{{ item.product_name || '-' }}</td>
             <td>{{ item.quantity || '-' }}</td>
             <td>{{ item.unit || '-' }}</td>
             <td>{{ item.usage || '-' }}</td>
@@ -60,7 +60,7 @@
         <template v-slot:item-prop="{ item, index }">
           <tr>
             <td>{{ index + 1 }}</td>
-            <td>{{ item.vaccine_product.name || '-' }}</td>
+            <td>{{ item.product_name || '-' }}</td>
             <td>{{ item.description || '-' }}</td>
             <td>{{ item.quantity || '-' }}</td>
             <td>{{ item.unit || '-' }}</td>
@@ -85,10 +85,13 @@
     </div>
 
     <!-- Form Input -->
-    <span class="detail-table__input__label">{{ $t('label.delivery_plan_date') }}</span>
-    <date-picker-input
-      :value="date"
-      @selected="(value) => date = value"
+    <JDSDatePicker
+      v-model="date"
+      :label="$t('label.delivery_plan_date')"
+      :placeholder="$t('label.input_date')"
+      hide-details
+      class="mt-8"
+      @clear="date = null"
     />
   </div>
 </template>
@@ -97,10 +100,12 @@
 import { mapState } from 'vuex'
 import JDSTable from '@/components/Base/JDSTable'
 import JDSButton from '@/components/Base/JDSButton'
+import JDSDatePicker from '@/components/Base/JDSDatePicker'
 export default {
   components: {
     JDSTable,
-    JDSButton
+    JDSButton,
+    JDSDatePicker
   },
   data() {
     return {
@@ -134,17 +139,24 @@ export default {
     ])
   },
   async mounted() {
-    await this.$store.dispatch('vaccine/getVaccineProductRequests', { vaccine_request_id: this.$route.params.id })
-    this.mapVaccineItem()
+    this.listVaccine = await this.$store.dispatch(
+      'vaccine/getVaccineProductRequests',
+      {
+        vaccine_request_id: this.$route.params.id,
+        category: 'vaccine',
+        status: 'finalization'
+      }
+    )
+    this.listVaccineSupport = await this.$store.dispatch(
+      'vaccine/getVaccineProductRequests',
+      {
+        vaccine_request_id: this.$route.params.id,
+        category: 'vaccine_support',
+        status: 'finalization'
+      }
+    )
   },
   methods: {
-    mapVaccineItem() {
-      this.vaccineProductRequests.forEach(item => {
-        item.category === 'vaccine'
-          ? this.listVaccine.push(item)
-          : this.listVaccineSupport.push(item)
-      })
-    },
     onClick() {
       // @todo: create onClick function
     },
