@@ -25,7 +25,7 @@
         <template v-slot:item-prop="{ item, index }">
           <tr>
             <td>{{ index + 1 }}</td>
-            <td>{{ item.vaccine_product.name || '-' }}</td>
+            <td>{{ item.product_name || '-' }}</td>
             <td>{{ item.quantity || '-' }}</td>
             <td>{{ item.unit || '-' }}</td>
             <td>{{ item.usage || '-' }}</td>
@@ -61,7 +61,7 @@
         <template v-slot:item-prop="{ item, index }">
           <tr>
             <td>{{ index + 1 }}</td>
-            <td>{{ item.vaccine_product.name || '-' }}</td>
+            <td>{{ item.product_name || '-' }}</td>
             <td>{{ item.description || '-' }}</td>
             <td>{{ item.quantity || '-' }}</td>
             <td>{{ item.unit || '-' }}</td>
@@ -132,21 +132,28 @@ export default {
     ])
   },
   async mounted() {
-    await this.$store.dispatch('vaccine/getVaccineProductRequests', { vaccine_request_id: this.$route.params.id })
-    this.mapVaccineItem()
+    this.listVaccine = await this.$store.dispatch(
+      'vaccine/getVaccineProductRequests',
+      {
+        vaccine_request_id: this.$route.params.id,
+        category: 'vaccine',
+        status: 'recommendation'
+      }
+    )
+    this.listVaccineSupport = await this.$store.dispatch(
+      'vaccine/getVaccineProductRequests',
+      {
+        vaccine_request_id: this.$route.params.id,
+        category: 'vaccine_support',
+        status: 'recommendation'
+      }
+    )
     if (this.stage === 'recommendation') {
       this.vaccineHeaders.push({ text: this.$t('label.action'), sortable: false })
       this.vaccineSupportHeaders.push({ text: this.$t('label.action'), sortable: false })
     }
   },
   methods: {
-    mapVaccineItem() {
-      this.vaccineProductRequests.forEach(item => {
-        item.category === 'vaccine'
-          ? this.listVaccine.push(item)
-          : this.listVaccineSupport.push(item)
-      })
-    },
     onClick() {
       // @todo: create onClick function
     },
