@@ -82,7 +82,7 @@
               <span
                 :class="{
                   'detail-table__status': true,
-                  'detail-table__status--green': item.product_status,
+                  'detail-table__status--green': !notUpdated(item),
                   'detail-table__status--red': notUpdated(item)
                 }"
               >

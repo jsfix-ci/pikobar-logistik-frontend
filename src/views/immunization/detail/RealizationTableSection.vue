@@ -24,12 +24,23 @@
       >
         <template v-slot:item-prop="{ item, index }">
           <tr>
-            <td>{{ index + 1 }}</td>
-            <td>{{ item.product_name || '-' }}</td>
-            <td>{{ item.quantity || '-' }}</td>
-            <td>{{ item.unit || '-' }}</td>
-            <td>{{ item.usage || '-' }}</td>
-            <td>{{ item.note || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ index + 1 }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.product_name || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.quantity || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.unit || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.usage || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.note || '-' }}</td>
+            <td>
+              <span
+                :class="{
+                  'detail-table__status': true,
+                  'detail-table__status--green': !notUpdated(item),
+                  'detail-table__status--red': notUpdated(item)
+                }"
+              >
+                {{ item.product_status ? item.product_status : 'Belum Diupdate' }}
+              </span>
+            </td>
             <td>
               <JDSButton inverted height="25px" @click="onUpdate()">
                 {{ $t('label.update') }}
@@ -59,13 +70,24 @@
       >
         <template v-slot:item-prop="{ item, index }">
           <tr>
-            <td>{{ index + 1 }}</td>
-            <td>{{ item.product_name || '-' }}</td>
-            <td>{{ item.description || '-' }}</td>
-            <td>{{ item.quantity || '-' }}</td>
-            <td>{{ item.unit || '-' }}</td>
-            <td>{{ item.usage || '-' }}</td>
-            <td>{{ item.note || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ index + 1 }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.product_name || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.description || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.quantity || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.unit || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.usage || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.note || '-' }}</td>
+            <td>
+              <span
+                :class="{
+                  'detail-table__status': true,
+                  'detail-table__status--green': !notUpdated(item),
+                  'detail-table__status--red': notUpdated(item)
+                }"
+              >
+                {{ item.product_status ? item.product_status : 'Belum Diupdate' }}
+              </span>
+            </td>
             <td>
               <JDSButton inverted height="25px" @click="onUpdate()">
                 {{ $t('label.update') }}
@@ -119,6 +141,7 @@ export default {
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
         { text: this.$t('label.note'), sortable: false },
+        { text: this.$t('label.status'), sortable: false },
         { text: this.$t('label.action'), sortable: false }
       ],
       vaccineSupportHeaders: [
@@ -129,6 +152,7 @@ export default {
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
         { text: this.$t('label.note'), sortable: false },
+        { text: this.$t('label.status'), sortable: false },
         { text: this.$t('label.action'), sortable: false }
       ]
     }
@@ -168,6 +192,9 @@ export default {
     },
     onAddVaccineSupport() {
       // @todo: create onAddVaccineSupport function
+    },
+    notUpdated(item) {
+      return item.product_status === null
     }
   }
 }
@@ -206,6 +233,27 @@ export default {
       color: #424242;
       margin-top: 32px;
     }
+  }
+
+  &__status {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    padding: 3px;
+
+    &--green {
+      border-color: #069550;
+      color: #069550;
+    }
+
+    &--red {
+      border-color: #EF5350;
+      color: #EF5350;
+    }
+  }
+
+  &__not-update {
+    color: #BDBDBD;
   }
 }
 .theme--light.v-text-field--solo-inverted > .v-input__control > .v-input__slot {
