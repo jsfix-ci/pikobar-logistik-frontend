@@ -101,17 +101,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.detail {
-  background: white;
-  padding: 16px;
-  border-radius: 8px;
-
-  &__title {
-    font-family: 'Roboto', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: #424242;
-    margin-bottom: 32px;
-  }
-}
+  @import "@/styles/scss/pages/vaccineDetail.scss";
 </style>

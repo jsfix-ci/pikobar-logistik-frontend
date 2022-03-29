@@ -198,50 +198,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.detail-table {
-  &__section-title {
-    font-family: 'Roboto', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: #BDBDBD;
-    margin-right: 15px;
-  }
-
-  &__table-container {
-    border-style: solid;
-    border-color: #E0E0E0;
-    border-width: 1px;
-    border-radius: 8px;
-    padding: 24px;
-
-    &__title {
-      font-family: 'Roboto', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: #757575;
-      margin-bottom: 24px;
-    }
-  }
-
-  &__status {
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 4px;
-    padding: 3px;
-
-    &--green {
-      border-color: #069550;
-      color: #069550;
-    }
-
-    &--red {
-      border-color: #EF5350;
-      color: #EF5350;
-    }
-  }
-
-  &__not-update {
-    color: #BDBDBD;
-  }
-}
+  @import "@/styles/scss/pages/vaccineDetail.scss";
 </style>
