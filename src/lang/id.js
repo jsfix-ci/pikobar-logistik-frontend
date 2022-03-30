@@ -52,7 +52,8 @@ export default {
     request_detail: 'Detail Permohonan',
     delivery_plan: 'Rencana Pengiriman',
     logistic_post: 'Pos Logistik',
-    vaccine_recommendation_update: 'Update Rekomendasi Vaksin'
+    vaccine_recommendation_update: 'Update Rekomendasi Vaksin',
+    vaccine_realization_update: 'Update Realisasi Vaksin'
   },
   label: {
     preview: 'Preview',
@@ -781,7 +782,8 @@ export default {
     add_vaccine_support_realization: 'Tambahkan Realisasi Logistik Penunjang Vaksin',
     give_recommendation: 'Rekomendasikan',
     give_realization: 'Realisasikan',
-    vaccine_recommendation_update: 'Update Rekomendasi Vaksin'
+    vaccine_recommendation_update: 'Update Rekomendasi Vaksin',
+    vaccine_realization_update: 'Update Realisasi Vaksin'
   },
   success: {
     login_success: 'Login Berhasil',
