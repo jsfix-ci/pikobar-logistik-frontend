@@ -55,7 +55,6 @@ export default {
     font-family: 'Lato', sans-serif;
     font-size: 15px;
     color: #424242;
-    margin-bottom: 8px;
   }
 }
 .v-input--selection-controls::v-deep {
