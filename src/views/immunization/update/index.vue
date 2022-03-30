@@ -1,10 +1,11 @@
 <template>
   <div class="update d-flex flex-column mb-6">
-    <span class="update__title">{{ $t('label.vaccine_recommendation_update') }}</span>
+    <span class="update__title">{{ title }}</span>
     <v-row>
       <v-col cols="12" sm="6">
-        <RequestSection class="mb-6" />
-        <RecommendationSection />
+        <RequestSection :stage="stage" class="mb-6" />
+        <RecommendationSection :stage="stage" class="mb-6" />
+        <RealizationSection v-if="stage === 'realization'" :stage="stage" />
         <div class="d-flex flex-row justify-space-between mt-6">
           <JDSButton inverted height="42px" width="48%" @click="onCancel()">
             {{ $t('label.cancel') }}
@@ -21,12 +22,25 @@
 <script>
 import RequestSection from './RequestSection.vue'
 import RecommendationSection from './RecommendationSection.vue'
+import RealizationSection from './RealizationSection.vue'
 import JDSButton from '@/components/Base/JDSButton'
 export default {
   components: {
     RequestSection,
     RecommendationSection,
+    RealizationSection,
     JDSButton
+  },
+  computed: {
+    stage() {
+      const splittedPath = this.$route.path.split('/')
+      return splittedPath[1]
+    },
+    title() {
+      return this.stage === 'recommendation'
+        ? this.$t('label.vaccine_recommendation_update')
+        : this.$t('label.vaccine_realization_update')
+    }
   },
   methods: {
     onCancel() {

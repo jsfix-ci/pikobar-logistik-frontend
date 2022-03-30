@@ -10,12 +10,14 @@
       </v-col>
     </v-row>
     <JDSSelect
+      v-if="stage === 'recommendation'"
       v-model="status"
       :label="$t('label.status')"
       :items="statusOptions"
       :placeholder="$t('label.select_status')"
       hide-details
     />
+    <DisabledField v-else label="Status" value="Barang Diganti" />
   </div>
 </template>
 
@@ -26,6 +28,12 @@ export default {
   components: {
     DisabledField,
     JDSSelect
+  },
+  props: {
+    stage: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {

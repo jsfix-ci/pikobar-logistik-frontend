@@ -42,7 +42,7 @@
               </span>
             </td>
             <td>
-              <JDSButton inverted height="25px" @click="onUpdate()">
+              <JDSButton inverted height="25px" @click="onUpdate(item.id)">
                 {{ $t('label.update') }}
               </JDSButton>
             </td>
@@ -89,7 +89,7 @@
               </span>
             </td>
             <td>
-              <JDSButton inverted height="25px" @click="onUpdate()">
+              <JDSButton inverted height="25px" @click="onUpdate(item.id)">
                 {{ $t('label.update') }}
               </JDSButton>
             </td>
@@ -184,8 +184,8 @@ export default {
     onClick() {
       // @todo: create onClick function
     },
-    onUpdate() {
-      // @todo: create onUpdate function
+    onUpdate(id) {
+      this.$router.push(`/realization/update/${id}`)
     },
     onAddVaccine() {
       // @todo: create onAddVaccine function
