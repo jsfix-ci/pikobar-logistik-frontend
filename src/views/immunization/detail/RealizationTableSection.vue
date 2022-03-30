@@ -24,12 +24,23 @@
       >
         <template v-slot:item-prop="{ item, index }">
           <tr>
-            <td>{{ index + 1 }}</td>
-            <td>{{ item.vaccine_product.name || '-' }}</td>
-            <td>{{ item.quantity || '-' }}</td>
-            <td>{{ item.unit || '-' }}</td>
-            <td>{{ item.usage || '-' }}</td>
-            <td>{{ item.note || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ index + 1 }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.product_name || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.quantity || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.unit || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.usage || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.note || '-' }}</td>
+            <td>
+              <span
+                :class="{
+                  'detail-table__status': true,
+                  'detail-table__status--green': !notUpdated(item),
+                  'detail-table__status--red': notUpdated(item)
+                }"
+              >
+                {{ item.product_status ? item.product_status : 'Belum Diupdate' }}
+              </span>
+            </td>
             <td>
               <JDSButton inverted height="25px" @click="onUpdate()">
                 {{ $t('label.update') }}
@@ -59,13 +70,24 @@
       >
         <template v-slot:item-prop="{ item, index }">
           <tr>
-            <td>{{ index + 1 }}</td>
-            <td>{{ item.vaccine_product.name || '-' }}</td>
-            <td>{{ item.description || '-' }}</td>
-            <td>{{ item.quantity || '-' }}</td>
-            <td>{{ item.unit || '-' }}</td>
-            <td>{{ item.usage || '-' }}</td>
-            <td>{{ item.note || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ index + 1 }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.product_name || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.description || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.quantity || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.unit || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.usage || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.note || '-' }}</td>
+            <td>
+              <span
+                :class="{
+                  'detail-table__status': true,
+                  'detail-table__status--green': !notUpdated(item),
+                  'detail-table__status--red': notUpdated(item)
+                }"
+              >
+                {{ item.product_status ? item.product_status : 'Belum Diupdate' }}
+              </span>
+            </td>
             <td>
               <JDSButton inverted height="25px" @click="onUpdate()">
                 {{ $t('label.update') }}
@@ -85,10 +107,13 @@
     </div>
 
     <!-- Form Input -->
-    <span class="detail-table__input__label">{{ $t('label.delivery_plan_date') }}</span>
-    <date-picker-input
-      :value="date"
-      @selected="(value) => date = value"
+    <JDSDatePicker
+      v-model="date"
+      :label="$t('label.delivery_plan_date')"
+      :placeholder="$t('label.input_date')"
+      hide-details
+      class="mt-8"
+      @clear="date = null"
     />
   </div>
 </template>
@@ -97,10 +122,12 @@
 import { mapState } from 'vuex'
 import JDSTable from '@/components/Base/JDSTable'
 import JDSButton from '@/components/Base/JDSButton'
+import JDSDatePicker from '@/components/Base/JDSDatePicker'
 export default {
   components: {
     JDSTable,
-    JDSButton
+    JDSButton,
+    JDSDatePicker
   },
   data() {
     return {
@@ -114,6 +141,7 @@ export default {
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
         { text: this.$t('label.note'), sortable: false },
+        { text: this.$t('label.status'), sortable: false },
         { text: this.$t('label.action'), sortable: false }
       ],
       vaccineSupportHeaders: [
@@ -124,6 +152,7 @@ export default {
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
         { text: this.$t('label.note'), sortable: false },
+        { text: this.$t('label.status'), sortable: false },
         { text: this.$t('label.action'), sortable: false }
       ]
     }
@@ -134,17 +163,24 @@ export default {
     ])
   },
   async mounted() {
-    await this.$store.dispatch('vaccine/getVaccineProductRequests', { vaccine_request_id: this.$route.params.id })
-    this.mapVaccineItem()
+    this.listVaccine = await this.$store.dispatch(
+      'vaccine/getVaccineProductRequests',
+      {
+        vaccine_request_id: this.$route.params.id,
+        category: 'vaccine',
+        status: 'finalization'
+      }
+    )
+    this.listVaccineSupport = await this.$store.dispatch(
+      'vaccine/getVaccineProductRequests',
+      {
+        vaccine_request_id: this.$route.params.id,
+        category: 'vaccine_support',
+        status: 'finalization'
+      }
+    )
   },
   methods: {
-    mapVaccineItem() {
-      this.vaccineProductRequests.forEach(item => {
-        item.category === 'vaccine'
-          ? this.listVaccine.push(item)
-          : this.listVaccineSupport.push(item)
-      })
-    },
     onClick() {
       // @todo: create onClick function
     },
@@ -156,47 +192,14 @@ export default {
     },
     onAddVaccineSupport() {
       // @todo: create onAddVaccineSupport function
+    },
+    notUpdated(item) {
+      return item.product_status === null
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.detail-table {
-  &__section-title {
-    font-family: 'Roboto', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: #BDBDBD;
-    margin-right: 15px;
-  }
-
-  &__table-container {
-    border-style: solid;
-    border-color: #E0E0E0;
-    border-width: 1px;
-    border-radius: 8px;
-    padding: 24px;
-
-    &__title {
-      font-family: 'Roboto', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: #757575;
-      margin-bottom: 24px;
-    }
-  }
-
-  &__input {
-    &__label {
-      font-family: 'Lato', sans-serif;
-      font-size: 15px;
-      color: #424242;
-      margin-top: 32px;
-    }
-  }
-}
-.theme--light.v-text-field--solo-inverted > .v-input__control > .v-input__slot {
-  background: #FAFAFA !important;
-}
+  @import "@/styles/scss/pages/vaccineDetail.scss";
 </style>

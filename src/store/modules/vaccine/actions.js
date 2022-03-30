@@ -34,6 +34,7 @@ export default {
     try {
       const response = await fetchList('/api/v1/vaccine-product-request', 'GET', params)
       commit('SET_VACCINE_PRODUCT_REQUESTS', response.data)
+      return response.data
     } catch (e) {
       return e
     }

@@ -24,12 +24,23 @@
       >
         <template v-slot:item-prop="{ item, index }">
           <tr>
-            <td>{{ index + 1 }}</td>
-            <td>{{ item.vaccine_product.name || '-' }}</td>
-            <td>{{ item.quantity || '-' }}</td>
-            <td>{{ item.unit || '-' }}</td>
-            <td>{{ item.usage || '-' }}</td>
-            <td>{{ item.note || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ index + 1 }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.product_name || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.quantity || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.unit || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.usage || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.note || '-' }}</td>
+            <td>
+              <span
+                :class="{
+                  'detail-table__status': true,
+                  'detail-table__status--green': !notUpdated(item),
+                  'detail-table__status--red': notUpdated(item)
+                }"
+              >
+                {{ item.product_status ? item.product_status : 'Belum Diupdate' }}
+              </span>
+            </td>
             <td v-if="stage === 'recommendation'">
               <JDSButton inverted height="25px" @click="onUpdate(item.id)">
                 {{ $t('label.update') }}
@@ -60,13 +71,24 @@
       >
         <template v-slot:item-prop="{ item, index }">
           <tr>
-            <td>{{ index + 1 }}</td>
-            <td>{{ item.vaccine_product.name || '-' }}</td>
-            <td>{{ item.description || '-' }}</td>
-            <td>{{ item.quantity || '-' }}</td>
-            <td>{{ item.unit || '-' }}</td>
-            <td>{{ item.usage || '-' }}</td>
-            <td>{{ item.note || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ index + 1 }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.product_name || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.description || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.quantity || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.unit || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.usage || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.note || '-' }}</td>
+            <td>
+              <span
+                :class="{
+                  'detail-table__status': true,
+                  'detail-table__status--green': !notUpdated(item),
+                  'detail-table__status--red': notUpdated(item)
+                }"
+              >
+                {{ item.product_status ? item.product_status : 'Belum Diupdate' }}
+              </span>
+            </td>
             <td v-if="stage === 'recommendation'">
               <JDSButton inverted height="25px" @click="onUpdate(item.id)">
                 {{ $t('label.update') }}
@@ -113,7 +135,8 @@ export default {
         { text: this.$t('label.total'), sortable: false },
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
-        { text: this.$t('label.note'), sortable: false }
+        { text: this.$t('label.note'), sortable: false },
+        { text: this.$t('label.status'), sortable: false }
       ],
       vaccineSupportHeaders: [
         { text: this.$t('label.print_mail_no'), sortable: false },
@@ -122,7 +145,8 @@ export default {
         { text: this.$t('label.total'), sortable: false },
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
-        { text: this.$t('label.note'), sortable: false }
+        { text: this.$t('label.note'), sortable: false },
+        { text: this.$t('label.status'), sortable: false }
       ]
     }
   },
@@ -132,21 +156,28 @@ export default {
     ])
   },
   async mounted() {
-    await this.$store.dispatch('vaccine/getVaccineProductRequests', { vaccine_request_id: this.$route.params.id })
-    this.mapVaccineItem()
+    this.listVaccine = await this.$store.dispatch(
+      'vaccine/getVaccineProductRequests',
+      {
+        vaccine_request_id: this.$route.params.id,
+        category: 'vaccine',
+        status: 'recommendation'
+      }
+    )
+    this.listVaccineSupport = await this.$store.dispatch(
+      'vaccine/getVaccineProductRequests',
+      {
+        vaccine_request_id: this.$route.params.id,
+        category: 'vaccine_support',
+        status: 'recommendation'
+      }
+    )
     if (this.stage === 'recommendation') {
       this.vaccineHeaders.push({ text: this.$t('label.action'), sortable: false })
       this.vaccineSupportHeaders.push({ text: this.$t('label.action'), sortable: false })
     }
   },
   methods: {
-    mapVaccineItem() {
-      this.vaccineProductRequests.forEach(item => {
-        item.category === 'vaccine'
-          ? this.listVaccine.push(item)
-          : this.listVaccineSupport.push(item)
-      })
-    },
     onClick() {
       // @todo: create onClick function
     },
@@ -158,35 +189,14 @@ export default {
     },
     onAddVaccineSupport() {
       // @todo: create onAddVaccineSupport function
+    },
+    notUpdated(item) {
+      return item.product_status === null
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.detail-table {
-  &__section-title {
-    font-family: 'Roboto', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: #BDBDBD;
-    margin-right: 15px;
-  }
-
-  &__table-container {
-    border-style: solid;
-    border-color: #E0E0E0;
-    border-width: 1px;
-    border-radius: 8px;
-    padding: 24px;
-
-    &__title {
-      font-family: 'Roboto', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: #757575;
-      margin-bottom: 24px;
-    }
-  }
-}
+  @import "@/styles/scss/pages/vaccineDetail.scss";
 </style>
