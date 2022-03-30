@@ -5,6 +5,7 @@
     </span>
     <v-radio-group
       :value="value"
+      :hide-details="hideDetails"
       @input="$emit('input', $event)"
       @change="$emit('change')"
     >
@@ -41,6 +42,10 @@ export default {
     itemValue: {
       type: String,
       default: 'value'
+    },
+    hideDetails: {
+      type: Boolean,
+      default: false
     }
   }
 }
