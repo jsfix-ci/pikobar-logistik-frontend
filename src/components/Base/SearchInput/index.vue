@@ -5,7 +5,7 @@
     flat
     hide-details
     outlined
-    :placeholder="$t('label.search_placeholder')"
+    :placeholder="placeholder"
     @input="$emit('input', $event)"
     @change="$emit('change')"
   >
@@ -23,6 +23,10 @@ export default {
     value: {
       type: [String, Number],
       default: null
+    },
+    placeholder: {
+      type: String,
+      default: 'Masukkan kata kunci apa saja'
     }
   }
 }
