@@ -173,6 +173,7 @@ export default {
     faskes_name: 'Nama Faskes',
     received_stock: 'Stok Diterima',
     used_stock: 'Stok Terpakai',
+    remains: 'Sisa',
     remaining_stock: 'Sisa Stok',
     remaining_stock_item: 'Sisa Stok Barang',
     detail: 'Detail',
@@ -783,7 +784,8 @@ export default {
     give_recommendation: 'Rekomendasikan',
     give_realization: 'Realisasikan',
     vaccine_recommendation_update: 'Update Rekomendasi Vaksin',
-    vaccine_realization_update: 'Update Realisasi Vaksin'
+    vaccine_realization_update: 'Update Realisasi Vaksin',
+    vaccine_stock: 'Stock Vaksin'
   },
   success: {
     login_success: 'Login Berhasil',

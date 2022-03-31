@@ -15,6 +15,9 @@
           </JDSButton>
         </div>
       </v-col>
+      <v-col cols="12" sm="6">
+        <StockSection />
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -23,12 +26,14 @@
 import RequestSection from './RequestSection.vue'
 import RecommendationSection from './RecommendationSection.vue'
 import RealizationSection from './RealizationSection.vue'
+import StockSection from './StockSection.vue'
 import JDSButton from '@/components/Base/JDSButton'
 export default {
   components: {
     RequestSection,
     RecommendationSection,
     RealizationSection,
+    StockSection,
     JDSButton
   },
   computed: {
