@@ -176,6 +176,7 @@ export default {
       this.vaccineHeaders.push({ text: this.$t('label.action'), sortable: false })
       this.vaccineSupportHeaders.push({ text: this.$t('label.action'), sortable: false })
     }
+    this.checkUpdate()
   },
   methods: {
     onClick() {
@@ -192,6 +193,33 @@ export default {
     },
     notUpdated(item) {
       return item.product_status === null
+    },
+    /**
+     * iterate through listVaccine and listVaccineSupport
+     * to check if any item's product_status still null
+     */
+    checkUpdate() {
+      let isUpdate = true
+
+      // iterate through listVaccine
+      let i = 0
+      while (isUpdate && i < this.listVaccine.length) {
+        if (this.listVaccine[i].product_status === null) {
+          isUpdate = false
+        }
+        i++
+      }
+
+      // iterate through listVaccineSupport
+      i = 0
+      while (isUpdate && i < this.listVaccineSupport.length) {
+        if (this.listVaccineSupport[i].product_status === null) {
+          isUpdate = false
+        }
+        i++
+      }
+
+      this.$emit('update:isUpdated', isUpdate)
     }
   }
 }
