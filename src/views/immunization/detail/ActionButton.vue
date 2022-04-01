@@ -34,6 +34,16 @@
         {{ $t('label.give_realization') }}
       </JDSButton>
     </div>
+
+    <!-- Delivery Plan -->
+    <div v-if="stage === 'delivery-plan'" class="d-flex flex-row justify-end mt-8">
+      <JDSButton inverted height="42px" class="mr-4" @click="onBack()">
+        {{ $t('label.back') }}
+      </JDSButton>
+      <JDSButton height="42px" @click="onDeliver()">
+        Load Order (Kemas Pengiriman)
+      </JDSButton>
+    </div>
   </div>
 </template>
 
@@ -58,6 +68,9 @@ export default {
     },
     onRealize() {
       // @todo: create onRealize function
+    },
+    onDeliver() {
+      // @todo: create onDeliver function
     }
   }
 }
