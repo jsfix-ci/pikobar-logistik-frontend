@@ -3,7 +3,7 @@
     <span class="stock__title mb-2">{{ $t('label.vaccine_stock') }}</span>
     <span class="stock__subtitle mb-6">(Diupdate pada 18 Februari 2022, 16:03)</span>
     <SearchInput
-      v-model="listQuery.search"
+      v-model="listQuery.material_name"
       placeholder="Masukkan nama barang yang dicari"
       class="mb-6"
       @change="handleSearch"
@@ -21,27 +21,27 @@
         </tr>
       </template>
     </JDSTable>
-    <!-- @todo: change pagination component -->
-    <pagination
-      :total="totalPage"
-      :total-data="totalData"
+    <JDSPagination
+      :key="totalPage"
+      :init-page="listQuery.page"
+      :total-page="totalPage"
       :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
-      :on-next="fetchData"
-      :page-sizes="[5, 10]"
+      @onPrev="fetchData"
+      @onNext="fetchData"
     />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { filterQuery } from '@/helpers/tableDisplay'
 import JDSTable from '@/components/Base/JDSTable'
 import SearchInput from '@/components/Base/SearchInput'
+import JDSPagination from '@/components/JDSPagination'
 export default {
   components: {
     JDSTable,
-    SearchInput
+    SearchInput,
+    JDSPagination
   },
   data() {
     return {
@@ -52,9 +52,9 @@ export default {
         { text: this.$t('label.location_stock'), sortable: false }
       ],
       listQuery: {
-        page: parseInt(this.$route.query?.page || 1),
-        limit: parseInt(this.$route.query?.limit || 5),
-        search: this.$route.query?.search || ''
+        page: 1,
+        limit: 5,
+        material_name: ''
       },
       listMaterial: [],
       totalPage: 0,
@@ -66,27 +66,24 @@ export default {
       'allocationMaterials'
     ])
   },
-  async mounted() {
-    await this.$store.dispatch('vaccine/getStock', this.listQuery)
-    this.listMaterial = [...this.allocationMaterials.data]
-    this.totalPage = this.allocationMaterials.last_page
-    this.totalData = this.allocationMaterials.total
+  watch: {
+    'listQuery.page'() {
+      this.fetchData()
+    }
+  },
+  mounted() {
+    this.fetchData()
   },
   methods: {
-    filterQuery,
     handleSearch() {
       this.listQuery.page = 1
       this.fetchData()
     },
-    fetchData() {
+    async fetchData() {
+      await this.$store.dispatch('vaccine/getStock', this.listQuery)
       this.listMaterial = [...this.allocationMaterials.data]
       this.totalPage = this.allocationMaterials.last_page
       this.totalData = this.allocationMaterials.total
-      this.$router.replace({
-        query: {
-          ...this.filterQuery(this.listQuery)
-        }
-      })
     }
   }
 }
