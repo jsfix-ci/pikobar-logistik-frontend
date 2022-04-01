@@ -3,7 +3,7 @@
     <span class="stock__title mb-2">{{ $t('label.vaccine_stock') }}</span>
     <span class="stock__subtitle mb-6">(Diupdate pada 18 Februari 2022, 16:03)</span>
     <SearchInput
-      v-model="listQuery.search"
+      v-model="listQuery.material_name"
       placeholder="Masukkan nama barang yang dicari"
       class="mb-6"
       @change="handleSearch"
@@ -54,7 +54,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 5,
-        search: ''
+        material_name: ''
       },
       listMaterial: [],
       totalPage: 0,
