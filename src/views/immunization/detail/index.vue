@@ -12,7 +12,8 @@
     />
     <RequestTableSection />
     <RecommendationTableSection v-if="showRecommendation" :stage="stage" />
-    <RealizationTableSection v-if="showRealization" />
+    <RealizationTableSection v-if="showRealization" :stage="stage" />
+    <DeliveryPlanTableSection v-if="showDeliveryPlan" />
     <ActionButton :stage="stage" @confirm="onConfirm" />
     <DialogSection
       :key="showDialog"
@@ -31,6 +32,7 @@ import LetterSection from './LetterSection'
 import RequestTableSection from './RequestTableSection'
 import RecommendationTableSection from './RecommendationTableSection'
 import RealizationTableSection from './RealizationTableSection'
+import DeliveryPlanTableSection from './DeliveryPlanTableSection'
 import ActionButton from './ActionButton'
 import DialogSection from './Dialog'
 export default {
@@ -40,6 +42,7 @@ export default {
     RequestTableSection,
     RecommendationTableSection,
     RealizationTableSection,
+    DeliveryPlanTableSection,
     ActionButton,
     DialogSection
   },
@@ -55,10 +58,16 @@ export default {
       'vaccineRequest'
     ]),
     showRecommendation() {
-      return this.stage === 'recommendation' || this.stage === 'realization'
+      return this.stage === 'recommendation' ||
+        this.stage === 'realization' ||
+        this.stage === 'delivery-plan'
     },
     showRealization() {
-      return this.stage === 'realization'
+      return this.stage === 'realization' ||
+        this.stage === 'delivery-plan'
+    },
+    showDeliveryPlan() {
+      return this.stage === 'delivery-plan'
     }
   },
   async mounted() {

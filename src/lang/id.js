@@ -495,6 +495,7 @@ export default {
     planned_delivery_date: 'Tanggal Rencana Pengiriman',
     delivery_plan_date: 'Tanggal Rencana Kirim',
     delivery_plan: 'Rencana Pengiriman',
+    logistic_post: 'Pos Logistik',
     logistic_type: 'Jenis Logistik',
     follow_up_status: 'Status Tindak Lanjut',
     reception_report: 'Laporan Penerimaan',

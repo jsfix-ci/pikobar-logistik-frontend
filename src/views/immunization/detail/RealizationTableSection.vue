@@ -41,7 +41,7 @@
                 {{ item.product_status ? item.product_status : 'Belum Diupdate' }}
               </span>
             </td>
-            <td>
+            <td v-if="stage === 'realization'">
               <JDSButton inverted height="25px" @click="onUpdate(item.id)">
                 {{ $t('label.update') }}
               </JDSButton>
@@ -50,6 +50,7 @@
         </template>
       </JDSTable>
       <JDSButton
+        v-if="stage === 'realization'"
         inverted
         height="25px"
         class="mt-6"
@@ -88,7 +89,7 @@
                 {{ item.product_status ? item.product_status : 'Belum Diupdate' }}
               </span>
             </td>
-            <td>
+            <td v-if="stage === 'realization'">
               <JDSButton inverted height="25px" @click="onUpdate(item.id)">
                 {{ $t('label.update') }}
               </JDSButton>
@@ -97,6 +98,7 @@
         </template>
       </JDSTable>
       <JDSButton
+        v-if="stage === 'realization'"
         inverted
         height="25px"
         class="mt-6"
@@ -108,12 +110,19 @@
 
     <!-- Form Input -->
     <JDSDatePicker
+      v-if="stage === 'realization'"
       v-model="date"
       :label="$t('label.delivery_plan_date')"
       :placeholder="$t('label.input_date')"
       hide-details
-      class="mt-8"
       @clear="date = null"
+    />
+    <!-- @todo: change with real data -->
+    <DisabledField
+      v-else
+      label="Tanggal Rencana Kirim"
+      value="18 Februari 2022"
+      class="mt-8"
     />
   </div>
 </template>
@@ -123,11 +132,19 @@ import { mapState } from 'vuex'
 import JDSTable from '@/components/Base/JDSTable'
 import JDSButton from '@/components/Base/JDSButton'
 import JDSDatePicker from '@/components/Base/JDSDatePicker'
+import DisabledField from '@/components/Base/DisabledField'
 export default {
   components: {
     JDSTable,
     JDSButton,
-    JDSDatePicker
+    JDSDatePicker,
+    DisabledField
+  },
+  props: {
+    stage: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
@@ -141,8 +158,7 @@ export default {
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
         { text: this.$t('label.note'), sortable: false },
-        { text: this.$t('label.status'), sortable: false },
-        { text: this.$t('label.action'), sortable: false }
+        { text: this.$t('label.status'), sortable: false }
       ],
       vaccineSupportHeaders: [
         { text: this.$t('label.print_mail_no'), sortable: false },
@@ -152,8 +168,7 @@ export default {
         { text: this.$t('label.unit'), sortable: false },
         { text: this.$t('label.purpose'), sortable: false },
         { text: this.$t('label.note'), sortable: false },
-        { text: this.$t('label.status'), sortable: false },
-        { text: this.$t('label.action'), sortable: false }
+        { text: this.$t('label.status'), sortable: false }
       ]
     }
   },
@@ -179,6 +194,10 @@ export default {
         status: 'finalization'
       }
     )
+    if (this.stage === 'realization') {
+      this.vaccineHeaders.push({ text: this.$t('label.action'), sortable: false })
+      this.vaccineSupportHeaders.push({ text: this.$t('label.action'), sortable: false })
+    }
   },
   methods: {
     onClick() {

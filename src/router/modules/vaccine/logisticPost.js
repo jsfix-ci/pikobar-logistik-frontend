@@ -22,6 +22,17 @@ const logisticPost = {
         roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
         isVaccineModule: true
       }
+    },
+    {
+      path: '/delivery-plan/detail/:id',
+      component: () => import('@/views/immunization/detail'),
+      hidden: true,
+      meta: {
+        title: 'request_detail',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
+        isVaccineModule: true
+      }
     }
   ]
 }
