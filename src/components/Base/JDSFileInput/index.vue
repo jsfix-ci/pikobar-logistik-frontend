@@ -24,6 +24,7 @@
           Upload
         </span>
       </span>
+      <span v-if="!showFileName" class="jds-file-input__placeholder__format">(Format JPG, JPEG, PNG)</span>
       <span v-else>{{ fileList[0].name }}</span>
     </div>
   </div>
@@ -106,6 +107,12 @@ export default {
 
     &__upload:hover {
       cursor: pointer;
+    }
+
+    &__format {
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      color: #757575;
     }
   }
 
