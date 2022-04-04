@@ -1,6 +1,7 @@
 <template>
   <v-btn
     depressed
+    :disabled="disabled"
     :height="height"
     :width="width"
     min-width="0px"
@@ -26,6 +27,10 @@ export default {
       default: false
     },
     danger: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     },

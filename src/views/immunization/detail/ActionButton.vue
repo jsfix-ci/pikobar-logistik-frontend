@@ -20,7 +20,7 @@
       <JDSButton inverted height="42px" class="mr-4" @click="onBack()">
         {{ $t('label.back') }}
       </JDSButton>
-      <JDSButton height="42px" @click="onRecommend()">
+      <JDSButton height="42px" @click="$emit('recommend')">
         {{ $t('label.give_recommendation') }}
       </JDSButton>
     </div>
@@ -62,9 +62,6 @@ export default {
   methods: {
     onBack() {
       this.$router.go(-1)
-    },
-    onRecommend() {
-      // @todo: create onRecommend function
     },
     onRealize() {
       // @todo: create onRealize function

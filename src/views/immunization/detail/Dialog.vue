@@ -48,6 +48,7 @@
     <!-- Default Dialog -->
     <div v-else class="detail-dialog">
       <img
+        v-if="content.image"
         :src="content.image"
         alt="dialog-image"
         width="320"
@@ -61,17 +62,19 @@
       </span>
       <div class="d-flex flex-row justify-space-between mt-10" style="width: 100%">
         <JDSButton
+          v-if="content.buttonLeft"
           :inverted="content.buttonLeft.isInverted"
           height="42px"
-          width="200px"
+          :width="content.buttonRight ? '200px' : '420px'"
           @click="content.buttonLeft.onClick"
         >
           {{ content.buttonLeft.label }}
         </JDSButton>
         <JDSButton
+          v-if="content.buttonRight"
           :inverted="content.buttonRight.isInverted"
           height="42px"
-          width="200px"
+          :width="content.buttonLeft ? '200px' : '420px'"
           @click="content.buttonRight.onClick"
         >
           {{ content.buttonRight.label }}
@@ -143,6 +146,39 @@ export default {
           },
           buttonRight: {
             label: 'Lanjut ke Rekomendasi',
+            onClick: () => { this.$router.push('/recommendation') }
+          }
+        },
+        notUpdated: {
+          image: '/img/warning.svg',
+          title: 'Harap Update Barang Anda!',
+          subtitle: 'Cek area yang bertuliskan “Belum Diupdate”',
+          buttonLeft: {
+            label: ' Cek Kembali',
+            isInverted: true,
+            onClick: () => { this.$emit('close') }
+          }
+        },
+        recommendConfirmation: {
+          image: '/img/confirmation.svg',
+          title: 'Apakah proses rekomendasi ini telah \n disetujui oleh Kabid P2P Dinkes \n Provinsi Jawa Barat?',
+          subtitle: '( dr Ryan B Ristandi, Sp.PK., MMRS )',
+          buttonLeft: {
+            label: 'Tanya Kembali',
+            isInverted: true,
+            onClick: () => { this.$emit('close') }
+          },
+          buttonRight: {
+            label: 'Ya, Telah Disetujui',
+            onClick: () => { this.$emit('recommend') }
+          }
+        },
+        recommendSuccess: {
+          image: '/img/email.svg',
+          title: 'Proses Rekomendasi Telah Selesai!',
+          subtitle: 'Permohonan akan dikirim kepada bidang SDK Dinkes Provinsi Jawa Barat \n \n (drg. Juanita Patricia Fatma, M.KM)',
+          buttonRight: {
+            label: 'Kembali ke Rekomendasi',
             onClick: () => { this.$router.push('/recommendation') }
           }
         }

@@ -11,16 +11,25 @@
       :letter="vaccineRequest.letter_number"
     />
     <RequestTableSection />
-    <RecommendationTableSection v-if="showRecommendation" :stage="stage" />
+    <RecommendationTableSection
+      v-if="showRecommendation"
+      :stage="stage"
+      :is-updated.sync="isRecommendationUpdated"
+    />
     <RealizationTableSection v-if="showRealization" :stage="stage" />
     <DeliveryPlanTableSection v-if="showDeliveryPlan" />
-    <ActionButton :stage="stage" @confirm="onConfirm" />
+    <ActionButton
+      :stage="stage"
+      @confirm="onConfirm"
+      @recommend="onRecommendValidation"
+    />
     <DialogSection
       :key="showDialog"
       v-model="showDialog"
       :type="dialogType"
       @close="showDialog = false"
       @verify="onVerify"
+      @recommend="onRecommend"
     />
   </div>
 </template>
@@ -48,9 +57,10 @@ export default {
   },
   data() {
     return {
-      stage: '',
       showDialog: false,
-      dialogType: '' // verifConfirmation, success, verifWithNote, verifWithNoteSuccess
+      dialogType: '', // verifConfirmation, success, verifWithNote, verifWithNoteSuccess, recommendConfirmation, recommendSuccess, notUpdated
+      isRecommendationUpdated: false,
+      isRealizationUpdated: false
     }
   },
   computed: {
@@ -68,22 +78,28 @@ export default {
     },
     showDeliveryPlan() {
       return this.stage === 'delivery-plan'
+    },
+    stage() {
+      const splittedPath = this.$route.path.split('/')
+      return splittedPath[1]
     }
   },
   async mounted() {
     await this.$store.dispatch('vaccine/getVaccineRequestById', this.$route.params.id)
-    this.getStages()
   },
   methods: {
-    getStages() {
-      const splittedPath = this.$route.path.split('/')
-      this.stage = splittedPath[1]
-    },
     onConfirm(type) {
       this.dialogType = type
       this.showDialog = true
     },
-    async onVerify(value) {
+    async submitForm(payload, dialogSuccessType) {
+      const res = await this.$store.dispatch('vaccine/updateVaccineRequestStatus', payload)
+      if (res.status === 200 || res.status === 201) {
+        this.dialogType = dialogSuccessType
+        this.showDialog = true
+      }
+    },
+    onVerify(value) {
       this.showDialog = false
       let payload = {}
       if (value.isVerifWithNote) {
@@ -99,11 +115,20 @@ export default {
           status: 'verified'
         }
       }
-      const res = await this.$store.dispatch('vaccine/updateVaccineRequestStatus', payload)
-      if (res.status === 200 || res.status === 201) {
-        this.dialogType = value.isVerifWithNote ? 'verifWithNoteSuccess' : 'success'
-        this.showDialog = true
+      const dialogSuccessType = value.isVerifWithNote ? 'verifWithNoteSuccess' : 'success'
+      this.submitForm(payload, dialogSuccessType)
+    },
+    onRecommendValidation() {
+      this.dialogType = this.isRecommendationUpdated ? 'recommendConfirmation' : 'notUpdated'
+      this.showDialog = true
+    },
+    onRecommend() {
+      this.showDialog = false
+      const payload = {
+        id: this.$route.params.id,
+        status: 'approved'
       }
+      this.submitForm(payload, 'recommendSuccess')
     }
   }
 }
