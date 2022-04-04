@@ -114,7 +114,10 @@
       v-model="date"
       :label="$t('label.delivery_plan_date')"
       :placeholder="$t('label.input_date')"
-      hide-details
+      :error="!isValid"
+      :hide-details="isValid"
+      error-messages="Harap isi Tanggal Rencana Kirim"
+      class="mt-8"
       @clear="date = null"
     />
     <!-- @todo: change with real data -->
@@ -151,6 +154,7 @@ export default {
       listVaccine: [],
       listVaccineSupport: [],
       date: null,
+      isValid: true,
       vaccineHeaders: [
         { text: this.$t('label.print_mail_no'), sortable: false },
         { text: this.$t('label.print_mail_material_name'), sortable: false },
@@ -177,6 +181,12 @@ export default {
       'vaccineProductRequests'
     ])
   },
+  watch: {
+    date(val) {
+      this.validate()
+      this.$emit('update:deliveryPlanDate', val)
+    }
+  },
   async mounted() {
     this.listVaccine = await this.$store.dispatch(
       'vaccine/getVaccineProductRequests',
@@ -198,6 +208,7 @@ export default {
       this.vaccineHeaders.push({ text: this.$t('label.action'), sortable: false })
       this.vaccineSupportHeaders.push({ text: this.$t('label.action'), sortable: false })
     }
+    this.checkUpdate()
   },
   methods: {
     onClick() {
@@ -214,6 +225,37 @@ export default {
     },
     notUpdated(item) {
       return item.product_status === null
+    },
+    /**
+     * iterate through listVaccine and listVaccineSupport
+     * to check if any item's product_status still null
+     */
+    checkUpdate() {
+      let isUpdate = true
+
+      // iterate through listVaccine
+      let i = 0
+      while (isUpdate && i < this.listVaccine.length) {
+        if (this.listVaccine[i].product_status === null) {
+          isUpdate = false
+        }
+        i++
+      }
+
+      // iterate through listVaccineSupport
+      i = 0
+      while (isUpdate && i < this.listVaccineSupport.length) {
+        if (this.listVaccineSupport[i].product_status === null) {
+          isUpdate = false
+        }
+        i++
+      }
+
+      this.$emit('update:isUpdated', isUpdate)
+    },
+    validate() {
+      this.isValid = this.date !== null
+      return this.isValid
     }
   }
 }

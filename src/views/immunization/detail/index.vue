@@ -16,12 +16,19 @@
       :stage="stage"
       :is-updated.sync="isRecommendationUpdated"
     />
-    <RealizationTableSection v-if="showRealization" :stage="stage" />
+    <RealizationTableSection
+      v-if="showRealization"
+      ref="realizationSection"
+      :stage="stage"
+      :is-updated.sync="isRealizationUpdated"
+      :delivery-plan-date.sync="deliveryPlanDate"
+    />
     <DeliveryPlanTableSection v-if="showDeliveryPlan" />
     <ActionButton
       :stage="stage"
       @confirm="onConfirm"
       @recommend="onRecommendValidation"
+      @realize="onRealizeValidation"
     />
     <DialogSection
       :key="showDialog"
@@ -30,6 +37,7 @@
       @close="showDialog = false"
       @verify="onVerify"
       @recommend="onRecommend"
+      @realize="onRealize"
     />
   </div>
 </template>
@@ -58,9 +66,10 @@ export default {
   data() {
     return {
       showDialog: false,
-      dialogType: '', // verifConfirmation, success, verifWithNote, verifWithNoteSuccess, recommendConfirmation, recommendSuccess, notUpdated
+      dialogType: '', // verifConfirmation, success, verifWithNote, verifWithNoteSuccess, recommendConfirmation, recommendSuccess, notUpdated, realizeConfirmation, realizeSuccess
       isRecommendationUpdated: false,
-      isRealizationUpdated: false
+      isRealizationUpdated: false,
+      deliveryPlanDate: null
     }
   },
   computed: {
@@ -122,6 +131,15 @@ export default {
       this.dialogType = this.isRecommendationUpdated ? 'recommendConfirmation' : 'notUpdated'
       this.showDialog = true
     },
+    onRealizeValidation() {
+      const isValid = this.$refs.realizationSection.validate()
+      if (!isValid) {
+        return
+      }
+      this.$refs.realizationSection.validate()
+      this.dialogType = this.isRealizationUpdated ? 'realizeConfirmation' : 'notUpdated'
+      this.showDialog = true
+    },
     onRecommend() {
       this.showDialog = false
       const payload = {
@@ -129,6 +147,15 @@ export default {
         status: 'approved'
       }
       this.submitForm(payload, 'recommendSuccess')
+    },
+    onRealize() {
+      this.showDialog = false
+      const payload = {
+        id: this.$route.params.id,
+        status: 'finalized',
+        delivery_plan_date: this.deliveryPlanDate
+      }
+      this.submitForm(payload, 'realizeSuccess')
     }
   }
 }

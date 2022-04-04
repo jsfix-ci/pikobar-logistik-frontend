@@ -162,7 +162,7 @@ export default {
         recommendConfirmation: {
           image: '/img/confirmation.svg',
           title: 'Apakah proses rekomendasi ini telah \n disetujui oleh Kabid P2P Dinkes \n Provinsi Jawa Barat?',
-          subtitle: '( dr Ryan B Ristandi, Sp.PK., MMRS )',
+          subtitle: '( dr Ryan B Ristandi, Sp.PK., MMRS )', // @todo: change this name with real value
           buttonLeft: {
             label: 'Tanya Kembali',
             isInverted: true,
@@ -176,10 +176,33 @@ export default {
         recommendSuccess: {
           image: '/img/email.svg',
           title: 'Proses Rekomendasi Telah Selesai!',
-          subtitle: 'Permohonan akan dikirim kepada bidang SDK Dinkes Provinsi Jawa Barat \n \n (drg. Juanita Patricia Fatma, M.KM)',
+          subtitle: 'Permohonan akan dikirim kepada bidang SDK Dinkes Provinsi Jawa Barat \n \n (drg. Juanita Patricia Fatma, M.KM)', // @todo: change this name with real value
           buttonRight: {
             label: 'Kembali ke Rekomendasi',
             onClick: () => { this.$router.push('/recommendation') }
+          }
+        },
+        realizeConfirmation: {
+          image: '/img/confirmation.svg',
+          title: 'Apakah proses realisasi ini telah disetujui oleh \n Kepala Dinkes Provinsi Jawa Barat?',
+          subtitle: '( dr Ryan B Ristandi, Sp.PK., MMRS )', // @todo: change this name with real value
+          buttonLeft: {
+            label: 'Sebentar, cek kembali',
+            isInverted: true,
+            onClick: () => { this.$emit('close') }
+          },
+          buttonRight: {
+            label: 'Ya, realisasikan',
+            onClick: () => { this.$emit('realize') }
+          }
+        },
+        realizeSuccess: {
+          image: '/img/email.svg',
+          title: 'Permohonan telah direalisasikan',
+          subtitle: 'Permohonan telah dikirim kepada Satgas Covid-19 Disperindag Jabar',
+          buttonRight: {
+            label: 'Kembali ke Menu Realisasi',
+            onClick: () => { this.$router.push('/realization') }
           }
         }
       }

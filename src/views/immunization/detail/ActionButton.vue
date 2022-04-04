@@ -30,7 +30,7 @@
       <JDSButton inverted height="42px" class="mr-4" @click="onBack()">
         {{ $t('label.back') }}
       </JDSButton>
-      <JDSButton height="42px" @click="onRealize()">
+      <JDSButton height="42px" @click="$emit('realize')">
         {{ $t('label.give_realization') }}
       </JDSButton>
     </div>
@@ -62,9 +62,6 @@ export default {
   methods: {
     onBack() {
       this.$router.go(-1)
-    },
-    onRealize() {
-      // @todo: create onRealize function
     },
     onDeliver() {
       // @todo: create onDeliver function
