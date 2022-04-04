@@ -196,7 +196,7 @@
               class="btn-margin-positive"
               outlined
               text
-              href="#/landing-page"
+              @click="onBack()"
             >{{ $t('label.cancel') }}</v-btn>
           </v-col>
         </v-container>
@@ -297,6 +297,9 @@ export default {
         return
       }
       EventBus.$emit('nextStep', this.step)
+    },
+    onBack() {
+      this.$router.go(-1)
     },
     async getListCity() {
       await this.$store.dispatch('region/getApplicantFormListCity')
