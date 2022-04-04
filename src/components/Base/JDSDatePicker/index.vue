@@ -17,6 +17,8 @@
           :clearable="clearable"
           :placeholder="placeholder"
           :hide-details="hideDetails"
+          :error="error"
+          :error-messages="errorMessages"
           solo
           v-on="on"
           @click:clear="$emit('clear')"
@@ -50,6 +52,14 @@ export default {
     placeholder: {
       type: String,
       default: ''
+    },
+    errorMessages: {
+      type: String,
+      default: ''
+    },
+    error: {
+      type: Boolean,
+      default: false
     },
     hideDetails: {
       type: Boolean,
