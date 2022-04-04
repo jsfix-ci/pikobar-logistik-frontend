@@ -79,7 +79,8 @@
         min-width="0px"
         max-width="200px"
         class="requirement__btn requirement__btn__inverted d-flex green-dark--text py-3 px-6"
-        @click="onDownload"
+        :href="requirement.downloadLink"
+        target="_blank"
       >
         {{ $t('label.download_letter_template') }}
         <v-icon
@@ -120,7 +121,8 @@ export default {
           items: [
             'Surat ditujukan kepada Dinas Kesehatan Provinsi Jawa Barat',
             'Memuat stok vaksin & logistik penunjang vaksin terkini di Kota/Kabupaten'
-          ]
+          ],
+          downloadLink: 'https://docs.google.com/document/d/1ninl7D4IDr5pNVylmUur58tOxusCzMYE7UplFAP6fIE/edit?usp=sharing'
         },
         {
           title: 'Instansi Non Dinkes, TNI, dan POLRI',
@@ -133,7 +135,8 @@ export default {
             'Nama penanggungjawab dari instansi yang terlibat',
             'Nomor telepon',
             'Cap dan tanda tangan basah'
-          ]
+          ],
+          downloadLink: 'https://docs.google.com/document/d/17kdvbTr7aPE6Nf1m-su8oULr8GdsvkaS93gfCwZvBOc/edit?usp=sharing'
         }
       ]
     }
@@ -141,9 +144,6 @@ export default {
   methods: {
     onNext() {
       this.$router.push({ path: '/form-pemohon', query: { type: 'vaksin' }})
-    },
-    onDownload() {
-      // @todo: create on download function
     }
   }
 }
