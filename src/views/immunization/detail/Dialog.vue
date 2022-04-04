@@ -98,6 +98,10 @@ export default {
     type: {
       type: String,
       default: ''
+    },
+    instanceLead: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -161,8 +165,8 @@ export default {
         },
         recommendConfirmation: {
           image: '/img/confirmation.svg',
-          title: 'Apakah proses rekomendasi ini telah \n disetujui oleh Kabid P2P Dinkes \n Provinsi Jawa Barat?',
-          subtitle: '( dr Ryan B Ristandi, Sp.PK., MMRS )', // @todo: change this name with real value
+          title: `Apakah proses rekomendasi ini telah disetujui oleh ${this.instanceLead.role}?`,
+          subtitle: `(${this.instanceLead.fullname})`,
           buttonLeft: {
             label: 'Tanya Kembali',
             isInverted: true,
@@ -176,7 +180,7 @@ export default {
         recommendSuccess: {
           image: '/img/email.svg',
           title: 'Proses Rekomendasi Telah Selesai!',
-          subtitle: 'Permohonan akan dikirim kepada bidang SDK Dinkes Provinsi Jawa Barat \n \n (drg. Juanita Patricia Fatma, M.KM)', // @todo: change this name with real value
+          subtitle: `Permohonan akan dikirim kepada ${this.instanceLead.role} \n \n (${this.instanceLead.fullname})`,
           buttonRight: {
             label: 'Kembali ke Rekomendasi',
             onClick: () => { this.$router.push('/recommendation') }
@@ -184,8 +188,8 @@ export default {
         },
         realizeConfirmation: {
           image: '/img/confirmation.svg',
-          title: 'Apakah proses realisasi ini telah disetujui oleh \n Kepala Dinkes Provinsi Jawa Barat?',
-          subtitle: '( dr Ryan B Ristandi, Sp.PK., MMRS )', // @todo: change this name with real value
+          title: `Apakah proses realisasi ini telah disetujui oleh ${this.instanceLead.role}?`,
+          subtitle: `(${this.instanceLead.fullname})`,
           buttonLeft: {
             label: 'Sebentar, cek kembali',
             isInverted: true,
@@ -199,7 +203,7 @@ export default {
         realizeSuccess: {
           image: '/img/email.svg',
           title: 'Permohonan telah direalisasikan',
-          subtitle: 'Permohonan telah dikirim kepada Satgas Covid-19 Disperindag Jabar',
+          subtitle: `Permohonan telah dikirim kepada ${this.instanceLead.role}`,
           buttonRight: {
             label: 'Kembali ke Menu Realisasi',
             onClick: () => { this.$router.push('/realization') }
