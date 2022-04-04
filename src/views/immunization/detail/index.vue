@@ -34,6 +34,7 @@
       :key="showDialog"
       v-model="showDialog"
       :type="dialogType"
+      :instance-lead="instanceLead"
       @close="showDialog = false"
       @verify="onVerify"
       @recommend="onRecommend"
@@ -69,7 +70,8 @@ export default {
       dialogType: '', // verifConfirmation, success, verifWithNote, verifWithNoteSuccess, recommendConfirmation, recommendSuccess, notUpdated, realizeConfirmation, realizeSuccess
       isRecommendationUpdated: false,
       isRealizationUpdated: false,
-      deliveryPlanDate: null
+      deliveryPlanDate: null,
+      instanceLead: ''
     }
   },
   computed: {
@@ -104,6 +106,11 @@ export default {
     async submitForm(payload, dialogSuccessType) {
       const res = await this.$store.dispatch('vaccine/updateVaccineRequestStatus', payload)
       if (res.status === 200 || res.status === 201) {
+        if (dialogSuccessType === 'recommendSuccess') {
+          await this.getInstanceLead('realization')
+        } else if (dialogSuccessType === 'realizeSuccess') {
+          await this.getInstanceLead('delivery_plan')
+        }
         this.dialogType = dialogSuccessType
         this.showDialog = true
       }
@@ -127,16 +134,17 @@ export default {
       const dialogSuccessType = value.isVerifWithNote ? 'verifWithNoteSuccess' : 'success'
       this.submitForm(payload, dialogSuccessType)
     },
-    onRecommendValidation() {
+    async onRecommendValidation() {
+      await this.getInstanceLead('recommendation')
       this.dialogType = this.isRecommendationUpdated ? 'recommendConfirmation' : 'notUpdated'
       this.showDialog = true
     },
-    onRealizeValidation() {
+    async onRealizeValidation() {
       const isValid = this.$refs.realizationSection.validate()
       if (!isValid) {
         return
       }
-      this.$refs.realizationSection.validate()
+      await this.getInstanceLead('realization')
       this.dialogType = this.isRealizationUpdated ? 'realizeConfirmation' : 'notUpdated'
       this.showDialog = true
     },
@@ -156,6 +164,12 @@ export default {
         delivery_plan_date: this.deliveryPlanDate
       }
       this.submitForm(payload, 'realizeSuccess')
+    },
+    async getInstanceLead(phase) {
+      const res = await this.$store.dispatch('vaccine/getInstanceLead', { phase })
+      if (res.status === 200 || res.status === 201) {
+        this.instanceLead = res.data
+      }
     }
   }
 }

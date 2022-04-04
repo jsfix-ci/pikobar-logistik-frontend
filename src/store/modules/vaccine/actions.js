@@ -83,5 +83,13 @@ export default {
     } catch (e) {
       // silent error
     }
+  },
+  async getInstanceLead({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/leader', 'GET', params)
+      return response
+    } catch (e) {
+      // silent error
+    }
   }
 }
