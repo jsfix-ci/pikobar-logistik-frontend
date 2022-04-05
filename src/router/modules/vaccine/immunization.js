@@ -66,6 +66,17 @@ const immunization = {
         roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
         isVaccineModule: true
       }
+    },
+    {
+      path: '/recommendation/add/:id',
+      component: () => import('@/views/immunization/add'),
+      hidden: true,
+      meta: {
+        title: 'vaccine_recommendation_add',
+        noCache: true,
+        roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
+        isVaccineModule: true
+      }
     }
   ]
 }

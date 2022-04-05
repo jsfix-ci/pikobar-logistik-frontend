@@ -53,7 +53,9 @@ export default {
     delivery_plan: 'Rencana Pengiriman',
     logistic_post: 'Pos Logistik',
     vaccine_recommendation_update: 'Update Rekomendasi Vaksin',
-    vaccine_realization_update: 'Update Realisasi Vaksin'
+    vaccine_recommendation_add: 'Tambah Rekomendasi Vaksin',
+    vaccine_realization_update: 'Update Realisasi Vaksin',
+    vaccine_realization_add: 'Tambah Realisasi Vaksin'
   },
   label: {
     preview: 'Preview',
@@ -785,7 +787,9 @@ export default {
     give_recommendation: 'Rekomendasikan',
     give_realization: 'Realisasikan',
     vaccine_recommendation_update: 'Update Rekomendasi Vaksin',
+    vaccine_recommendation_add: 'Tambah Rekomendasi Vaksin',
     vaccine_realization_update: 'Update Realisasi Vaksin',
+    vaccine_realization_add: 'Tambah Realisasi Vaksin',
     vaccine_stock: 'Stock Vaksin'
   },
   success: {
