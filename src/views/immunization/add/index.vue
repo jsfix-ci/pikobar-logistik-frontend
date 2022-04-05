@@ -3,7 +3,7 @@
     <span class="add__title">{{ title }}</span>
     <v-row>
       <v-col cols="12" sm="6">
-        <FormSection ref="form" :stage="stage" />
+        <FormSection ref="form" :stage="stage" :form.sync="form" />
         <div class="d-flex flex-row justify-space-between mt-6">
           <JDSButton inverted height="42px" width="48%" @click="onCancel()">
             {{ $t('label.cancel') }}
@@ -30,6 +30,11 @@ export default {
     StockSection,
     JDSButton
   },
+  data() {
+    return {
+      form: {}
+    }
+  },
   computed: {
     stage() {
       const splittedPath = this.$route.path.split('/')
@@ -45,8 +50,24 @@ export default {
     onCancel() {
       this.$router.go(-1)
     },
-    onAdd() {
-      this.$refs.form.validate()
+    async onAdd() {
+      const isValid = await this.$refs.form.validate()
+      if (!isValid) {
+        return
+      }
+
+      // convert into form data
+      const formData = new FormData()
+      for (var key in this.form) {
+        formData.append(key, this.form[key])
+      }
+
+      // POST
+      const res = await this.$store.dispatch('vaccine/createVaccineProductRequest', formData)
+      if (res.status === 200 || res.status === 201) {
+        // @todo: add dialog success
+        this.$router.go(-1)
+      }
     }
   }
 }

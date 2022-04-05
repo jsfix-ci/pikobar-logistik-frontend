@@ -56,6 +56,14 @@ export default {
       // silent error
     }
   },
+  async createVaccineProductRequest({ commit }, payload) {
+    try {
+      const response = await doPostUpdate('/api/v1/vaccine-product-request/', 'POST', payload)
+      return response
+    } catch (e) {
+      // silent error
+    }
+  },
   async updateVaccineProductRequest({ commit }, params) {
     try {
       const response = await doPostUpdate('/api/v1/vaccine-product-request/' + params.id, 'PUT', params)
