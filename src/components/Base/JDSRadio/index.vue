@@ -6,8 +6,10 @@
     <v-radio-group
       :value="value"
       :hide-details="hideDetails"
+      :error="error"
+      :error-messages="errorMessages"
       @input="$emit('input', $event)"
-      @change="$emit('change')"
+      @change="$emit('input', $event)"
     >
       <v-radio
         v-for="item in items"
@@ -44,6 +46,14 @@ export default {
       default: 'value'
     },
     hideDetails: {
+      type: Boolean,
+      default: false
+    },
+    errorMessages: {
+      type: Array,
+      default: () => []
+    },
+    error: {
       type: Boolean,
       default: false
     }

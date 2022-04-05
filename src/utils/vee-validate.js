@@ -191,7 +191,7 @@ extend('max', {
 
 extend('numeric', {
   ...numeric,
-  message: (_, values) => i18n.t('errors.field_unauthorized_characters', values)
+  message: (_, values) => `${values._field_} harus diisi dengan angka`
 })
 
 extend('email', {
