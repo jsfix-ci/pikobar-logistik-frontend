@@ -8,9 +8,12 @@
       :items="items"
       :item-text="itemText"
       :item-value="itemValue"
+      :return-object="returnObject"
       :clearable="clearable"
       :placeholder="placeholder"
       :hide-details="hideDetails"
+      :error-messages="errorMessages"
+      :error="error"
       append-icon="mdi-chevron-down"
       solo
       @input="$emit('input', $event)"
@@ -23,7 +26,7 @@
 export default {
   props: {
     value: {
-      type: [String, Number],
+      type: [String, Number, Object],
       default: null
     },
     label: {
@@ -53,6 +56,18 @@ export default {
     clearable: {
       type: Boolean,
       default: true
+    },
+    errorMessages: {
+      type: Array,
+      default: () => []
+    },
+    error: {
+      type: Boolean,
+      default: false
+    },
+    returnObject: {
+      type: Boolean,
+      default: false
     }
   }
 }

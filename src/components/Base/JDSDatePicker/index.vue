@@ -54,8 +54,8 @@ export default {
       default: ''
     },
     errorMessages: {
-      type: String,
-      default: ''
+      type: Array,
+      default: () => []
     },
     error: {
       type: Boolean,

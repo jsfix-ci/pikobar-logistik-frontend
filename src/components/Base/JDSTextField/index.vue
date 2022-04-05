@@ -9,6 +9,8 @@
       :placeholder="placeholder"
       :hide-details="hideDetails"
       :suffix="suffix"
+      :error="error"
+      :error-messages="errorMessages"
       solo
       @input="$emit('input', $event)"
       @change="$emit('change')"
@@ -42,6 +44,14 @@ export default {
     clearable: {
       type: Boolean,
       default: true
+    },
+    errorMessages: {
+      type: Array,
+      default: () => []
+    },
+    error: {
+      type: Boolean,
+      default: false
     }
   }
 }

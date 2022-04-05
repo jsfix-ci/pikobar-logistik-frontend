@@ -27,6 +27,7 @@
       <span v-if="!showFileName" class="jds-file-input__placeholder__format">(Format JPG, JPEG, PNG)</span>
       <span v-else>{{ fileList[0].name }}</span>
     </div>
+    <span v-if="!hideDetails" class="jds-file-input__error-messages">{{ errorMessages[0] }}</span>
   </div>
 </template>
 
@@ -36,6 +37,14 @@ export default {
     label: {
       type: String,
       default: ''
+    },
+    errorMessages: {
+      type: Array,
+      default: () => []
+    },
+    hideDetails: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -116,5 +125,9 @@ export default {
     }
   }
 
+  &__error-messages {
+    font-size: 12px;
+    color: #ff5252;
+  }
 }
 </style>
