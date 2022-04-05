@@ -40,7 +40,7 @@
       <JDSButton inverted height="42px" class="mr-4" @click="onBack()">
         {{ $t('label.back') }}
       </JDSButton>
-      <JDSButton height="42px" @click="onDeliver()">
+      <JDSButton height="42px" @click="$emit('deliver')">
         Load Order (Kemas Pengiriman)
       </JDSButton>
     </div>
@@ -62,9 +62,6 @@ export default {
   methods: {
     onBack() {
       this.$router.go(-1)
-    },
-    onDeliver() {
-      // @todo: create onDeliver function
     }
   }
 }
