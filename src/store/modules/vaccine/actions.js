@@ -5,6 +5,7 @@ export default {
     try {
       const response = await fetchList(`/api/v1/vaccine-material`, 'GET', params)
       commit('SET_LIST_MATERIAL', response.data)
+      return response
     } catch (e) {
       return e
     }
@@ -45,6 +46,14 @@ export default {
       return response
     } catch (e) {
       return e
+    }
+  },
+  async getItemVaccineProductRequest({ commit }, id) {
+    try {
+      const response = await fetchList('/api/v1/vaccine-product-request/' + id, 'GET')
+      return response
+    } catch (e) {
+      // silent error
     }
   },
   async updateVaccineProductRequest({ commit }, params) {

@@ -3,33 +3,49 @@
     <span class="request__title mb-6">{{ $t('label.request') }}</span>
     <v-row class="mb-3">
       <v-col cols="12" sm="6">
-        <DisabledField label="Nama Barang" value="Sinovac" />
+        <DisabledField label="Nama Barang" :value="data.product_name || '-'" />
       </v-col>
       <v-col cols="12" sm="6">
-        <DisabledField label="Jumlah" value="1000" />
+        <DisabledField label="Jumlah" :value="data.quantity || '-'" />
       </v-col>
     </v-row>
-    <JDSSelect
-      v-if="stage === 'recommendation'"
-      v-model="status"
-      :label="$t('label.status')"
-      :items="statusOptions"
-      :placeholder="$t('label.select_status')"
-      hide-details
-    />
-    <DisabledField v-else label="Status" value="Barang Diganti" />
+    <ValidationObserver v-if="stage === 'recommendation'" ref="form">
+      <ValidationProvider
+        v-slot="{ errors }"
+        rules="required"
+        :name="$t('label.status')"
+      >
+        <JDSSelect
+          v-model="status"
+          :label="$t('label.status')"
+          :items="statusOptions"
+          :placeholder="$t('label.select_status')"
+          :error-messages="errors"
+          :hide-details="errors.length === 0"
+          @change="$emit('update:statusChange', status)"
+        />
+      </ValidationProvider>
+    </ValidationObserver>
+    <DisabledField v-else label="Status" :value="data.product_status || '-'" />
   </div>
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import DisabledField from '@/components/Base/DisabledField'
 import JDSSelect from '@/components/Base/JDSSelect'
 export default {
   components: {
+    ValidationObserver,
+    ValidationProvider,
     DisabledField,
     JDSSelect
   },
   props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    },
     stage: {
       type: String,
       default: ''
@@ -37,8 +53,31 @@ export default {
   },
   data() {
     return {
-      statusOptions: ['Disetujui', 'Barang belum tersedia', 'Barang diganti', 'Barang belum bisa dipenuhi'],
+      statusOptions: [
+        {
+          text: 'Disetujui',
+          value: 'approved'
+        },
+        {
+          text: 'Barang belum tersedia',
+          value: 'not_available'
+        },
+        {
+          text: 'Barang Diganti',
+          value: 'replaced'
+        },
+        {
+          text: 'Barang belum bisa dipenuhi',
+          value: 'not_yet_fulfilled'
+        }
+      ],
       status: ''
+    }
+  },
+  methods: {
+    async validate() {
+      const isValid = await this.$refs.form.validate()
+      return isValid
     }
   }
 }
