@@ -227,7 +227,7 @@ export default {
           title: 'Status telah berubah menjadi Load Order',
           buttonRight: {
             label: 'Kembali ke Menu Request Order',
-            onClick: () => { this.$router.push('/realization') }
+            onClick: () => { this.$router.push('/delivery-plan') }
           }
         }
       }
