@@ -54,14 +54,14 @@
               v-slot="{ errors }"
               ref="provider"
               name="KTP"
-              :rules="isAdmin ? 'size:10000|ext:jpg,png,jpeg' : 'required|size:10000|ext:jpg,png,jpeg'"
+              :rules="isAdmin ? 'size:10000|ext:jpg,png,jpeg,pdf' : 'required|size:10000|ext:jpg,png,jpeg,pdf'"
             >
               <upload-file
                 :suffix-title="isAdmin ? null : $t('label.must_fill')"
                 :empty-file="$t('label.file_input_placeholder')"
                 :title="$t('label.upload_applicant_ktp')"
                 note="(JPG, JPEG, PNG, DOC, PDF) max 10MB"
-                accept=".jpg, .jpeg, .png"
+                accept=".jpg, .jpeg, .png, .pdf"
                 :is-upload="isUpload"
                 :selected-file-name="selectedFileName"
                 @saveImage="saveImage"

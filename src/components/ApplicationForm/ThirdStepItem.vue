@@ -50,7 +50,6 @@
     >
       <ValidationProvider
         v-slot="{ errors }"
-        rules="requiredBrand"
       >
         <v-label>
           <strong>{{ $t('label.description') }}</strong>
