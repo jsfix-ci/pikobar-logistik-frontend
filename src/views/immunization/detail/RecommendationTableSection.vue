@@ -54,7 +54,7 @@
         inverted
         height="25px"
         class="mt-6"
-        @click="onAddVaccine()"
+        @click="onAddMore(false)"
       >
         {{ $t('label.add_vaccine_recommendation') }}
       </JDSButton>
@@ -102,7 +102,7 @@
         inverted
         height="25px"
         class="mt-6"
-        @click="onAddVaccineSupport()"
+        @click="onAddMore(true)"
       >
         {{ $t('label.add_vaccine_support_recommendation') }}
       </JDSButton>
@@ -185,11 +185,9 @@ export default {
     onUpdate(id) {
       this.$router.push(`/recommendation/update/${id}`)
     },
-    onAddVaccine() {
-      // @todo: create onAddVaccine function
-    },
-    onAddVaccineSupport() {
-      // @todo: create onAddVaccineSupport function
+    onAddMore(isVaccineSupport) {
+      const type = isVaccineSupport ? 'vaccineSupport' : 'vaccine'
+      this.$router.push(`/recommendation/add/${this.$route.params.id}?type=${type}`)
     },
     notUpdated(item) {
       return item.product_status === null
