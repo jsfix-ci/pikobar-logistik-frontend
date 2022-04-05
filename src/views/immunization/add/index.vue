@@ -3,13 +3,13 @@
     <span class="add__title">{{ title }}</span>
     <v-row>
       <v-col cols="12" sm="6">
-        <FormSection :stage="stage" />
+        <FormSection ref="form" :stage="stage" />
         <div class="d-flex flex-row justify-space-between mt-6">
           <JDSButton inverted height="42px" width="48%" @click="onCancel()">
             {{ $t('label.cancel') }}
           </JDSButton>
-          <JDSButton height="42px" width="48%" @click="onUpdate()">
-            {{ $t('label.update') }}
+          <JDSButton height="42px" width="48%" @click="onAdd()">
+            {{ $t('label.adding') }}
           </JDSButton>
         </div>
       </v-col>
@@ -46,7 +46,7 @@ export default {
       this.$router.go(-1)
     },
     onAdd() {
-      // @todo: crate onAdd function
+      this.$refs.form.validate()
     }
   }
 }

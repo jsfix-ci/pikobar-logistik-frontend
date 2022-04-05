@@ -1,65 +1,130 @@
 <template>
-  <div class="add-form d-flex flex-column">
+  <ValidationObserver ref="form" class="add-form d-flex flex-column">
     <span class="add-form__title mb-6">{{ title }}</span>
-    <JDSDatePicker
-      v-model="form.date"
-      :label="$t('label.date')"
-      :placeholder="$t('label.input_date')"
-      hide-details
-      @clear="date = null"
-    />
-    <JDSSelect
-      v-model="form.name"
-      :label="$t('label.apd_name_spec')"
-      :items="[1,2,3]"
-      :placeholder="$t('label.apd_name_spec_placeholder')"
-      hide-details
-    />
-    <JDSTextField
-      v-model="form.total"
-      label="Jumlah Barang"
-      placeholder="Tulis jumlah barang"
-      suffix="Vial"
-      :clearable="false"
-      hide-details
-    />
-    <JDSTextField
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      :name="$t('label.date')"
+    >
+      <JDSDatePicker
+        v-model="form.date"
+        :label="$t('label.date')"
+        :placeholder="$t('label.input_date')"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+        @clear="date = null"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      :name="$t('label.apd_name_spec')"
+    >
+      <JDSSelect
+        v-model="form.name"
+        :label="$t('label.apd_name_spec')"
+        :items="isVaccineSupport ? listVaccineSupport : listVaccine"
+        item-text="name"
+        item-value="id"
+        :placeholder="$t('label.apd_name_spec_placeholder')"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+        return-object
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required|numeric"
+      name="Jumlah Barang"
+    >
+      <JDSTextField
+        v-model="form.total"
+        label="Jumlah Barang"
+        placeholder="Tulis jumlah barang"
+        suffix="Vial"
+        :clearable="false"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+      />
+    </ValidationProvider>
+    <ValidationProvider
       v-if="isVaccineSupport"
-      v-model="form.description"
-      label="Deskripsi"
-      placeholder="Tulis deskripsi"
-      hide-details
-    />
-    <JDSSelect
-      v-model="form.usage"
-      label="Tujuan Penggunaan"
-      :items="[1,2,3]"
-      placeholder="Pilih Tujuan"
-      hide-details
-      class="mb-3"
-    />
-    <JDSRadio
-      v-model="form.status"
-      :label="$t('label.status')"
-      :items="radioOptions"
-      hide-details
-      class="mb-3"
-    />
-    <JDSTextField
-      v-model="form.reason"
-      label="Alasan"
-      placeholder="Tulis alasan instansi memohon perubahan jumlah/logistik vaksin"
-      :clearable="false"
-      hide-details
-    />
-    <JDSFileInput
-      label="Unggah Permintaan Tambahan"
-      @input="(value) => { form.file = value }"
-    />
-  </div>
+      v-slot="{ errors }"
+      rules="required"
+      name="Deskripsi"
+    >
+      <JDSTextField
+        v-model="form.description"
+        label="Deskripsi"
+        placeholder="Tulis deskripsi"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      name="Tujuan Penggunaan"
+    >
+      <JDSSelect
+        v-model="form.usage"
+        label="Tujuan Penggunaan"
+        placeholder="Pilih Tujuan"
+        :items="form.name.purposes"
+        item-text="name"
+        item-value="id"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+        class="mb-3"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      :name="$t('label.status')"
+    >
+      <JDSRadio
+        v-model="form.status"
+        :label="$t('label.status')"
+        :items="radioOptions"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+        class="mb-3"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      :rules="form.status === 'Lainnya (jelaskan pada alasan)' ? 'required' : ''"
+      name="Alasan"
+    >
+      <JDSTextField
+        v-model="form.reason"
+        label="Alasan"
+        placeholder="Tulis alasan instansi memohon perubahan jumlah/logistik vaksin"
+        :clearable="false"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      name="File"
+    >
+      <JDSFileInput
+        v-model="form.file"
+        label="Unggah Permintaan Tambahan"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+        @input="(value) => { form.file = value }"
+      />
+    </ValidationProvider>
+  </ValidationObserver>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import JDSSelect from '@/components/Base/JDSSelect'
 import JDSTextField from '@/components/Base/JDSTextField'
 import JDSDatePicker from '@/components/Base/JDSDatePicker'
@@ -67,6 +132,8 @@ import JDSRadio from '@/components/Base/JDSRadio'
 import JDSFileInput from '@/components/Base/JDSFileInput'
 export default {
   components: {
+    ValidationProvider,
+    ValidationObserver,
     JDSSelect,
     JDSTextField,
     JDSDatePicker,
@@ -105,6 +172,10 @@ export default {
     }
   },
   computed: {
+    ...mapState('logistics', [
+      'listVaccine',
+      'listVaccineSupport'
+    ]),
     title() {
       return this.stage === 'recommendation'
         ? this.$t('label.recommend')
@@ -112,6 +183,18 @@ export default {
     },
     isVaccineSupport() {
       return this.$route.query.type === 'vaccineSupport'
+    }
+  },
+  mounted() {
+    const category = this.isVaccineSupport ? 'vaccine_support' : 'vaccine'
+    this.$store.dispatch('logistics/getListVaccineAndSupport', { category })
+  },
+  methods: {
+    async validate() {
+      const isValid = await this.$refs.form.validate()
+      if (!isValid) {
+        return
+      }
     }
   }
 }
