@@ -21,13 +21,10 @@
         <template v-slot:item-prop="{ item, index }">
           <tr>
             <td>{{ getTableRowNumbering(index, listQuery.page, listQuery.limit) }}</td>
-            <!-- @todo: insert delivery plan date value -->
-            <td>{{ '-' }}</td>
+            <td>{{ item.delivery_plan_date ? $moment(item.delivery_plan_date).format('D MMMM YYYY') : '-' }}</td>
             <td>{{ item.created_at ? $moment(item.created_at).format('D MMMM YYYY') : '-' }}</td>
             <td>{{ item.id || '-' }}</td>
             <td>{{ item.agency_name || '-' }}</td>
-            <!-- @todo: insert follow up status value -->
-            <td>{{ '-' }}</td>
             <td>
               <span
                 :class="{
@@ -38,8 +35,6 @@
                 {{ item.is_urgency ? 'Segera' : 'Biasa' }}
               </span>
             </td>
-            <!-- @todo: insert reception report value -->
-            <td>{{ '-' }}</td>
             <td>
               <JDSButton inverted height="25px" @click="onDetail(item.id)">
                 {{ $t('label.detail') }}
@@ -80,9 +75,7 @@ export default {
         { text: this.$t('label.requested_date'), sortable: false },
         { text: this.$t('label.request_id'), sortable: false },
         { text: this.$t('label.agency_name'), sortable: false },
-        { text: this.$t('label.follow_up_status'), sortable: false },
         { text: this.$t('label.print_mail_nature'), sortable: false },
-        { text: this.$t('label.reception_report'), sortable: false },
         { text: this.$t('label.action'), sortable: false }
       ],
       listQuery: {

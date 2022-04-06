@@ -58,10 +58,9 @@
       </JDSTable>
     </div>
 
-    <!-- @todo: change with real data -->
     <DisabledField
       label="Tanggal Rencana Kirim"
-      value="18 Februari 2022"
+      :value="$moment(deliveryDate).format('D MMMM YYYY')"
       class="mt-8"
     />
   </div>
@@ -75,6 +74,12 @@ export default {
   components: {
     JDSTable,
     DisabledField
+  },
+  props: {
+    deliveryDate: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {

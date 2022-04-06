@@ -20,15 +20,20 @@
       v-if="showRealization"
       ref="realizationSection"
       :stage="stage"
+      :delivery-date="vaccineRequest.delivery_plan_date"
       :is-updated.sync="isRealizationUpdated"
       :delivery-plan-date.sync="deliveryPlanDate"
     />
-    <DeliveryPlanTableSection v-if="showDeliveryPlan" />
+    <DeliveryPlanTableSection
+      v-if="showDeliveryPlan"
+      :delivery-date="vaccineRequest.delivery_plan_date"
+    />
     <ActionButton
       :stage="stage"
       @confirm="onConfirm"
       @recommend="onRecommendValidation"
       @realize="onRealizeValidation"
+      @deliver="onDeliverValidation"
     />
     <DialogSection
       :key="showDialog"
@@ -39,6 +44,7 @@
       @verify="onVerify"
       @recommend="onRecommend"
       @realize="onRealize"
+      @deliver="onDeliver"
     />
   </div>
 </template>
@@ -67,7 +73,7 @@ export default {
   data() {
     return {
       showDialog: false,
-      dialogType: '', // verifConfirmation, success, verifWithNote, verifWithNoteSuccess, recommendConfirmation, recommendSuccess, notUpdated, realizeConfirmation, realizeSuccess
+      dialogType: '', // verifConfirmation, success, verifWithNote, verifWithNoteSuccess, recommendConfirmation, recommendSuccess, notUpdated, realizeConfirmation, realizeSuccess, deliverConfirmation, deliverSuccess
       isRecommendationUpdated: false,
       isRealizationUpdated: false,
       deliveryPlanDate: null,
@@ -148,6 +154,10 @@ export default {
       this.dialogType = this.isRealizationUpdated ? 'realizeConfirmation' : 'notUpdated'
       this.showDialog = true
     },
+    onDeliverValidation() {
+      this.dialogType = 'deliverConfirmation'
+      this.showDialog = true
+    },
     onRecommend() {
       this.showDialog = false
       const payload = {
@@ -164,6 +174,14 @@ export default {
         delivery_plan_date: this.deliveryPlanDate
       }
       this.submitForm(payload, 'realizeSuccess')
+    },
+    onDeliver() {
+      this.showDialog = false
+      const payload = {
+        id: this.$route.params.id,
+        status: 'integrated'
+      }
+      this.submitForm(payload, 'deliverSuccess')
     },
     async getInstanceLead(phase) {
       const res = await this.$store.dispatch('vaccine/getInstanceLead', { phase })

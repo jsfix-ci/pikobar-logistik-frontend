@@ -120,11 +120,10 @@
       class="mt-8"
       @clear="date = null"
     />
-    <!-- @todo: change with real data -->
     <DisabledField
       v-else
       label="Tanggal Rencana Kirim"
-      value="18 Februari 2022"
+      :value="$moment(deliveryDate).format('D MMMM YYYY')"
       class="mt-8"
     />
   </div>
@@ -145,6 +144,10 @@ export default {
   },
   props: {
     stage: {
+      type: String,
+      default: ''
+    },
+    deliveryDate: {
       type: String,
       default: ''
     }

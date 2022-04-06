@@ -208,6 +208,27 @@ export default {
             label: 'Kembali ke Menu Realisasi',
             onClick: () => { this.$router.push('/realization') }
           }
+        },
+        deliverConfirmation: {
+          image: '/img/confirmation.svg',
+          title: 'Apakah yakin Data Rencana Pengiriman Ini Sudah Benar?',
+          buttonLeft: {
+            label: 'Cek kembali',
+            isInverted: true,
+            onClick: () => { this.$emit('close') }
+          },
+          buttonRight: {
+            label: 'Ya',
+            onClick: () => { this.$emit('deliver') }
+          }
+        },
+        deliverSuccess: {
+          image: '/img/email.svg',
+          title: 'Status telah berubah menjadi Load Order',
+          buttonRight: {
+            label: 'Kembali ke Menu Request Order',
+            onClick: () => { this.$router.push('/delivery-plan') }
+          }
         }
       }
     }

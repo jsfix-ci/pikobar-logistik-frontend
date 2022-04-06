@@ -158,7 +158,7 @@ export default {
         description: '',
         category: ''
       },
-      radioOptions: [ // @todo: change value to BE needs
+      radioOptions: [
         {
           text: 'Permohonan mendadak',
           value: 'urgent'
