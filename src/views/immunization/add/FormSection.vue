@@ -7,7 +7,7 @@
       :name="$t('label.date')"
     >
       <JDSDatePicker
-        v-model="form.date"
+        v-model="form.recommendation_date"
         :label="$t('label.date')"
         :placeholder="$t('label.input_date')"
         :error-messages="errors"
@@ -21,11 +21,10 @@
       :name="$t('label.apd_name_spec')"
     >
       <JDSSelect
-        v-model="form.name"
+        v-model="form.recommendation_product_name"
         :label="$t('label.apd_name_spec')"
         :items="isVaccineSupport ? listVaccineSupport : listVaccine"
-        item-text="name"
-        item-value="id"
+        item-text="material_name"
         :placeholder="$t('label.apd_name_spec_placeholder')"
         :error-messages="errors"
         :hide-details="errors.length === 0"
@@ -38,7 +37,7 @@
       name="Jumlah Barang"
     >
       <JDSTextField
-        v-model="form.total"
+        v-model="form.recommendation_quantity"
         label="Jumlah Barang"
         placeholder="Tulis jumlah barang"
         suffix="Vial"
@@ -70,9 +69,7 @@
         v-model="form.usage"
         label="Tujuan Penggunaan"
         placeholder="Pilih Tujuan"
-        :items="form.name.purposes"
-        item-text="name"
-        item-value="id"
+        :items="listPurposes"
         :error-messages="errors"
         :hide-details="errors.length === 0"
         class="mb-3"
@@ -84,7 +81,7 @@
       :name="$t('label.status')"
     >
       <JDSRadio
-        v-model="form.status"
+        v-model="form.recommendation_status"
         :label="$t('label.status')"
         :items="radioOptions"
         :error-messages="errors"
@@ -94,11 +91,11 @@
     </ValidationProvider>
     <ValidationProvider
       v-slot="{ errors }"
-      :rules="form.status === 'Lainnya (jelaskan pada alasan)' ? 'required' : ''"
+      :rules="form.recommendation_status === 'other' ? 'required' : ''"
       name="Alasan"
     >
       <JDSTextField
-        v-model="form.reason"
+        v-model="form.recommendation_reason"
         label="Alasan"
         placeholder="Tulis alasan instansi memohon perubahan jumlah/logistik vaksin"
         :clearable="false"
@@ -112,7 +109,7 @@
       name="File"
     >
       <JDSFileInput
-        v-model="form.file"
+        v-model="form.recommendation_file"
         label="Unggah Permintaan Tambahan"
         :error-messages="errors"
         :hide-details="errors.length === 0"
@@ -123,7 +120,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import JDSSelect from '@/components/Base/JDSSelect'
 import JDSTextField from '@/components/Base/JDSTextField'
@@ -149,33 +145,52 @@ export default {
   data() {
     return {
       form: {
-        date: '',
-        name: '',
-        total: '',
+        vaccine_request_id: this.$route.params.id,
+        recommendation_date: '',
+        recommendation_product_id: '',
+        recommendation_product_name: '',
+        recommendation_quantity: '',
+        recommendation_status: '',
+        recommendation_reason: '',
+        recommendation_file: null,
+        recommendation_UoM: 'VIAL',
         usage: '',
-        note: '',
         description: '',
-        status: '',
-        reason: '',
-        file: null
+        category: ''
       },
       radioOptions: [ // @todo: change value to BE needs
         {
           text: 'Permohonan mendadak',
-          value: 'Permohonan mendadak'
+          value: 'urgent'
         },
         {
           text: 'Lainnya (jelaskan pada alasan)',
-          value: 'Lainnya (jelaskan pada alasan)'
+          value: 'other'
         }
-      ]
+      ],
+      listPurposes: [
+        {
+          text: 'DOSIS 1',
+          value: 'DOSIS 1'
+        },
+        {
+          text: 'DOSIS 2',
+          value: 'DOSIS 2'
+        },
+        {
+          text: 'DOSIS 3',
+          value: 'DOSIS 3'
+        },
+        {
+          text: 'LAINNYA',
+          value: 'LAINNYA'
+        }
+      ],
+      listVaccine: [],
+      listVaccineSupport: []
     }
   },
   computed: {
-    ...mapState('logistics', [
-      'listVaccine',
-      'listVaccineSupport'
-    ]),
     title() {
       return this.stage === 'recommendation'
         ? this.$t('label.recommend')
@@ -185,16 +200,20 @@ export default {
       return this.$route.query.type === 'vaccineSupport'
     }
   },
-  mounted() {
-    const category = this.isVaccineSupport ? 'vaccine_support' : 'vaccine'
-    this.$store.dispatch('logistics/getListVaccineAndSupport', { category })
+  async mounted() {
+    const vaccineSupportResponse = await this.$store.dispatch('vaccine/getListMaterial', { matg_id: 'PENUNJANG VAKSIN', is_paginated: 0 })
+    this.listVaccineSupport = vaccineSupportResponse.data
+    const vaccineResponse = await this.$store.dispatch('vaccine/getListMaterial', { matg_id: 'VAKSIN', is_paginated: 0 })
+    this.listVaccine = vaccineResponse.data
   },
   methods: {
     async validate() {
       const isValid = await this.$refs.form.validate()
-      if (!isValid) {
-        return
-      }
+      this.form.recommendation_product_id = this.form.recommendation_product_name.material_id
+      this.form.recommendation_product_name = this.form.recommendation_product_name.material_name
+      this.form.category = this.isVaccineSupport ? 'vaccine_support' : 'vaccine'
+      if (isValid) this.$emit('update:form', this.form)
+      return isValid
     }
   }
 }

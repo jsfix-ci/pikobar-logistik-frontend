@@ -42,7 +42,7 @@
               </span>
             </td>
             <td v-if="stage === 'recommendation'">
-              <JDSButton inverted height="25px" @click="onUpdate(item.id)">
+              <JDSButton inverted height="25px" @click="onUpdate(item.id, false)">
                 {{ $t('label.update') }}
               </JDSButton>
             </td>
@@ -90,7 +90,7 @@
               </span>
             </td>
             <td v-if="stage === 'recommendation'">
-              <JDSButton inverted height="25px" @click="onUpdate(item.id)">
+              <JDSButton inverted height="25px" @click="onUpdate(item.id, true)">
                 {{ $t('label.update') }}
               </JDSButton>
             </td>
@@ -182,8 +182,9 @@ export default {
     onClick() {
       // @todo: create onClick function
     },
-    onUpdate(id) {
-      this.$router.push(`/recommendation/update/${id}`)
+    onUpdate(id, isVaccineSupport) {
+      const type = isVaccineSupport ? 'vaccineSupport' : 'vaccine'
+      this.$router.push(`/recommendation/update/${id}?type=${type}`)
     },
     onAddMore(isVaccineSupport) {
       const type = isVaccineSupport ? 'vaccineSupport' : 'vaccine'

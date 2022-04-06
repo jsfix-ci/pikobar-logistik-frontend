@@ -1,50 +1,93 @@
 <template>
-  <div class="realization d-flex flex-column">
+  <ValidationObserver ref="form" class="realization d-flex flex-column">
     <span class="realization__title mb-6">{{ $t('label.realization') }}</span>
-    <JDSDatePicker
-      v-model="date"
-      :label="$t('label.date')"
-      :placeholder="$t('label.input_date')"
-      hide-details
-      @clear="date = null"
-    />
-    <JDSRadio
-      v-model="radio"
-      :label="$t('label.status')"
-      :items="radioOptions"
-      hide-details
-      class="mb-3"
-    />
-    <JDSSelect
-      v-model="name"
-      :label="$t('label.apd_name_spec')"
-      :items="[1,2,3]"
-      :placeholder="$t('label.apd_name_spec_placeholder')"
-      hide-details
-      class="mb-3"
-    />
-    <JDSTextField
-      v-model="total"
-      label="Jumlah Barang"
-      placeholder="Tulis jumlah barang"
-      suffix="Vial"
-      :clearable="false"
-      hide-details
-    />
-  </div>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      :name="$t('label.date')"
+    >
+      <JDSDatePicker
+        v-model="date"
+        :label="$t('label.date')"
+        :placeholder="$t('label.input_date')"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+        @clear="date = null"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      :name="$t('label.status')"
+    >
+      <JDSRadio
+        v-model="radio"
+        :label="$t('label.status')"
+        :items="radioOptions"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+        class="mb-3"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required"
+      :name="$t('label.apd_name_spec')"
+    >
+      <JDSSelect
+        v-model="name"
+        :label="$t('label.apd_name_spec')"
+        :items="itemList"
+        item-text="material_name"
+        return-object
+        :placeholder="$t('label.apd_name_spec_placeholder')"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+        class="mb-3"
+      />
+    </ValidationProvider>
+    <ValidationProvider
+      v-slot="{ errors }"
+      rules="required|numeric"
+      name="Jumlah Barang"
+    >
+      <JDSTextField
+        v-model="total"
+        label="Jumlah Barang"
+        placeholder="Tulis jumlah barang"
+        suffix="Vial"
+        :clearable="false"
+        :error-messages="errors"
+        :hide-details="errors.length === 0"
+      />
+    </ValidationProvider>
+  </ValidationObserver>
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import JDSSelect from '@/components/Base/JDSSelect'
 import JDSTextField from '@/components/Base/JDSTextField'
 import JDSDatePicker from '@/components/Base/JDSDatePicker'
 import JDSRadio from '@/components/Base/JDSRadio'
 export default {
   components: {
+    ValidationObserver,
+    ValidationProvider,
     JDSSelect,
     JDSTextField,
     JDSDatePicker,
     JDSRadio
+  },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    },
+    itemList: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {
@@ -52,16 +95,22 @@ export default {
       total: '',
       date: '',
       radio: '',
-      radioOptions: [ // @todo: change value to BE needs
+      radioOptions: [
         {
           text: 'Disetujui',
-          value: 'Disetujui'
+          value: 'approved'
         },
         {
           text: 'Barang Diganti',
-          value: 'Barang Diganti'
+          value: 'replaced'
         }
       ]
+    }
+  },
+  methods: {
+    async validate() {
+      const isValid = await this.$refs.form.validate()
+      return isValid
     }
   }
 }
