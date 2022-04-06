@@ -27,6 +27,10 @@
           :data="realizationData"
           :stage="stage"
           :item-list="listItem"
+          :date.sync="realizationForm.finalized_date"
+          :name.sync="realizationForm.finalized_product_name"
+          :quantity.sync="realizationForm.finalized_quantity"
+          :status.sync="realizationForm.finalized_status"
         />
         <div class="d-flex flex-row justify-space-between mt-6">
           <JDSButton inverted height="42px" width="48%" @click="onCancel()">
@@ -136,8 +140,8 @@ export default {
         payload.recommendation_product_name = this.recommendationForm.recommendation_product_name.material_name
       } else {
         payload = this.realizationForm
-        payload.finalized_product_id = this.recommendationForm.finalized_product_name.material_id
-        payload.finalized_product_name = this.recommendationForm.finalized_product_name.material_name
+        payload.finalized_product_id = this.realizationForm.finalized_product_name.material_id
+        payload.finalized_product_name = this.realizationForm.finalized_product_name.material_name
       }
       const res = await this.$store.dispatch('vaccine/updateVaccineProductRequest', payload)
       if (res.status === 200 || res.status === 201) {

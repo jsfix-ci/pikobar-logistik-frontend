@@ -13,6 +13,7 @@
         :error-messages="errors"
         :hide-details="errors.length === 0"
         @clear="date = null"
+        @change="$emit('update:date', date)"
       />
     </ValidationProvider>
     <ValidationProvider
@@ -21,12 +22,13 @@
       :name="$t('label.status')"
     >
       <JDSRadio
-        v-model="radio"
+        v-model="status"
         :label="$t('label.status')"
         :items="radioOptions"
         :error-messages="errors"
         :hide-details="errors.length === 0"
         class="mb-3"
+        @change="$emit('update:status', status)"
       />
     </ValidationProvider>
     <ValidationProvider
@@ -44,6 +46,7 @@
         :error-messages="errors"
         :hide-details="errors.length === 0"
         class="mb-3"
+        @change="$emit('update:name', name)"
       />
     </ValidationProvider>
     <ValidationProvider
@@ -59,6 +62,7 @@
         :clearable="false"
         :error-messages="errors"
         :hide-details="errors.length === 0"
+        @change="$emit('update:quantity', quantity)"
       />
     </ValidationProvider>
   </ValidationObserver>
@@ -94,7 +98,7 @@ export default {
       name: '',
       total: '',
       date: '',
-      radio: '',
+      status: '',
       radioOptions: [
         {
           text: 'Disetujui',
