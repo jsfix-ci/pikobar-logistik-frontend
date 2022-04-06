@@ -116,7 +116,7 @@
       :placeholder="$t('label.input_date')"
       :error="!isValid"
       :hide-details="isValid"
-      error-messages="Harap isi Tanggal Rencana Kirim"
+      :error-messages="['Harap isi Tanggal Rencana Kirim']"
       class="mt-8"
       @clear="date = null"
     />

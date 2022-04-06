@@ -9,7 +9,7 @@
       :error="error"
       :error-messages="errorMessages"
       @input="$emit('input', $event)"
-      @change="$emit('input', $event)"
+      @change="onChange($event)"
     >
       <v-radio
         v-for="item in items"
@@ -56,6 +56,12 @@ export default {
     error: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    onChange(event) {
+      this.$emit('input', event)
+      this.$emit('change')
     }
   }
 }
