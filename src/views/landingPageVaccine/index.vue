@@ -26,11 +26,11 @@
     <!-- Vaccine Request -->
     <section class="landing-page__main-section py-5">
       <v-row>
-        <v-col cols="12" md="6" sm="12" class="d-flex flex-column">
-          <h1 class="landing-page__title">
+        <v-col order-sm="last" cols="12" sm="12" class="d-flex flex-column align-center">
+          <h1 class="landing-page__title text-center">
             {{ $t('label.vaccine_needs_request') }}
           </h1>
-          <p class="landing-page__text">
+          <p class="landing-page__text text-center">
             Portal ini berfungsi untuk mendata permohonan vaksin dan logistik pendukung vaksin yang diperuntukkan bagi
             <strong class="green-dark--text">Dinas Kesehatan, TNI, POLRI</strong>
             dan
@@ -54,7 +54,7 @@
             </v-icon>
           </v-btn>
         </v-col>
-        <v-col cols="12" md="6" sm="12" class="d-flex justify-center">
+        <v-col cols="12" sm="12" class="d-flex justify-center">
           <img
             width="358px"
             height="262px"
@@ -66,7 +66,8 @@
     </section>
 
     <!-- Vaccine Tracking -->
-    <section class="landing-page__main-section--grey d-flex flex-row justify-space-between">
+    <!-- TEMPORARILY HIDDEN -->
+    <!-- <section class="landing-page__main-section--grey d-flex flex-row justify-space-between">
       <img src="/img/icons/vaccine-track-left.svg" alt="vaccine track">
       <div class="d-flex flex-column align-center">
         <span class="landing-page__vaccination-track__title">Lacak Pengajuan Vaksin</span>
@@ -87,7 +88,7 @@
         </v-btn>
       </div>
       <img src="/img/icons/vaccine-track-right.svg" alt="vaccine track">
-    </section>
+    </section> -->
 
     <v-dialog v-model="showRequirement" max-width="800px">
       <RequirementPopUp @close="showRequirement = false" />
@@ -114,7 +115,7 @@ export default {
       this.$router.push('/tracking')
     },
     onInfoClick() {
-      // @todo: create info click function
+      window.open(`https://wa.me/${process.env.VUE_APP_HOTLINE_PIKOBAR}`, '_blank')
     }
   }
 }
@@ -136,6 +137,7 @@ export default {
   &__text {
     font-family: 'Roboto';
     font-size: 16px;
+    max-width: 50%;
   }
 
   &__main-section {

@@ -5,10 +5,10 @@
         <v-row justify="space-between" align="center">
           <v-col cols="12" md="8" xs="12">
             <v-row>
-              <router-link to="/landing-page">
-                <v-img :max-width="40" src="../../static/logistik_logo_lingkar.svg" />
+              <router-link :to="landingPage">
+                <img height="40" width="40" src="@/static/logistik_logo_lingkar.svg">
               </router-link>
-              <router-link to="/landing-page">
+              <router-link :to="landingPage">
                 <div class="title-page-form-pemohon">
                   {{
                     !isVaccineContent
@@ -134,6 +134,9 @@ export default {
   computed: {
     isVaccineContent() {
       return this.$route.query.type === 'vaksin'
+    },
+    landingPage() {
+      return this.$route.query.type === 'vaksin' ? '/landing-page-vaccine' : '/landing-page'
     }
   },
   created() {
