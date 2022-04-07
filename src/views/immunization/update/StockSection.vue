@@ -16,7 +16,7 @@
         <tr>
           <td>{{ item.material_id || '-' }}</td>
           <td>{{ item.material_name || '-' }}</td>
-          <td>{{ item.agency_name || '-' }}</td>
+          <td>{{ currency(item.current_stock) || '-' }}</td>
           <td>{{ item.soh_location_name || '-' }}</td>
         </tr>
       </template>
@@ -34,6 +34,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import FormatingNumber from '@/helpers/formattingNumber'
 import JDSTable from '@/components/Base/JDSTable'
 import SearchInput from '@/components/Base/SearchInput'
 import JDSPagination from '@/components/JDSPagination'
@@ -84,6 +85,10 @@ export default {
       this.listMaterial = [...this.allocationMaterials.data]
       this.totalPage = this.allocationMaterials.last_page
       this.totalData = this.allocationMaterials.total
+    },
+    currency(value) {
+      const formattingNumber = new FormatingNumber()
+      return formattingNumber.formatCurrency(value)
     }
   }
 }
