@@ -114,7 +114,7 @@ export default {
       this.$router.push('/tracking')
     },
     onInfoClick() {
-      // @todo: create info click function
+      window.open(`https://wa.me/${process.env.VUE_APP_HOTLINE_PIKOBAR}`, '_blank')
     }
   }
 }
