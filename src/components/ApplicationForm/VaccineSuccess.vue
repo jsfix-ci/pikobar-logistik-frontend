@@ -60,7 +60,7 @@
       Pertanyaan, Keluhan dan Kirim Surat Final
     </strong>
     <p class="success__section-content">
-      Akses Hotline PIKOBAR pada nomor 08112093306 atau digital.service@jabarprov.go.id.
+      Akses Hotline PIKOBAR pada nomor 081315767491 atau digital.service@jabarprov.go.id.
     </p>
     <v-btn
       depressed
