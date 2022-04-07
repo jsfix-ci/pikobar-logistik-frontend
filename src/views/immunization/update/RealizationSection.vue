@@ -55,7 +55,7 @@
       name="Jumlah Barang"
     >
       <JDSTextField
-        v-model="total"
+        v-model="quantity"
         label="Jumlah Barang"
         placeholder="Tulis jumlah barang"
         suffix="Vial"
@@ -96,7 +96,7 @@ export default {
   data() {
     return {
       name: '',
-      total: '',
+      quantity: '',
       date: '',
       status: '',
       radioOptions: [
