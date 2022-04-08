@@ -224,9 +224,9 @@ export default {
         },
         deliverSuccess: {
           image: '/img/email.svg',
-          title: 'Status telah berubah menjadi Load Order',
+          title: 'Perintah Pengeluaran dan Penyaluran Barang Telah Selesai',
           buttonRight: {
-            label: 'Kembali ke Menu Request Order',
+            label: 'Kembali Ke Menu Satuan Tugas',
             onClick: () => { this.$router.push('/delivery-plan') }
           }
         }
