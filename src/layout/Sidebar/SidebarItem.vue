@@ -10,7 +10,7 @@
             <v-icon v-text="onlyOneChild.meta.icon" />
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="generateTitle(onlyOneChild.meta.title)" />
+            <v-list-item-title class="text-wrap" v-text="generateTitle(onlyOneChild.meta.title)" />
           </v-list-item-content>
         </v-list-item>
       </div>
@@ -91,3 +91,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.v-list-item__title::v-deep {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+.v-list-item__content::v-deep {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+</style>
