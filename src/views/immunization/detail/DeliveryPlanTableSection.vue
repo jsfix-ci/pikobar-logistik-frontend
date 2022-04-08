@@ -3,7 +3,7 @@
     <!-- Section Title -->
     <div class="d-flex flex-row align-center mb-6">
       <span class="detail-table__section-title">
-        {{ `${$t('label.delivery_plan')} (${$t('label.logistic_post')})` }}
+        {{ `${$t('label.release_order')} (${$t('label.task_force')})` }}
       </span>
       <img
         src="/img/icons/arrow-down.svg"
