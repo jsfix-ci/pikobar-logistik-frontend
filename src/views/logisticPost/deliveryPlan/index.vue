@@ -1,6 +1,6 @@
 <template>
   <div class="delivery-plan">
-    <h1 class="delivery-plan__title">{{ $t('label.delivery_plan') }}</h1>
+    <h1 class="delivery-plan__title">{{ $t('label.release_order') }}</h1>
 
     <!-- search section -->
     <div class="d-flex flex-row mb-10">

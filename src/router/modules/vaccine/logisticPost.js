@@ -5,7 +5,7 @@ const logisticPost = {
   component: Layout,
   redirect: '/logistic-post/realization',
   meta: {
-    title: 'logistic_post',
+    title: 'task_force',
     icon: 'inventory',
     roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
     isVaccineModule: true
@@ -15,9 +15,9 @@ const logisticPost = {
     {
       path: '/delivery-plan',
       component: () => import('@/views/logisticPost/deliveryPlan'),
-      name: 'delivery_plan',
+      name: 'release_order',
       meta: {
-        title: 'delivery_plan',
+        title: 'release_order',
         noCache: true,
         roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
         isVaccineModule: true

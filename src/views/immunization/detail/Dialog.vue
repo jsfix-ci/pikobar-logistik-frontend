@@ -211,7 +211,7 @@ export default {
         },
         deliverConfirmation: {
           image: '/img/confirmation.svg',
-          title: 'Apakah yakin Data Rencana Pengiriman Ini Sudah Benar?',
+          title: 'Apakah Anda yakin Data Perintah Pengeluaran Barang Ini Sudah Benar?',
           buttonLeft: {
             label: 'Cek kembali',
             isInverted: true,
