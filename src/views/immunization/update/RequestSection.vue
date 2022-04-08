@@ -6,7 +6,7 @@
         <DisabledField label="Nama Barang" :value="data.product_name || '-'" />
       </v-col>
       <v-col cols="12" sm="6">
-        <DisabledField label="Jumlah" :value="data.quantity || '-'" />
+        <DisabledField label="Jumlah" :value="`${data.quantity || '-'} ${data.unit || '-'}`" />
       </v-col>
     </v-row>
     <ValidationObserver v-if="stage === 'recommendation'" ref="form">

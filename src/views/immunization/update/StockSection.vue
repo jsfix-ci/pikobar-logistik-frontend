@@ -16,7 +16,7 @@
         <tr>
           <td>{{ item.material_id || '-' }}</td>
           <td>{{ item.material_name || '-' }}</td>
-          <td>{{ currency(item.current_stock) || '-' }}</td>
+          <td>{{ `${currency(item.current_stock) || '-'} ${item.UoM || '-'}` }}</td>
           <td>{{ item.soh_location_name || '-' }}</td>
         </tr>
       </template>
