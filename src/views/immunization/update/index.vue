@@ -109,7 +109,10 @@ export default {
   },
   async mounted() {
     const res = await this.$store.dispatch('vaccine/getItemVaccineProductRequest', this.$route.params.id)
-    this.requestData = res.data.request
+    this.requestData = {
+      ...res.data.request,
+      product_status: res.data.recommendation.product_status
+    }
     this.recommendationData = res.data.recommendation
     this.realizationData = res.data.finalization
 

@@ -13,7 +13,6 @@
     >
     <div
       class="jds-file-input__container"
-      @click="$refs.file.click()"
       @dragover="dragover($event)"
       @drop="drop($event)"
     >
