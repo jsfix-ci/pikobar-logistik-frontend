@@ -41,7 +41,7 @@
         {{ $t('label.back') }}
       </JDSButton>
       <JDSButton height="42px" @click="$emit('deliver')">
-        Load Order (Kemas Pengiriman)
+        Perintahkan Keluar Barang
       </JDSButton>
     </div>
   </div>
