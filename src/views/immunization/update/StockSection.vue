@@ -75,7 +75,7 @@ export default {
   },
   mounted() {
     this.fetchData()
-    this.updatedTime = `${this.$moment().format('D MMMM YYYY')}, ${this.$moment().subtract(15, 'minutes').format('HH:mm')}`
+    this.updatedTime = `${this.$moment().subtract(15, 'minutes').format('D MMMM YYYY, HH:mm')}`
   },
   methods: {
     handleSearch() {
