@@ -1,7 +1,7 @@
 <template>
   <div class="stock d-flex flex-column">
     <span class="stock__title mb-2">{{ $t('label.vaccine_stock') }}</span>
-    <span class="stock__subtitle mb-6">(Diupdate pada 18 Februari 2022, 16:03)</span>
+    <span class="stock__subtitle mb-6">(Diupdate pada {{ updatedTime }})</span>
     <SearchInput
       v-model="listQuery.material_name"
       placeholder="Masukkan nama barang yang dicari"
@@ -59,7 +59,8 @@ export default {
       },
       listMaterial: [],
       totalPage: 0,
-      totalData: 0
+      totalData: 0,
+      updatedTime: null
     }
   },
   computed: {
@@ -74,6 +75,7 @@ export default {
   },
   mounted() {
     this.fetchData()
+    this.updatedTime = `${this.$moment().subtract(15, 'minutes').format('D MMMM YYYY, HH:mm')}`
   },
   methods: {
     handleSearch() {

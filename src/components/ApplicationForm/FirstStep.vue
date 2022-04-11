@@ -385,8 +385,8 @@ export default {
         this.$store.dispatch('faskes/getDetailFaskes', id)
       } else {
         this.formApplicant.instanceName = val.name
-        this.formApplicant.fullAddress = val.address
-        this.formApplicant.instancePhoneNumber = val.phone
+        this.$set(this.formApplicant, 'fullAddress', val.address)
+        this.$set(this.formApplicant, 'instancePhoneNumber', val.phone)
         this.formApplicant.cityNameId = {
           text: val.city.name,
           value: val.city.kemendagri_kabupaten_kode,
