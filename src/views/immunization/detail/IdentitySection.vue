@@ -66,6 +66,11 @@ export default {
       showApplicantIdentity: true
     }
   },
+  watch: {
+    identity() {
+      this.fillIdentity()
+    }
+  },
   mounted() {
     this.fillIdentity()
   },
