@@ -18,7 +18,7 @@
       class="mb-8"
     >
       <template #append>
-        <JDSButton class="ml-6" height="38px" @click="onDownload">
+        <JDSButton class="ml-6" height="38px" :href="link" target="_blank">
           {{ $t('label.download') }}
         </JDSButton>
       </template>
@@ -38,12 +38,13 @@ export default {
     letter: {
       type: String,
       default: ''
+    },
+    link: {
+      type: String,
+      default: ''
     }
   },
   methods: {
-    onDownload() {
-      // @todo: create onDownload function
-    },
     onClick() {
       // @todo: create onClick function
     }

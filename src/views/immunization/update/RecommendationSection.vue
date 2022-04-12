@@ -44,7 +44,7 @@
           v-model="quantity"
           label="Jumlah Barang"
           placeholder="Tulis jumlah barang"
-          suffix="Vial"
+          :suffix="unitDisplay"
           :clearable="false"
           :error-messages="errors"
           :hide-details="errors.length === 0"
@@ -71,7 +71,7 @@
       <DisabledField label="Nama Barang" :value="data.product_name || '-'" />
       <v-row class="mt-3">
         <v-col cols="12" sm="6">
-          <DisabledField label="Jumlah" :value="data.quantity || '-'" />
+          <DisabledField label="Jumlah" :value="`${data.quantity || '-'} ${data.unit || '-'}`" />
         </v-col>
         <v-col cols="12" sm="6">
           <DisabledField label="Tanggal" :value="$moment(data.updated_at).format('D MMMM YYYY') || '-'" />
@@ -108,6 +108,10 @@ export default {
     itemList: {
       type: Array,
       default: () => []
+    },
+    unit: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -116,6 +120,11 @@ export default {
       quantity: '',
       note: '',
       date: ''
+    }
+  },
+  computed: {
+    unitDisplay() {
+      return this.name ? this.name.UoM : this.unit ?? 'Vial'
     }
   },
   methods: {
