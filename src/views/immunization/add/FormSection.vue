@@ -12,7 +12,7 @@
         :placeholder="$t('label.input_date')"
         :error-messages="errors"
         :hide-details="errors.length === 0"
-        @clear="date = null"
+        @clear="form.recommendation_date = null"
       />
     </ValidationProvider>
     <ValidationProvider
@@ -212,11 +212,13 @@ export default {
   methods: {
     async validate() {
       const isValid = await this.$refs.form.validate()
-      this.form.recommendation_product_id = this.form.recommendation_product_name.material_id
-      this.form.recommendation_UoM = this.form.recommendation_product_name.UoM
-      this.form.recommendation_product_name = this.form.recommendation_product_name.material_name
-      this.form.category = this.isVaccineSupport ? 'vaccine_support' : 'vaccine'
-      if (isValid) this.$emit('update:form', this.form)
+      if (isValid) {
+        this.form.recommendation_product_id = this.form.recommendation_product_name.material_id
+        this.form.recommendation_UoM = this.form.recommendation_product_name.UoM
+        this.form.recommendation_product_name = this.form.recommendation_product_name.material_name
+        this.form.category = this.isVaccineSupport ? 'vaccine_support' : 'vaccine'
+        this.$emit('update:form', this.form)
+      }
       return isValid
     }
   }
