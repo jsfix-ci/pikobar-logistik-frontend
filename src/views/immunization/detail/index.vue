@@ -9,6 +9,7 @@
     />
     <LetterSection
       :letter="vaccineRequest.letter_number"
+      :link="vaccineRequest.letter_file_url"
     />
     <RequestTableSection />
     <RecommendationTableSection
