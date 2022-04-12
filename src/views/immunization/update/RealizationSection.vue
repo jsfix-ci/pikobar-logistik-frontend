@@ -58,7 +58,7 @@
         v-model="quantity"
         label="Jumlah Barang"
         placeholder="Tulis jumlah barang"
-        suffix="Vial"
+        :suffix="unitDisplay"
         :clearable="false"
         :error-messages="errors"
         :hide-details="errors.length === 0"
@@ -91,6 +91,10 @@ export default {
     itemList: {
       type: Array,
       default: () => []
+    },
+    unit: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -109,6 +113,11 @@ export default {
           value: 'replaced'
         }
       ]
+    }
+  },
+  computed: {
+    unitDisplay() {
+      return this.name ? this.name.UoM : this.unit ?? 'Vial'
     }
   },
   methods: {

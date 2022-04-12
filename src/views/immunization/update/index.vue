@@ -19,6 +19,7 @@
           :name.sync="recommendationForm.recommendation_product_name"
           :quantity.sync="recommendationForm.recommendation_quantity"
           :note.sync="recommendationForm.recommendation_note"
+          :unit="requestData.unit"
           class="mb-6"
         />
         <RealizationSection
@@ -31,6 +32,7 @@
           :name.sync="realizationForm.finalized_product_name"
           :quantity.sync="realizationForm.finalized_quantity"
           :status.sync="realizationForm.finalized_status"
+          :unit="recommendationData.unit"
         />
         <div class="d-flex flex-row justify-space-between mt-6">
           <JDSButton inverted height="42px" width="48%" @click="onCancel()">
@@ -75,7 +77,7 @@ export default {
         recommendation_date: '',
         recommendation_product_name: '',
         recommendation_quantity: 0,
-        recommendation_UoM: 'VIAL',
+        recommendation_UoM: '',
         recommendation_status: '',
         recommendation_note: ''
       },
@@ -85,7 +87,7 @@ export default {
         finalized_date: '',
         finalized_product_name: '',
         finalized_quantity: 0,
-        finalized_UoM: 'VIAL',
+        finalized_UoM: '',
         finalized_status: ''
       }
     }
@@ -128,8 +130,9 @@ export default {
     async onUpdate() {
       let isValid
       if (this.stage === 'recommendation') {
-        isValid = await this.$refs.request.validate()
-        isValid = await this.$refs.recommendation.validate()
+        const isRequestValid = await this.$refs.request.validate()
+        const isRecommendationValid = await this.$refs.recommendation.validate()
+        isValid = isRequestValid && isRecommendationValid
       } else {
         isValid = await this.$refs.realization.validate()
       }
@@ -140,10 +143,12 @@ export default {
       if (this.stage === 'recommendation') {
         payload = this.recommendationForm
         payload.recommendation_product_id = this.recommendationForm.recommendation_product_name.material_id
+        payload.recommendation_UoM = this.recommendationForm.recommendation_product_name.UoM
         payload.recommendation_product_name = this.recommendationForm.recommendation_product_name.material_name
       } else {
         payload = this.realizationForm
         payload.finalized_product_id = this.realizationForm.finalized_product_name.material_id
+        payload.finalized_UoM = this.realizationForm.finalized_product_name.UoM
         payload.finalized_product_name = this.realizationForm.finalized_product_name.material_name
       }
       const res = await this.$store.dispatch('vaccine/updateVaccineProductRequest', payload)
