@@ -4,6 +4,8 @@
     :disabled="disabled"
     :height="height"
     :width="width"
+    :href="href"
+    :target="target"
     min-width="0px"
     :class="{
       'jds-button py-4 px-6': true,
@@ -39,6 +41,14 @@ export default {
       default: '100%'
     },
     width: {
+      type: String,
+      default: ''
+    },
+    href: {
+      type: String,
+      default: ''
+    },
+    target: {
       type: String,
       default: ''
     }
