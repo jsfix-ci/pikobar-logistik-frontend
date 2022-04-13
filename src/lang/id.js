@@ -364,7 +364,7 @@ export default {
     applicant_status_description: 'Permohonan ini berada pada tahapan ',
     add: 'tambah',
     logistic_total: 'Total Kebutuhan Logistik Anda',
-    add_more: 'Tambah Lagi',
+    add_more: 'Tambah',
     apply_now: 'Ajukan Sekarang',
     applicant_popup_warning: 'Data permohonan logistik yang diterima via PIKOBAR ini bersifat pengajuan.',
     applicant_popup_warning_verification: 'Selanjutnya, permohonan ini akan diverifikasi dan diproses lebih lanjut oleh Divisi Logistik GTPP COVID-19 Jawa Barat. Persetujuan permohonan akan disesuaikan dengan kedaruratan wilayah dan ketersediaan stok logistik alat kesehatan dan vaksin. Hanya permohonan yang disetujui yang akan mendapatkan konfirmasi proses penyaluran barang logistik yang diajukan. Terima kasih.',
