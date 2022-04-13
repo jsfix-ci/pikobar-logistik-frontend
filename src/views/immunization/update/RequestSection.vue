@@ -59,17 +59,18 @@ export default {
           value: 'approved'
         },
         {
-          text: 'Barang belum tersedia',
-          value: 'not_available'
-        },
-        {
           text: 'Barang Diganti',
           value: 'replaced'
-        },
-        {
-          text: 'Barang belum bisa dipenuhi',
-          value: 'not_yet_fulfilled'
         }
+        // TEMPORARILY HIDDEN
+        // {
+        //   text: 'Barang belum tersedia',
+        //   value: 'not_available'
+        // },
+        // {
+        //   text: 'Barang belum bisa dipenuhi',
+        //   value: 'not_yet_fulfilled'
+        // }
       ],
       status: ''
     }
