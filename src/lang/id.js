@@ -794,7 +794,8 @@ export default {
     vaccine_recommendation_add: 'Tambah Rekomendasi Vaksin',
     vaccine_realization_update: 'Update Realisasi Vaksin',
     vaccine_realization_add: 'Tambah Realisasi Vaksin',
-    vaccine_stock: 'Stock Vaksin'
+    vaccine_stock: 'Stock Vaksin',
+    accepted_with_note: 'Terima Dengan Catatan'
   },
   success: {
     login_success: 'Login Berhasil',

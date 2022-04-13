@@ -36,7 +36,7 @@
             </td>
             <td>{{ item.letter_number || '-' }}</td>
             <td>{{ item.is_completed ? 'Final' : 'Draft' }}</td>
-            <td>{{ $t(`label.${item.status}`) }}</td>
+            <td>{{ statusDisplay(item) }}</td>
             <td>
               <JDSButton inverted height="25px" @click="onDetail(item.id)">
                 {{ $t('label.detail') }}
@@ -121,6 +121,9 @@ export default {
     },
     onDetail(id) {
       this.$router.push(`/recommendation/detail/${id}`)
+    },
+    statusDisplay(item) {
+      return item.note ? this.$t('label.accepted_with_note') : this.$t(`label.${item.status}`)
     }
   }
 }
