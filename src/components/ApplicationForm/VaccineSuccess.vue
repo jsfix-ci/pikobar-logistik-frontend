@@ -59,7 +59,7 @@
     <JDSButton height="38px" class="mb-6" @click="goWhatsapp">
       {{ $t('label.admin_greeting') }}
     </JDSButton>
-    <JDSButton inverted height="38px" @click="$route.push('/landing-page-vaccine')">
+    <JDSButton inverted height="38px" @click="$router.push('/landing-page-vaccine')">
       {{ $t('label.go_to_home_page') }}
     </JDSButton>
   </div>
