@@ -123,7 +123,9 @@ export default {
       this.$router.push(`/recommendation/detail/${id}`)
     },
     statusDisplay(item) {
-      return item.note ? this.$t('label.accepted_with_note') : this.$t(`label.${item.status}`)
+      return item.note || item.vaccine_request_status_notes.length > 0
+        ? this.$t('label.accepted_with_note')
+        : this.$t(`label.${item.status}`)
     }
   }
 }

@@ -21,7 +21,7 @@
 
         <!-- Disabled Field -->
         <DisabledField
-          v-else
+          v-else-if="!item.isHidden"
           v-model="item.value"
           :label="item.label"
           :class="{
@@ -63,6 +63,7 @@ export default {
   data() {
     return {
       listIdentity: [],
+      listNotes: [],
       showApplicantIdentity: true
     }
   },
@@ -82,7 +83,17 @@ export default {
         'd-flex': item.isApplicantIdentity ? this.showApplicantIdentity : true
       }
     },
+    createNotes() {
+      this.listNotes = []
+      if (this.identity.vaccine_request_status_notes.length > 0) {
+        this.identity.vaccine_request_status_notes.forEach(item => {
+          this.listNotes.push(item.name)
+        })
+      }
+      if (this.identity.note) { this.listNotes.push(this.identity.note) }
+    },
     fillIdentity() {
+      this.createNotes()
       this.listIdentity = [
         {
           label: this.$t('label.requested_date'),
@@ -100,6 +111,12 @@ export default {
           label: this.$t('label.status'),
           value: this.identity.is_completed ? this.$t('label.final_2') : this.$t('label.draft'),
           col: 4
+        },
+        {
+          label: this.$t('label.reason'),
+          value: this.listNotes,
+          col: 12,
+          isHidden: this.listNotes.length === 0
         },
         {
           label: this.$t('label.instance_identity'),

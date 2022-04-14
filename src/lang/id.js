@@ -797,7 +797,8 @@ export default {
     vaccine_stock: 'Stock Vaksin',
     accepted_with_note: 'Terima Dengan Catatan',
     exit: 'Keluar',
-    go_to_home_page: 'Kembali ke Halaman Utama'
+    go_to_home_page: 'Kembali ke Halaman Utama',
+    reason: 'Alasan'
   },
   success: {
     login_success: 'Login Berhasil',
