@@ -5,7 +5,24 @@
         ref="form"
         lazy-validation
       >
-        <v-row>
+        <v-row v-if="isVaccineContent">
+          <v-col cols="12" sm="12">
+            <!-- @todo: create JDSAlert component -->
+            <v-alert
+              dense
+              outlined
+              type="info"
+              color="#1565C0"
+            >
+              Pemohon adalah orang yang bertugas menginput permohonan, seperti
+              <strong>admin</strong>
+              dan
+              <strong>PIC</strong>
+              yang ditugaskan.
+            </v-alert>
+          </v-col>
+        </v-row>
+        <v-row v-else>
           <center><v-label class="title"><b>{{ $t('label.applicant_form_header_step_2') }}</b></v-label></center>
         </v-row>
         <v-row>
@@ -188,6 +205,11 @@ export default {
       file: null
     }
   },
+  computed: {
+    isVaccineContent() {
+      return this.$route.query.type === 'vaksin'
+    }
+  },
   created() {
     this.reloadData()
   },
@@ -223,7 +245,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
 .text-small-second-step {
   font-size: 13px;
 }
@@ -235,5 +257,17 @@ export default {
     display: block;
     margin: 10px;
   }
+}
+.v-alert::v-deep {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  margin: 0 !important;
+
+  .v-alert__content {
+    color: #212121 !important;
+  }
+}
+.v-alert--outlined::v-deep {
+  background: #E3F2FD !important;
 }
 </style>
