@@ -18,7 +18,8 @@
         </div>
       </v-main>
       <!-- App Footer -->
-      <app-footer v-if="isVaccineContent" />
+      <!-- Temporarily hidden -->
+      <!-- <app-footer v-if="isVaccineContent" /> -->
       <!-- App Back To Top -->
     </div>
     <vm-back-top style="bottom: 10px;" />
