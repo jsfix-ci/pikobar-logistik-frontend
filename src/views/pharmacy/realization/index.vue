@@ -4,7 +4,7 @@
 
     <!-- search section -->
     <div class="d-flex flex-row mb-10">
-      <SearchInput v-model="listQuery.search" @change="handleSearch" />
+      <SearchInput v-model="listQuery.search" placeholder="Masukkan nama kota/kabupaten" @change="handleSearch" />
       <JDSButton class="ml-6" height="38px" @click="onDownload">
         {{ $t('label.download_excel') }}
         <v-icon class="ml-2">mdi-cloud-download-outline</v-icon>
