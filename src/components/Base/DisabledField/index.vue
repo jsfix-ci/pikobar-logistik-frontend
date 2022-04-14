@@ -5,7 +5,7 @@
       <span class="disabled-field__label">
         {{ label }}
       </span>
-      <div v-if="typeof value === 'object'">
+      <div v-if="Array.isArray(value)">
         <ul>
           <li v-for="item in value" :key="item" class="disabled-field__value mb-1">
             {{ item }}
