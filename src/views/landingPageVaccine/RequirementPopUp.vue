@@ -27,7 +27,7 @@
               alt="check"
               class="mr-2"
             >
-            Surat permohonan yang ditandatangi oleh pimpinan
+            Surat permohonan yang ditandatangani oleh pimpinan
           </span>
           <span class="requirement__header__content__title__text d-flex flex-row align-center">
             <img

@@ -5,7 +5,14 @@
       <span class="disabled-field__label">
         {{ label }}
       </span>
-      <span class="disabled-field__value">
+      <div v-if="Array.isArray(value)">
+        <ul>
+          <li v-for="item in value" :key="item" class="disabled-field__value mb-1">
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+      <span v-else class="disabled-field__value">
         {{ value }}
       </span>
     </div>
@@ -17,7 +24,7 @@
 export default {
   props: {
     value: {
-      type: [String, Number],
+      type: [String, Number, Array],
       default: null
     },
     label: {
@@ -53,7 +60,7 @@ export default {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 500;
-    color: #424242;
+    color: #424242 !important;
   }
 }
 </style>
