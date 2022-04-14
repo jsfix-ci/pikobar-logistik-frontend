@@ -46,15 +46,9 @@
       <strong>Fitur Lacak Pengajuan Logistik Vaksin</strong>
       dengan memasukkan ID/No. HP/Email Permohonan
     </p>
-    <v-btn
-      depressed
-      height="38px"
-      min-width="0px"
-      class="success__btn green-dark white--text py-2 px-4 mb-6"
-      @click="onTracking"
-    >
+    <JDSButton height="38px" @click="onTracking">
       {{ $t('label.track') }}
-    </v-btn>
+    </JDSButton>
 
     <strong class="success__section-title">
       Pertanyaan, Keluhan dan Kirim Surat Final
@@ -62,20 +56,21 @@
     <p class="success__section-content">
       Akses Hotline PIKOBAR pada nomor 081315767491 atau digital.service@jabarprov.go.id.
     </p>
-    <v-btn
-      depressed
-      height="38px"
-      min-width="0px"
-      class="success__btn green-dark white--text py-2 px-4 mb-6"
-      @click="goWhatsapp"
-    >
+    <JDSButton height="38px" class="mb-6" @click="goWhatsapp">
       {{ $t('label.admin_greeting') }}
-    </v-btn>
+    </JDSButton>
+    <JDSButton inverted height="38px" @click="$route.push('/landing-page-vaccine')">
+      {{ $t('label.go_to_home_page') }}
+    </JDSButton>
   </div>
 </template>
 
 <script>
+import JDSButton from '@/components/Base/JDSButton'
 export default {
+  components: {
+    JDSButton
+  },
   props: {
     requestId: {
       type: [String, Number],
