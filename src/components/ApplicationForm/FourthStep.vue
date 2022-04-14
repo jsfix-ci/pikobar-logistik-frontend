@@ -4,9 +4,9 @@
       <v-alert v-if="formApplicant.instanceType <= 3" text outlined type="info">
         <strong class="alert__text">{{ $t('label.applicant_letter_note') }}</strong>
         <br>
-        <p class="alert__text">Jika Anda mengunggah <strong>Surat yang Belum Ditandatangi <em>(draft)</em></strong> maka:</p>
+        <p class="alert__text">Jika Anda mengunggah <strong>Surat yang Belum Ditandatangani <em>(draft)</em></strong> maka:</p>
         <ol>
-          <li class="alert__text">Jumlah permohonan barang pada surat yang belum ditandatangi <em>(draft)</em> yang diunggah tidak dapat diubah pada surat telah ditandatangi (final).</li>
+          <li class="alert__text">Jumlah permohonan barang pada surat yang belum ditandatangani <em>(draft)</em> yang diunggah tidak dapat diubah pada surat telah ditandatangani (final).</li>
           <li class="alert__text">Batas waktu pengiriman surat final adalah <strong>1x24</strong> jam surat <em>draft</em> disimpan.</li>
           <li class="alert__text">Kirim surat final Anda melalui <strong>WhatsApp Hotline PIKOBAR (08112093306)</strong>.</li>
         </ol>
