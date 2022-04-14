@@ -65,7 +65,7 @@
                 solo-inverted
               />
             </ValidationProvider>
-            <div v-if="!isEtc">
+            <div v-if="!isEtc && !isVaccineContent" class="mb-5">
               <v-label class="title"><b>{{ $t('label.instance_not_found_title') }}</b></v-label>
               <v-btn
                 outlined
@@ -81,7 +81,6 @@
                 :show="showForm"
               />
             </div>
-            <br>
             <ValidationProvider
               v-slot="{ errors }"
               rules="isPhoneNumber"
