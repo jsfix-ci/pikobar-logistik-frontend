@@ -9,6 +9,7 @@ import * as VeeValidate from 'vee-validate'
 import infiniteScroll from 'vue-infinite-scroll'
 import FlagIcon from 'vue-flag-icon'
 import VueCurrencyFilter from 'vue-currency-filter'
+import SentryPlugin from './plugins/sentry'
 
 const moment = require('moment-timezone')
 moment.utc().tz('Asia/Jakarta').format()
@@ -33,6 +34,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 Vue.use(FlagIcon)
 Vue.use(Vue2Dragula)
 Vue.use(VueBreadcrumbs)
+Vue.use(SentryPlugin)
 Vue.component(VmBackTop.name, VmBackTop)
 
 Vue.config.productionTip = false

@@ -9,10 +9,22 @@ import Layout from '@/layout'
 /* Router Modules */
 import dashboardRouter from './modules/dashboard'
 import pengajuanLogistik from './modules/pengajuanLogistik'
+// temporarily hidden
+// import requestVaccine from './modules/requestVaccine'
 import faskesRouter from './modules/faskes'
 import formPemohonAdmin from './modules/formPemohonAdmin'
 import letterRouter from './modules/letter'
 import reports from './modules/reports'
+// temporarily hidden
+// import allocation from './modules/allocation'
+import otherInstace from './modules/otherInstance'
+/* Router Vaccine Modules */
+import immunization from './modules/vaccine/immunization'
+import pharmacy from './modules/vaccine/pharmacy'
+import logisticPost from './modules/vaccine/logisticPost'
+
+/* Sentry */
+import * as Sentry from '@sentry/core'
 
 /**
  * constantRoutes
@@ -45,6 +57,22 @@ export const constantRoutes = [
     path: '/landing-page',
     component: () => import('@/views/landingPage/index'),
     hidden: true
+  },
+  {
+    path: '/landing-page-vaccine',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/',
+        component: () => import('@/views/landingPageVaccine/index'),
+        hidden: true,
+        meta: {
+          title: 'landing_page_vaccine',
+          isVaccineContent: true
+        }
+      }
+    ]
   },
   {
     path: '/tracking',
@@ -86,12 +114,27 @@ export const asyncRoutes = [
   dashboardRouter,
   formPemohonAdmin,
   pengajuanLogistik,
+  // temporarily hidden
+  // requestVaccine,
   reports,
+  // temporarily hidden
+  // allocation,
   letterRouter,
   faskesRouter,
+  otherInstace,
+  immunization,
+  pharmacy,
+  logisticPost,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/', hidden: true }
 ]
+
+async function beforeEach(to, from, next) {
+  Sentry.configureScope((scope) => {
+    scope.setTransactionName(to.path)
+  })
+  next()
+}
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
@@ -100,6 +143,7 @@ const createRouter = () => new Router({
 })
 
 const router = createRouter()
+router.beforeEach(beforeEach)
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {

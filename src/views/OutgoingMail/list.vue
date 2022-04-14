@@ -78,14 +78,14 @@
                 <tr v-for="(data, index) in listOutgoingMail" :key="data.index">
                   <td>{{ getTableRowNumbering(index) }}</td>
                   <td>{{ data.letter_name }}</td>
-                  <td align="center">{{ data.letter_number }}</td>
-                  <td align="center">{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
-                  <td align="center">{{ data.request_letter_total }}</td>
-                  <td align="center">
+                  <td class="text-center">{{ data.letter_number }}</td>
+                  <td class="text-center">{{ data.letter_date === null ? $t('label.stripe') : $moment(data.letter_date).format('D MMMM YYYY') }}</td>
+                  <td class="text-center">{{ data.request_letter_total }}</td>
+                  <td class="text-center">
                     <span v-if="data.file" class="green--text">{{ $t('label.outgoing_mail_ready') }}</span>
                     <span v-else class="red--text">{{ $t('label.outgoing_mail_not_ready') }}</span>
                   </td>
-                  <td align="center">
+                  <td class="text-center">
                     <v-card-actions class="justify-center">
                       <v-menu
                         :close-on-content-click="false"
@@ -133,9 +133,9 @@
     <pagination
       :total="totalListOutgoingMail"
       :total-data="totalDataOutgoingMail"
-      :page.sync="listQuery.page"
+      :page="listQuery.page"
       :limit.sync="listQuery.limit"
-      :on-next="onNext"
+      @update:page="onListQueryPageUpdated"
     />
     <CreateLetter
       :show="showForm"
@@ -160,7 +160,7 @@ export default {
   data() {
     return {
       list: null,
-      showFilter: false,
+      showFilter: true,
       showForm: false,
       uploadForm: false,
       sortOption: [
@@ -168,12 +168,11 @@ export default {
         { value: 'desc', label: 'Z-A' }
       ],
       listQuery: {
-        limit: 10,
-        page: 1,
-        total: null,
-        letter_number: null,
-        letter_date: null,
-        sort: null
+        page: parseInt(this.$route.query?.page || 1),
+        limit: parseInt(this.$route.query?.limit || 10),
+        letter_number: this.$route.query?.letter_number || null,
+        letter_date: this.$route.query?.letter_date || null,
+        sort: this.$route.query?.sort || null
       }
     }
   },
@@ -221,15 +220,47 @@ export default {
     getTableRowNumbering(index) {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     },
-    async onNext() {
-      await this.getList()
-    },
     async handleSearch() {
+      this.listQuery.page = 1
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
       await this.getList()
     },
     async changeDate(value) {
       this.listQuery.letter_date = value
+      this.listQuery.page = 1
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
       await this.getList()
+    },
+    onListQueryPageUpdated(newPage) {
+      this.listQuery.page = newPage
+      this.$router.replace({
+        query: {
+          ...this.filterQuery(this.listQuery)
+        }
+      })
+    },
+    filterQuery(oldQuery) {
+      const newQuery = { ...oldQuery }
+      Object.keys(newQuery).forEach(key => {
+        const shouldBeDeleted = newQuery[key] === null ||
+          newQuery[key] === undefined ||
+          newQuery[key] === '' ||
+          key === 'approval_status' ||
+          key === 'is_rejected' ||
+          key === 'verification_status'
+        if (shouldBeDeleted) {
+          delete newQuery[key]
+        }
+      })
+      return newQuery
     }
   }
 }

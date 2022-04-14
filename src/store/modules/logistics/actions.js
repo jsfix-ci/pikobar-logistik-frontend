@@ -83,6 +83,14 @@ export default {
       return e
     }
   },
+  async postApplicantVaksinAdmin({ commit }, params) {
+    try {
+      const response = await doPostUpdate('/api/v1/vaccine-request', 'POST', params)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async updateApplicant({ commit }, params) {
     try {
       const response = await doPostUpdate('/api/v1/logistic-request/' + params.id, 'PUT', params)
@@ -117,6 +125,7 @@ export default {
       return e
     }
   },
+
   // API Goods Receipt Report
   async getListGoodsReceiptReport({ commit }, params) {
     try {
@@ -437,6 +446,21 @@ export default {
       return response
     } catch (e) {
       return e
+    }
+  },
+  logisticRequestType({ commit }, payload) {
+    commit('SET_LOGISTIC_REQUEST_TYPE', payload)
+  },
+  async getListVaccineAndSupport({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/vaccine-product', 'GET', params)
+      const commitName = params.category === 'vaccine_support'
+        ? 'SET_LIST_VACCINE_SUPPORT'
+        : 'SET_LIST_VACCINE'
+      commit(commitName, response.data)
+      return response.data
+    } catch (e) {
+      // silent error
     }
   }
 }

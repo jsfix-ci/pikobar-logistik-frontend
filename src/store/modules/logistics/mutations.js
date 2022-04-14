@@ -82,11 +82,21 @@ export default {
   SET_DATA_FASKES_TOP_TOTAL_REQUEST: (state, data) => {
     state.faskesTopRequest = data
   },
+  SET_LOGISTIC_REQUEST_TYPE: (state, data) => {
+    state.logisticRequestType = data
+  },
   // Statistic
   SET_DATA_REPORTED_RECEIPT: (state, data) => {
     state.reportedReceipt = data
   },
   SET_DATA_UNREPORTED_RECEIPT: (state, data) => {
     state.unReportedReceipt = data
+  },
+  // Form Request
+  SET_LIST_VACCINE: (state, data) => {
+    state.listVaccine = data
+  },
+  SET_LIST_VACCINE_SUPPORT: (state, data) => {
+    state.listVaccineSupport = data
   }
 }

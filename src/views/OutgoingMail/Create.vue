@@ -326,14 +326,6 @@ export default {
     line-height: 19px;
     color: #219653;
   }
-  .sub-title-update-logistic-needs {
-    font-family: 'Product Sans';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 19px;
-    color: #219653;
-  }
   .value-sub-title-update-logistic-needs {
     font-family: 'Product Sans';
     font-style: normal;

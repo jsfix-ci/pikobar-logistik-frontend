@@ -7,5 +7,8 @@ export default {
   },
   faskesDetail: (state, getters) => {
     return state.detailFaskes
+  },
+  totalData: (state) => {
+    return state.totalData
   }
 }

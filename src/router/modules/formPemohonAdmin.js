@@ -1,6 +1,6 @@
 import Layout from '@/layout'
 
-const pengajuanLogistikAdmin = {
+const formPemohonAdmin = {
   path: '/pengajuan-logistik-admin',
   component: Layout,
   redirect: '/pengajuan-logistik-admin/form-pemohon',
@@ -24,4 +24,4 @@ const pengajuanLogistikAdmin = {
   ]
 }
 
-export default pengajuanLogistikAdmin
+export default formPemohonAdmin

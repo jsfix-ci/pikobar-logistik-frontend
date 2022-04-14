@@ -28,18 +28,6 @@
         @click.stop="primaryDrawer.model = !primaryDrawer.model"
       />
       <v-spacer />
-      <!--      <v-switch-->
-      <!--        id="changeTemplateColor"-->
-      <!--        v-model="$vuetify.theme.dark"-->
-      <!--        inset-->
-      <!--        class="dark-mode"-->
-      <!--        style="padding-top: 1.4rem;"-->
-      <!--        @change="emitDarkMode"-->
-      <!--      >-->
-      <!--        <template #prepend>-->
-      <!--          <v-label style="font-size: 14px !important; min-width: 5rem !important;">{{ $t('label.dark_mode') }}</v-label>-->
-      <!--        </template>-->
-      <!--      </v-switch>-->
       <div>
         <v-label>{{ fullname }}</v-label>
       </div>

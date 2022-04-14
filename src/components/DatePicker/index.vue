@@ -12,6 +12,7 @@
       <ValidationProvider
         v-slot="{ errors }"
         :rules="required ? rule : ''"
+        :name="name || $t('label.date')"
       >
         <v-text-field
           v-model="dateFormatted"
@@ -19,6 +20,7 @@
           persistent-hint
           clearable
           solo
+          readonly
           :placeholder="$t('label.date_placeholder')"
           prepend-icon="event"
           :error-messages="errors"
@@ -48,6 +50,10 @@ export default {
       default: false
     },
     rule: {
+      type: String,
+      default: ''
+    },
+    name: {
       type: String,
       default: ''
     }

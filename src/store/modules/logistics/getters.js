@@ -81,5 +81,17 @@ export default {
   },
   faskesTopRequest: (state) => {
     return state.faskesTopRequest
+  },
+  logisticRequestType: (state) => {
+    return state.logisticRequestType
+  },
+  listVaccineRequest: (state) => {
+    return state.dataListVaccineRequest
+  },
+  totalListVaccineRequest: (state) => {
+    return state.totalListVaccineRequest
+  },
+  totalDataVaccineRequest: (state) => {
+    return state.totalDataVaccineRequest
   }
 }

@@ -1,7 +1,6 @@
 <template>
   <div class="background-landing-page">
     <div class="full-landing-page">
-      <!-- <div class="header-landing-page"> -->
       <div class="header-landing-page">
         <v-row align="center">
           <v-col>
@@ -48,22 +47,31 @@
           <v-row align="center">
             <v-col cols="2" md="2" />
             <v-col cols="8" md="8">
-              <div class="font-product-sans-landing-page card-title-landing-page ml-10 mb-5 font-weight-bold text-center">
-                {{ $t('label.landing_page_logistic_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}</span> <span>{{ $t('label.landing_page_here') }}</span>
+              <div class="font-product-sans-landing-page card-title-landing-page mb-5 font-weight-bold text-center">
+                {{ $t('label.landing_page_logistic_title') }}
+                <span class="title-logistic">
+                  {{ $t('label.logistic_lowercase') }}
+                </span>
+                <span>{{ $t('label.landing_page_here') }}</span>
               </div>
-              <p class="ml-10 font-text card-text-landing-page text-center">{{ $t('label.landing_page_text') }}</p>
-              <div class="text-center">
-                <v-btn class="ml-10 white--text" min-width="140px" color="#16A75C" @click="goApplicant">{{ $t('label.start') }}</v-btn>
+              <p class="font-text card-text-landing-page text-center">
+                {{ $t('label.landing_page_text') }}
+              </p>
+              <div class="d-flex flex-row justify-center my-10">
+                <v-btn
+                  class="white--text"
+                  min-width="140px"
+                  color="#16A75C"
+                  @click="goApplicant()"
+                >
+                  {{ $t('label.start_med_request') }}
+                </v-btn>
               </div>
             </v-col>
             <v-col cols="2" md="2" />
           </v-row>
-          <v-row align="center">
-            <v-col cols="12" md="12">
-              <div class="center">
-                <img src="../../static/home_logistik_2.png">
-              </div>
-            </v-col>
+          <v-row class="justify-center">
+            <img src="../../static/home_logistik_2.png">
           </v-row>
         </div>
         <!-- Mobile logistic -->
@@ -74,7 +82,7 @@
                 {{ $t('label.landing_page_logistic_title') }} <span class="title-logistic">{{ $t('label.logistic_lowercase') }}</span> <span>{{ $t('label.landing_page_here') }}</span>
               </div>
               <p class="text-center font-text card-text-landing-page card-text-layout">{{ $t('label.landing_page_text') }}</p>
-              <center><v-btn class="white--text" min-width="140px" color="#16A75C" @click="goApplicant">{{ $t('label.start') }}</v-btn></center>
+              <center><v-btn class="white--text" min-width="140px" color="#16A75C" @click="goApplicant()">{{ $t('label.start_med_request') }}</v-btn></center>
             </v-col>
           </v-row>
           <v-row>
@@ -285,7 +293,8 @@ export default {
   data() {
     return {
       dialog: false,
-      applicantDialog: false
+      applicantDialog: false,
+      requestType: ''
     }
   },
   methods: {
@@ -296,7 +305,7 @@ export default {
       this.applicantDialog = true
     },
     goForm() {
-      this.$router.push('/form-pemohon')
+      this.$router.push({ path: '/form-pemohon', query: { type: 'alkes' }})
     }
   }
 }

@@ -1,10 +1,19 @@
 <template>
   <v-container>
-    <v-row>
-      <v-alert v-if="formApplicant.instanceType <= 3" icon="mdi-alert-circle" text outlined type="info">Untuk memudahkan proses rekomendasi logistik yang diajukan oleh pemohon. Permohonan dari Fasyankes (Rumah Sakit, Klinik, Puskesmas) harap melengkapi data berikut:</v-alert>
+    <div>
+      <v-alert v-if="formApplicant.instanceType <= 3" text outlined type="info">
+        <strong class="alert__text">{{ $t('label.applicant_letter_note') }}</strong>
+        <br>
+        <p class="alert__text">Jika Anda mengunggah <strong>Surat yang Belum Ditandatangani <em>(draft)</em></strong> maka:</p>
+        <ol>
+          <li class="alert__text">Jumlah permohonan barang pada surat yang belum ditandatangani <em>(draft)</em> yang diunggah tidak dapat diubah pada surat telah ditandatangani (final).</li>
+          <li class="alert__text">Batas waktu pengiriman surat final adalah <strong>1x24</strong> jam surat <em>draft</em> disimpan.</li>
+          <li class="alert__text">Kirim surat final Anda melalui <strong>WhatsApp Hotline PIKOBAR (08112093306)</strong>.</li>
+        </ol>
+      </v-alert>
       <center v-else><v-label class="title"><b>{{ $t('label.applicant_form_header_step_2') }}</b></v-label></center>
       <br>
-    </v-row>
+    </div>
     <ValidationObserver ref="observer">
       <v-form
         ref="form"
@@ -27,71 +36,48 @@
               />
             </ValidationProvider>
             <ValidationProvider
+              v-slot="{ errors }"
               rules="required"
+              :name="$t('label.signing_status')"
             >
-              <v-label class="title"><b>{{ $t('label.applicant_letter_number_upload') }}</b> <i class="text-small-first-step">{{ $t('label.must_fill') }}</i></v-label>
-              <br>
-              <v-row class="mt-1">
-                <v-col sm="12" md="3">
-                  <img v-if="!isUpload" height="100" src="../../static/upload_no_dokumen.svg">
-                  <img v-if="isUpload" height="100" src="../../static/upload_dokumen.svg">
-                </v-col>
-                <v-col sm="12" md="9">
-                  <v-row class="mr-1 ml-1">
-                    <v-label v-if="!isUpload">{{ $t('label.not_yet_upload_file') }}</v-label>
-                    <v-label v-if="isUpload">{{ selectedFileName }}</v-label>
-                  </v-row>
-                  <br>
-                  <v-row class="mr-1 ml-1 mt-1">
-                    <input
-                      ref="uploader"
-                      type="file"
-                      class="d-none"
-                      accept=".jpg, .jpeg, .png, .pdf"
-                      @change="onFileChanged"
-                    >
-                    <v-text-field
-                      v-model="selectedFileName"
-                      disabled
-                      class="d-none"
-                    />
-                    <v-btn
-                      v-if="!isUpload"
-                      color="#2E7D32"
-                      outlined
-                      @click="onButtonClick"
-                    >
-                      {{ $t('label.upload') }}
-                    </v-btn>
-                    <v-btn
-                      v-if="isUpload"
-                      color="#2E7D32"
-                      class="margin-10"
-                      depressed
-                      :outlined="true"
-                      :loading="isSelecting"
-                      @click="onButtonClick"
-                    >
-                      {{ $t('label.reupload') }}
-                    </v-btn>
-                    <v-alert
-                      v-if="uploadAlert"
-                      type="error"
-                    >
-                      {{ $t('label.upload_error_message') }}
-                    </v-alert>
-                    <v-alert
-                      v-if="requiredAlert"
-                      type="error"
-                    >
-                      {{ $t('errors.field_must_be_filled_applicant_file') }}
-                    </v-alert>
-                  </v-row>
-                </v-col>
-              </v-row>
+              <v-label class="title">
+                <b>{{ $t('label.is_signed_by_head_of_instance') }}</b>
+                <i class="text-small-first-step">{{ $t('label.must_fill') }}</i>
+              </v-label>
+              <v-radio-group
+                v-model="applicantLetter.is_letter_file_final"
+                :error-messages="errors"
+              >
+                <v-radio
+                  :label="$t('label.done_final')"
+                  value="1"
+                />
+                <v-radio
+                  :label="$t('label.not_yet_draft')"
+                  value="0"
+                />
+              </v-radio-group>
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              ref="provider"
+              name="Surat Permohonan"
+              rules="required|size:10000|ext:jpg,png,jpeg,pdf"
+            >
+              <upload-file
+                :suffix-title="$t('label.must_fill')"
+                :empty-file="$t('label.not_yet_upload_file')"
+                :title="$t('label.applicant_letter_number_upload')"
+                note="JPG, JPEG, PNG, PDF up to 10MB"
+                accept=".jpg, .jpeg, .png, .pdf"
+                :is-upload="isUpload"
+                :selected-file-name="selectedFileName"
+                @saveImage="saveImage"
+              />
+              <p v-if="errors.length" class="ma-2 error--text error--message">{{ errors[0] }}</p>
             </ValidationProvider>
           </v-col>
-          <v-col v-if="formApplicant.instanceType <= 3" cols="12" sm="12" md="6">
+          <v-col v-if="formApplicant.instanceType <= 3 && logisticRequestType === 'alkes'" cols="12" sm="12" md="6">
             <ValidationProvider
               v-slot="{ errors }"
               rules="requiredCovidPatientTotal"
@@ -172,6 +158,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import EventBus from '@/utils/eventBus'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SuratPermohonan',
@@ -192,62 +179,44 @@ export default {
   data() {
     return {
       step: 4,
-      isSelecting: false,
+      file: null,
       isUpload: false,
       selectedFile: null,
-      selectedFileName: '',
-      uploadAlert: false,
       letterNumber: null,
-      requiredAlert: false,
-      isValid: false
+      selectedFileName: null
     }
+  },
+  computed: {
+    ...mapGetters('logistics', ['logisticRequestType'])
   },
   created() {
     this.reloadData()
   },
   methods: {
+    async saveImage(e) {
+      this.isUpload = false
+      this.file = e.target.files[0]
+      this.selectedFileName = this.file.name
+      const valid = await this.$refs.provider.validate(this.file)
+      if (!valid.valid) return
+      this.isUpload = true
+      const formData = new FormData()
+      formData.append('file', this.file)
+      this.applicantLetter.dataFile = this.file
+    },
     async reloadData() {
       if (this.applicantLetter.dataFile) {
-        this.selectedFile = this.applicantLetter.dataFile
-        this.selectedFileName = this.selectedFile.name
+        this.file = this.applicantLetter.dataFile
+        this.selectedFileName = this.file.name
         this.isUpload = true
-        this.requiredAlert = false
       } else {
         this.applicantLetter.name = null
         this.applicantLetter.dataFile = null
       }
     },
-    onButtonClick() {
-      this.isSelecting = false
-      this.$refs.uploader.click()
-    },
-    onFileChanged(e) {
-      this.selectedFile = e.target.files[0]
-      if (this.selectedFile.size < 10000000) {
-        this.isFileValid = true
-      } else {
-        this.isFileValid = false
-        return
-      }
-      this.selectedFileName = this.selectedFile.name
-      this.isUpload = true
-      const formData = new FormData()
-      formData.append('file', this.selectedFile)
-      this.applicantLetter.dataFile = this.selectedFile
-      this.requiredAlert = false
-    },
     async onNext() {
-      this.isValid = true
-      this.requiredAlert = false
-      if (!this.isUpload) {
-        this.requiredAlert = true
-        this.isValid = false
-      }
       const valid = await this.$refs.observer.validate()
       if (!valid) {
-        this.isValid = false
-      }
-      if (!this.isValid) {
         return
       }
       EventBus.$emit('confirmStep', this.applicantLetter)
@@ -259,15 +228,14 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
 .float-right-fourth-step {
   float: right;
 }
-@media (max-width: 1199px) and (min-width: 960px) {
-}
-@media (max-width: 768px) and (min-width: 320px) {
-}
-
-@media (max-width: 588px) and (min-width: 320px) {
+.alert {
+  &__text {
+    color: #212121 !important;
+    font-weight: normal !important;
+  }
 }
 </style>

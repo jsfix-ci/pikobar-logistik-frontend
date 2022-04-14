@@ -6,9 +6,19 @@ export default {
       const response = await fetchList('/api/v1/master-faskes', 'GET', params)
       commit('SET_TOTAL_LIST_FASKES', response.data.last_page)
       commit('SET_LIST_FASKES', response.data.data)
+      commit('SET_TOTAL_DATA_FASKES', response.data.total)
       return response
     } catch (error) {
       return error.response
+    }
+  },
+  async getListFaskesVaccine({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/medical-facility', 'GET', params)
+      commit('SET_LIST_FASKES_VACCINE', response.data)
+      return response
+    } catch (error) {
+      // silent error
     }
   },
   async getDetailFaskes({ commit }, faskesId) {

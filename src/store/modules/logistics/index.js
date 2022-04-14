@@ -32,9 +32,13 @@ const state = {
   dataTracking: null,
   productTopRequest: null,
   faskesTopRequest: null,
+  logisticRequestType: null,
   // Statistic
   reportedReceipt: 0,
-  unReportedReceipt: 0
+  unReportedReceipt: 0,
+  // Form Request
+  listVaccine: [],
+  listVaccineSupport: []
 }
 
 export default {

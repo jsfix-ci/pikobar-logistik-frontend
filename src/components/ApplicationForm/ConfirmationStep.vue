@@ -5,11 +5,17 @@
         <v-row justify="space-between" align="center">
           <v-col cols="12" md="8" xs="12">
             <v-row>
-              <router-link to="/landing-page">
+              <router-link :to="landingPage">
                 <v-img :max-width="40" src="../../static/logistik_logo_lingkar.svg" />
               </router-link>
-              <router-link to="/landing-page">
-                <div class="title-page-data-confirmation">{{ $t('label.applicant_form_title') }}</div>
+              <router-link :to="landingPage">
+                <div class="title-page-data-confirmation">
+                  {{
+                    !isVaccineContent
+                      ? $t('label.applicant_med_form_title')
+                      : $t('label.applicant_vaccine_form_title')
+                  }}
+                </div>
               </router-link>
             </v-row>
           </v-col>
@@ -61,6 +67,10 @@
             {{ $t('label.loading_step_two') }}
           </v-row>
         </div>
+        <VaccineSuccess
+          v-else-if="showVaccineSuccessPage"
+          :request-id="requestId"
+        />
         <div v-else-if="isDone" class="mt-n5">
           <v-row align="center" justify="center">
             <img height="200" src="../../static/berhasil.svg">
@@ -97,7 +107,7 @@
                       <v-col>
                         <span class="main-color-data-confirmation">{{ $t('label.city_district') }}</span>
                         <br>
-                        <v-label>{{ formApplicant.cityNameId.name }}</v-label>
+                        <v-label>{{ formApplicant.cityNameId.text || formApplicant.cityNameId.name }}</v-label>
                       </v-col>
                       <v-col>
                         <span class="main-color-data-confirmation">{{ $t('label.full_address') }}</span>
@@ -115,7 +125,7 @@
                       <v-col>
                         <span class="main-color-data-confirmation">{{ $t('label.select_sub_district_full_name') }}</span>
                         <br>
-                        <v-label>{{ formApplicant.districtNameId.name }}</v-label>
+                        <v-label>{{ formApplicant.districtNameId.text || formApplicant.districtNameId.name }}</v-label>
                       </v-col>
                       <v-col />
                     </v-row>
@@ -128,7 +138,7 @@
                       <v-col>
                         <span class="main-color-data-confirmation">{{ $t('label.village') }}</span>
                         <br>
-                        <v-label>{{ formApplicant.villageNameId.name }}</v-label>
+                        <v-label>{{ formApplicant.villageNameId.text || formApplicant.villageNameId.name }}</v-label>
                       </v-col>
                       <v-col />
                     </v-row>
@@ -181,7 +191,7 @@
             </v-row>
           </v-card>
           <div class="main-color-data-confirmation">{{ $t('label.step_title_4') }}</div>
-          <v-card outlined>
+          <v-card outlined class="py-3">
             <v-row class="ml-2">
               <v-col cols="1" md="1">
                 <span class="main-color-data-confirmation">#</span>
@@ -197,11 +207,15 @@
               <v-col cols="3" md="3">
                 <span class="grey--text">{{ formApplicant.letterNumber }}</span>
               </v-col>
-              <v-col cols="4" md="4">
-                <a :href="urlLetter" target="_blank" class="blue--text"><u>{{ applicantLetter.name }}</u></a>
-              </v-col>
               <v-col>
-                <span class="main-color-data-confirmation">{{ $t('label.download') }}</span>
+                <a
+                  :href="urlLetter"
+                  target="_blank"
+                  class="download-button py-1 px-3"
+                  download
+                >
+                  {{ $t('label.download') }}
+                </a>
               </v-col>
             </v-row>
           </v-card>
@@ -244,7 +258,12 @@
               </v-col>
             </v-card>
           </div>
-          <div class="main-color-data-confirmation">{{ $t('label.list_logistic_need') }}</div>
+          <div class="main-color-data-confirmation">
+            {{ isVaccineContent
+              ? $t('label.list_vaccine_need')
+              : $t('label.list_logistic_need')
+            }}
+          </div>
           <v-card outlined>
             <v-simple-table>
               <template v-slot:default>
@@ -264,11 +283,43 @@
                   </tr>
                   <tr v-for="(item, index) in dataShow" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
-                    <td>{{ item.unitList[0].name }}</td>
-                    <td>{{ item.brand }}</td>
-                    <td>{{ item.total }}</td>
-                    <td>{{ item.unitList[0].unit }}</td>
-                    <td>{{ item.purpose }}</td>
+                    <td>{{ item.unitName || '-' }}</td>
+                    <td>{{ item.description || '-' }}</td>
+                    <td>{{ item.total || '-' }}</td>
+                    <td>{{ isVaccineContent ? item.unitId : item.unitList[0].unit }}</td>
+                    <td>{{ item.purpose || '-' }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-card>
+          <div v-if="isVaccineContent" class="main-color-data-confirmation">
+            {{ $t('label.list_vaccine_support_need') }}
+          </div>
+          <v-card v-if="isVaccineContent" outlined>
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
+                    <th class="text-left">{{ $t('label.apd_name_specification') }}</th>
+                    <th class="text-left">{{ $t('label.description') }}</th>
+                    <th class="text-left">{{ $t('label.total') }}</th>
+                    <th class="text-left">{{ $t('label.unit') }}</th>
+                    <th class="text-left">{{ $t('label.purpose') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-if="vaccineSupportList.length === 0">
+                    <td class="text-center-data-confirmation" :colspan="7">{{ $t('label.no_data') }}</td>
+                  </tr>
+                  <tr v-for="(item, index) in vaccineSupportList" v-else :key="item.index">
+                    <td>{{ getTableRowNumbering(index) }}</td>
+                    <td>{{ item.unitName || '-' }}</td>
+                    <td>{{ item.description || '-' }}</td>
+                    <td>{{ item.total || '-' }}</td>
+                    <td>{{ item.unitName || '-' }}</td>
+                    <td>{{ item.purpose || '-' }}</td>
                   </tr>
                 </tbody>
               </template>
@@ -546,9 +597,13 @@
 </template>
 <script>
 import EventBus from '@/utils/eventBus'
+import VaccineSuccess from './VaccineSuccess.vue'
 
 export default {
   name: 'TahapKonfirmasi',
+  components: {
+    VaccineSuccess
+  },
   props: {
     formApplicant: {
       type: Object,
@@ -560,7 +615,11 @@ export default {
     },
     logisticNeeds: {
       type: Array,
-      default: null
+      default: () => []
+    },
+    vaccineSupportList: {
+      type: Array,
+      default: () => []
     },
     applicantLetter: {
       type: Object,
@@ -580,7 +639,19 @@ export default {
       urlLetter: null,
       letterName: '',
       isLoading: false,
-      isDone: false
+      isDone: false,
+      requestId: null
+    }
+  },
+  computed: {
+    showVaccineSuccessPage() {
+      return this.isVaccineContent && this.isDone
+    },
+    isVaccineContent() {
+      return this.$route.query.type === 'vaksin'
+    },
+    landingPage() {
+      return this.$route.query.type === 'vaksin' ? '/landing-page-vaccine' : '/landing-page'
     }
   },
   mounted() {
@@ -618,26 +689,56 @@ export default {
     },
     async submitData() {
       this.isLoading = true
-      const dataLogistics = []
-      this.logisticNeeds.forEach(element => {
-        dataLogistics.push({
-          usage: element.purpose,
-          priority: element.urgency,
-          product_id: element.apd,
-          brand: element.brand,
-          quantity: element.total,
-          unit: element.unitId
+      let dataLogistics = []
+      let dataVaccineSupportList = []
+
+      if (this.isVaccineContent) {
+        dataLogistics = this.logisticNeeds.map(element => {
+          return {
+            usage: element.purpose,
+            priority: element.urgency,
+            product_id: element.apd,
+            brand: element.brand,
+            quantity: element.total,
+            unit: element.unitId,
+            description: element.description,
+            note: element.note,
+            category: 'vaccine'
+          }
         })
-      })
+        dataVaccineSupportList = this.vaccineSupportList.map(element => {
+          return {
+            usage: element.purpose,
+            product_id: element.apd,
+            quantity: element.total,
+            unit: element.unitId,
+            description: element.description,
+            note: element.note,
+            category: 'vaccine_support'
+          }
+        })
+      } else {
+        dataLogistics = this.logisticNeeds.map(element => {
+          return {
+            usage: element.purpose,
+            priority: element.urgency,
+            product_id: element.apd,
+            brand: element.brand,
+            quantity: element.total,
+            unit: element.unitId,
+            description: element.description
+          }
+        })
+      }
 
       const formData = new FormData()
-      formData.append('logistic_request', JSON.stringify(dataLogistics))
-      formData.append('agency_type', this.formApplicant.instanceType)
+      formData.append('logistic_request', JSON.stringify([...dataLogistics, ...dataVaccineSupportList]))
+      formData.append('agency_type', this.formApplicant.instanceType.id)
       if (this.formApplicant.instanceEtc) {
         formData.append('agency_name', this.formApplicant.instanceEtc)
       } else {
         formData.append('agency_name', this.formApplicant.instanceName)
-        formData.append('master_faskes_id', this.formApplicant.instance)
+        formData.append('master_faskes_id', this.formApplicant.instance.id)
       }
       if (this.formApplicant.instancePhoneNumber != null) {
         formData.append('phone_number', this.formApplicant.instancePhoneNumber)
@@ -653,6 +754,7 @@ export default {
       formData.append('secondary_phone_number', this.formIdentityApplicant.applicantPhoneNumber2)
       formData.append('letter_file', this.applicantLetter.dataFile)
       formData.append('application_letter_number', this.formApplicant.letterNumber)
+      formData.append('is_letter_file_final', this.applicantLetter.is_letter_file_final)
       formData.append('total_covid_patients', this.applicantLetter.total_covid_patients ?? 0)
       formData.append('total_isolation_room', this.applicantLetter.total_isolation_room ?? 0)
       formData.append('total_bedroom', this.applicantLetter.total_bedroom ?? 0)
@@ -660,12 +762,12 @@ export default {
       formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'pikobar')
       formData.append('url', location.host + '/#')
-      const response = await this.$store.dispatch('logistics/postApplicantForm', formData)
-      if (response.status === 200) {
-        this.isDone = true
-      } else {
-        this.isDone = false
-      }
+      const actionName = this.isVaccineContent
+        ? 'logistics/postApplicantVaksinAdmin'
+        : 'logistics/postApplicantForm'
+      const response = await this.$store.dispatch(actionName, formData)
+      this.requestId = response.data.id
+      this.isDone = response.status === 200 || response.status === 201
       this.isLoading = false
     },
     onDone() {
@@ -738,11 +840,6 @@ export default {
     padding-left: 75px;
     padding-right: 75px;
   }
-@media (max-width: 1199px) and (min-width: 960px) {
-}
-@media (max-width: 768px) and (min-width: 320px) {
-}
-
 @media (max-width: 588px) and (min-width: 320px) {
   .main-page-mobile-data-confirmation {
     display: block;
@@ -753,5 +850,13 @@ export default {
   .bg-mobile-data-confirmation {
     background-color: white !important;
   }
+}
+</style>
+<style lang="scss" scoped>
+.download-button {
+  border-style: solid;
+  border-radius: 8px;
+  border-color: #4caf50;
+  border-width: 1px;
 }
 </style>

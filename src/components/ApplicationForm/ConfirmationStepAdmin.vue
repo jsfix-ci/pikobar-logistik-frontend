@@ -44,30 +44,30 @@
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.instance_type') }}</span>
                   <br>
-                  <v-label>{{ formApplicant.instanceTypeName }}</v-label>
+                  <v-label>{{ formApplicant.instanceTypeName || '-' }}</v-label>
                 </v-col>
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.city_district') }}</span>
                   <br>
-                  <v-label>{{ formApplicant.cityNameId.name }}</v-label>
+                  <v-label>{{ formApplicant.cityNameId.name || '-' }}</v-label>
                 </v-col>
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.full_address') }}</span>
                   <br>
-                  <v-label>{{ formApplicant.fullAddress }}</v-label>
+                  <v-label>{{ formApplicant.fullAddress || '-' }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.instance_name') }}</span>
                   <br>
-                  <v-label v-if="formApplicant.instanceEtc">{{ formApplicant.instanceEtc }}</v-label>
-                  <v-label v-else>{{ formApplicant.instanceName }}</v-label>
+                  <v-label v-if="formApplicant.instanceEtc">{{ formApplicant.instanceEtc || '-' }}</v-label>
+                  <v-label v-else>{{ formApplicant.instanceName || '-' }}</v-label>
                 </v-col>
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.select_sub_district_full_name') }}</span>
                   <br>
-                  <v-label>{{ formApplicant.districtNameId.name }}</v-label>
+                  <v-label>{{ formApplicant.districtNameId.name || '-' }}</v-label>
                 </v-col>
                 <v-col />
               </v-row>
@@ -75,12 +75,12 @@
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.number_phone') }}</span>
                   <br>
-                  <v-label>{{ formApplicant.instancePhoneNumber }}</v-label>
+                  <v-label>{{ formApplicant.instancePhoneNumber || '-' }}</v-label>
                 </v-col>
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.village') }}</span>
                   <br>
-                  <v-label>{{ formApplicant.villageNameId.name }}</v-label>
+                  <v-label>{{ formApplicant.villageNameId.name || '-' }}</v-label>
                 </v-col>
                 <v-col />
               </v-row>
@@ -99,31 +99,31 @@
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.contact_person') }}</span>
                   <br>
-                  <v-label>{{ formIdentityApplicant.applicantName }}</v-label>
+                  <v-label>{{ formIdentityApplicant.applicantName || '-' }}</v-label>
                 </v-col>
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.capital_email') }}</span>
                   <br>
-                  <v-label>{{ formIdentityApplicant.applicantEmail }}</v-label>
+                  <v-label>{{ formIdentityApplicant.applicantEmail || '-' }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.applicant_position_identity') }}</span>
                   <br>
-                  <v-label>{{ formIdentityApplicant.applicantPosition }}</v-label>
+                  <v-label>{{ formIdentityApplicant.applicantPosition || '-' }}</v-label>
                 </v-col>
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.applicant_phone') }}</span>
                   <br>
-                  <v-label>{{ formIdentityApplicant.applicantPhoneNumber }}</v-label>
+                  <v-label>{{ formIdentityApplicant.applicantPhoneNumber || '-' }}</v-label>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col offset-md="6" offset-sm="6">
                   <span class="main-color-data-confirmation-admin">{{ $t('label.applicant_phone_sub') }}</span>
                   <br>
-                  <v-label>{{ formIdentityApplicant.applicantPhoneNumber2 }}</v-label>
+                  <v-label>{{ formIdentityApplicant.applicantPhoneNumber2 || '-' }}</v-label>
                 </v-col>
               </v-row>
             </v-col>
@@ -153,17 +153,17 @@
           <span>1</span>
         </v-col>
         <v-col cols="3" md="3">
-          <span class="grey--text">{{ formApplicant.letterNumber }}</span>
+          <span class="grey--text">{{ formApplicant.letterNumber || '-' }}</span>
         </v-col>
         <v-col cols="4" md="4">
-          <a :href="urlLetter" target="_blank" class="blue--text"><u>{{ applicantLetter.name }}</u></a>
+          <a :href="urlLetter" target="_blank" class="blue--text"><u>{{ applicantLetter.name || '-' }}</u></a>
         </v-col>
         <v-col>
           <span class="main-color-data-confirmation-admin">{{ $t('label.download') }}</span>
         </v-col>
       </v-row>
     </v-card>
-    <div v-if="formApplicant.instanceType <= 3">
+    <div v-if="formApplicant.instanceType <= 3 && logisticRequestType === 'alkes'">
       <div class="main-color-data-confirmation-admin">Detail Kondisi Fasilitas Kesehatan</div>
       <v-row>
         <v-col>
@@ -175,14 +175,14 @@
                     <span class="main-color-data-confirmation-admin">Jumlah Pasien COVID-19 yang ditangani</span>
                     <br>
                     <v-label>
-                      {{ applicantLetter.total_covid_patients | '-' }} Orang
+                      {{ applicantLetter.total_covid_patients || '0' }} Orang
                     </v-label>
                   </v-col>
                   <v-col>
                     <span class="main-color-data-confirmation-admin">Jumlah Tempat Tidur</span>
                     <br>
                     <v-label>
-                      {{ applicantLetter.total_bedroom | '-' }} Tempat Tidur
+                      {{ applicantLetter.total_bedroom || '0' }} Tempat Tidur
                     </v-label>
                   </v-col>
                 </v-row>
@@ -191,14 +191,14 @@
                     <span class="main-color-data-confirmation-admin">Jumlah Ruang Isolasi</span>
                     <br>
                     <v-label>
-                      {{ applicantLetter.total_isolation_room | '-' }} Ruangan
+                      {{ applicantLetter.total_isolation_room || '0' }} Ruangan
                     </v-label>
                   </v-col>
                   <v-col>
                     <span class="main-color-data-confirmation-admin">Jumlah Tenaga Kesehatan</span>
                     <br>
                     <v-label>
-                      {{ applicantLetter.total_health_worker | '-' }} Orang
+                      {{ applicantLetter.total_health_worker || '0' }} Orang
                     </v-label>
                   </v-col>
                 </v-row>
@@ -230,7 +230,7 @@
             <tr v-for="(item, index) in dataShow" v-else :key="item.index">
               <td>{{ getTableRowNumbering(index) }}</td>
               <td>{{ item.unitList[0].name }}</td>
-              <td>{{ item.brand }}</td>
+              <td>{{ item.description }}</td>
               <td>{{ item.total }}</td>
               <td>{{ item.unitList[0].unit }}</td>
               <td>{{ item.purpose }}</td>
@@ -299,6 +299,9 @@ export default {
   computed: {
     ...mapGetters('user', [
       'user'
+    ]),
+    ...mapGetters('logistics', [
+      'logisticRequestType'
     ])
   },
   mounted() {
@@ -350,7 +353,7 @@ export default {
           usage: element.purpose,
           priority: element.urgency,
           product_id: element.apd,
-          brand: element.brand,
+          description: element.description,
           quantity: element.total,
           unit: element.unitId
         })
@@ -366,8 +369,11 @@ export default {
         formData.append('agency_name', this.formApplicant.instanceName)
         formData.append('master_faskes_id', this.formApplicant.instance)
       }
-      if (this.formApplicant.instancePhoneNumber != null) {
+      if (this.formApplicant.instancePhoneNumber) {
         formData.append('phone_number', this.formApplicant.instancePhoneNumber)
+      }
+      if (this.formIdentityApplicant.dataFile) {
+        formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       }
       formData.append('location_district_code', this.formApplicant.cityNameId.id)
       formData.append('location_subdistrict_code', this.formApplicant.districtNameId.id)
@@ -384,11 +390,11 @@ export default {
       formData.append('total_isolation_room', this.applicantLetter.total_isolation_room ?? 0)
       formData.append('total_bedroom', this.applicantLetter.total_bedroom ?? 0)
       formData.append('total_health_worker', this.applicantLetter.total_health_worker ?? 0)
-      formData.append('applicant_file', this.formIdentityApplicant.dataFile)
       formData.append('source_data', 'dinkes_provinsi')
       formData.append('created_by', this.user.id)
       formData.append('url', location.host + '/#')
-      const response = await this.$store.dispatch('logistics/postApplicantFormAdmin', formData)
+      const requestFormAdmin = this.logisticRequestType === 'vaksin' ? 'logistics/postApplicantVaksinAdmin' : 'logistics/postApplicantFormAdmin'
+      const response = await this.$store.dispatch(requestFormAdmin, formData)
       if (response.status === 200) {
         this.isDone = true
       } else {

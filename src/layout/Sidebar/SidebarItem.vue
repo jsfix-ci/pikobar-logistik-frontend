@@ -4,13 +4,13 @@
       class="sidebar"
       color="primary"
     >
-      <div v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+      <div v-if="hasOneShowingChild(item, item.children) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
         <v-list-item v-if="!onlyOneChild.hidden && onlyOneChild.meta" :to="resolvePath(item.path)">
           <v-list-item-icon>
             <v-icon v-text="onlyOneChild.meta.icon" />
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="generateTitle(onlyOneChild.meta.title)" />
+            <v-list-item-title class="text-wrap" v-text="generateTitle(onlyOneChild.meta.title)" />
           </v-list-item-content>
         </v-list-item>
       </div>
@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     generateTitle,
-    hasOneShowingChild(children = [], parent) {
+    hasOneShowingChild(parent, children = []) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
           return false
@@ -69,7 +69,7 @@ export default {
       })
 
       // When there is only one child router, the child router is displayed by default
-      if (showingChildren.length === 1) {
+      if (showingChildren.length === 1 && !parent.meta.isVaccineModule) {
         return true
       }
 
@@ -91,3 +91,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.v-list-item__title::v-deep {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+.v-list-item__content::v-deep {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+</style>

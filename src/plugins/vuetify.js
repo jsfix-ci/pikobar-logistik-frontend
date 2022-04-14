@@ -7,7 +7,9 @@ const opts = {
   theme: {
     themes: {
       light: {
-        primary: '#27AE60'
+        primary: '#27AE60',
+        'green-dark': '#069550',
+        'red-dark': '#D32F2F'
       },
       dark: {
         primary: '#27AE60'
