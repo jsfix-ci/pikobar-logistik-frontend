@@ -85,7 +85,7 @@
                 :is-admin="isAdmin"
               />
             </v-stepper-content>
-            <v-stepper-content step="3">
+            <v-stepper-content step="3" class="px-0">
               <kebutuhan-logistik
                 ref="updateData"
                 :logistic-needs="logisticNeeds"
@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     getDataForm() {
-      this.$refs.updateData.getData(this.formApplicant.instanceType)
+      this.$refs.updateData?.getData(this.formApplicant.instanceType)
     }
   }
 }

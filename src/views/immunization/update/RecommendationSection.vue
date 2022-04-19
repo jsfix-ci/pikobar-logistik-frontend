@@ -52,20 +52,13 @@
           @change="$emit('update:quantity', quantity)"
         />
       </ValidationProvider>
-      <ValidationProvider
-        v-slot="{ errors }"
-        rules="required"
-        name="Catatan"
-      >
-        <JDSTextField
-          v-model="note"
-          label="Catatan"
-          placeholder="Tulis catatan"
-          :error-messages="errors"
-          :hide-details="errors.length === 0"
-          @change="$emit('update:note', note)"
-        />
-      </ValidationProvider>
+      <JDSTextField
+        v-model="note"
+        label="Catatan"
+        placeholder="Tulis catatan"
+        hide-details
+        @change="$emit('update:note', note)"
+      />
     </ValidationObserver>
     <div v-else>
       <DisabledField label="Nama Barang" :value="data.product_name || '-'" />
