@@ -38,6 +38,7 @@
       Progress permohonan akan diinfokan secara berkala melalui email/No. WhatApp pemohon.
     </p>
 
+    <!-- TEMPORARILY HIDDEN
     <strong class="success__section-title">
       {{ $t('label.self_track') }}
     </strong>
@@ -48,7 +49,7 @@
     </p>
     <JDSButton height="38px" @click="onTracking">
       {{ $t('label.track') }}
-    </JDSButton>
+    </JDSButton> -->
 
     <strong class="success__section-title">
       Pertanyaan, Keluhan dan Kirim Surat Final
