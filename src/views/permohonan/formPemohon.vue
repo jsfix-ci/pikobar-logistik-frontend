@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     getDataForm() {
-      this.$refs.updateData.getData(this.formApplicant.instanceType)
+      this.$refs.updateData?.getData(this.formApplicant.instanceType)
     }
   }
 }
