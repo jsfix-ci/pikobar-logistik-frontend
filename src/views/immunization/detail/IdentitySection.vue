@@ -109,7 +109,7 @@ export default {
         },
         {
           label: this.$t('label.status'),
-          value: this.identity.is_completed ? this.$t('label.final_2') : this.$t('label.draft'),
+          value: this.identity.is_letter_file_final ? this.$t('label.final_2') : this.$t('label.draft'),
           col: 4
         },
         {
