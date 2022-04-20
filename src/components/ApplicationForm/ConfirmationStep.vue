@@ -738,11 +738,11 @@ export default {
         formData.append('agency_name', this.formApplicant.instanceEtc)
       } else {
         formData.append('agency_name', this.formApplicant.instanceName)
-        formData.append('master_faskes_id', this.formApplicant.instance.id)
       }
       if (this.formApplicant.instancePhoneNumber != null) {
         formData.append('phone_number', this.formApplicant.instancePhoneNumber)
       }
+      formData.append('master_faskes_id', this.formApplicant.instance.id)
       formData.append('location_district_code', this.formApplicant.cityNameId.id)
       formData.append('location_subdistrict_code', this.formApplicant.districtNameId.id)
       formData.append('location_village_code', this.formApplicant.villageNameId.id)
