@@ -56,7 +56,7 @@
         </v-label>
         <v-text-field
           v-model="data.description"
-          :placeholder="$t('label.input_description')"
+          placeholder="Ukuran/Merk/dll"
           :error-messages="errors"
           :hide-details="errors.length === 0"
           outlined

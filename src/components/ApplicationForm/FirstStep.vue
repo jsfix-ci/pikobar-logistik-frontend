@@ -392,14 +392,14 @@ export default {
       this.$refs.addInstanceForm.setShowDialog(this.isAdmin)
     },
     resetForm() {
-      this.formApplicant.instance = null
-      this.formApplicant.instanceEtc = null
-      this.formApplicant.instanceName = null
-      this.formApplicant.instancePhoneNumber = null
-      this.formApplicant.cityNameId = null
-      this.formApplicant.districtNameId = null
-      this.formApplicant.villageNameId = null
-      this.formApplicant.fullAddress = null
+      this.$set(this.formApplicant, 'instance', null)
+      this.$set(this.formApplicant, 'instanceEtc', null)
+      this.$set(this.formApplicant, 'instanceName', null)
+      this.$set(this.formApplicant, 'instancePhoneNumber', null)
+      this.$set(this.formApplicant, 'cityNameId', null)
+      this.$set(this.formApplicant, 'districtNameId', null)
+      this.$set(this.formApplicant, 'villageNameId', null)
+      this.$set(this.formApplicant, 'fullAddress', null)
       this.districtList = []
       this.villageList = []
     }
