@@ -96,6 +96,7 @@
               <surat-permohonan
                 :form-applicant="formApplicant"
                 :applicant-letter="applicantLetter"
+                :is-vaccine-content="isVaccineContent"
               />
             </v-stepper-content>
           </v-stepper-items>
