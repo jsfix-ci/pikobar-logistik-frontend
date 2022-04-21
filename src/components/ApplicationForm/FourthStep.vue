@@ -36,6 +36,7 @@
               />
             </ValidationProvider>
             <ValidationProvider
+              v-if="isVaccineContent"
               v-slot="{ errors }"
               rules="required"
               :name="$t('label.signing_status')"
@@ -174,6 +175,10 @@ export default {
     applicantLetter: {
       type: Object,
       default: null
+    },
+    isVaccineContent: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
