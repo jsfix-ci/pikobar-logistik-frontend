@@ -49,7 +49,7 @@
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.city_district') }}</span>
                   <br>
-                  <v-label>{{ formApplicant.cityNameId.name || '-' }}</v-label>
+                  <v-label>{{ areaDisplay('cityNameId') }}</v-label>
                 </v-col>
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.full_address') }}</span>
@@ -67,7 +67,7 @@
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.select_sub_district_full_name') }}</span>
                   <br>
-                  <v-label>{{ formApplicant.districtNameId.name || '-' }}</v-label>
+                  <v-label>{{ areaDisplay('districtNameId') }}</v-label>
                 </v-col>
                 <v-col />
               </v-row>
@@ -80,7 +80,7 @@
                 <v-col>
                   <span class="main-color-data-confirmation-admin">{{ $t('label.village') }}</span>
                   <br>
-                  <v-label>{{ formApplicant.villageNameId.name || '-' }}</v-label>
+                  <v-label>{{ areaDisplay('villageNameId') }}</v-label>
                 </v-col>
                 <v-col />
               </v-row>
@@ -362,12 +362,12 @@ export default {
       // untuk mengirim file dengan request POST harus pakai formData
       const formData = new FormData()
       formData.append('logistic_request', JSON.stringify(dataLogistics))
-      formData.append('agency_type', this.formApplicant.instanceType)
+      formData.append('agency_type', this.formApplicant.instanceType.id)
       if (this.formApplicant.instanceEtc) {
         formData.append('agency_name', this.formApplicant.instanceEtc)
       } else {
         formData.append('agency_name', this.formApplicant.instanceName)
-        formData.append('master_faskes_id', this.formApplicant.instance)
+        formData.append('master_faskes_id', this.formApplicant.instance.id)
       }
       if (this.formApplicant.instancePhoneNumber) {
         formData.append('phone_number', this.formApplicant.instancePhoneNumber)
@@ -411,6 +411,14 @@ export default {
     },
     refreshPage() {
       window.location.reload()
+    },
+    areaDisplay(propName) {
+      if (this.formApplicant[propName].name) {
+        return this.formApplicant[propName].name
+      } else if (this.formApplicant[propName].text) {
+        return this.formApplicant[propName].text
+      }
+      return '-'
     }
   }
 }
