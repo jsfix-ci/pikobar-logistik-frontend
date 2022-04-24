@@ -229,7 +229,7 @@
             </tr>
             <tr v-for="(item, index) in dataShow" v-else :key="item.index">
               <td>{{ getTableRowNumbering(index) }}</td>
-              <td>{{ item.unitList[0].name }}</td>
+              <td>{{ item.unitName }}</td>
               <td>{{ item.description }}</td>
               <td>{{ item.total }}</td>
               <td>{{ item.unitList[0].unit }}</td>
