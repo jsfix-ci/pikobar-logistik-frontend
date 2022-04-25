@@ -26,6 +26,7 @@
           v-if="stage === 'realization'"
           ref="realization"
           :data="realizationData"
+          :recommendation="recommendationData"
           :stage="stage"
           :item-list="listItem"
           :date.sync="realizationForm.finalized_date"
