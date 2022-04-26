@@ -186,7 +186,10 @@
               <v-col cols="4" class="margin-20">
                 <span class="main-color-data-confirmation">{{ $t('label.applicant_ktp') }}</span>
                 <br>
-                <img class="image-style-data-confirmation" :src="url">
+                <img v-if="formIdentityApplicant.dataFile.type !== 'application/pdf'" class="image-style-data-confirmation" :src="url">
+                <a v-else :href="url" target="_blank" class="download-button py-1 px-3">
+                  {{ $t('label.download') }}
+                </a>
               </v-col>
             </v-row>
           </v-card>
@@ -212,7 +215,6 @@
                   :href="urlLetter"
                   target="_blank"
                   class="download-button py-1 px-3"
-                  download
                 >
                   {{ $t('label.download') }}
                 </a>
@@ -271,10 +273,11 @@
                   <tr>
                     <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
                     <th class="text-left">{{ $t('label.apd_name_specification') }}</th>
-                    <th class="text-left">{{ $t('label.description') }}</th>
+                    <th v-if="!isVaccineContent" class="text-left">{{ $t('label.description') }}</th>
                     <th class="text-left">{{ $t('label.total') }}</th>
                     <th class="text-left">{{ $t('label.unit') }}</th>
                     <th class="text-left">{{ $t('label.purpose') }}</th>
+                    <th v-if="isVaccineContent" class="text-left">{{ $t('label.note') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -284,10 +287,11 @@
                   <tr v-for="(item, index) in dataShow" v-else :key="item.index">
                     <td>{{ getTableRowNumbering(index) }}</td>
                     <td>{{ item.unitName || '-' }}</td>
-                    <td>{{ item.description || '-' }}</td>
+                    <td v-if="!isVaccineContent">{{ item.description || '-' }}</td>
                     <td>{{ item.total || '-' }}</td>
                     <td>{{ isVaccineContent ? item.unitId : item.unitList[0].unit }}</td>
                     <td>{{ item.purpose || '-' }}</td>
+                    <td v-if="isVaccineContent">{{ item.note || '-' }}</td>
                   </tr>
                 </tbody>
               </template>
