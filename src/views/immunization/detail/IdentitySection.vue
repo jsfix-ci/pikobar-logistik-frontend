@@ -85,12 +85,12 @@ export default {
     },
     createNotes() {
       this.listNotes = []
-      if (this.identity.vaccine_request_status_notes.length > 0) {
+      if (this.identity?.vaccine_request_status_notes?.length > 0) {
         this.identity.vaccine_request_status_notes.forEach(item => {
           this.listNotes.push(item.name)
         })
       }
-      if (this.identity.note) { this.listNotes.push(this.identity.note) }
+      if (this.identity?.note) { this.listNotes.push(this.identity.note) }
     },
     fillIdentity() {
       this.createNotes()

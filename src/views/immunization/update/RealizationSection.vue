@@ -92,6 +92,10 @@ export default {
       type: Array,
       default: () => []
     },
+    recommendation: {
+      type: Object,
+      default: () => ({})
+    },
     unit: {
       type: String,
       default: ''
@@ -118,6 +122,17 @@ export default {
   computed: {
     unitDisplay() {
       return this.name ? this.name.UoM : this.unit ?? 'Vial'
+    }
+  },
+  watch: {
+    recommendation(val) {
+      this.date = this.$moment(val.updated_at).format('YYYY-MM-DD')
+      this.quantity = val.quantity
+    },
+    itemList(val) {
+      this.name = val.find((item) => {
+        return item.material_id === this.recommendation.product_id
+      })
     }
   },
   methods: {

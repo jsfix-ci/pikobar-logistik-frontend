@@ -127,12 +127,9 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-col>
-              <v-row>
-                <span class="main-color-data-confirmation-admin">{{ $t('label.applicant_ktp') }}</span>
-                <br>
-                <img class="image-style-data-confirmation-admin" :src="url">
-              </v-row>
+            <v-col class="d-flex flex-column">
+              <span class="main-color-data-confirmation-admin">{{ $t('label.applicant_ktp') }}</span>
+              <img class="image-style-data-confirmation-admin mt-3" height="100" width="149" :src="url">
             </v-col>
           </v-row>
         </v-card>
@@ -229,7 +226,7 @@
             </tr>
             <tr v-for="(item, index) in dataShow" v-else :key="item.index">
               <td>{{ getTableRowNumbering(index) }}</td>
-              <td>{{ item.unitList[0].name }}</td>
+              <td>{{ item.unitName }}</td>
               <td>{{ item.description }}</td>
               <td>{{ item.total }}</td>
               <td>{{ item.unitList[0].unit }}</td>
