@@ -143,7 +143,10 @@ export default {
   },
   methods: {
     onNext() {
-      this.$router.push({ path: '/form-pemohon', query: { type: 'vaksin' }})
+      // TEMPORARILY HIDDEN
+      // this.$router.push({ path: '/form-pemohon', query: { type: 'vaksin' }})
+      this.$emit('close')
+      this.$emit('next')
     }
   }
 }

@@ -96,20 +96,33 @@
     </div>
 
     <v-dialog v-model="showRequirement" max-width="800px">
-      <RequirementPopUp @close="showRequirement = false" />
+      <RequirementPopUp @close="showRequirement = false" @next="showInfo = true" />
     </v-dialog>
+    <ConfirmationDialog v-model="showInfo" :content="info" />
   </div>
 </template>
 
 <script>
 import RequirementPopUp from './RequirementPopUp.vue'
+import ConfirmationDialog from '@/components/ConfirmationDialog'
 export default {
   components: {
-    RequirementPopUp
+    RequirementPopUp,
+    ConfirmationDialog
   },
   data() {
     return {
-      showRequirement: false
+      showRequirement: false,
+      showInfo: false,
+      info: {
+        image: '/img/construction.svg',
+        title: 'SEGERA DI BULAN MEI',
+        subtitle: 'Hai, kami sedang berjuang untuk memperbaiki website ini agar Anda semakin nyaman dalam melakukan permohonan logistik vaksin.',
+        buttonRight: {
+          label: 'Kembali ke Halaman Utama',
+          onClick: () => { this.showInfo = false }
+        }
+      }
     }
   },
   methods: {
