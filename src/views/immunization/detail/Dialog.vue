@@ -142,7 +142,8 @@ export default {
         verifWithNoteSuccess: {
           image: '/img/warning.svg',
           title: 'Permohonan telah \n diterima dengan catatan!',
-          subtitle: 'Silakan update permohonan yang \n diterima dengan catatan pada menu “Arsip”',
+          // TEMPORARILY HIDDEN
+          // subtitle: 'Silakan update permohonan yang \n diterima dengan catatan pada menu “Arsip”',
           buttonLeft: {
             label: 'Kembali ke Verifikasi',
             isInverted: true,

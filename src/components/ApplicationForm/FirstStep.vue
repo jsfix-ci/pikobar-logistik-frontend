@@ -29,7 +29,7 @@
               />
             </ValidationProvider>
             <ValidationProvider
-              v-if="!isEtc"
+              v-if="!isEtc && !isVaccineEtc"
               v-slot="{ errors }"
               rules="requiredInstanceName"
             >
@@ -46,7 +46,7 @@
                 clearable
                 return-object
                 :error-messages="errors"
-                :placeholder="instanceNamePlaceholder"
+                placeholder="Masukkan Nama Instansi Anda"
                 @input.native="querySearchFaskes"
                 @change="onSelectFaskes"
               />
@@ -61,7 +61,7 @@
                 v-model="formApplicant.instanceEtc"
                 outlined
                 :error-messages="errors"
-                :placeholder="instanceNamePlaceholder"
+                placeholder="Masukkan Nama Instansi Anda"
                 solo-inverted
               />
             </ValidationProvider>
@@ -235,6 +235,7 @@ export default {
       },
       showForm: false,
       isEtc: false,
+      isVaccineEtc: false,
       instanceNamePlaceholder: this.$t('label.example_instance_name'),
       cityList: [],
       districtList: [],
@@ -331,6 +332,7 @@ export default {
       })
     },
     async onSelectFaskesType(value) {
+      this.resetForm()
       const { id, name } = value
       this.formApplicant.instanceTypeName = name
       if (!this.isVaccineContent) {
@@ -341,29 +343,8 @@ export default {
       this.isEtc = this.formApplicant.instanceType === 4 ||
         this.formApplicant.instanceType === 5 ||
         this.formApplicant.instanceType === 99
-      this.onChangeInstanceNamePlaceholder(id)
+      this.isVaccineEtc = this.formApplicant.instanceType.id === 99
       await this.getListFaskes()
-    },
-    onChangeInstanceNamePlaceholder(value) {
-      switch (value) {
-        case 1:
-          this.instanceNamePlaceholder = this.$t('label.example_instance_name')
-          break
-        case 2:
-          this.instanceNamePlaceholder = this.$t('label.example_instance_second')
-          break
-        case 3:
-          this.instanceNamePlaceholder = this.$t('label.example_instance_three')
-          break
-        case 4:
-          this.instanceNamePlaceholder = this.$t('label.example_instance_last')
-          break
-        case 5:
-          this.instanceNamePlaceholder = this.$t('label.example_instance_last')
-          break
-        default:
-          this.instanceNamePlaceholder = this.$t('label.example_instance_name')
-      }
     },
     async getListFaskes() {
       if (!this.isVaccineContent) {
@@ -409,6 +390,18 @@ export default {
     showInstanceDialog() {
       this.showForm = true
       this.$refs.addInstanceForm.setShowDialog(this.isAdmin)
+    },
+    resetForm() {
+      this.$set(this.formApplicant, 'instance', null)
+      this.$set(this.formApplicant, 'instanceEtc', null)
+      this.$set(this.formApplicant, 'instanceName', null)
+      this.$set(this.formApplicant, 'instancePhoneNumber', null)
+      this.$set(this.formApplicant, 'cityNameId', null)
+      this.$set(this.formApplicant, 'districtNameId', null)
+      this.$set(this.formApplicant, 'villageNameId', null)
+      this.$set(this.formApplicant, 'fullAddress', null)
+      this.districtList = []
+      this.villageList = []
     }
   }
 }

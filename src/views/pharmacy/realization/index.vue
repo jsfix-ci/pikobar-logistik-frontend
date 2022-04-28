@@ -37,7 +37,7 @@
                 {{ item.is_urgency ? 'Segera' : 'Biasa' }}
               </span>
             </td>
-            <td>{{ item.is_completed ? 'Final' : 'Draft' }}</td>
+            <td>{{ item.is_letter_file_final ? 'Final' : 'Draft' }}</td>
             <td>
               <JDSButton inverted height="25px" @click="onDetail(item.id)">
                 {{ $t('label.detail') }}

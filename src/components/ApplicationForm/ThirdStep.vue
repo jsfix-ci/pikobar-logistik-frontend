@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-10">
+  <div>
     <ValidationObserver ref="observer">
       <v-form
         ref="form"
