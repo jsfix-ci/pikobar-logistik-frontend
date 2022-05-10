@@ -3,7 +3,7 @@
     <span class="jds-dropdown__label">
       {{ label }}
     </span>
-    <v-select
+    <v-autocomplete
       :value="value"
       :items="items"
       :item-text="itemText"
