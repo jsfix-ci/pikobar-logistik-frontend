@@ -122,7 +122,7 @@ export default {
             'Surat ditujukan kepada Dinas Kesehatan Provinsi Jawa Barat',
             'Memuat stok vaksin & logistik penunjang vaksin terkini di Kota/Kabupaten'
           ],
-          downloadLink: 'https://docs.google.com/document/d/1ninl7D4IDr5pNVylmUur58tOxusCzMYE7UplFAP6fIE/edit?usp=sharing'
+          downloadLink: 'https://drive.google.com/uc?export=download&id=1JpuVm6wnKBEODwINQKUBstMIUQAB2Rre'
         },
         {
           title: 'Instansi Non Dinkes, TNI, dan POLRI',
@@ -136,7 +136,7 @@ export default {
             'Nomor telepon',
             'Cap dan tanda tangan basah'
           ],
-          downloadLink: 'https://docs.google.com/document/d/17kdvbTr7aPE6Nf1m-su8oULr8GdsvkaS93gfCwZvBOc/edit?usp=sharing'
+          downloadLink: 'https://drive.google.com/uc?export=download&id=1Ds0xrCfk2LlKDzEpUZdZm0BVP2-F9dB7'
         }
       ]
     }
