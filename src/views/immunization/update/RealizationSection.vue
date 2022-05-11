@@ -128,11 +128,14 @@ export default {
     recommendation(val) {
       this.date = this.$moment(val.updated_at).format('YYYY-MM-DD')
       this.quantity = val.quantity
+      this.$emit('update:date', this.date)
+      this.$emit('update:quantity', this.quantity)
     },
     itemList(val) {
       this.name = val.find((item) => {
         return item.material_id === this.recommendation.product_id
       })
+      this.$emit('update:name', this.name)
     }
   },
   methods: {

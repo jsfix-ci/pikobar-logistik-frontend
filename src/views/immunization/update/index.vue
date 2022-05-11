@@ -119,9 +119,9 @@ export default {
     this.recommendationData = res.data.recommendation
     this.realizationData = res.data.finalization
 
-    const vaccineSupportResponse = await this.$store.dispatch('vaccine/getListMaterial', { matg_id: 'PENUNJANG VAKSIN', is_paginated: 0 })
+    const vaccineSupportResponse = await this.$store.dispatch('vaccine/getListMaterial', { matg_id: 'PENUNJANG VAKSIN', is_paginated: 0, is_available: 1 })
     this.listVaccineSupport = vaccineSupportResponse.data
-    const vaccineResponse = await this.$store.dispatch('vaccine/getListMaterial', { matg_id: 'VAKSIN', is_paginated: 0 })
+    const vaccineResponse = await this.$store.dispatch('vaccine/getListMaterial', { matg_id: 'VAKSIN', is_paginated: 0, is_available: 1 })
     this.listVaccine = vaccineResponse.data
   },
   methods: {
