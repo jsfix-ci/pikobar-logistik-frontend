@@ -28,26 +28,23 @@
         </v-row>
       </div>
       <div class="header-landing-page-mobile">
-        <v-row>
-          <v-col cols="8">
-            <v-row>
-              <v-col class="margin-left-20" cols="2">
-                <img height="40" src="../../static/logistik_logo_lingkar.svg">
-              </v-col>
-              <v-col cols="6">
-                <div class="title-page-landing-page-mobile margin-left-title-mobile-landing-page">
-                  {{ $t('label.logistic') }} <br>
-                  {{ $t('label.medical_tools') }}
-                </div>
-              </v-col>
-            </v-row>
-          </v-col>
-          <v-col cols="4">
-            <v-row class="float-right-landing-page">
-              <a :href="$t('label.link_tutorial')" target="_blank" class="margin-icon-talk-mobile-landing-page"><v-icon color="white" size="25">{{ $t('label.icon_help') }}</v-icon></a>
-            </v-row>
-          </v-col>
-        </v-row>
+        <div class="d-flex flex-row align-center justify-space-between py-3">
+          <div class="d-flex flex-row align-center">
+            <img height="40" src="../../static/logistik_logo_lingkar.svg">
+            <div class="title-page-landing-page-mobile ml-4 pt-0">
+              {{
+                !isVaccineContent
+                  ? $t('label.applicant_med_form_title')
+                  : $t('label.applicant_vaccine_form_title')
+              }}
+            </div>
+          </div>
+          <a :href="$t('label.link_tutorial')" target="_blank">
+            <v-icon color="white" size="25">
+              {{ $t('label.icon_help') }}
+            </v-icon>
+          </a>
+        </div>
       </div>
     </div>
     <div class="negative-landing-page">
