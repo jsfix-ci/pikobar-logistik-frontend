@@ -115,7 +115,8 @@ export default {
       {
         vaccine_request_id: this.$route.params.id,
         category: 'vaccine',
-        status: 'delivery_plan'
+        status: 'delivery_plan',
+        is_paginated: 0
       }
     )
     this.listVaccineSupport = await this.$store.dispatch(
@@ -123,7 +124,8 @@ export default {
       {
         vaccine_request_id: this.$route.params.id,
         category: 'vaccine_support',
-        status: 'delivery_plan'
+        status: 'delivery_plan',
+        is_paginated: 0
       }
     )
   },
