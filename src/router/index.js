@@ -22,6 +22,7 @@ import otherInstace from './modules/otherInstance'
 import immunization from './modules/vaccine/immunization'
 import pharmacy from './modules/vaccine/pharmacy'
 import logisticPost from './modules/vaccine/logisticPost'
+import archive from './modules/vaccine/archive'
 
 /* Sentry */
 import * as Sentry from '@sentry/core'
@@ -125,6 +126,7 @@ export const asyncRoutes = [
   immunization,
   pharmacy,
   logisticPost,
+  archive,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/', hidden: true }
 ]

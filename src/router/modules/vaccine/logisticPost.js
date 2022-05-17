@@ -6,7 +6,7 @@ const logisticPost = {
   redirect: '/logistic-post/realization',
   meta: {
     title: 'task_force',
-    icon: 'inventory',
+    icon: 'shield',
     roles: ['superadmin', 'dinkesprov', 'dinkeskota'],
     isVaccineModule: true
   },
