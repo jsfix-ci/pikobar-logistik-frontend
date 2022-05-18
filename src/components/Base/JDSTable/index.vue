@@ -3,6 +3,8 @@
     :headers="headers"
     :items="items"
     :no-data-text="$t('label.no_data')"
+    :loading="loading"
+    :loading-text="loadingText"
     mobile-breakpoint="0"
     hide-default-footer
   >
@@ -22,6 +24,14 @@ export default {
     items: {
       type: Array,
       default: () => []
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    loadingText: {
+      type: String,
+      default: 'Sedang memuat data'
     }
   }
 }
