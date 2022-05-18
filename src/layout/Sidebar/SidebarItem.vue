@@ -69,7 +69,7 @@ export default {
       })
 
       // When there is only one child router, the child router is displayed by default
-      if (showingChildren.length === 1 && parent.meta?.isVaccineModule === undefined) {
+      if (showingChildren.length === 1 && (parent.meta?.isVaccineModule === undefined || parent.meta?.showParentOnly)) {
         return true
       }
 

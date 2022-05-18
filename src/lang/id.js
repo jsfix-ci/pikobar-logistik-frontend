@@ -57,7 +57,8 @@ export default {
     vaccine_recommendation_update: 'Update Rekomendasi Vaksin',
     vaccine_recommendation_add: 'Tambah Rekomendasi Vaksin',
     vaccine_realization_update: 'Update Realisasi Vaksin',
-    vaccine_realization_add: 'Tambah Realisasi Vaksin'
+    vaccine_realization_add: 'Tambah Realisasi Vaksin',
+    archive: 'Arsip'
   },
   label: {
     preview: 'Preview',
@@ -408,6 +409,8 @@ export default {
     max_type_file_upload_letter: 'File dalam bentuk PDF/JPG/JPEG/PNG (ukuran maks. 10 MB)',
     status: 'Status',
     mail_status: 'Status Surat',
+    verification_status: 'Status Verifikasi',
+    warrant: 'Surat Perintah',
     select_mail_status: 'Pilih Status Surat',
     pic: 'PIC',
     vaccine: 'Vaksin',
@@ -730,6 +733,8 @@ export default {
     recommend: 'Rekomendasi',
     distribution_realization: 'Realisasi Salur',
     realization: 'Realisasi',
+    archive: 'Arsip',
+    archive_list: 'Seluruh Arsip Surat Masuk, Realisasi, Rekomendasi, Distribusi dan Penerimaan',
     vaccine_request_list: 'Daftar Seluruh Surat Permohonan Vaksin',
     under_development_feature: 'Fitur ini sedang dalam tahap pengembangan',
     request_requirement: 'Syarat Permohonan',
