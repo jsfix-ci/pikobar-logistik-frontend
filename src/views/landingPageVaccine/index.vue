@@ -96,20 +96,29 @@
     </div>
 
     <v-dialog v-model="showRequirement" max-width="800px">
-      <RequirementPopUp @close="showRequirement = false" />
+      <RequirementPopUp
+        @showStock="onShowStock"
+        @close="showRequirement = false"
+      />
+    </v-dialog>
+    <v-dialog v-model="showStock" max-width="800px">
+      <StockPopUp />
     </v-dialog>
   </div>
 </template>
 
 <script>
 import RequirementPopUp from './RequirementPopUp.vue'
+import StockPopUp from './StockPopUp.vue'
 export default {
   components: {
-    RequirementPopUp
+    RequirementPopUp,
+    StockPopUp
   },
   data() {
     return {
-      showRequirement: false
+      showRequirement: false,
+      showStock: false
     }
   },
   methods: {
@@ -121,6 +130,10 @@ export default {
     },
     onInfoClick() {
       window.open(`https://wa.me/${process.env.VUE_APP_HOTLINE_PIKOBAR}`, '_blank')
+    },
+    onShowStock() {
+      this.showRequirement = false
+      this.showStock = true
     }
   }
 }

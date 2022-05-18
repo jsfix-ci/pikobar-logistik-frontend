@@ -15,7 +15,7 @@
     </div>
 
     <!-- Header -->
-    <div class="requirement__header d-flex flex-row justify-space-between pa-6 mb-10">
+    <div class="requirement__header d-flex flex-row justify-space-between pa-6 mb-6">
       <div class="requirement__header__content d-flex flex-column justify-space-between">
         <span class="requirement__header__content__title">
           Dokumen yang Disiapkan
@@ -40,6 +40,33 @@
         </div>
       </div>
       <img src="/img/icons/icon-stamp.svg" alt="stamp">
+    </div>
+
+    <!-- Check Stock -->
+    <div class="requirement__stock">
+      <img
+        src="/img/injection.svg"
+        alt="injection"
+        class="mr-8"
+      >
+      <div class="d-flex flex-column justify-space-between">
+        <p class="requirement__stock__text">
+          Untuk mengetahui jumlah vaksin yang tersedia silakan cek Stock Vaksin dengan klik di bawah ini
+        </p>
+        <JDSButton
+          height="42px"
+          width="166px"
+          @click="$emit('showStock')"
+        >
+          Cek Stock Vaksin
+          <v-icon
+            right
+            dark
+          >
+            mdi-arrow-right
+          </v-icon>
+        </JDSButton>
+      </div>
     </div>
 
     <!-- Detail Title -->
@@ -112,7 +139,11 @@
 </template>
 
 <script>
+import JDSButton from '@/components/Base/JDSButton'
 export default {
+  components: {
+    JDSButton
+  },
   data() {
     return {
       listRequirements: [
@@ -178,6 +209,22 @@ export default {
           color: white;
         }
       }
+    }
+  }
+
+  &__stock {
+    display: flex;
+    flex-direction: row;
+    background: #FAFAFA;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 32px;
+
+    &__text {
+      font-family: 'Roboto', serif;
+      font-weight: 500;
+      font-size: 16px;
+      color: #424242;
     }
   }
 
