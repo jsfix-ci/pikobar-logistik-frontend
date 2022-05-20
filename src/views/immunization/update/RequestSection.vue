@@ -75,6 +75,17 @@ export default {
       status: ''
     }
   },
+  watch: {
+    /**
+     * autofill status dropdown when product_status !== null
+     */
+    data(val) {
+      if (val.product_status) {
+        this.status = val.product_status
+        this.$emit('update:statusChange', this.status)
+      }
+    }
+  },
   methods: {
     async validate() {
       const isValid = await this.$refs.form.validate()
