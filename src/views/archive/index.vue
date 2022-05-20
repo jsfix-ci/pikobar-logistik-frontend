@@ -22,11 +22,12 @@
             <td>{{ statusDisplay(item) }}</td>
             <td>{{ item.letter_number || '-' }}</td>
             <td>{{ stageDisplay(item) }}</td>
+            <!-- TEMPORARILY HIDDEN
             <td>
               <JDSButton inverted height="25px" @click="onDetail(item.id)">
                 {{ $t('label.detail') }}
               </JDSButton>
-            </td>
+            </td> -->
           </tr>
         </template>
       </JDSTable>
@@ -46,12 +47,12 @@
 import { mapState } from 'vuex'
 import { getTableRowNumbering, filterQuery } from '@/helpers/tableDisplay'
 import JDSTable from '@/components/Base/JDSTable'
-import JDSButton from '@/components/Base/JDSButton'
+// import JDSButton from '@/components/Base/JDSButton'
 import SearchInput from '@/components/Base/SearchInput'
 export default {
   components: {
     JDSTable,
-    JDSButton,
+    // JDSButton,
     SearchInput
   },
   data() {
@@ -64,8 +65,9 @@ export default {
         { text: this.$t('label.mail_status'), sortable: false },
         { text: this.$t('label.verification_status'), sortable: false },
         { text: this.$t('label.warrant'), sortable: false },
-        { text: this.$t('label.follow_up_status'), sortable: false },
-        { text: this.$t('label.action'), sortable: false }
+        { text: this.$t('label.follow_up_status'), sortable: false }
+        // TEMPORARILY HIDDEN
+        // { text: this.$t('label.action'), sortable: false }
       ],
       listQuery: {
         page: parseInt(this.$route.query?.page || 1),
