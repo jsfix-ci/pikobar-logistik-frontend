@@ -125,15 +125,28 @@ export default {
     }
   },
   watch: {
+    /**
+     * autofill form based on recommendation data
+     */
     recommendation(val) {
-      this.date = this.$moment(val.updated_at).format('YYYY-MM-DD')
-      this.quantity = val.quantity
+      if (this.data.product_status) {
+        this.date = this.$moment(this.data.finalized_date).format('YYYY-MM-DD')
+        this.quantity = this.data.quantity
+      } else {
+        this.date = this.$moment(val.updated_at).format('YYYY-MM-DD')
+        this.quantity = val.quantity
+      }
       this.$emit('update:date', this.date)
       this.$emit('update:quantity', this.quantity)
     },
+    /**
+     * autofill product name dropdown based on recommendation data
+     */
     itemList(val) {
       this.name = val.find((item) => {
-        return item.material_id === this.recommendation.product_id
+        return item.material_id === this.data.product_status
+          ? this.data.product_id
+          : this.recommendation.product_id
       })
       this.$emit('update:name', this.name)
     }
