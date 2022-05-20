@@ -81,6 +81,7 @@ export default {
     }
   },
   mounted() {
+    this.listQuery.material_name = ''
     this.fetchData()
     this.updatedTime = `${this.$moment().subtract(15, 'minutes').format('D MMMM YYYY, HH:mm')}`
     if (!this.publicUser) { this.headers.push({ text: this.$t('label.location_stock'), sortable: false }) }
