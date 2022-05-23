@@ -67,7 +67,7 @@
           <DisabledField label="Jumlah" :value="`${data.quantity || '-'} ${data.unit || '-'}`" />
         </v-col>
         <v-col cols="12" sm="6">
-          <DisabledField label="Tanggal" :value="$moment(data.updated_at).format('D MMMM YYYY') || '-'" />
+          <DisabledField label="Tanggal" :value="$moment(data.recommendation_date).format('D MMMM YYYY') || '-'" />
         </v-col>
       </v-row>
     </div>
