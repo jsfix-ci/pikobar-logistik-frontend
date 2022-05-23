@@ -22,7 +22,7 @@
         <template v-slot:item-prop="{ item, index }">
           <tr>
             <td>{{ getTableRowNumbering(index, listQuery.page, listQuery.limit) }}</td>
-            <td>{{ item.verified_at ? $moment(item.verified_at).format('D MMMM YYYY') : '-' }}</td>
+            <td>{{ item.approved_at ? $moment(item.approved_at).format('D MMMM YYYY') : '-' }}</td>
             <td>{{ item.created_at ? $moment(item.created_at).format('D MMMM YYYY') : '-' }}</td>
             <td>{{ item.agency_name || '-' }}</td>
             <td>{{ item.letter_number || '-' }}</td>
