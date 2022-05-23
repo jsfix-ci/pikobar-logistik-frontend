@@ -133,7 +133,7 @@ export default {
         this.date = this.$moment(this.data.finalized_date).format('YYYY-MM-DD')
         this.quantity = this.data.quantity
       } else {
-        this.date = this.$moment(val.updated_at).format('YYYY-MM-DD')
+        this.date = this.$moment(val.recommendation_date).format('YYYY-MM-DD')
         this.quantity = val.quantity
       }
       this.$emit('update:date', this.date)
