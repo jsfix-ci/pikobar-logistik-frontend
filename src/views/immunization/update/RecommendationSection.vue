@@ -67,7 +67,7 @@
           <DisabledField label="Jumlah" :value="`${data.quantity || '-'} ${data.unit || '-'}`" />
         </v-col>
         <v-col cols="12" sm="6">
-          <DisabledField label="Tanggal" :value="$moment(data.updated_at).format('D MMMM YYYY') || '-'" />
+          <DisabledField label="Tanggal" :value="$moment(data.recommendation_date).format('D MMMM YYYY') || '-'" />
         </v-col>
       </v-row>
     </div>
@@ -118,6 +118,32 @@ export default {
   computed: {
     unitDisplay() {
       return this.name ? this.name.UoM : this.unit ?? 'Vial'
+    }
+  },
+  watch: {
+    /**
+     * autofill form when product_status !== null
+     */
+    data(val) {
+      if (val.product_status) {
+        this.date = this.$moment(val.recommendation_date).format('YYYY-MM-DD')
+        this.quantity = val.quantity
+        this.note = val.recommendation_note
+        this.$emit('update:date', this.date)
+        this.$emit('update:quantity', this.quantity)
+        this.$emit('update:note', this.note)
+      }
+    },
+    /**
+     * autofill product name dropdown when product_status !== null
+     */
+    itemList(val) {
+      if (this.data.product_status) {
+        this.name = val.find((item) => {
+          return item.material_id === this.data.product_id
+        })
+        this.$emit('update:name', this.name)
+      }
     }
   },
   methods: {

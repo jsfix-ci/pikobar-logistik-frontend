@@ -11,13 +11,14 @@
     <JDSTable
       :headers="headers"
       :items="listMaterial"
+      :loading="loading"
     >
       <template v-slot:item-prop="{ item }">
         <tr>
           <td>{{ item.material_id || '-' }}</td>
           <td>{{ item.material_name || '-' }}</td>
           <td>{{ `${currency(item.current_stock) || '-'} ${item.UoM || '-'}` }}</td>
-          <td>{{ item.soh_location_name || '-' }}</td>
+          <td v-if="!publicUser">{{ item.soh_location_name || '-' }}</td>
         </tr>
       </template>
     </JDSTable>
@@ -44,13 +45,18 @@ export default {
     SearchInput,
     JDSPagination
   },
+  props: {
+    publicUser: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       headers: [
         { text: this.$t('label.apd_id_specification'), sortable: false },
         { text: this.$t('label.apd_name_specification'), sortable: false },
-        { text: this.$t('label.remains'), sortable: false },
-        { text: this.$t('label.location_stock'), sortable: false }
+        { text: this.$t('label.remains'), sortable: false }
       ],
       listQuery: {
         page: 1,
@@ -60,7 +66,8 @@ export default {
       listMaterial: [],
       totalPage: 0,
       totalData: 0,
-      updatedTime: null
+      updatedTime: null,
+      loading: false
     }
   },
   computed: {
@@ -74,8 +81,10 @@ export default {
     }
   },
   mounted() {
+    this.listQuery.material_name = ''
     this.fetchData()
     this.updatedTime = `${this.$moment().subtract(15, 'minutes').format('D MMMM YYYY, HH:mm')}`
+    if (!this.publicUser) { this.headers.push({ text: this.$t('label.location_stock'), sortable: false }) }
   },
   methods: {
     handleSearch() {
@@ -83,10 +92,12 @@ export default {
       this.fetchData()
     },
     async fetchData() {
+      this.loading = true
       await this.$store.dispatch('vaccine/getStock', this.listQuery)
       this.listMaterial = [...this.allocationMaterials.data]
       this.totalPage = this.allocationMaterials.last_page
       this.totalData = this.allocationMaterials.total
+      this.loading = false
     },
     currency(value) {
       const formattingNumber = new FormatingNumber()
