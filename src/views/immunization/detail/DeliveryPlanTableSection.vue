@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column mt-8">
+  <div class="d-flex flex-column">
     <!-- Section Title -->
     <div class="d-flex flex-row align-center mb-6">
       <span class="detail-table__section-title">
@@ -76,7 +76,7 @@
       label="Tanggal Rencana Kirim"
       :value="$moment(deliveryDate).format('D MMMM YYYY')"
       :class="{
-        'mt-8': showContent,
+        'my-6': showContent,
         'd-none': !showContent
       }"
     />

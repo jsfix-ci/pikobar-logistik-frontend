@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
     <!-- Section Title -->
-    <div class="d-flex flex-row align-center mb-6 mt-8">
+    <div class="d-flex flex-row align-center my-6">
       <span class="letter__section-title">{{ $t('label.applicant_letter') }}</span>
       <img
         src="/img/icons/arrow-down.svg"

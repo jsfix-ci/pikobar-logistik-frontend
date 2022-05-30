@@ -47,7 +47,7 @@
     <!-- Vaccine Support -->
     <div
       :class="{
-        'detail-table__table-container d-flex flex-column mt-6': showContent,
+        'detail-table__table-container d-flex flex-column mt-6 mb-6': showContent,
         'd-none': !showContent
       }"
     >

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column mt-8">
+  <div class="d-flex flex-column">
     <!-- Section Title -->
     <div class="d-flex flex-row align-center mb-6">
       <span class="detail-table__section-title">
@@ -72,7 +72,7 @@
     <!-- Vaccine Support -->
     <div
       :class="{
-        'detail-table__table-container d-flex flex-column mt-6': showContent,
+        'detail-table__table-container d-flex flex-column mt-6 mb-6': showContent,
         'd-none': !showContent
       }"
     >

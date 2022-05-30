@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column mt-8">
+  <div class="d-flex flex-column">
     <!-- Section Title -->
     <div class="d-flex flex-row align-center mb-6">
       <span class="detail-table__section-title">
@@ -127,7 +127,7 @@
     <!-- Form Input -->
     <div
       :class="{
-        'd-block': showContent,
+        'd-block mb-6': showContent,
         'd-none': !showContent
       }"
     >
