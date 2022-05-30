@@ -8,21 +8,31 @@
     min-width="none"
   >
     <template v-slot:activator="{ on }">
-      <ValidationProvider
-        v-slot="{ errors }"
-        :rules="required ? rule : ''"
-      >
-        <v-text-field
-          v-model="dateFormatted"
-          clearable
-          solo
-          :placeholder="$t('label.date_dashboard_placeholder')"
-          append-icon="event"
-          :error-messages="errors"
-          v-on="on"
-          @click:clear="resetDate"
-        />
-      </ValidationProvider>
+      <div class="d-flex flex-column">
+        <span v-if="jdsStyle" class="date__label">
+          {{ label }}
+        </span>
+        <ValidationProvider
+          v-slot="{ errors }"
+          :rules="required ? rule : ''"
+        >
+          <v-text-field
+            v-model="dateFormatted"
+            clearable
+            solo
+            :placeholder="placeholder"
+            :append-icon="jdsStyle ? '' : 'event'"
+            :error-messages="errors"
+            :class="{ 'date__input': jdsStyle }"
+            v-on="on"
+            @click:clear="resetDate"
+          >
+            <template v-if="jdsStyle" v-slot:prepend-inner>
+              <img width="16" height="16" alt="calendar" src="/img/calendar.svg">
+            </template>
+          </v-text-field>
+        </ValidationProvider>
+      </div>
     </template>
     <v-dialog
       v-model="menu"
@@ -40,7 +50,14 @@
           <v-date-picker v-model="endDate" :max="currentDate" :min="startDate" no-title />
         </div>
         <v-card-actions class="align-self-center mt-2">
-          <v-btn color="primary" @click="handleSelectedDate()">{{ $t('label.apply') }}</v-btn>
+          <JDSButton
+            v-if="jdsStyle"
+            width="300px"
+            @click="handleSelectedDate()"
+          >
+            {{ $t('label.apply') }}
+          </JDSButton>
+          <v-btn v-else color="primary" @click="handleSelectedDate()">{{ $t('label.apply') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -49,10 +66,12 @@
 
 <script>
 import { ValidationProvider } from 'vee-validate'
+import JDSButton from '@/components/Base/JDSButton'
 export default {
   name: 'DatePickerDashboard',
   components: {
-    ValidationProvider
+    ValidationProvider,
+    JDSButton
   },
   props: {
     date: {
@@ -74,12 +93,24 @@ export default {
     initialEndDate: {
       type: String,
       default: null
+    },
+    jdsStyle: {
+      type: Boolean,
+      default: false
+    },
+    label: {
+      type: String,
+      default: ''
+    },
+    placeholder: {
+      type: String,
+      default: 'Tanggal Bulan Tahun - Tanggal Bulan Tahun'
     }
   },
   data() {
     return {
       menu: false,
-      startDate: this.initialStartDate || '2021-01-01',
+      startDate: this.initialStartDate || '2022-01-01',
       endDate: this.initialEndDate || this.$moment(Date.now()).format('YYYY-MM-DD'),
       dateFormatted: this.initialStartDate && this.initialEndDate
         ? `${this.$moment(this.initialStartDate).format('DD MMMM YYYY')} - ${this.$moment(this.initialEndDate).format('DD MMMM YYYY')}`
@@ -112,3 +143,28 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.date {
+  &__label {
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    color: #424242;
+    margin-bottom: 8px;
+  }
+
+  &__input.theme--light.v-text-field--solo::v-deep {
+    .v-input__slot {
+      background: #FAFAFA !important;
+      border-radius: 8px;
+      min-height: 38px;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: #424242;
+    }
+
+    input::placeholder {
+      color: #757575;
+    }
+  }
+}
+</style>
