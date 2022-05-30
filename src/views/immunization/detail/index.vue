@@ -11,7 +11,7 @@
       :letter="vaccineRequest.letter_number"
       :link="vaccineRequest.letter_file_url"
     />
-    <RequestTableSection />
+    <RequestTableSection :stage="stage" />
     <RecommendationTableSection
       v-if="showRecommendation"
       :stage="stage"
@@ -27,6 +27,7 @@
     />
     <DeliveryPlanTableSection
       v-if="showDeliveryPlan"
+      :stage="stage"
       :delivery-date="vaccineRequest.delivery_plan_date"
     />
     <ActionButton

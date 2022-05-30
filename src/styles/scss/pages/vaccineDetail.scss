@@ -66,4 +66,14 @@
       margin-top: 32px;
     }
   }
+
+  &__arrow {
+    &--right {
+       transform: rotate(270deg);
+     }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

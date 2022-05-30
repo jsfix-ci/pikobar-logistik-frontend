@@ -7,6 +7,10 @@
         src="/img/icons/arrow-down.svg"
         alt="arrow-down"
         height="18px"
+        :class="{
+          'letter__arrow': true,
+          'letter__arrow--right': !showContent
+        }"
         @click="onClick"
       >
     </div>
@@ -15,7 +19,10 @@
     <DisabledField
       v-model="letter"
       :label="$t('label.letter_number')"
-      class="mb-8"
+      :class="{
+        'mb-8': showContent,
+        'd-none': !showContent
+      }"
     >
       <template #append>
         <JDSButton class="ml-6" height="38px" :href="link" target="_blank">
@@ -44,9 +51,14 @@ export default {
       default: ''
     }
   },
+  data() {
+    return {
+      showContent: false
+    }
+  },
   methods: {
     onClick() {
-      // @todo: create onClick function
+      this.showContent = !this.showContent
     }
   }
 }
@@ -60,6 +72,16 @@ export default {
     font-weight: 700;
     color: #BDBDBD;
     margin-right: 15px;
+  }
+
+  &__arrow {
+    &--right {
+       transform: rotate(270deg);
+     }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 </style>
