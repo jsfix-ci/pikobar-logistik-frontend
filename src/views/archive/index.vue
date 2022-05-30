@@ -3,7 +3,53 @@
     <h1 class="archive__title">{{ $t('label.archive') }}</h1>
 
     <!-- search section -->
-    <SearchInput v-model="listQuery.search" placeholder="Masukkan nama instansi" class="mb-10" @change="handleSearch" />
+    <SearchInput v-model="listQuery.search" placeholder="Masukkan nama instansi" class="mb-6" @change="handleSearch" />
+
+    <!-- filter section -->
+    <div class="d-flex flex-wrap mb-8">
+      <date-picker-dashboard
+        :label="$t('label.requested_date')"
+        :placeholder="$t('label.input_date')"
+        :initial-start-date="listQuery.start_date"
+        :initial-end-date="listQuery.end_date"
+        jds-style
+        @selected="changeDate"
+      />
+      <JDSSelect
+        v-model="listQuery.is_letter_file_final"
+        :label="$t('label.mail_status')"
+        :items="mailOptions"
+        :placeholder="$t('label.select_mail_status')"
+        hide-details
+        class="mx-6"
+        @change="handleSearch"
+      />
+      <JDSSelect
+        v-model="listQuery.verification"
+        :label="$t('label.verification_status')"
+        :items="verificationOptions"
+        :placeholder="$t('label.select_verification_status')"
+        hide-details
+        class="mr-6"
+      />
+      <!-- TEMPORARILY HIDDEN
+      <JDSSelect
+        v-model="listQuery.warrant"
+        :label="$t('label.warrant')"
+        :items="warrantOptions"
+        :placeholder="$t('label.select_warrant_status')"
+        hide-details
+        class="mr-6"
+      /> -->
+      <JDSSelect
+        v-model="listQuery.status"
+        :label="$t('label.follow_up_status')"
+        :items="stageOptions"
+        :placeholder="$t('label.select_follow_up_status')"
+        hide-details
+        @change="handleSearch"
+      />
+    </div>
 
     <!-- table section -->
     <div class="archive__table">
@@ -20,7 +66,6 @@
             <td>{{ item.agency_name || '-' }}</td>
             <td>{{ item.is_letter_file_final ? 'Final' : 'Draft' }}</td>
             <td>{{ statusDisplay(item) }}</td>
-            <td>{{ item.letter_number || '-' }}</td>
             <td>{{ stageDisplay(item) }}</td>
             <!-- TEMPORARILY HIDDEN
             <td>
@@ -46,17 +91,24 @@
 <script>
 import { mapState } from 'vuex'
 import { getTableRowNumbering, filterQuery } from '@/helpers/tableDisplay'
+import { mailOptions, warrantOptions, stageOptions, verificationOptions } from './dropdown'
 import JDSTable from '@/components/Base/JDSTable'
+import JDSSelect from '@/components/Base/JDSSelect'
 // import JDSButton from '@/components/Base/JDSButton'
 import SearchInput from '@/components/Base/SearchInput'
 export default {
   components: {
     JDSTable,
     // JDSButton,
+    JDSSelect,
     SearchInput
   },
   data() {
     return {
+      mailOptions,
+      warrantOptions,
+      stageOptions,
+      verificationOptions,
       headers: [
         { text: this.$t('label.print_mail_no'), sortable: false },
         { text: this.$t('label.delivery_plan_date'), sortable: false },
@@ -64,7 +116,8 @@ export default {
         { text: this.$t('label.agency_name'), sortable: false },
         { text: this.$t('label.mail_status'), sortable: false },
         { text: this.$t('label.verification_status'), sortable: false },
-        { text: this.$t('label.warrant'), sortable: false },
+        // TEMPORARILY HIDDEN
+        // { text: this.$t('label.warrant'), sortable: false },
         { text: this.$t('label.follow_up_status'), sortable: false }
         // TEMPORARILY HIDDEN
         // { text: this.$t('label.action'), sortable: false }
@@ -73,7 +126,14 @@ export default {
         page: parseInt(this.$route.query?.page || 1),
         limit: parseInt(this.$route.query?.limit || 5),
         sort: this.$route.query?.sort || '',
-        search: this.$route.query?.search || ''
+        search: this.$route.query?.search || '',
+        date: '',
+        start_date: this.$route.query?.start_date || null,
+        end_date: this.$route.query?.end_date || null,
+        is_letter_file_final: this.$route.query?.is_letter_file_final ? parseInt(this.$route.query?.is_letter_file_final) : null,
+        verification: '',
+        warrant: '',
+        status: this.$route.query?.status || ''
       }
     }
   },
@@ -83,6 +143,14 @@ export default {
       totalPage: 'totalListVaccineRequest',
       totalData: 'totalDataVaccineRequest'
     })
+  },
+  watch: {
+    listQuery: {
+      deep: true,
+      handler: () => {
+        this.handleSearch()
+      }
+    }
   },
   mounted() {
     this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
@@ -107,9 +175,13 @@ export default {
       // this.$router.push(`/archive/detail/${id}`)
     },
     statusDisplay(item) {
-      return item.note || item.vaccine_request_status_notes.length > 0
-        ? this.$t('label.accepted_with_note')
-        : this.$t(`label.${item.status}`)
+      if (item.note || item.vaccine_request_status_notes.length > 0) {
+        return this.$t('label.accepted_with_note')
+      } else if (item.status === 'not_verified') {
+        return this.$t('status.not_verified')
+      } else {
+        return 'Terverifikasi'
+      }
     },
     stageDisplay(item) {
       switch (item.status) {
@@ -121,9 +193,16 @@ export default {
           return this.$t('label.realization')
         case 'finalized':
           return this.$t('label.release_order')
+        case 'integrated':
+          return 'Barang Keluar'
         default:
           return '-'
       }
+    },
+    changeDate(value) {
+      this.listQuery.start_date = value.startDate
+      this.listQuery.end_date = value.endDate
+      this.handleSearch()
     }
   }
 }
