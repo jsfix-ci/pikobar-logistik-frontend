@@ -6,6 +6,7 @@
         :key="index"
         cols="12"
         :lg="item.col"
+        :class="item.type && !item.isSectionTitle ? show(item) : ''"
         sm="12"
       >
         <!-- Section Title -->
@@ -15,7 +16,11 @@
             src="/img/icons/arrow-down.svg"
             alt="arrow-down"
             height="18px"
-            @click="onClick"
+            :class="{
+              'identity__arrow': true,
+              'identity__arrow--right': arrowDisplay(item)
+            }"
+            @click="onClick(item)"
           >
         </div>
 
@@ -24,25 +29,29 @@
           v-else-if="!item.isHidden"
           v-model="item.value"
           :label="item.label"
-          :class="{
-            'd-none': item.isApplicantIdentity ? !showApplicantIdentity : false,
-            'd-flex': item.isApplicantIdentity ? showApplicantIdentity : true
-          }"
+          class="d-flex"
         />
       </v-col>
     </v-row>
 
     <!-- KTP Field-->
-    <span class="identity__ktp">{{ $t('label.ktp_or_employee_card') }}</span>
-    <ImageViewer
-      :src="identity.applicant_file_url"
-      class="d-flex"
-      alt="ktp-image"
-      thumb-width="149px"
-      thumb-height="100px"
-      preview-width="600"
-      preview-height="400"
-    />
+    <div
+      :class="{
+        'd-none': !showApplicantIdentity,
+        'd-flex flex-column': showApplicantIdentity
+      }"
+    >
+      <span class="identity__ktp">{{ $t('label.ktp_or_employee_card') }}</span>
+      <ImageViewer
+        :src="identity.applicant_file_url"
+        class="d-flex"
+        alt="ktp-image"
+        thumb-width="149px"
+        thumb-height="100px"
+        preview-width="600"
+        preview-height="400"
+      />
+    </div>
   </div>
 </template>
 
@@ -64,7 +73,8 @@ export default {
     return {
       listIdentity: [],
       listNotes: [],
-      showApplicantIdentity: true
+      showInstanceIdentity: false,
+      showApplicantIdentity: false
     }
   },
   watch: {
@@ -77,10 +87,9 @@ export default {
   },
   methods: {
     show(item) {
-      // @todo: implement this method
       return {
-        'd-none': item.isApplicantIdentity ? !this.showApplicantIdentity : false,
-        'd-flex': item.isApplicantIdentity ? this.showApplicantIdentity : true
+        'd-none': item.type === 'applicant' ? !this.showApplicantIdentity : !this.showInstanceIdentity,
+        'd-block': item.type === 'applicant' ? this.showApplicantIdentity : this.showInstanceIdentity
       }
     },
     createNotes() {
@@ -120,81 +129,101 @@ export default {
         },
         {
           label: this.$t('label.instance_identity'),
+          type: 'instance',
           isSectionTitle: true
         },
         {
           label: this.$t('label.instance_type'),
           value: this.identity.agency_type_name || '-',
+          type: 'instance',
           col: 4
         },
         {
           label: this.$t('label.instance_name'),
           value: this.identity.agency_name || '-',
+          type: 'instance',
           col: 4
         },
         {
           label: this.$t('label.number_phone'),
           value: this.identity.agency_phone_number || '-',
+          type: 'instance',
           col: 4
         },
         {
           label: this.$t('label.city_district'),
           value: this.identity.agency_city_name || '-',
+          type: 'instance',
           col: 4
         },
         {
           label: this.$t('label.select_sub_district_full_name'),
           value: this.identity.agency_district_name || '-',
+          type: 'instance',
           col: 4
         },
         {
           label: this.$t('label.village'),
           value: this.identity.agency_village_name || '-',
+          type: 'instance',
           col: 4
         },
         {
           label: this.$t('label.delivery_address'),
           value: this.identity.agency_address || '-',
+          type: 'instance',
           col: 12
         },
         {
           label: this.$t('label.step_title_2'),
+          type: 'applicant',
           isSectionTitle: true
         },
         {
           label: this.$t('label.name'),
           value: this.identity.applicant_fullname || '-',
-          isApplicantIdentity: true,
+          type: 'applicant',
           col: 4
         },
         {
           label: this.$t('label.position'),
           value: this.identity.applicant_position || '-',
-          isApplicantIdentity: true,
+          type: 'applicant',
           col: 4
         },
         {
           label: this.$t('label.number_phone'),
           value: this.identity.applicant_primary_phone_number || '-',
-          isApplicantIdentity: true,
+          type: 'applicant',
           col: 4
         },
         {
           label: this.$t('label.email'),
           value: this.identity.applicant_email || '-',
-          isApplicantIdentity: true,
+          type: 'applicant',
           col: 4
         },
         {
           label: this.$t('label.phone_number_sub'),
           value: this.identity.applicant_secondary_phone_number || '-',
-          isApplicantIdentity: true,
+          type: 'applicant',
           col: 4
         }
       ]
     },
-    onClick() {
-      // @todo: create onClick function
+    onClick(item) {
+      if (item.type === 'applicant') {
+        this.showApplicantIdentity = !this.showApplicantIdentity
+      } else if (item.type === 'instance') {
+        this.showInstanceIdentity = !this.showInstanceIdentity
+      }
+    },
+    arrowDisplay(item) {
+      if (item.type === 'applicant') {
+        return !this.showApplicantIdentity
+      } else if (item.type === 'instance') {
+        return !this.showInstanceIdentity
+      }
     }
   }
 }
@@ -215,6 +244,16 @@ export default {
     font-size: 14px;
     color: #757575;
     margin: 16px 0 8px 0;
+  }
+
+  &__arrow {
+    &--right {
+       transform: rotate(270deg);
+     }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 </style>

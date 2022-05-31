@@ -9,12 +9,21 @@
         src="/img/icons/arrow-down.svg"
         alt="arrow-down"
         height="18px"
+        :class="{
+          'detail-table__arrow': true,
+          'detail-table__arrow--right': !showContent
+        }"
         @click="onClick"
       >
     </div>
 
     <!-- Vaccine -->
-    <div class="detail-table__table-container d-flex flex-column">
+    <div
+      :class="{
+        'detail-table__table-container d-flex flex-column': showContent,
+        'd-none': !showContent
+      }"
+    >
       <span class="detail-table__table-container__title">
         {{ $t('label.vaccine') }}
       </span>
@@ -36,7 +45,12 @@
     </div>
 
     <!-- Vaccine Support -->
-    <div class="detail-table__table-container d-flex flex-column mt-6">
+    <div
+      :class="{
+        'detail-table__table-container d-flex flex-column mt-6 mb-6': showContent,
+        'd-none': !showContent
+      }"
+    >
       <span class="detail-table__table-container__title">
         {{ $t('label.logistic_vaccine_supporter') }}
       </span>
@@ -67,8 +81,15 @@ export default {
   components: {
     JDSTable
   },
+  props: {
+    stage: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
+      showContent: false,
       listVaccine: [],
       listVaccineSupport: [],
       vaccineHeaders: [
@@ -112,10 +133,11 @@ export default {
         is_paginated: 0
       }
     )
+    if (this.stage === 'admin-verification') { this.showContent = true }
   },
   methods: {
     onClick() {
-      // @todo: create onClick function
+      this.showContent = !this.showContent
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column mt-8">
+  <div class="d-flex flex-column">
     <!-- Section Title -->
     <div class="d-flex flex-row align-center mb-6">
       <span class="detail-table__section-title">
@@ -9,12 +9,21 @@
         src="/img/icons/arrow-down.svg"
         alt="arrow-down"
         height="18px"
+        :class="{
+          'detail-table__arrow': true,
+          'detail-table__arrow--right': !showContent
+        }"
         @click="onClick"
       >
     </div>
 
     <!-- Vaccine -->
-    <div class="detail-table__table-container d-flex flex-column">
+    <div
+      :class="{
+        'detail-table__table-container d-flex flex-column': showContent,
+        'd-none': !showContent
+      }"
+    >
       <span class="detail-table__table-container__title">
         {{ $t('label.vaccine') }}
       </span>
@@ -62,7 +71,12 @@
     </div>
 
     <!-- Vaccine Support -->
-    <div class="detail-table__table-container d-flex flex-column mt-6">
+    <div
+      :class="{
+        'detail-table__table-container d-flex flex-column mt-6': showContent,
+        'd-none': !showContent
+      }"
+    >
       <span class="detail-table__table-container__title">
         {{ $t('label.logistic_vaccine_supporter') }}
       </span>
@@ -111,23 +125,30 @@
     </div>
 
     <!-- Form Input -->
-    <JDSDatePicker
-      v-if="stage === 'realization'"
-      v-model="date"
-      :label="$t('label.delivery_plan_date')"
-      :placeholder="$t('label.input_date')"
-      :error="!isValid"
-      :hide-details="isValid"
-      :error-messages="['Harap isi Tanggal Rencana Kirim']"
-      class="mt-8"
-      @clear="date = null"
-    />
-    <DisabledField
-      v-else
-      label="Tanggal Rencana Kirim"
-      :value="$moment(deliveryDate).format('D MMMM YYYY')"
-      class="mt-8"
-    />
+    <div
+      :class="{
+        'd-block mb-6': showContent,
+        'd-none': !showContent
+      }"
+    >
+      <JDSDatePicker
+        v-if="stage === 'realization'"
+        v-model="date"
+        :label="$t('label.delivery_plan_date')"
+        :placeholder="$t('label.input_date')"
+        :error="!isValid"
+        :hide-details="isValid"
+        :error-messages="['Harap isi Tanggal Rencana Kirim']"
+        class="mt-8"
+        @clear="date = null"
+      />
+      <DisabledField
+        v-else
+        label="Tanggal Rencana Kirim"
+        :value="$moment(deliveryDate).format('D MMMM YYYY')"
+        class="mt-8"
+      />
+    </div>
   </div>
 </template>
 
@@ -156,6 +177,7 @@ export default {
   },
   data() {
     return {
+      showContent: false,
       listVaccine: [],
       listVaccineSupport: [],
       date: null,
@@ -212,6 +234,7 @@ export default {
       }
     )
     if (this.stage === 'realization') {
+      this.showContent = true
       this.vaccineHeaders.push({ text: this.$t('label.action'), sortable: false })
       this.vaccineSupportHeaders.push({ text: this.$t('label.action'), sortable: false })
     }
@@ -219,7 +242,7 @@ export default {
   },
   methods: {
     onClick() {
-      // @todo: create onClick function
+      this.showContent = !this.showContent
     },
     onUpdate(id, isVaccineSupport) {
       const type = isVaccineSupport ? 'vaccineSupport' : 'vaccine'
