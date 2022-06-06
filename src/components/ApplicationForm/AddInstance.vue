@@ -160,7 +160,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <center><span class="text-dialog-success-add-instance">{{ $t('label.success_text_dialog') }}</span></center>
+            <center><span class="text-dialog-success-add-instance">{{ $t('label.will_be_verified_dialog') }}</span></center>
           </v-col>
         </v-row>
         <v-row>
