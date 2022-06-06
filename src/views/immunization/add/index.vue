@@ -14,7 +14,7 @@
         </div>
       </v-col>
       <v-col cols="12" sm="6">
-        <StockSection />
+        <StockSection :stage="stage" />
       </v-col>
     </v-row>
   </div>

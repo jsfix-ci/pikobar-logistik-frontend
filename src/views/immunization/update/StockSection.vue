@@ -1,7 +1,14 @@
 <template>
   <div class="stock d-flex flex-column">
-    <span class="stock__title mb-2">{{ $t('label.vaccine_stock') }}</span>
-    <span class="stock__subtitle mb-6">(Diupdate pada {{ updatedTime }})</span>
+    <div class="d-flex flex-row justify-space-between align-center mb-6">
+      <div class="d-flex flex-column">
+        <span class="stock__title mb-2">{{ $t('label.vaccine_stock') }}</span>
+        <span class="stock__subtitle">(Diupdate pada {{ updatedTime }})</span>
+      </div>
+      <JDSButton v-if="showDistrictStock" height="38px" :href="linkGDrive" target="_blank">
+        Cek Stock Vaksin Kota/Kab
+      </JDSButton>
+    </div>
     <SearchInput
       v-model="listQuery.material_name"
       placeholder="Masukkan nama barang yang dicari"
@@ -39,16 +46,22 @@ import FormatingNumber from '@/helpers/formattingNumber'
 import JDSTable from '@/components/Base/JDSTable'
 import SearchInput from '@/components/Base/SearchInput'
 import JDSPagination from '@/components/JDSPagination'
+import JDSButton from '@/components/Base/JDSButton'
 export default {
   components: {
     JDSTable,
     SearchInput,
-    JDSPagination
+    JDSPagination,
+    JDSButton
   },
   props: {
     publicUser: {
       type: Boolean,
       default: false
+    },
+    stage: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -67,13 +80,17 @@ export default {
       totalPage: 0,
       totalData: 0,
       updatedTime: null,
-      loading: false
+      loading: false,
+      linkGDrive: 'https://docs.google.com/spreadsheets/d/14eWNVivIB3kmZv_sBiWVULdVDHzr440RaFdtkO7CwUw/edit?usp=sharing'
     }
   },
   computed: {
     ...mapState('vaccine', [
       'allocationMaterials'
-    ])
+    ]),
+    showDistrictStock() {
+      return this.stage === 'recommendation' || this.stage === 'realization'
+    }
   },
   watch: {
     'listQuery.page'() {
