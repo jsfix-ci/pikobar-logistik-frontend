@@ -22,7 +22,7 @@ export const verificationOptions = [
   },
   {
     text: i18n.t('label.accepted_with_note'),
-    value: '1'
+    value: 'verified_with_note'
   }
 ]
 

@@ -25,12 +25,13 @@
         @change="handleSearch"
       />
       <JDSSelect
-        v-model="listQuery.verification"
+        v-model="listQuery.verification_status"
         :label="$t('label.verification_status')"
         :items="verificationOptions"
         :placeholder="$t('label.select_verification_status')"
         hide-details
         class="mr-6"
+        @change="handleSearch"
       />
       <!-- TEMPORARILY HIDDEN
       <JDSSelect
@@ -131,7 +132,7 @@ export default {
         start_date: this.$route.query?.start_date || null,
         end_date: this.$route.query?.end_date || null,
         is_letter_file_final: this.$route.query?.is_letter_file_final ? parseInt(this.$route.query?.is_letter_file_final) : null,
-        verification: '',
+        verification_status: this.$route.query?.verification_status || '',
         warrant: '',
         status: this.$route.query?.status || ''
       }
