@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
     <!-- Section Title -->
-    <div class="d-flex flex-row align-center mb-6">
+    <div class="detail-table__section" @click="onClick">
       <span class="detail-table__section-title">
         {{ `${$t('label.realization')} (${$t('label.pharmacy')})` }}
       </span>
@@ -13,7 +13,6 @@
           'detail-table__arrow': true,
           'detail-table__arrow--right': !showContent
         }"
-        @click="onClick"
       >
     </div>
 

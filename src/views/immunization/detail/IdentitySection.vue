@@ -10,7 +10,7 @@
         sm="12"
       >
         <!-- Section Title -->
-        <div v-if="item.isSectionTitle" class="d-flex flex-row align-center">
+        <div v-if="item.isSectionTitle" class="identity__section" @click="onClick(item)">
           <span class="identity__section-title">{{ item.label }}</span>
           <img
             src="/img/icons/arrow-down.svg"
@@ -20,7 +20,6 @@
               'identity__arrow': true,
               'identity__arrow--right': arrowDisplay(item)
             }"
-            @click="onClick(item)"
           >
         </div>
 
@@ -231,6 +230,17 @@ export default {
 
 <style lang="scss" scoped>
 .identity {
+  &__section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
   &__section-title {
     font-family: 'Roboto', sans-serif;
     font-size: 24px;

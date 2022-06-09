@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
     <!-- Section Title -->
-    <div class="d-flex flex-row align-center my-6">
+    <div class="letter__section" @click="onClick">
       <span class="letter__section-title">{{ $t('label.applicant_letter') }}</span>
       <img
         src="/img/icons/arrow-down.svg"
@@ -11,7 +11,6 @@
           'letter__arrow': true,
           'letter__arrow--right': !showContent
         }"
-        @click="onClick"
       >
     </div>
 
@@ -66,6 +65,18 @@ export default {
 
 <style lang="scss" scoped>
 .letter {
+  &__section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 24px 0;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
   &__section-title {
     font-family: 'Roboto', sans-serif;
     font-size: 24px;
