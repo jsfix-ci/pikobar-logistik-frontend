@@ -147,6 +147,7 @@ export default {
   watch: {
     listQuery: {
       deep: true,
+      immediate: false,
       handler: () => {
         this.handleSearch()
       }
