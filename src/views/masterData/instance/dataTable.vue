@@ -41,7 +41,7 @@
                 <v-list-item @click="updateData(item)">
                   <span><v-icon left>mdi-file-document-edit</v-icon> {{ $t('label.edit_2') }}</span>
                 </v-list-item>
-                <v-list-item @click="() => {}">
+                <v-list-item @click="toDetail(item)">
                   <span><v-icon left>mdi-view-list</v-icon> {{ $t('label.detail') }}</span>
                 </v-list-item>
               </v-card>

@@ -123,7 +123,6 @@ export default {
         // { text: this.$t('label.action'), sortable: false }
       ],
       listQuery: {
-        page_type: 'archive',
         page: parseInt(this.$route.query?.page || 1),
         limit: parseInt(this.$route.query?.limit || 5),
         sort: this.$route.query?.sort || '',
