@@ -145,7 +145,7 @@
       <DisabledField
         v-else
         label="Tanggal Rencana Kirim"
-        :value="$moment(deliveryDate).format('D MMMM YYYY')"
+        :value="deliveryDate ? $moment(deliveryDate).format('D MMMM YYYY') : '-'"
         class="mt-8"
       />
     </div>

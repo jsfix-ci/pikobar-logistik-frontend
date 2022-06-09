@@ -74,7 +74,7 @@
 
     <DisabledField
       label="Tanggal Rencana Kirim"
-      :value="$moment(deliveryDate).format('D MMMM YYYY')"
+      :value="deliveryDate ? $moment(deliveryDate).format('D MMMM YYYY') : '-'"
       :class="{
         'my-6': showContent,
         'd-none': !showContent
