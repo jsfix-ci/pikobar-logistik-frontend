@@ -144,9 +144,9 @@ export default {
      */
     itemList(val) {
       this.name = val.find((item) => {
-        return item.material_id === this.data.product_status
-          ? this.data.product_id
-          : this.recommendation.product_id
+        return this.data.product_status
+          ? item.material_id === this.data.product_id
+          : item.material_id === this.recommendation.product_id
       })
       this.$emit('update:name', this.name)
     }

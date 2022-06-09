@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
     <!-- Section Title -->
-    <div class="d-flex flex-row align-center mb-6">
+    <div class="detail-table__section" @click="onClick">
       <span class="detail-table__section-title">
         {{ `${$t('label.release_order')} (${$t('label.task_force')})` }}
       </span>
@@ -13,7 +13,6 @@
           'detail-table__arrow': true,
           'detail-table__arrow--right': !showContent
         }"
-        @click="onClick"
       >
     </div>
 
@@ -74,7 +73,7 @@
 
     <DisabledField
       label="Tanggal Rencana Kirim"
-      :value="$moment(deliveryDate).format('D MMMM YYYY')"
+      :value="deliveryDate ? $moment(deliveryDate).format('D MMMM YYYY') : '-'"
       :class="{
         'my-6': showContent,
         'd-none': !showContent

@@ -3,7 +3,7 @@
     <h1 class="archive__title">{{ $t('label.archive') }}</h1>
 
     <!-- search section -->
-    <SearchInput v-model="listQuery.search" placeholder="Masukkan nama instansi" class="mb-6" @change="handleSearch" />
+    <SearchInput v-model="listQuery.search" placeholder="Masukkan nama instansi atau id permohonan" class="mb-6" @change="handleSearch" />
 
     <!-- filter section -->
     <div class="d-flex flex-wrap mb-8">
@@ -148,6 +148,7 @@ export default {
   watch: {
     listQuery: {
       deep: true,
+      immediate: false,
       handler: () => {
         this.handleSearch()
       }
