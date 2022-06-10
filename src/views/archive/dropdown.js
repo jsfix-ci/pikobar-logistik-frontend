@@ -55,7 +55,19 @@ export const stageOptions = [
     value: 'finalized'
   },
   {
-    text: 'Barang Keluar',
-    value: 'integrated'
+    text: 'Barang sedang di Packing',
+    value: 'booked'
+  },
+  {
+    text: 'Siap Berangkat',
+    value: 'do'
+  },
+  {
+    text: 'Sedang dalam perjalanan',
+    value: 'intransit'
+  },
+  {
+    text: 'Barang sudah sampai tujuan',
+    value: 'delivered'
   }
 ]

@@ -195,8 +195,14 @@ export default {
           return this.$t('label.realization')
         case 'finalized':
           return this.$t('label.release_order')
-        case 'integrated':
-          return 'Barang Keluar'
+        case 'booked':
+          return 'Barang sedang di Packing'
+        case 'do':
+          return 'Siap Berangkat'
+        case 'intransit':
+          return 'Sedang dalam perjalanan'
+        case 'delivered':
+          return 'Barang sudah sampai tujuan'
         default:
           return '-'
       }
