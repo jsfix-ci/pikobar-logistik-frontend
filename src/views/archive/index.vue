@@ -195,6 +195,8 @@ export default {
           return this.$t('label.realization')
         case 'finalized':
           return this.$t('label.release_order')
+        case 'integrated':
+          return 'Menunggu konfirmasi'
         case 'booked':
           return 'Barang sedang di Packing'
         case 'do':
