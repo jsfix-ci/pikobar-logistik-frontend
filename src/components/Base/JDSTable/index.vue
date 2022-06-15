@@ -5,6 +5,7 @@
     :no-data-text="$t('label.no_data')"
     :loading="loading"
     :loading-text="loadingText"
+    :options.sync="options"
     mobile-breakpoint="0"
     hide-default-footer
   >
@@ -32,6 +33,19 @@ export default {
     loadingText: {
       type: String,
       default: 'Sedang memuat data'
+    }
+  },
+  data() {
+    return {
+      options: {}
+    }
+  },
+  watch: {
+    options: {
+      deep: true,
+      handler(val) {
+        this.$emit('onSort', val)
+      }
     }
   }
 }
