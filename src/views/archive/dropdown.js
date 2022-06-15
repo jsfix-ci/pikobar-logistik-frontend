@@ -55,6 +55,10 @@ export const stageOptions = [
     value: 'finalized'
   },
   {
+    text: 'Menunggu konfirmasi',
+    value: 'integrated'
+  },
+  {
     text: 'Barang sedang di Packing',
     value: 'booked'
   },
