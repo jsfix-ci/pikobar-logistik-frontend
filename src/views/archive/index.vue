@@ -3,7 +3,7 @@
     <h1 class="archive__title">{{ $t('label.archive') }}</h1>
 
     <!-- search section -->
-    <SearchInput v-model="listQuery.search" placeholder="Masukkan nama instansi" class="mb-6" @change="handleSearch" />
+    <SearchInput v-model="listQuery.search" placeholder="Masukkan nama instansi atau id permohonan" class="mb-6" @change="handleSearch" />
 
     <!-- filter section -->
     <div class="d-flex flex-wrap mb-8">
@@ -152,6 +152,7 @@ export default {
   watch: {
     listQuery: {
       deep: true,
+      immediate: false,
       handler: async function() {
         await this.handleSearch(true)
       }
@@ -200,8 +201,14 @@ export default {
           return this.$t('label.realization')
         case 'finalized':
           return this.$t('label.release_order')
-        case 'integrated':
-          return 'Barang Keluar'
+        case 'booked':
+          return 'Barang sedang di Packing'
+        case 'do':
+          return 'Siap Berangkat'
+        case 'intransit':
+          return 'Sedang dalam perjalanan'
+        case 'delivered':
+          return 'Barang sudah sampai tujuan'
         default:
           return '-'
       }
