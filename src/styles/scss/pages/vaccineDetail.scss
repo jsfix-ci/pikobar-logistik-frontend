@@ -13,6 +13,18 @@
 }
 
 .detail-table {
+  &__section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 24px;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
   &__section-title {
     font-family: 'Roboto', sans-serif;
     font-size: 24px;
@@ -64,6 +76,16 @@
       font-size: 15px;
       color: #424242;
       margin-top: 32px;
+    }
+  }
+
+  &__arrow {
+    &--right {
+       transform: rotate(270deg);
+     }
+
+    &:hover {
+      cursor: pointer;
     }
   }
 }

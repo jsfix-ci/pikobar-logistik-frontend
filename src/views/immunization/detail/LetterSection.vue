@@ -1,13 +1,16 @@
 <template>
   <div class="d-flex flex-column">
     <!-- Section Title -->
-    <div class="d-flex flex-row align-center mb-6 mt-8">
+    <div class="letter__section" @click="onClick">
       <span class="letter__section-title">{{ $t('label.applicant_letter') }}</span>
       <img
         src="/img/icons/arrow-down.svg"
         alt="arrow-down"
         height="18px"
-        @click="onClick"
+        :class="{
+          'letter__arrow': true,
+          'letter__arrow--right': !showContent
+        }"
       >
     </div>
 
@@ -15,7 +18,10 @@
     <DisabledField
       v-model="letter"
       :label="$t('label.letter_number')"
-      class="mb-8"
+      :class="{
+        'mb-8': showContent,
+        'd-none': !showContent
+      }"
     >
       <template #append>
         <JDSButton class="ml-6" height="38px" :href="link" target="_blank">
@@ -44,9 +50,14 @@ export default {
       default: ''
     }
   },
+  data() {
+    return {
+      showContent: false
+    }
+  },
   methods: {
     onClick() {
-      // @todo: create onClick function
+      this.showContent = !this.showContent
     }
   }
 }
@@ -54,12 +65,34 @@ export default {
 
 <style lang="scss" scoped>
 .letter {
+  &__section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 24px 0;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
   &__section-title {
     font-family: 'Roboto', sans-serif;
     font-size: 24px;
     font-weight: 700;
     color: #BDBDBD;
     margin-right: 15px;
+  }
+
+  &__arrow {
+    &--right {
+       transform: rotate(270deg);
+     }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 </style>
