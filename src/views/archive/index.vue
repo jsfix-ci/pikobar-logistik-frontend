@@ -117,7 +117,7 @@ export default {
         { text: this.$t('label.request_id'), value: 'id' },
         { text: this.$t('label.agency_name'), value: 'agency_name' },
         { text: this.$t('label.mail_status'), value: 'is_letter_file_final' },
-        { text: this.$t('label.verification_status'), value: 'vaccine_request_status_notes' },
+        { text: this.$t('label.verification_status'), value: 'verification_status' },
         // TEMPORARILY HIDDEN
         // { text: this.$t('label.warrant'), sortable: false },
         { text: this.$t('label.follow_up_status'), value: 'status' }
@@ -219,7 +219,7 @@ export default {
       this.handleSearch()
     },
     onSort(val) {
-      if (this.listQuery.sort_by === val.sortBy[0]) { this.switchOrderBy() }
+      this.listQuery.sort_by === val.sortBy[0] ? this.switchOrderBy() : this.listQuery.order_by = 'asc'
       if (val.sortBy.length > 0) {
         this.listQuery.sort_by = val.sortBy[0]
       } else {
