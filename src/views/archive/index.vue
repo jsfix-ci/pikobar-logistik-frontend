@@ -149,15 +149,6 @@ export default {
       totalData: 'totalDataVaccineRequest'
     })
   },
-  watch: {
-    listQuery: {
-      deep: true,
-      immediate: false,
-      handler: async function() {
-        await this.handleSearch(true)
-      }
-    }
-  },
   mounted() {
     this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
   },
@@ -228,6 +219,7 @@ export default {
         this.listQuery.sort_by = ''
         this.listQuery.order_by = 'asc'
       }
+      this.handleSearch(true)
     },
     switchOrderBy() {
       this.listQuery.order_by = this.listQuery.order_by === 'asc' ? 'desc' : 'asc'
