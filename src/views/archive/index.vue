@@ -120,7 +120,7 @@ export default {
         { text: this.$t('label.verification_status'), value: 'verification_status' },
         // TEMPORARILY HIDDEN
         // { text: this.$t('label.warrant'), sortable: false },
-        { text: this.$t('label.follow_up_status'), value: 'status' }
+        { text: this.$t('label.follow_up_status'), value: 'status_rank' }
         // TEMPORARILY HIDDEN
         // { text: this.$t('label.action'), sortable: false }
       ],
