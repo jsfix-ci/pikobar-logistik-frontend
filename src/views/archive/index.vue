@@ -58,6 +58,7 @@
       <JDSTable
         :headers="headers"
         :items="listRequest"
+        @onSort="onSort"
       >
         <template v-slot:item-prop="{ item, index }">
           <tr>
@@ -112,18 +113,19 @@ export default {
       verificationOptions,
       headers: [
         { text: this.$t('label.print_mail_no'), sortable: false },
-        { text: this.$t('label.delivery_plan_date'), sortable: false },
-        { text: this.$t('label.request_id'), sortable: false },
-        { text: this.$t('label.agency_name'), sortable: false },
-        { text: this.$t('label.mail_status'), sortable: false },
-        { text: this.$t('label.verification_status'), sortable: false },
+        { text: this.$t('label.delivery_plan_date'), value: 'delivery_plan_date' },
+        { text: this.$t('label.request_id'), value: 'id' },
+        { text: this.$t('label.agency_name'), value: 'agency_name' },
+        { text: this.$t('label.mail_status'), value: 'is_letter_file_final' },
+        { text: this.$t('label.verification_status'), value: 'verification_status' },
         // TEMPORARILY HIDDEN
         // { text: this.$t('label.warrant'), sortable: false },
-        { text: this.$t('label.follow_up_status'), sortable: false }
+        { text: this.$t('label.follow_up_status'), value: 'status_rank' }
         // TEMPORARILY HIDDEN
         // { text: this.$t('label.action'), sortable: false }
       ],
       listQuery: {
+        page_type: 'archive',
         page: parseInt(this.$route.query?.page || 1),
         limit: parseInt(this.$route.query?.limit || 5),
         sort: this.$route.query?.sort || '',
@@ -134,7 +136,9 @@ export default {
         is_letter_file_final: this.$route.query?.is_letter_file_final ? parseInt(this.$route.query?.is_letter_file_final) : null,
         verification_status: this.$route.query?.verification_status || '',
         warrant: '',
-        status: this.$route.query?.status || ''
+        status: this.$route.query?.status || '',
+        sort_by: '',
+        order_by: 'asc'
       }
     }
   },
@@ -145,32 +149,25 @@ export default {
       totalData: 'totalDataVaccineRequest'
     })
   },
-  watch: {
-    listQuery: {
-      deep: true,
-      immediate: false,
-      handler: () => {
-        this.handleSearch()
-      }
-    }
-  },
   mounted() {
     this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
   },
   methods: {
     getTableRowNumbering,
     filterQuery,
-    async fetchData() {
+    async fetchData(isSorting = false) {
       await this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
-      this.$router.replace({
-        query: {
-          ...this.filterQuery(this.listQuery)
-        }
-      })
+      if (!isSorting) {
+        this.$router.replace({
+          query: {
+            ...this.filterQuery(this.listQuery)
+          }
+        })
+      }
     },
-    handleSearch() {
+    async handleSearch(isSorting = false) {
       this.listQuery.page = 1
-      this.fetchData()
+      await this.fetchData(isSorting)
     },
     onDetail(id) {
       // @todo: create onDetail function
@@ -213,6 +210,19 @@ export default {
       this.listQuery.start_date = value.startDate
       this.listQuery.end_date = value.endDate
       this.handleSearch()
+    },
+    onSort(val) {
+      this.listQuery.sort_by === val.sortBy[0] ? this.switchOrderBy() : this.listQuery.order_by = 'asc'
+      if (val.sortBy.length > 0) {
+        this.listQuery.sort_by = val.sortBy[0]
+      } else {
+        this.listQuery.sort_by = ''
+        this.listQuery.order_by = 'asc'
+      }
+      this.handleSearch(true)
+    },
+    switchOrderBy() {
+      this.listQuery.order_by = this.listQuery.order_by === 'asc' ? 'desc' : 'asc'
     }
   }
 }
