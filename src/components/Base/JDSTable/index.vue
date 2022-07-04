@@ -64,6 +64,12 @@ export default {
       options: {}
     }
   },
+  mounted() {
+    if (this.items.length === 0) {
+      const emptyDataColumn = document.getElementsByClassName('v-data-table__empty-wrapper')[0].children[0]
+      emptyDataColumn.setAttribute('colspan', this.headers.length)
+    }
+  },
   methods: {
     onSort(column) {
       if (this.options.sortBy[0] === column) {
