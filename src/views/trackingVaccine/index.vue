@@ -24,9 +24,12 @@
             placeholder="Tulis ID/No. HP/Email Permohonan"
             :error-messages="errors"
             :hide-details="errors.length === 0"
+            @keyup.enter.native="onSearch"
           />
         </ValidationProvider>
       </ValidationObserver>
+
+      <!-- Action Button -->
       <div
         :class="{
           'd-flex': true,
@@ -36,7 +39,7 @@
       >
         <JDSButton
           inverted
-          height="38px"
+          height="42px"
           :width="$vuetify.breakpoint.mdAndUp ? '48%' : '100%'"
           :class="{ 'mt-2': $vuetify.breakpoint.smAndDown }"
           @click="$router.go(-1)"
@@ -44,15 +47,17 @@
           Kembali ke Menu Utama
         </JDSButton>
         <JDSButton
-          height="38px"
+          height="42px"
           :width="$vuetify.breakpoint.mdAndUp ? '48%' : '100%'"
           @click="onSearch"
         >
           Lacak
         </JDSButton>
       </div>
+
+      <!-- Result -->
       <JDSTable
-        v-if="$vuetify.breakpoint.mdAndUp"
+        v-if="isSearched && $vuetify.breakpoint.mdAndUp"
         :headers="headers"
         :items="listVaccine"
       >
@@ -72,9 +77,10 @@
           </tr>
         </template>
       </JDSTable>
-      <div v-for="(item, index) in listVaccine" v-else :key="item.id">
+      <div v-for="(item, index) in listVaccine" v-else-if="isSearched" :key="item.id">
         <ResultCard :index="index + 1" :data="item" />
       </div>
+
     </div>
     <VaccineFooter />
   </div>
@@ -104,30 +110,32 @@ export default {
   data() {
     return {
       search: '',
+      isSearched: false,
+      listVaccine: [],
       headers: [
-        { text: this.$t('label.print_mail_no'), sortable: false },
+        { text: 'No', sortable: false },
         { text: 'Tanggal Permohonan', sortable: false },
         { text: 'Nomor Surat', sortable: false },
         { text: 'Nama Instansi', sortable: false },
         { text: 'Jenis Instansi', sortable: false },
         { text: 'Pemohon', sortable: false },
         { text: 'Aksi', sortable: false }
-      ],
-      listVaccine: [
-        {
-          created_at: '2020-07-22T06:55:14.000000Z',
-          letter_number: 'B/984/V/2020',
-          agency_name: 'Komando Daerah Militer III Siliwangi',
-          agency_type_name: 'Instansi Lainnya',
-          applicant_fullname: 'Kunto Arief Wibowo'
-        }
       ]
     }
   },
   methods: {
     async onSearch() {
+      this.isSearched = true
       const isValid = await this.$refs.form.validate()
-      console.log(isValid) // @todo: delete console statement
+      if (isValid) {
+        const res = await this.$store.dispatch('tracking/getTrackingVaccine', { search: this.search })
+        this.listVaccine = res.data
+      } else {
+        return
+      }
+    },
+    onDetail(id) {
+      this.$router.push(`/tracking-vaccine/${id}`)
     }
   }
 }

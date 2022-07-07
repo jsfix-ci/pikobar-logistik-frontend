@@ -52,5 +52,21 @@ export default {
     } catch (e) {
       return e
     }
+  },
+  async getTrackingVaccine({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/vaccine-tracking', 'GET', params)
+      return response
+    } catch (e) {
+      // silent error
+    }
+  },
+  async getTrackingVaccineDetail({ commit }, id) {
+    try {
+      const response = await fetchList(`/api/v1/vaccine-tracking/${id}`, 'GET')
+      return response
+    } catch (e) {
+      // silent error
+    }
   }
 }

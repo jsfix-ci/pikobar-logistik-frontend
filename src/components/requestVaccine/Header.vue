@@ -3,7 +3,7 @@
     <div class="d-flex flex-row justify-space-between py-5">
       <img src="/img/icons/pengajuan-logistik.svg" alt="pengajuan-logistik">
       <JDSButton height="38px" @click="onInfoClick">
-        <v-icon right dark class="mr-2 ml-0">
+        <v-icon v-if="$vuetify.breakpoint.mdAndUp" right dark class="mr-2 ml-0">
           mdi-alert-circle
         </v-icon>
         {{ $t('label.ask_us') }}
