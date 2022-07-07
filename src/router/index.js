@@ -86,6 +86,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/tracking-vaccine/:id',
+    component: () => import('@/views/trackingVaccine/detail/index'),
+    hidden: true
+  },
+  {
     path: '/change-password',
     component: Layout,
     hidden: true,
