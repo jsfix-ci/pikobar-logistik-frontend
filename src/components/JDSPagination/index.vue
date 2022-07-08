@@ -1,5 +1,5 @@
 <template>
-  <div class="jds-pagination">
+  <div v-if="totalPage > 0" class="jds-pagination">
     <v-icon
       class="jds-pagination__icon jds-pagination__icon--left"
       @click="onPrev"
