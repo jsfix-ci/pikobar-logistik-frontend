@@ -16,6 +16,7 @@
         </v-stepper-step>
       </v-stepper-header>
     </v-stepper>
+    <!-- @todo: move action button component to detail index -->
     <div
       :class="{
         'd-flex': true,
@@ -28,7 +29,7 @@
         height="42px"
         :width="$vuetify.breakpoint.mdAndUp ? '222px' : '100%'"
         :class="{ 'mb-2': $vuetify.breakpoint.smAndDown }"
-        @click="$router.push('/tracking-vaccine')"
+        @click="$router.go(-1)"
       >
         Kembali ke Hasil Pencarian
       </JDSButton>

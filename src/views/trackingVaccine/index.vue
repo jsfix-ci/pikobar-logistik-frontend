@@ -18,7 +18,7 @@
           name="ID/No. HP/Email Permohonan"
         >
           <JDSTextField
-            v-model="search"
+            v-model="listQuery.search"
             label="ID/No. HP/Email Permohonan"
             sub-label="*ID permohonan didapatkan setelah anda melakukan permohonan"
             placeholder="Tulis ID/No. HP/Email Permohonan"
@@ -63,7 +63,7 @@
       >
         <template v-slot:item-prop="{ item, index }">
           <tr>
-            <td>{{ index + 1 }}</td>
+            <td>{{ getTableRowNumbering(index, listQuery.page, listQuery.limit) }}</td>
             <td>{{ item.created_at ? $moment(item.created_at).format('D MMMM YYYY') : '-' }}</td>
             <td>{{ item.letter_number || '-' }}</td>
             <td>{{ item.agency_name || '-' }}</td>
@@ -78,9 +78,26 @@
         </template>
       </JDSTable>
       <div v-for="(item, index) in listVaccine" v-else-if="isSearched" :key="item.id">
-        <ResultCard :index="index + 1" :data="item" />
+        <ResultCard :index="getTableRowNumbering(index, listQuery.page, listQuery.limit)" :data="item" />
       </div>
-
+      <pagination
+        v-if="$vuetify.breakpoint.mdAndUp"
+        :total="pagination.totalPage"
+        :total-data="pagination.totalData"
+        :page.sync="listQuery.page"
+        :limit.sync="listQuery.limit"
+        :on-next="fetchData"
+        :page-sizes="[5, 10]"
+      />
+      <JDSPagination
+        v-else
+        :key="pagination.totalPage"
+        :init-page="listQuery.page"
+        :total-page="pagination.totalPage"
+        :page.sync="listQuery.page"
+        @onPrev="fetchData"
+        @onNext="fetchData"
+      />
     </div>
     <VaccineFooter />
   </div>
@@ -88,11 +105,13 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { getTableRowNumbering, filterQuery } from '@/helpers/tableDisplay'
 import VaccineHeader from '@/components/requestVaccine/Header'
 import VaccineFooter from '@/components/requestVaccine/Footer'
 import JDSTextField from '@/components/Base/JDSTextField'
 import JDSButton from '@/components/Base/JDSButton'
 import JDSTable from '@/components/Base/JDSTable'
+import JDSPagination from '@/components/JDSPagination'
 import TrackingHeader from './TrackingHeader'
 import ResultCard from './ResultCard'
 export default {
@@ -104,13 +123,12 @@ export default {
     JDSTextField,
     JDSButton,
     JDSTable,
+    JDSPagination,
     TrackingHeader,
     ResultCard
   },
   data() {
     return {
-      search: '',
-      isSearched: false,
       listVaccine: [],
       headers: [
         { text: 'No', sortable: false },
@@ -120,22 +138,55 @@ export default {
         { text: 'Jenis Instansi', sortable: false },
         { text: 'Pemohon', sortable: false },
         { text: 'Aksi', sortable: false }
-      ]
+      ],
+      pagination: {
+        totalPage: 0,
+        totalData: 0
+      },
+      listQuery: {
+        search: this.$route.query?.search || '',
+        page: parseInt(this.$route.query?.page || 1),
+        limit: parseInt(this.$route.query?.limit || 5)
+      }
+    }
+  },
+  computed: {
+    isSearched() {
+      return this.listVaccine.length > 0
+    }
+  },
+  async mounted() {
+    if (this.listQuery.search !== '') {
+      this.fetchData()
     }
   },
   methods: {
+    getTableRowNumbering,
+    filterQuery,
     async onSearch() {
-      this.isSearched = true
       const isValid = await this.$refs.form.validate()
       if (isValid) {
-        const res = await this.$store.dispatch('tracking/getTrackingVaccine', { search: this.search })
-        this.listVaccine = res.data
+        this.listQuery.page = 1
+        await this.fetchData(true)
       } else {
         return
       }
     },
     onDetail(id) {
       this.$router.push(`/tracking-vaccine/${id}`)
+    },
+    async fetchData(isReplaceQuery = false) {
+      const res = await this.$store.dispatch('tracking/getTrackingVaccine', this.listQuery)
+      this.listVaccine = res.data
+      this.pagination.totalPage = res.meta.last_page
+      this.pagination.totalData = res.meta.total
+      if (isReplaceQuery) {
+        this.$router.replace({
+          query: {
+            ...this.filterQuery(this.listQuery)
+          }
+        })
+      }
     }
   }
 }
