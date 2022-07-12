@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       showDialog: false,
-      dialogType: '', // verifConfirmation, success, verifWithNote, verifWithNoteSuccess, recommendConfirmation, recommendSuccess, notUpdated, realizeConfirmation, realizeSuccess, deliverConfirmation, deliverSuccess
+      dialogType: '', // verifConfirmation, success, verifWithNote, verifWithNoteSuccess, recommendConfirmation, recommendSuccess, notUpdated, realizeConfirmation, realizeSuccess, deliverConfirmation, deliverSuccess, deliveryLoading
       isRecommendationUpdated: false,
       isRealizationUpdated: false,
       deliveryPlanDate: null,
@@ -178,7 +178,7 @@ export default {
       this.submitForm(payload, 'realizeSuccess')
     },
     onDeliver() {
-      this.showDialog = false
+      this.dialogType = 'deliveryLoading'
       const payload = {
         id: this.$route.params.id,
         status: 'integrated'

@@ -230,6 +230,10 @@ export default {
             label: 'Kembali Ke Menu Satuan Tugas',
             onClick: () => { this.$router.push('/delivery-plan') }
           }
+        },
+        deliveryLoading: {
+          image: '/img/icons/vaccine-track-right.svg',
+          title: 'Sedang cek stok, Mohon Menunggu'
         }
       }
     }
@@ -240,6 +244,9 @@ export default {
     },
     extraNote() {
       this.showError = this.extraNote === ''
+    },
+    type(val) {
+      this.content = { ...this.listContent[val] }
     }
   },
   async mounted() {
