@@ -744,6 +744,7 @@ export default {
     request_requirement: 'Syarat Permohonan',
     request_detail: 'Detail Permohonan',
     approved_with_notes: 'Diterima dengan Catatan',
+    reject_request: 'Tolak Permohonan',
     pharmacy: 'Farmasi',
     acceptance_report: {
       already_sent_code_to_email: 'Kami telah mengirimkan kode ke email',
