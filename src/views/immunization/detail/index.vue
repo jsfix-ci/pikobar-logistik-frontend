@@ -190,7 +190,7 @@ export default {
       this.submitForm(payload, 'realizeSuccess')
     },
     onDeliver() {
-      this.showDialog = false
+      this.dialogType = 'deliveryLoading'
       const payload = {
         id: this.$route.params.id,
         status: 'integrated'
