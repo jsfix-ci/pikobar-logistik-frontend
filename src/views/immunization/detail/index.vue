@@ -122,6 +122,8 @@ export default {
         }
         this.dialogType = dialogSuccessType
         this.showDialog = true
+      } else {
+        this.showDialog = false
       }
     },
     onVerify(value) {
