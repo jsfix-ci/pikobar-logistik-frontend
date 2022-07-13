@@ -186,6 +186,8 @@ export default {
       switch (item.status) {
         case 'not_verified':
           return this.$t('label.dashboard_unverified')
+        case 'rejected':
+          return this.$t('label.dashboard_rejected')
         case 'verified':
           return this.$t('label.recommend')
         case 'approved':

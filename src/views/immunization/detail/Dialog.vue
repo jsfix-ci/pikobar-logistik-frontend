@@ -5,7 +5,7 @@
     persistent
   >
     <!-- Dialog with form -->
-    <div v-if="type === 'verifWithNote'" class="detail-dialog">
+    <div v-if="isFormDialog" class="detail-dialog">
       <img
         src="/img/confirmation.svg"
         alt="confirmation"
@@ -13,7 +13,7 @@
         height="187"
       >
       <span class="detail-dialog__title">
-        Anda yakin permohonan ini diterima dengan catatan? Mengapa?
+        {{ formDialogContent[type].title }}
       </span>
       <div class="d-flex flex-column">
         <v-checkbox
@@ -39,8 +39,8 @@
         <JDSButton inverted height="42px" width="200px" @click="$emit('close')">
           Sebentar, cek Kembali
         </JDSButton>
-        <JDSButton height="42px" width="200px" @click="onVerifyWithNote">
-          Terima dengan Catatan
+        <JDSButton height="42px" width="200px" @click="formDialogContent[type].onConfirm">
+          {{ formDialogContent[type].confirmationButton }}
         </JDSButton>
       </div>
     </div>
@@ -154,6 +154,14 @@ export default {
             onClick: () => { this.$router.push('/recommendation') }
           }
         },
+        rejectSuccess: {
+          image: '/img/warning.svg',
+          title: 'Permohonan telah ditolak!',
+          buttonRight: {
+            label: 'Kembali ke Verifikasi',
+            onClick: () => { this.$router.push('/recommendation') }
+          }
+        },
         notUpdated: {
           image: '/img/warning.svg',
           title: 'Harap Update Barang Anda!',
@@ -235,7 +243,24 @@ export default {
           image: '/img/icons/vaccine-track-right.svg',
           title: 'Sedang cek stok, Mohon Menunggu'
         }
+      },
+      formDialogContent: {
+        verifWithNote: {
+          title: 'Anda yakin permohonan ini diterima dengan catatan? Mengapa?',
+          confirmationButton: 'Terima dengan Catatan',
+          onConfirm: () => { this.onVerifyWithNote() }
+        },
+        reject: {
+          title: 'Anda yakin permohonan ini ditolak? Mengapa?',
+          confirmationButton: 'Tolak Permohonan',
+          onConfirm: () => { this.onReject() }
+        }
       }
+    }
+  },
+  computed: {
+    isFormDialog() {
+      return this.type === 'verifWithNote' || this.type === 'reject'
     }
   },
   watch: {
@@ -250,7 +275,7 @@ export default {
     }
   },
   async mounted() {
-    if (this.type === 'verifWithNote') {
+    if (this.isFormDialog) {
       this.noteList = await this.$store.dispatch('vaccine/getVaccineStatusNote')
     } else {
       this.content = { ...this.listContent[this.type] }
@@ -266,6 +291,18 @@ export default {
       }
       this.$emit('verify', {
         isVerifWithNote: true,
+        note: this.note,
+        extraNote: this.extraNote
+      })
+    },
+    onReject() {
+      this.showError = false
+      const isValid = this.note.length > 0 || this.extraNote !== ''
+      if (!isValid) {
+        this.showError = true
+        return
+      }
+      this.$emit('reject', {
         note: this.note,
         extraNote: this.extraNote
       })
