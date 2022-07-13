@@ -174,7 +174,7 @@ export default {
       // this.$router.push(`/archive/detail/${id}`)
     },
     statusDisplay(item) {
-      if (item.note || item.vaccine_request_status_notes.length > 0) {
+      if ((item.note || item.vaccine_request_status_notes.length > 0) && item.status !== 'rejected') {
         return this.$t('label.accepted_with_note')
       } else if (item.status === 'not_verified') {
         return this.$t('status.not_verified')
