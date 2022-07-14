@@ -265,10 +265,10 @@ export default {
   },
   watch: {
     note() {
-      this.showError = this.note.length <= 0
+      this.showError = this.note.length <= 0 && this.extraNote === ''
     },
     extraNote() {
-      this.showError = this.extraNote === ''
+      this.showError = this.note.length <= 0 && this.extraNote === ''
     },
     type(val) {
       this.content = { ...this.listContent[val] }
