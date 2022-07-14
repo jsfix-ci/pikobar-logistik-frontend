@@ -159,7 +159,7 @@ export default {
           title: 'Permohonan telah ditolak!',
           buttonRight: {
             label: 'Kembali ke Verifikasi',
-            onClick: () => { this.$router.push('/recommendation') }
+            onClick: () => { this.$router.push('/admin-verification') }
           }
         },
         notUpdated: {
