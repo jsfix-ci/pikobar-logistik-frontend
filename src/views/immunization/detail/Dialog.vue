@@ -30,7 +30,7 @@
         <span class="detail-dialog__note mt-6">Alasan Lainnya/Keterangan</span>
         <v-textarea
           v-model="extraNote"
-          placeholder="Tulis alasan/keterangan di sini (opsional)"
+          placeholder="Tulis alasan/keterangan di sini"
           hide-details
         />
         <span v-if="showError" class="detail-dialog__note mt-2 red--text">Harap mengisi catatan</span>
@@ -159,7 +159,7 @@ export default {
           title: 'Permohonan telah ditolak!',
           buttonRight: {
             label: 'Kembali ke Verifikasi',
-            onClick: () => { this.$router.push('/recommendation') }
+            onClick: () => { this.$router.push('/admin-verification') }
           }
         },
         notUpdated: {
