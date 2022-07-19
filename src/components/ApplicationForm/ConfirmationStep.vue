@@ -322,7 +322,7 @@
                     <td>{{ item.unitName || '-' }}</td>
                     <td>{{ item.description || '-' }}</td>
                     <td>{{ item.total || '-' }}</td>
-                    <td>{{ item.unitName || '-' }}</td>
+                    <td>{{ item.unitId || '-' }}</td>
                     <td>{{ item.purpose || '-' }}</td>
                   </tr>
                 </tbody>
