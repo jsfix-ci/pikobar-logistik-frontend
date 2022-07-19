@@ -1,7 +1,13 @@
 export default {
-  setLoading({ commit }, newLoading) {
+  pushLoading({ commit }, newLoading) {
     return new Promise(resolve => {
-      commit('SET_LOADING', newLoading)
+      commit('PUSH_LOADING')
+      resolve()
+    })
+  },
+  popLoading({ commit }, newLoading) {
+    return new Promise(resolve => {
+      commit('POP_LOADING')
       resolve()
     })
   }
