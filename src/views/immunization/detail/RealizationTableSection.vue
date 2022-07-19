@@ -57,8 +57,7 @@
           </tr>
         </template>
       </JDSTable>
-      <!-- TEMPORARILY HIDDEN -->
-      <!-- <JDSButton
+      <JDSButton
         v-if="stage === 'realization'"
         inverted
         height="25px"
@@ -66,7 +65,7 @@
         @click="onAddMore(false)"
       >
         {{ $t('label.add_vaccine_realization') }}
-      </JDSButton> -->
+      </JDSButton>
     </div>
 
     <!-- Vaccine Support -->
@@ -111,8 +110,7 @@
           </tr>
         </template>
       </JDSTable>
-      <!-- TEMPORARILY HIDDEN -->
-      <!-- <JDSButton
+      <JDSButton
         v-if="stage === 'realization'"
         inverted
         height="25px"
@@ -120,7 +118,7 @@
         @click="onAddMore(true)"
       >
         {{ $t('label.add_vaccine_support_realization') }}
-      </JDSButton> -->
+      </JDSButton>
     </div>
 
     <!-- Form Input -->
