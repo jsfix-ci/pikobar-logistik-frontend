@@ -4,7 +4,7 @@
   >
     <toast-notification />
     <loading-logo
-      :loading="$store.state.general.isLoading"
+      :loading="$store.state.general.isLoading.length !== 0"
     />
     <template v-if="pageLoading">
       <!-- Loader -->

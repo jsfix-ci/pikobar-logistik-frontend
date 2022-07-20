@@ -1,7 +1,10 @@
 <template>
   <div class="jds-text-field">
-    <span class="jds-text-field__label">
+    <span class="jds-text-field jds-text-field__label">
       {{ label }}
+    </span>
+    <span v-if="subLabel" class="jds-text-field jds-text-field__sub-label">
+      {{ subLabel }}
     </span>
     <v-text-field
       :value="value"
@@ -12,6 +15,7 @@
       :error="error"
       :error-messages="errorMessages"
       solo
+      class="mt-2"
       @input="$emit('input', $event)"
       @change="$emit('change')"
     />
@@ -26,6 +30,10 @@ export default {
       default: null
     },
     label: {
+      type: String,
+      default: ''
+    },
+    subLabel: {
       type: String,
       default: ''
     },
@@ -61,12 +69,16 @@ export default {
 .jds-text-field {
   display: flex;
   flex-direction: column;
+  font-family: 'Lato', sans-serif;
 
   &__label {
-    font-family: 'Lato', sans-serif;
     font-size: 15px;
     color: #424242;
-    margin-bottom: 8px;
+  }
+
+  &__sub-label {
+    font-size: 13px;
+    color: #616161;
   }
 }
 

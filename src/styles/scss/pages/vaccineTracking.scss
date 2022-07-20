@@ -1,0 +1,67 @@
+.tracking {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 0 150px;
+  justify-content: space-between;
+  height: 100vh;
+
+  &__header {
+    margin: 150px 0 100px 0;
+
+    &--grey {
+      background-color: #FAFAFA;
+      border-radius: 8px;
+      padding: 24px 40px;
+    }
+  }
+
+  &__vaccination-track {
+    &__title {
+      font-family: 'Roboto';
+      font-size: 21px;
+      font-weight: 500;
+      color: #424242;
+    }
+
+    &__text {
+      margin-top: 8px;
+      font-family: 'Roboto';
+      font-size: 16px;
+      color: #757575;
+
+      &--large {
+        width: 60%;
+      }
+    }
+  }
+
+  &__title {
+    font-family: 'Lora', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #BDBDBD;
+    margin-top: 40px;
+  }
+}
+
+.v-stepper__content::v-deep {
+  padding-top: 0px !important;
+  > .v-stepper__wrapper {
+    height: auto !important;
+  }
+}
+
+.v-stepper__step.active::v-deep {
+  > .v-stepper__step__step {
+    background: #069550 !important;
+  }
+}
+
+.v-stepper__label {
+  span {
+   font-family: 'Lato', sans-serif; 
+   font-size: 14px;
+   color: #424242;
+  }
+}

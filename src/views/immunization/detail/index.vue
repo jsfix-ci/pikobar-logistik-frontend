@@ -44,6 +44,7 @@
       :instance-lead="instanceLead"
       @close="showDialog = false"
       @verify="onVerify"
+      @reject="onReject"
       @recommend="onRecommend"
       @realize="onRealize"
       @deliver="onDeliver"
@@ -75,7 +76,7 @@ export default {
   data() {
     return {
       showDialog: false,
-      dialogType: '', // verifConfirmation, success, verifWithNote, verifWithNoteSuccess, recommendConfirmation, recommendSuccess, notUpdated, realizeConfirmation, realizeSuccess, deliverConfirmation, deliverSuccess
+      dialogType: '', // verifConfirmation, reject, success, verifWithNote, verifWithNoteSuccess, rejectSuccess, recommendConfirmation, recommendSuccess, notUpdated, realizeConfirmation, realizeSuccess, deliverConfirmation, deliverSuccess, deliveryLoading
       isRecommendationUpdated: false,
       isRealizationUpdated: false,
       deliveryPlanDate: null,
@@ -121,6 +122,8 @@ export default {
         }
         this.dialogType = dialogSuccessType
         this.showDialog = true
+      } else {
+        this.showDialog = false
       }
     },
     onVerify(value) {
@@ -140,6 +143,17 @@ export default {
         }
       }
       const dialogSuccessType = value.isVerifWithNote ? 'verifWithNoteSuccess' : 'success'
+      this.submitForm(payload, dialogSuccessType)
+    },
+    onReject(value) {
+      this.showDialog = false
+      const payload = {
+        id: this.$route.params.id,
+        status: 'rejected',
+        vaccine_status_note: value.note,
+        note: value.extraNote
+      }
+      const dialogSuccessType = 'rejectSuccess'
       this.submitForm(payload, dialogSuccessType)
     },
     async onRecommendValidation() {
@@ -178,7 +192,7 @@ export default {
       this.submitForm(payload, 'realizeSuccess')
     },
     onDeliver() {
-      this.showDialog = false
+      this.dialogType = 'deliveryLoading'
       const payload = {
         id: this.$route.params.id,
         status: 'integrated'

@@ -43,6 +43,10 @@ export const stageOptions = [
     value: 'not_verified'
   },
   {
+    text: i18n.t('label.dashboard_rejected'),
+    value: 'rejected'
+  },
+  {
     text: i18n.t('label.recommend'),
     value: 'verified'
   },
