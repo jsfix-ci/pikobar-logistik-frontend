@@ -222,7 +222,7 @@ export default {
           image: '/img/confirmation.svg',
           title: 'Anda Yakin Ingin Mengembalikan Data Ini ke Tahap Realisasi?',
           buttonLeft: {
-            label: 'Cek kembali',
+            label: 'Cek Kembali',
             isInverted: true,
             onClick: () => { this.$emit('close') }
           },
@@ -243,7 +243,7 @@ export default {
           image: '/img/confirmation.svg',
           title: 'Apakah Anda yakin Data Perintah Pengeluaran Barang Ini Sudah Benar?',
           buttonLeft: {
-            label: 'Cek kembali',
+            label: 'Cek Kembali',
             isInverted: true,
             onClick: () => { this.$emit('close') }
           },
