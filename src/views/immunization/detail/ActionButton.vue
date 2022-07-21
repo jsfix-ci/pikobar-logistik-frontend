@@ -43,6 +43,9 @@
       <JDSButton inverted height="42px" class="mr-4" @click="onBack()">
         {{ $t('label.back') }}
       </JDSButton>
+      <JDSButton inverted height="42px" class="mr-4" @click="$emit('return')">
+        Kembalikan Data
+      </JDSButton>
       <JDSButton height="42px" @click="$emit('deliver')">
         Perintahkan Keluar Barang
       </JDSButton>
