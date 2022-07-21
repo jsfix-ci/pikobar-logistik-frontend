@@ -218,6 +218,27 @@ export default {
             onClick: () => { this.$router.push('/realization') }
           }
         },
+        returnConfirmation: {
+          image: '/img/confirmation.svg',
+          title: 'Anda Yakin Ingin Mengembalikan Data Ini ke Tahap Realisasi?',
+          buttonLeft: {
+            label: 'Cek kembali',
+            isInverted: true,
+            onClick: () => { this.$emit('close') }
+          },
+          buttonRight: {
+            label: 'Ya, Kembalikan Data',
+            onClick: () => { this.$emit('return') }
+          }
+        },
+        returnSuccess: {
+          image: '/img/email.svg',
+          title: 'Permohonan Telah Dikembalikan ke Tahap Realisasi',
+          buttonRight: {
+            label: 'Kembali Ke Menu Satuan Tugas',
+            onClick: () => { this.$router.push('/delivery-plan') }
+          }
+        },
         deliverConfirmation: {
           image: '/img/confirmation.svg',
           title: 'Apakah Anda yakin Data Perintah Pengeluaran Barang Ini Sudah Benar?',

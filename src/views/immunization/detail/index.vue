@@ -35,6 +35,7 @@
       @confirm="onConfirm"
       @recommend="onRecommendValidation"
       @realize="onRealizeValidation"
+      @return="onReturnValidation"
       @deliver="onDeliverValidation"
     />
     <DialogSection
@@ -47,6 +48,7 @@
       @reject="onReject"
       @recommend="onRecommend"
       @realize="onRealize"
+      @return="onReturn"
       @deliver="onDeliver"
     />
   </div>
@@ -170,6 +172,10 @@ export default {
       this.dialogType = this.isRealizationUpdated ? 'realizeConfirmation' : 'notUpdated'
       this.showDialog = true
     },
+    onReturnValidation() {
+      this.dialogType = 'returnConfirmation'
+      this.showDialog = true
+    },
     onDeliverValidation() {
       this.dialogType = 'deliverConfirmation'
       this.showDialog = true
@@ -190,6 +196,14 @@ export default {
         delivery_plan_date: this.deliveryPlanDate
       }
       this.submitForm(payload, 'realizeSuccess')
+    },
+    onReturn() {
+      this.showDialog = false
+      const payload = {
+        id: this.$route.params.id,
+        status: 'approved'
+      }
+      this.submitForm(payload, 'returnSuccess')
     },
     onDeliver() {
       this.dialogType = 'deliveryLoading'
