@@ -21,8 +21,8 @@
           </v-col>
           <v-col cols="12" md="4" xs="12">
             <v-row class="float-right-landing-page">
-              <a :href="$t('label.link_tutorial')" target="_blank"><v-icon color="white" size="25">{{ $t('label.icon_help') }}</v-icon></a>
-              <a :href="$t('label.link_tutorial')" target="_blank"><div class="tutorial-class-form-pemohon pusat-bantuan-landing-page">{{ $t('label.tutorial') }}</div></a>
+              <a :href="linkTutorial" target="_blank"><v-icon color="white" size="25">{{ $t('label.icon_help') }}</v-icon></a>
+              <a :href="linkTutorial" target="_blank"><div class="tutorial-class-form-pemohon pusat-bantuan-landing-page">{{ $t('label.tutorial') }}</div></a>
             </v-row>
           </v-col>
         </v-row>
@@ -39,7 +39,7 @@
               }}
             </div>
           </div>
-          <a :href="$t('label.link_tutorial')" target="_blank">
+          <a :href="linkTutorial" target="_blank">
             <v-icon color="white" size="25">
               {{ $t('label.icon_help') }}
             </v-icon>
@@ -135,6 +135,11 @@ export default {
     },
     landingPage() {
       return this.$route.query.type === 'vaksin' ? '/landing-page-vaccine' : '/landing-page'
+    },
+    linkTutorial() {
+      return this.isVaccineContent
+        ? 'https://bit.ly/PanduanPemohonVaksin'
+        : this.$t('label.link_tutorial')
     }
   },
   created() {
