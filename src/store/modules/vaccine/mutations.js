@@ -26,5 +26,9 @@ export default {
   },
   LOAD_DATA_STOCK: (state, data) => {
     state.loadDataStock = data
+  },
+  // Vaccine Stock Item
+  SET_VACCINE_ITEM_STOCK: (state, data) => {
+    state.vaccineItemStock = data
   }
 }

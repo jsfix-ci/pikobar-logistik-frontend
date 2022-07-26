@@ -15,7 +15,9 @@ const state = {
   totalListRealization: 0,
   totalDataRealization: 0,
   allocationMaterials: [],
-  loadDataStock: false
+  loadDataStock: false,
+  // Vaccine Item
+  vaccineItemStock: {}
 }
 
 export default {
