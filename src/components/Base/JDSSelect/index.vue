@@ -18,6 +18,7 @@
       solo
       @input="$emit('input', $event)"
       @change="$emit('change')"
+      @click:clear="$emit('clear')"
     />
   </div>
 </template>
