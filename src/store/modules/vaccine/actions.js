@@ -84,6 +84,18 @@ export default {
       return e
     }
   },
+  async getStockItem({ commit }, item) {
+    try {
+      const response = await fetchList(`/api/v1/check-stock/${item}`, 'GET')
+      commit('SET_VACCINE_ITEM_STOCK', response.data)
+      return response
+    } catch (e) {
+      return // silent error
+    }
+  },
+  async clearStockItem({ commit }, item) {
+    commit('SET_VACCINE_ITEM_STOCK', {})
+  },
   async clearStock({ commit }, params) {
     try {
       commit('LOAD_DATA_STOCK', true)

@@ -11,6 +11,7 @@
       :clearable="clearable"
       :placeholder="placeholder"
       :hide-details="hideDetails"
+      :disabled="disabled"
       :suffix="suffix"
       :error="error"
       :error-messages="errorMessages"
@@ -44,6 +45,10 @@ export default {
     suffix: {
       type: String,
       default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     hideDetails: {
       type: Boolean,

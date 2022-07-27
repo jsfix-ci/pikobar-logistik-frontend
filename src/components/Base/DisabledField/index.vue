@@ -1,8 +1,18 @@
 <template>
-  <div class="disabled-field">
+  <div
+    :class="{
+      'disabled-field': true,
+      'disabled-field--info': info
+    }"
+  >
     <slot name="prepend" />
     <div class="d-flex flex-column">
-      <span class="disabled-field__label">
+      <span
+        :class="{
+          'disabled-field__label': true,
+          'disabled-field__label--info': info
+        }"
+      >
         {{ label }}
       </span>
       <div v-if="Array.isArray(value)">
@@ -12,7 +22,13 @@
           </li>
         </ul>
       </div>
-      <span v-else class="disabled-field__value">
+      <span
+        v-else
+        :class="{
+          'disabled-field__value': true,
+          'disabled-field__value--info': info
+        }"
+      >
         {{ value }}
       </span>
     </div>
@@ -30,6 +46,10 @@ export default {
     label: {
       type: String,
       default: ''
+    },
+    info: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -49,11 +69,20 @@ export default {
   border-radius: 8px;
   padding: 8px 16px;
 
+  &--info {
+    background: #E3F2FD;
+    border-color: #42A5F5;
+  }
+
   &__label {
     font-family: 'Lato', sans-serif;
     font-size: 15px;
     color: #424242;
     margin-bottom: 8px;
+
+    &--info {
+      color: #1E88E5;
+    }
   }
 
   &__value {
@@ -61,6 +90,10 @@ export default {
     font-size: 16px;
     font-weight: 500;
     color: #424242 !important;
+
+    &--info {
+      color: #0D47A1 !important;
+    }
   }
 }
 </style>
