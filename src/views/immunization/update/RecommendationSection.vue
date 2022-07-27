@@ -45,7 +45,7 @@
         disabled
         hide-details
       />
-      <span class="recommendation__stock" @click="showStockDialog = true">
+      <span class="recommendation__stock" @click="$emit('showStock')">
         Detail Info Stok
       </span>
       <ValidationProvider
@@ -84,10 +84,6 @@
         </v-col>
       </v-row>
     </div>
-    <StockDialog
-      v-model="showStockDialog"
-      @close="showStockDialog = false"
-    />
   </div>
 </template>
 
@@ -98,7 +94,6 @@ import JDSSelect from '@/components/Base/JDSSelect'
 import JDSTextField from '@/components/Base/JDSTextField'
 import JDSDatePicker from '@/components/Base/JDSDatePicker'
 import DisabledField from '@/components/Base/DisabledField'
-import StockDialog from './StockDialog'
 export default {
   components: {
     ValidationObserver,
@@ -106,8 +101,7 @@ export default {
     JDSSelect,
     JDSTextField,
     JDSDatePicker,
-    DisabledField,
-    StockDialog
+    DisabledField
   },
   props: {
     data: {
@@ -132,8 +126,7 @@ export default {
       name: '',
       quantity: '',
       note: '',
-      date: '',
-      showStockDialog: false
+      date: ''
     }
   },
   computed: {
