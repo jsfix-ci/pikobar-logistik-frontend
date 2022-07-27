@@ -46,9 +46,22 @@
         :error-messages="errors"
         :hide-details="errors.length === 0"
         class="mb-3"
-        @change="$emit('update:name', name)"
+        @change="onItemSelected"
+        @clear="onClear"
       />
     </ValidationProvider>
+    <JDSTextField
+      v-model="currentStock"
+      label="Stok Terkini"
+      placeholder="Stok terkini"
+      :suffix="unitDisplay"
+      :clearable="false"
+      disabled
+      hide-details
+    />
+    <span class="realization__stock" @click="$emit('showStock')">
+      Detail Info Stok
+    </span>
     <ValidationProvider
       v-slot="{ errors }"
       rules="required|numeric"
@@ -62,6 +75,7 @@
         :clearable="false"
         :error-messages="errors"
         :hide-details="errors.length === 0"
+        class="mt-6"
         @change="$emit('update:quantity', quantity)"
       />
     </ValidationProvider>
@@ -69,6 +83,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import JDSSelect from '@/components/Base/JDSSelect'
 import JDSTextField from '@/components/Base/JDSTextField'
@@ -120,8 +135,14 @@ export default {
     }
   },
   computed: {
+    ...mapState('vaccine', [
+      'vaccineItemStock'
+    ]),
     unitDisplay() {
       return this.name ? this.name.UoM : this.unit ?? 'Vial'
+    },
+    currentStock() {
+      return this.vaccineItemStock.current_stock || '-'
     }
   },
   watch: {
@@ -155,6 +176,13 @@ export default {
     async validate() {
       const isValid = await this.$refs.form.validate()
       return isValid
+    },
+    onItemSelected() {
+      this.$store.dispatch('vaccine/getStockItem', this.name.material_id)
+      this.$emit('update:name', this.name)
+    },
+    onClear() {
+      this.$store.dispatch('vaccine/clearStockItem')
     }
   }
 }
@@ -173,6 +201,16 @@ export default {
     font-size: 16px;
     font-weight: 700;
     color: #757575;
+  }
+
+  &__stock {
+    font-size: 13px;
+    text-decoration: underline;
+    color: #1E88E5;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 </style>
