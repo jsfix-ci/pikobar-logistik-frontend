@@ -64,7 +64,7 @@
     </span>
     <ValidationProvider
       v-slot="{ errors }"
-      rules="required|numeric"
+      :rules="quantityValidation"
       name="Jumlah Barang"
     >
       <JDSTextField
@@ -143,6 +143,9 @@ export default {
     },
     currentStock() {
       return this.vaccineItemStock.current_stock || '-'
+    },
+    quantityValidation() {
+      return `required|numeric|maxValue:${this.currentStock}`
     }
   },
   watch: {

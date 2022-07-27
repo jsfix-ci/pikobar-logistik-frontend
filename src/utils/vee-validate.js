@@ -1,4 +1,4 @@
-import { required, email, max, numeric, ext, size } from 'vee-validate/dist/rules'
+import { required, email, max, numeric, ext, size, max_value } from 'vee-validate/dist/rules'
 import { isContainHtmlTags, isPhoneNumber, isUrl } from '@/utils/validate'
 import { extend, setInteractionMode } from 'vee-validate'
 import i18n from '@/lang'
@@ -192,6 +192,11 @@ extend('max', {
 extend('numeric', {
   ...numeric,
   message: (_, values) => `${values._field_} harus diisi dengan angka`
+})
+
+extend('maxValue', {
+  ...max_value,
+  message: (_, values) => `${values._field_} melebihi nilai maksimal ${values.max}`
 })
 
 extend('email', {

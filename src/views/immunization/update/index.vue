@@ -83,6 +83,7 @@ export default {
       showStockDialog: false,
       recommendationForm: {
         id: this.$route.params.id,
+        phase: 'recommendation',
         recommendation_product_id: '',
         recommendation_date: '',
         recommendation_product_name: '',
@@ -93,6 +94,7 @@ export default {
       },
       realizationForm: {
         id: this.$route.params.id,
+        phase: 'finalized',
         finalized_product_id: '',
         finalized_date: '',
         finalized_product_name: '',
