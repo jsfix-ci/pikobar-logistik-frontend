@@ -16,7 +16,7 @@ import formPemohonAdmin from './modules/formPemohonAdmin'
 import letterRouter from './modules/letter'
 import reports from './modules/reports'
 // temporarily hidden
-// import allocation from './modules/allocation'
+import allocation from './modules/allocation'
 import otherInstace from './modules/otherInstance'
 /* Router Vaccine Modules */
 import immunization from './modules/vaccine/immunization'
@@ -129,7 +129,7 @@ export const asyncRoutes = [
   // requestVaccine,
   reports,
   // temporarily hidden
-  // allocation,
+  allocation,
   letterRouter,
   faskesRouter,
   otherInstace,
