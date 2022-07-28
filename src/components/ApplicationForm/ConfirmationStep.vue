@@ -82,7 +82,7 @@
             {{ $t('label.loading_done_one') }}
           </v-row>
           <v-row align="center" justify="center" class="confirmation-text mt-3">
-            {{ $t('label.loading_done_two') }}
+            Jika Anda memiliki pertanyaan lebih lanjut, silahkan hubungi Hotline PIKOBAR pada nomor {{ hotlinePikobar }} atau melalui e-mail kami di digital.service@jabarprov.go.id.
           </v-row>
           <br>
           <v-row align="center" justify="center" class="mt-3 mb-15">
@@ -384,7 +384,9 @@
           <div class="save-style-data-confirmation text-center-data-confirmation">{{ $t('label.save_success') }}</div>
         </v-row>
         <v-row class="text-center mr-1 ml-1 mt-5">{{ $t('label.loading_done_one') }}</v-row>
-        <v-row class="text-center mr-1 ml-1 mt-3">{{ $t('label.loading_done_two') }}</v-row>
+        <v-row class="text-center mr-1 ml-1 mt-3">
+          Jika Anda memiliki pertanyaan lebih lanjut, silahkan hubungi Hotline PIKOBAR pada nomor {{ hotlinePikobar }} atau melalui e-mail kami di digital.service@jabarprov.go.id.
+        </v-row>
         <br>
         <v-row align="center" justify="center" class="mt-3">
           <v-btn href="/#/landing-page">{{ $t('label.back') }}</v-btn>
@@ -644,7 +646,8 @@ export default {
       letterName: '',
       isLoading: false,
       isDone: false,
-      requestId: null
+      requestId: null,
+      hotlinePikobar: process.env.VUE_APP_HOTLINE_PIKOBAR_ALKES
     }
   },
   computed: {

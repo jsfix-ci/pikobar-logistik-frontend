@@ -242,7 +242,7 @@
 
         <v-card-text>
           <span>{{ $t('label.warning_text') }} </span>
-          <span><b>{{ $t('label.warning_contact') }}</b></span>
+          <span><b>Hotline Pikobar: {{ hotlinePikobar }} atau Email: digital.service@jabarprov.go.id</b></span>
         </v-card-text>
 
         <v-card-actions>
@@ -294,7 +294,8 @@ export default {
     return {
       dialog: false,
       applicantDialog: false,
-      requestType: ''
+      requestType: '',
+      hotlinePikobar: process.env.VUE_APP_HOTLINE_PIKOBAR_ALKES
     }
   },
   methods: {
