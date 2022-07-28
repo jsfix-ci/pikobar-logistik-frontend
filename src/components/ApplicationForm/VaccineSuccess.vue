@@ -55,7 +55,7 @@
       Pertanyaan, Keluhan dan Kirim Surat Final
     </strong>
     <p class="success__section-content">
-      Akses Hotline PIKOBAR pada nomor 081320792596 (Bu Anyk), 081287253338 (Bu Tika), atau digital.service@jabarprov.go.id.
+      Akses Hotline PIKOBAR pada nomor {{ anykWaNumber }} (Bu Anyk), {{ tikaWaNumber }} (Bu Tika), atau digital.service@jabarprov.go.id.
     </p>
     <JDSButton height="38px" class="mb-6" @click="goWhatsapp">
       {{ $t('label.admin_greeting') }}
@@ -80,7 +80,9 @@ export default {
   },
   data() {
     return {
-      showTooltip: false
+      showTooltip: false,
+      anykWaNumber: process.env.VUE_APP_HOTLINE_PIKOBAR_VAKSIN_ANYK,
+      tikaWaNumber: process.env.VUE_APP_HOTLINE_PIKOBAR_VAKSIN_TIKA
     }
   },
   methods: {
@@ -93,7 +95,7 @@ export default {
       setTimeout(() => { this.showTooltip = false }, 2000)
     },
     goWhatsapp() {
-      window.open(`https://wa.me/${process.env.VUE_APP_HOTLINE_PIKOBAR}`, '_blank')
+      window.open(`https://wa.me/${process.env.VUE_APP_HOTLINE_PIKOBAR_VAKSIN_ANYK}`, '_blank')
     }
   }
 }

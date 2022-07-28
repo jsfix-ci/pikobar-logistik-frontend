@@ -24,6 +24,11 @@
         class="mb-4"
       />
       <DisabledField
+        label="Rekomendasi"
+        :value="vaccineItemStock.verified || '-'"
+        class="mb-4"
+      />
+      <DisabledField
         label="Realisasi"
         :value="vaccineItemStock.approved || '-'"
         class="mb-4"
