@@ -155,6 +155,8 @@ export default {
         this.$emit('update:date', this.date)
         this.$emit('update:quantity', this.quantity)
         this.$emit('update:note', this.note)
+      } else {
+        this.$store.dispatch('vaccine/clearStockItem')
       }
     },
     /**
@@ -165,6 +167,7 @@ export default {
         this.name = val.find((item) => {
           return item.material_id === this.data.product_id
         })
+        if (this.name.material_id) { this.$store.dispatch('vaccine/getStockItem', this.name.material_id) }
         this.$emit('update:name', this.name)
       }
     }
