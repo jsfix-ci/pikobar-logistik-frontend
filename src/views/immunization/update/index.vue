@@ -21,6 +21,7 @@
           :note.sync="recommendationForm.recommendation_note"
           :unit="requestData.unit"
           class="mb-6"
+          @showStock="showStockDialog = true"
         />
         <RealizationSection
           v-if="stage === 'realization'"
@@ -34,6 +35,7 @@
           :quantity.sync="realizationForm.finalized_quantity"
           :status.sync="realizationForm.finalized_status"
           :unit="recommendationData.unit"
+          @showStock="showStockDialog = true"
         />
         <div class="d-flex flex-row justify-space-between mt-6">
           <JDSButton inverted height="42px" width="48%" @click="onCancel()">
@@ -48,22 +50,28 @@
         <StockSection :stage="stage" />
       </v-col>
     </v-row>
+    <StockDialog
+      v-model="showStockDialog"
+      @close="showStockDialog = false"
+    />
   </div>
 </template>
 
 <script>
-import RequestSection from './RequestSection.vue'
-import RecommendationSection from './RecommendationSection.vue'
-import RealizationSection from './RealizationSection.vue'
-import StockSection from './StockSection.vue'
+import RequestSection from './RequestSection'
+import RecommendationSection from './RecommendationSection'
+import RealizationSection from './RealizationSection'
+import StockSection from './StockSection'
 import JDSButton from '@/components/Base/JDSButton'
+import StockDialog from './StockDialog'
 export default {
   components: {
     RequestSection,
     RecommendationSection,
     RealizationSection,
     StockSection,
-    JDSButton
+    JDSButton,
+    StockDialog
   },
   data() {
     return {
@@ -72,8 +80,10 @@ export default {
       realizationData: {},
       listVaccine: [],
       listVaccineSupport: [],
+      showStockDialog: false,
       recommendationForm: {
         id: this.$route.params.id,
+        phase: 'recommendation',
         recommendation_product_id: '',
         recommendation_date: '',
         recommendation_product_name: '',
@@ -84,6 +94,7 @@ export default {
       },
       realizationForm: {
         id: this.$route.params.id,
+        phase: 'finalized',
         finalized_product_id: '',
         finalized_date: '',
         finalized_product_name: '',

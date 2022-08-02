@@ -21,8 +21,8 @@
           </v-col>
           <v-col cols="12" md="4" xs="12">
             <v-row class="float-right-landing-page">
-              <a :href="$t('label.link_tutorial')" target="_blank"><v-icon color="white" size="25">{{ $t('label.icon_help') }}</v-icon></a>
-              <a :href="$t('label.link_tutorial')" target="_blank"><div class="tutorial-class-form-pemohon pusat-bantuan-landing-page">{{ $t('label.tutorial') }}</div></a>
+              <a :href="linkTutorial" target="_blank"><v-icon color="white" size="25">{{ $t('label.icon_help') }}</v-icon></a>
+              <a :href="linkTutorial" target="_blank"><div class="tutorial-class-form-pemohon pusat-bantuan-landing-page">{{ $t('label.tutorial') }}</div></a>
             </v-row>
           </v-col>
         </v-row>
@@ -82,7 +82,7 @@
             {{ $t('label.loading_done_one') }}
           </v-row>
           <v-row align="center" justify="center" class="confirmation-text mt-3">
-            {{ $t('label.loading_done_two') }}
+            Jika Anda memiliki pertanyaan lebih lanjut, silahkan hubungi Hotline PIKOBAR pada nomor {{ hotlinePikobar }} atau melalui e-mail kami di digital.service@jabarprov.go.id.
           </v-row>
           <br>
           <v-row align="center" justify="center" class="mt-3 mb-15">
@@ -360,7 +360,7 @@
           </v-col>
           <v-col cols="4">
             <v-row class="float-right-landing-page">
-              <a :href="$t('label.link_tutorial')" target="_blank" class="margin-icon-talk-mobile-landing-page"><v-icon color="white" size="25">{{ $t('label.icon_help') }}</v-icon></a>
+              <a :href="linkTutorial" target="_blank" class="margin-icon-talk-mobile-landing-page"><v-icon color="white" size="25">{{ $t('label.icon_help') }}</v-icon></a>
             </v-row>
           </v-col>
         </v-row>
@@ -384,7 +384,9 @@
           <div class="save-style-data-confirmation text-center-data-confirmation">{{ $t('label.save_success') }}</div>
         </v-row>
         <v-row class="text-center mr-1 ml-1 mt-5">{{ $t('label.loading_done_one') }}</v-row>
-        <v-row class="text-center mr-1 ml-1 mt-3">{{ $t('label.loading_done_two') }}</v-row>
+        <v-row class="text-center mr-1 ml-1 mt-3">
+          Jika Anda memiliki pertanyaan lebih lanjut, silahkan hubungi Hotline PIKOBAR pada nomor {{ hotlinePikobar }} atau melalui e-mail kami di digital.service@jabarprov.go.id.
+        </v-row>
         <br>
         <v-row align="center" justify="center" class="mt-3">
           <v-btn href="/#/landing-page">{{ $t('label.back') }}</v-btn>
@@ -644,7 +646,8 @@ export default {
       letterName: '',
       isLoading: false,
       isDone: false,
-      requestId: null
+      requestId: null,
+      hotlinePikobar: process.env.VUE_APP_HOTLINE_PIKOBAR_ALKES
     }
   },
   computed: {
@@ -656,6 +659,11 @@ export default {
     },
     landingPage() {
       return this.$route.query.type === 'vaksin' ? '/landing-page-vaccine' : '/landing-page'
+    },
+    linkTutorial() {
+      return this.isVaccineContent
+        ? 'https://bit.ly/PanduanPemohonVaksin'
+        : this.$t('label.link_tutorial')
     }
   },
   mounted() {

@@ -24,7 +24,7 @@
       {{ $t('label.loading_done_one') }}
     </v-row>
     <v-row align="center" justify="center" class="confirmation-text mt-3">
-      {{ $t('label.loading_done_two') }}
+      Jika Anda memiliki pertanyaan lebih lanjut, silahkan hubungi Hotline PIKOBAR pada nomor {{ hotlinePikobar }} atau melalui e-mail kami di digital.service@jabarprov.go.id.
     </v-row>
     <br>
     <v-row align="center" justify="center" class="mt-3 mb-15">
@@ -290,7 +290,8 @@ export default {
       urlLetter: null,
       letterName: '',
       isLoading: false,
-      isDone: false
+      isDone: false,
+      hotlinePikobar: 'askdas'
     }
   },
   computed: {

@@ -8,7 +8,7 @@
         <ol>
           <li class="alert__text">Jumlah permohonan barang pada surat yang belum ditandatangani <em>(draft)</em> yang diunggah tidak dapat diubah pada surat telah ditandatangani (final).</li>
           <li class="alert__text">Batas waktu pengiriman surat final adalah <strong>1x24</strong> jam surat <em>draft</em> disimpan.</li>
-          <li class="alert__text">Kirim surat final Anda melalui <strong>WhatsApp Hotline PIKOBAR (08112093306)</strong>.</li>
+          <li class="alert__text">Kirim surat final Anda melalui <strong>WhatsApp Hotline PIKOBAR ({{ hotlinePikobar }})</strong>.</li>
         </ol>
       </v-alert>
       <center v-else><v-label class="title"><b>{{ $t('label.applicant_form_header_step_2') }}</b></v-label></center>
@@ -188,7 +188,8 @@ export default {
       isUpload: false,
       selectedFile: null,
       letterNumber: null,
-      selectedFileName: null
+      selectedFileName: null,
+      hotlinePikobar: process.env.VUE_APP_HOTLINE_PIKOBAR_ALKES
     }
   },
   computed: {
