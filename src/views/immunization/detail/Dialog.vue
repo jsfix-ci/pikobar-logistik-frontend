@@ -158,8 +158,8 @@ export default {
           image: '/img/warning.svg',
           title: 'Permohonan telah ditolak!',
           buttonRight: {
-            label: 'Kembali ke Verifikasi',
-            onClick: () => { this.$router.push('/admin-verification') }
+            label: 'Kembali',
+            onClick: () => { this.$router.go(-1) }
           }
         },
         notUpdated: {
