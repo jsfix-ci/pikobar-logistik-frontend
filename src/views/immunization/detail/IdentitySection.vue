@@ -29,7 +29,17 @@
           v-model="item.value"
           :label="item.label"
           class="d-flex"
-        />
+        >
+          <template v-slot:append>
+            <JDSButton
+              v-if="item.label === $t('label.print_mail_nature')"
+              height="38px"
+              @click="onCito"
+            >
+              Jadikan CITO
+            </JDSButton>
+          </template>
+        </DisabledField>
       </v-col>
     </v-row>
 
@@ -56,11 +66,13 @@
 
 <script>
 import DisabledField from '@/components/Base/DisabledField'
+import JDSButton from '@/components/Base/JDSButton'
 import ImageViewer from '@/components/ImageViewer'
 export default {
   components: {
     DisabledField,
-    ImageViewer
+    ImageViewer,
+    JDSButton
   },
   props: {
     identity: {
@@ -223,6 +235,9 @@ export default {
       } else if (item.type === 'instance') {
         return !this.showInstanceIdentity
       }
+    },
+    onCito() {
+      // create CITO function
     }
   }
 }
