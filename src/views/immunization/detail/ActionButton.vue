@@ -40,6 +40,9 @@
 
     <!-- Delivery Plan -->
     <div v-if="stage === 'delivery-plan'" class="d-flex flex-row justify-end mt-8">
+      <JDSButton inverted danger height="42px" class="mr-4" @click="$emit('confirm', 'reject')">
+        {{ $t('label.reject_request') }}
+      </JDSButton>
       <JDSButton inverted height="42px" class="mr-4" @click="onBack()">
         {{ $t('label.back') }}
       </JDSButton>
