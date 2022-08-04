@@ -181,7 +181,11 @@ export default {
       return isValid
     },
     onItemSelected() {
-      this.$store.dispatch('vaccine/getStockItem', this.name.material_id)
+      const params = {
+        id: this.name.material_id,
+        vaccine_request_id: this.$route.params.id
+      }
+      this.$store.dispatch('vaccine/getStockItem', params)
       this.$emit('update:name', this.name)
     },
     onClear() {
