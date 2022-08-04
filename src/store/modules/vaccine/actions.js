@@ -86,9 +86,8 @@ export default {
   },
   async getStockItem({ commit }, params) {
     try {
-      const id = params.id
-      delete params.id
-      const response = await fetchList(`/api/v1/check-stock/${id}`, 'GET', params)
+      const { id, ...payload } = params
+      const response = await fetchList(`/api/v1/check-stock/${id}`, 'GET', payload)
       commit('SET_VACCINE_ITEM_STOCK', response.data)
       return response
     } catch (e) {
