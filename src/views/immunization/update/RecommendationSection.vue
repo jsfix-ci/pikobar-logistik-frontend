@@ -167,7 +167,11 @@ export default {
         this.name = val.find((item) => {
           return item.material_id === this.data.product_id
         })
-        if (this.name.material_id) { this.$store.dispatch('vaccine/getStockItem', this.name.material_id) }
+        const params = {
+          id: this.name.material_id,
+          vaccine_request_id: this.$route.params.id
+        }
+        if (this.name.material_id) { this.$store.dispatch('vaccine/getStockItem', params) }
         this.$emit('update:name', this.name)
       }
     }
@@ -178,7 +182,11 @@ export default {
       return isValid
     },
     onItemSelected() {
-      this.$store.dispatch('vaccine/getStockItem', this.name.material_id)
+      const params = {
+        id: this.name.material_id,
+        vaccine_request_id: this.$route.params.id
+      }
+      this.$store.dispatch('vaccine/getStockItem', params)
       this.$emit('update:name', this.name)
     },
     onClear() {
