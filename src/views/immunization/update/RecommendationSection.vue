@@ -169,7 +169,7 @@ export default {
         })
         const params = {
           id: this.name.material_id,
-          vaccine_request_id: this.$route.params.id
+          vaccine_request_id: this.data.vaccine_request_id
         }
         if (this.name.material_id) { this.$store.dispatch('vaccine/getStockItem', params) }
         this.$emit('update:name', this.name)
@@ -184,7 +184,7 @@ export default {
     onItemSelected() {
       const params = {
         id: this.name.material_id,
-        vaccine_request_id: this.$route.params.id
+        vaccine_request_id: this.data.vaccine_request_id
       }
       this.$store.dispatch('vaccine/getStockItem', params)
       this.$emit('update:name', this.name)
