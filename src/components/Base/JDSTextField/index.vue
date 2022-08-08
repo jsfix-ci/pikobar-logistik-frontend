@@ -7,7 +7,7 @@
       {{ subLabel }}
     </span>
     <v-text-field
-      :value="value"
+      :value="typeof value === 'number' ? currency(value) : value"
       :clearable="clearable"
       :placeholder="placeholder"
       :hide-details="hideDetails"
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { currency } from '@/helpers/tableDisplay'
 export default {
   props: {
     value: {
@@ -66,6 +67,9 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  methods: {
+    currency
   }
 }
 </script>
