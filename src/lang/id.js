@@ -418,6 +418,7 @@ export default {
     vaccine_supporter: 'Penunjang Vaksin',
     logistic_vaccine_supporter: 'Logistik Penunjang Vaksin',
     soon: 'Segera',
+    urgent: 'Mendesak',
     add_vaccine_supporter_message: 'Jangan lupa tambahkan logistik penunjang vaksin Anda',
     recommendation_status: 'Status Rekomendasi Salur',
     realization_status: 'Status Realisasi',

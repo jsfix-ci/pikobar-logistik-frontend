@@ -6,7 +6,7 @@
         <DisabledField label="Nama Barang" :value="data.product_name || '-'" />
       </v-col>
       <v-col cols="12" sm="6">
-        <DisabledField label="Jumlah" :value="`${data.quantity || '-'} ${data.unit || '-'}`" />
+        <DisabledField label="Jumlah" :value="quantityDisplay" />
       </v-col>
     </v-row>
     <ValidationObserver v-if="stage === 'recommendation'" ref="form">
@@ -32,6 +32,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { currency } from '@/helpers/tableDisplay'
 import DisabledField from '@/components/Base/DisabledField'
 import JDSSelect from '@/components/Base/JDSSelect'
 export default {
@@ -75,6 +76,11 @@ export default {
       status: ''
     }
   },
+  computed: {
+    quantityDisplay() {
+      return `${this.data.quantity ? currency(this.data.quantity) : '-'} ${this.data.unit || '-'}`
+    }
+  },
   watch: {
     /**
      * autofill status dropdown when product_status !== null
@@ -87,6 +93,7 @@ export default {
     }
   },
   methods: {
+    currency,
     async validate() {
       const isValid = await this.$refs.form.validate()
       return isValid

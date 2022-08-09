@@ -28,8 +28,22 @@
           v-else-if="!item.isHidden"
           v-model="item.value"
           :label="item.label"
-          class="d-flex"
-        />
+          :class="{
+            'd-flex': true,
+            'identity__cito': isCitoClass(item)
+          }"
+        >
+          <template v-slot:append>
+            <JDSButton
+              v-if="showCitoButton(item)"
+              :inverted="identity.is_cito"
+              height="38px"
+              @click="onCitoToggle"
+            >
+              {{ identity.is_cito ? 'Batalkan' : 'Jadikan' }} CITO
+            </JDSButton>
+          </template>
+        </DisabledField>
       </v-col>
     </v-row>
 
@@ -56,16 +70,22 @@
 
 <script>
 import DisabledField from '@/components/Base/DisabledField'
+import JDSButton from '@/components/Base/JDSButton'
 import ImageViewer from '@/components/ImageViewer'
 export default {
   components: {
     DisabledField,
-    ImageViewer
+    ImageViewer,
+    JDSButton
   },
   props: {
     identity: {
       type: Object,
       default: () => ({})
+    },
+    stage: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -112,7 +132,11 @@ export default {
         },
         {
           label: this.$t('label.print_mail_nature'),
-          value: this.identity.is_urgency ? this.$t('label.soon') : this.$t('label.not_urgency'),
+          value: this.identity.is_cito
+            ? this.$t('label.urgent')
+            : this.identity.is_urgency
+              ? this.$t('label.soon')
+              : this.$t('label.not_urgency'),
           col: 4
         },
         {
@@ -223,6 +247,21 @@ export default {
       } else if (item.type === 'instance') {
         return !this.showInstanceIdentity
       }
+    },
+    async onCitoToggle() {
+      const cito = this.identity.is_cito ? 0 : 1
+      const payload = {
+        id: this.$route.params.id,
+        is_cito: cito
+      }
+      await this.$store.dispatch('vaccine/updateCitoStatus', payload)
+      this.$emit('cito')
+    },
+    showCitoButton(item) {
+      return item.label === this.$t('label.print_mail_nature') && this.stage === 'admin-verification'
+    },
+    isCitoClass(item) {
+      return this.identity.is_cito && item.label === this.$t('label.print_mail_nature')
     }
   }
 }
@@ -263,6 +302,12 @@ export default {
 
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  &__cito::v-deep {
+    .disabled-field__value {
+      color: #d32f2f !important;
     }
   }
 }

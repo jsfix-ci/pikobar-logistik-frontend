@@ -29,10 +29,10 @@
               <span
                 :class="{
                   'urgency': true,
-                  'urgency--red': item.is_urgency
+                  'urgency--red': item.is_urgency || item.is_cito
                 }"
               >
-                {{ item.is_urgency ? 'Segera' : 'Biasa' }}
+                {{ item.is_cito ? 'Mendesak' : item.is_urgency ? 'Segera' : 'Biasa' }}
               </span>
             </td>
             <td>{{ item.letter_number || '-' }}</td>

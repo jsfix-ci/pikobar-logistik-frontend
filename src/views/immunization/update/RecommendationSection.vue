@@ -77,7 +77,7 @@
       <DisabledField label="Nama Barang" :value="data.product_name || '-'" />
       <v-row class="mt-3">
         <v-col cols="12" sm="6">
-          <DisabledField label="Jumlah" :value="`${data.quantity || '-'} ${data.unit || '-'}`" />
+          <DisabledField label="Jumlah" :value="quantityDisplay" />
         </v-col>
         <v-col cols="12" sm="6">
           <DisabledField label="Tanggal" :value="$moment(data.recommendation_date).format('D MMMM YYYY') || '-'" />
@@ -90,6 +90,7 @@
 <script>
 import { mapState } from 'vuex'
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { currency } from '@/helpers/tableDisplay'
 import JDSSelect from '@/components/Base/JDSSelect'
 import JDSTextField from '@/components/Base/JDSTextField'
 import JDSDatePicker from '@/components/Base/JDSDatePicker'
@@ -141,6 +142,9 @@ export default {
     },
     quantityValidation() {
       return `required|numeric|maxValue:${this.currentStock}`
+    },
+    quantityDisplay() {
+      return `${this.data.quantity ? currency(this.data.quantity) : '-'} ${this.data.unit || '-'}`
     }
   },
   watch: {
@@ -169,7 +173,7 @@ export default {
         })
         const params = {
           id: this.name.material_id,
-          vaccine_request_id: this.$route.params.id
+          vaccine_request_id: this.data.vaccine_request_id
         }
         if (this.name.material_id) { this.$store.dispatch('vaccine/getStockItem', params) }
         this.$emit('update:name', this.name)
@@ -184,7 +188,7 @@ export default {
     onItemSelected() {
       const params = {
         id: this.name.material_id,
-        vaccine_request_id: this.$route.params.id
+        vaccine_request_id: this.data.vaccine_request_id
       }
       this.$store.dispatch('vaccine/getStockItem', params)
       this.$emit('update:name', this.name)

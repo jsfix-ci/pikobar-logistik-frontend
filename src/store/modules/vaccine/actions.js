@@ -121,5 +121,14 @@ export default {
     } catch (e) {
       // silent error
     }
+  },
+  async updateCitoStatus({ commit }, payload) {
+    try {
+      const { id, ...otherPayload } = payload
+      const response = await doPostUpdate(`/api/v1/cito/${id}`, 'PUT', otherPayload)
+      return response
+    } catch (e) {
+      // silent error
+    }
   }
 }
