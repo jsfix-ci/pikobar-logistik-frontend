@@ -35,7 +35,7 @@
         >
           <template v-slot:append>
             <JDSButton
-              v-if="item.label === $t('label.print_mail_nature') && stage === 'admin-verification'"
+              v-if="showCitoButton(item)"
               :inverted="identity.is_cito"
               height="38px"
               @click="onCitoToggle"
@@ -256,6 +256,9 @@ export default {
       }
       await this.$store.dispatch('vaccine/updateCitoStatus', payload)
       this.$emit('cito')
+    },
+    showCitoButton(item) {
+      return item.label === this.$t('label.print_mail_nature') && this.stage === 'admin-verification'
     },
     isCitoClass(item) {
       return this.identity.is_cito && item.label === this.$t('label.print_mail_nature')
