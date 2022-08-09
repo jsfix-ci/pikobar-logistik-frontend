@@ -6,6 +6,8 @@
     <IdentitySection
       :key="Object.keys(vaccineRequest).length"
       :identity="vaccineRequest"
+      :stage="stage"
+      @cito="fetchData"
     />
     <LetterSection
       :letter="vaccineRequest.letter_number"
@@ -107,9 +109,12 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('vaccine/getVaccineRequestById', this.$route.params.id)
+    this.fetchData()
   },
   methods: {
+    fetchData() {
+      this.$store.dispatch('vaccine/getVaccineRequestById', this.$route.params.id)
+    },
     onConfirm(type) {
       this.dialogType = type
       this.showDialog = true

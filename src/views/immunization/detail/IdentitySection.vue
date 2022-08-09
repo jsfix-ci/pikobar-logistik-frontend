@@ -28,15 +28,19 @@
           v-else-if="!item.isHidden"
           v-model="item.value"
           :label="item.label"
-          class="d-flex"
+          :class="{
+            'd-flex': true,
+            'identity__cito': isCitoClass(item)
+          }"
         >
           <template v-slot:append>
             <JDSButton
-              v-if="item.label === $t('label.print_mail_nature')"
+              v-if="item.label === $t('label.print_mail_nature') && stage === 'admin-verification'"
+              :inverted="identity.is_cito"
               height="38px"
-              @click="onCito"
+              @click="onCitoToggle"
             >
-              Jadikan CITO
+              {{ identity.is_cito ? 'Batalkan' : 'Jadikan' }} CITO
             </JDSButton>
           </template>
         </DisabledField>
@@ -78,6 +82,10 @@ export default {
     identity: {
       type: Object,
       default: () => ({})
+    },
+    stage: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -124,7 +132,11 @@ export default {
         },
         {
           label: this.$t('label.print_mail_nature'),
-          value: this.identity.is_urgency ? this.$t('label.soon') : this.$t('label.not_urgency'),
+          value: this.identity.is_cito
+            ? this.$t('label.urgent')
+            : this.identity.is_urgency
+              ? this.$t('label.soon')
+              : this.$t('label.not_urgency'),
           col: 4
         },
         {
@@ -236,8 +248,17 @@ export default {
         return !this.showInstanceIdentity
       }
     },
-    onCito() {
-      // create CITO function
+    async onCitoToggle() {
+      const cito = this.identity.is_cito ? 0 : 1
+      const payload = {
+        id: this.$route.params.id,
+        is_cito: cito
+      }
+      await this.$store.dispatch('vaccine/updateCitoStatus', payload)
+      this.$emit('cito')
+    },
+    isCitoClass(item) {
+      return this.identity.is_cito && item.label === this.$t('label.print_mail_nature')
     }
   }
 }
@@ -278,6 +299,12 @@ export default {
 
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  &__cito::v-deep {
+    .disabled-field__value {
+      color: #d32f2f !important;
     }
   }
 }
