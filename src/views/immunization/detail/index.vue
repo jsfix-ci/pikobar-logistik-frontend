@@ -108,7 +108,7 @@ export default {
       return splittedPath[1]
     }
   },
-  async mounted() {
+  mounted() {
     this.fetchData()
   },
   methods: {
