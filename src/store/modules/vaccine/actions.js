@@ -86,9 +86,8 @@ export default {
   },
   async getStockItem({ commit }, params) {
     try {
-      const id = params.id
-      delete params.id
-      const response = await fetchList(`/api/v1/check-stock/${id}`, 'GET', params)
+      const { id, ...otherParams } = params
+      const response = await fetchList(`/api/v1/check-stock/${id}`, 'GET', otherParams)
       commit('SET_VACCINE_ITEM_STOCK', response.data)
       return response
     } catch (e) {
@@ -118,6 +117,15 @@ export default {
   async getInstanceLead({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/leader', 'GET', params)
+      return response
+    } catch (e) {
+      // silent error
+    }
+  },
+  async updateCitoStatus({ commit }, payload) {
+    try {
+      const { id, ...otherPayload } = payload
+      const response = await doPostUpdate(`/api/v1/cito/${id}`, 'PUT', otherPayload)
       return response
     } catch (e) {
       // silent error

@@ -1,3 +1,5 @@
+import FormatingNumber from './formattingNumber'
+
 export function getTableRowNumbering(index, page, limit) {
   return ((page - 1) * limit) + (index + 1)
 }
@@ -13,4 +15,9 @@ export function filterQuery(oldQuery) {
     }
   })
   return newQuery
+}
+
+export function currency(value) {
+  const number = new FormatingNumber()
+  return number.formatCurrency(value)
 }

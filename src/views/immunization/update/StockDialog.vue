@@ -20,27 +20,28 @@
       </div>
       <DisabledField
         label="Stok di Gudang"
-        :value="vaccineItemStock.warehouse || '-'"
+        :value="vaccineItemStock.warehouse ? currency(vaccineItemStock.warehouse) : '-'"
         class="mb-4"
       />
-      <DisabledField
+      <!-- Hide Recommendation Section -->
+      <!-- <DisabledField
         label="Rekomendasi"
-        :value="vaccineItemStock.verified || '-'"
+        :value="vaccineItemStock.verified ? currency(vaccineItemStock.verified) : '-'"
         class="mb-4"
-      />
+      /> -->
       <DisabledField
         label="Realisasi"
-        :value="vaccineItemStock.approved || '-'"
+        :value="vaccineItemStock.approved ? currency(vaccineItemStock.approved) : '-'"
         class="mb-4"
       />
       <DisabledField
         label="Perintah Pengeluaran Barang"
-        :value="vaccineItemStock.finalized || '-'"
+        :value="vaccineItemStock.finalized ? currency(vaccineItemStock.finalized) : '-'"
         class="mb-4"
       />
       <DisabledField
         label="Stok saat ini"
-        :value="vaccineItemStock.current_stock || '-'"
+        :value="vaccineItemStock.current_stock ? currency(vaccineItemStock.current_stock) : '-'"
         info
         class="mb-4"
       />
@@ -50,6 +51,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { currency } from '@/helpers/tableDisplay'
 import DisabledField from '@/components/Base/DisabledField'
 export default {
   components: {
@@ -65,6 +67,9 @@ export default {
     ...mapState('vaccine', [
       'vaccineItemStock'
     ])
+  },
+  methods: {
+    currency
   }
 }
 </script>
