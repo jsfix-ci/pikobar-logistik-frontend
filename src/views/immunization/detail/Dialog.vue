@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="value"
-    max-width="500px"
+    max-width="510px"
     persistent
   >
     <!-- Dialog with form -->
@@ -60,6 +60,7 @@
       <span v-if="content.subtitle" class="detail-dialog__subtitle" style="white-space:pre-wrap;">
         {{ content.subtitle }}
       </span>
+      <EmoticonRating v-if="displayFeedback" />
       <div class="d-flex flex-row justify-space-between mt-10" style="width: 100%">
         <JDSButton
           v-if="content.buttonLeft"
@@ -86,9 +87,11 @@
 
 <script>
 import JDSButton from '@/components/Base/JDSButton'
+import EmoticonRating from '@/components/EmoticonRating'
 export default {
   components: {
-    JDSButton
+    JDSButton,
+    EmoticonRating
   },
   props: {
     value: {
@@ -282,6 +285,15 @@ export default {
   computed: {
     isFormDialog() {
       return this.type === 'verifWithNote' || this.type === 'reject'
+    },
+    displayFeedback() {
+      return this.type === 'success' ||
+      this.type === 'rejectSuccess' ||
+      this.type === 'verifWithNoteSuccess' ||
+      this.type === 'recommendSuccess' ||
+      this.type === 'realizeSuccess' ||
+      this.type === 'returnSuccess' ||
+      this.type === 'deliverSuccess'
     }
   },
   watch: {
