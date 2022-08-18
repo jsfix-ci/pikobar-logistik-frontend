@@ -60,7 +60,10 @@
       <span v-if="content.subtitle" class="detail-dialog__subtitle" style="white-space:pre-wrap;">
         {{ content.subtitle }}
       </span>
-      <EmoticonRating v-if="displayFeedback" />
+      <EmoticonRating
+        v-if="displayFeedback"
+        @rated="(score) => { rateValue = score }"
+      />
       <div class="d-flex flex-row justify-space-between mt-10" style="width: 100%">
         <JDSButton
           v-if="content.buttonLeft"
@@ -105,6 +108,10 @@ export default {
     instanceLead: {
       type: String,
       default: ''
+    },
+    stage: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -114,6 +121,7 @@ export default {
       extraNote: '',
       showError: false,
       content: {},
+      rateValue: '',
       listContent: {
         verifConfirmation: {
           image: '/img/confirmation.svg',
@@ -139,7 +147,10 @@ export default {
           },
           buttonRight: {
             label: 'Lanjut ke Rekomendasi',
-            onClick: () => { this.$router.push('/recommendation') }
+            onClick: async() => {
+              await this.submitFeedbackRating()
+              this.$router.push('/recommendation')
+            }
           }
         },
         verifWithNoteSuccess: {
@@ -154,7 +165,10 @@ export default {
           },
           buttonRight: {
             label: 'Lanjut ke Rekomendasi',
-            onClick: () => { this.$router.push('/recommendation') }
+            onClick: async() => {
+              await this.submitFeedbackRating()
+              this.$router.push('/recommendation')
+            }
           }
         },
         rejectSuccess: {
@@ -162,7 +176,10 @@ export default {
           title: 'Permohonan telah ditolak!',
           buttonRight: {
             label: 'Kembali',
-            onClick: () => { this.$router.go(-1) }
+            onClick: async() => {
+              await this.submitFeedbackRating()
+              this.$router.go(-1)
+            }
           }
         },
         notUpdated: {
@@ -195,7 +212,10 @@ export default {
           subtitle: `Permohonan akan dikirim kepada ${this.instanceLead.role} \n \n (${this.instanceLead.fullname})`,
           buttonRight: {
             label: 'Kembali ke Rekomendasi',
-            onClick: () => { this.$router.push('/recommendation') }
+            onClick: async() => {
+              await this.submitFeedbackRating()
+              this.$router.push('/recommendation')
+            }
           }
         },
         realizeConfirmation: {
@@ -218,7 +238,10 @@ export default {
           subtitle: `Permohonan telah dikirim kepada ${this.instanceLead.role}`,
           buttonRight: {
             label: 'Kembali ke Menu Realisasi',
-            onClick: () => { this.$router.push('/realization') }
+            onClick: async() => {
+              await this.submitFeedbackRating()
+              this.$router.push('/realization')
+            }
           }
         },
         returnConfirmation: {
@@ -239,7 +262,10 @@ export default {
           title: 'Permohonan Telah Dikembalikan ke Tahap Realisasi',
           buttonRight: {
             label: 'Kembali Ke Menu Satuan Tugas',
-            onClick: () => { this.$router.push('/delivery-plan') }
+            onClick: async() => {
+              await this.submitFeedbackRating()
+              this.$router.push('/delivery-plan')
+            }
           }
         },
         deliverConfirmation: {
@@ -260,7 +286,10 @@ export default {
           title: 'Perintah Pengeluaran dan Penyaluran Barang Telah Selesai',
           buttonRight: {
             label: 'Kembali Ke Menu Satuan Tugas',
-            onClick: () => { this.$router.push('/delivery-plan') }
+            onClick: async() => {
+              await this.submitFeedbackRating()
+              this.$router.push('/delivery-plan')
+            }
           }
         },
         deliveryLoading: {
@@ -339,6 +368,29 @@ export default {
         note: this.note,
         extraNote: this.extraNote
       })
+    },
+    submitFeedbackRating() {
+      if (this.rateValue) {
+        let phase
+        switch (this.stage) {
+          case 'admin-verification':
+            phase = 'verification'
+            break
+          case 'delivery-plan':
+            phase = 'delivery_plan'
+            break
+          default:
+            phase = this.stage
+            break
+        }
+
+        const payload = {
+          phase: phase,
+          score: this.rateValue,
+          vaccine_request_id: this.$route.params.id
+        }
+        this.$store.dispatch('vaccine/giveRating', payload)
+      }
     }
   }
 }

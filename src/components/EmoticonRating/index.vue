@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     onClick(val) {
+      this.$emit('rated', val)
       this.ratingValue = val
     },
     ratingEmotDisplay(val) {
