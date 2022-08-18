@@ -144,7 +144,10 @@ export default {
           buttonLeft: {
             label: 'Kembali ke Verifikasi',
             isInverted: true,
-            onClick: () => { this.$router.push('/admin-verification') }
+            onClick: async() => {
+              await this.submitFeedbackRating()
+              this.$router.push('/admin-verification')
+            }
           },
           buttonRight: {
             label: 'Lanjut ke Rekomendasi',
@@ -162,7 +165,10 @@ export default {
           buttonLeft: {
             label: 'Kembali ke Verifikasi',
             isInverted: true,
-            onClick: () => { this.$router.push('/admin-verification') }
+            onClick: async() => {
+              await this.submitFeedbackRating()
+              this.$router.push('/admin-verification')
+            }
           },
           buttonRight: {
             label: 'Lanjut ke Rekomendasi',
