@@ -81,7 +81,6 @@ export default {
   border-style: solid;
   border-width: 1px;
   border-color: #E0E0E0;
-  margin-top: 40px;
 
   &__title {
     font-family: 'Roboto', sans-serif;

@@ -62,6 +62,7 @@
       </span>
       <EmoticonRating
         v-if="displayFeedback"
+        class="mt-10"
         @rated="(score) => { rateValue = score }"
       />
       <div class="d-flex flex-row justify-space-between mt-10" style="width: 100%">
@@ -121,7 +122,7 @@ export default {
       extraNote: '',
       showError: false,
       content: {},
-      rateValue: '',
+      rateValue: null,
       listContent: {
         verifConfirmation: {
           image: '/img/confirmation.svg',
