@@ -84,9 +84,14 @@
           <v-row align="center" justify="center" class="confirmation-text mt-3">
             Jika Anda memiliki pertanyaan lebih lanjut, silahkan hubungi Hotline PIKOBAR pada nomor {{ hotlinePikobar }} atau melalui e-mail kami di digital.service@jabarprov.go.id.
           </v-row>
-          <br>
+          <EmoticonRating
+            class="ma-10"
+            @rated="(score) => { rateValue = score }"
+          />
           <v-row align="center" justify="center" class="mt-3 mb-15">
-            <v-btn href="/#/landing-page">{{ $t('label.back') }}</v-btn>
+            <JDSButton inverted height="38px" @click="onBack">
+              {{ $t('label.back') }}
+            </JDSButton>
           </v-row>
         </div>
         <div v-else>
@@ -604,11 +609,15 @@
 <script>
 import EventBus from '@/utils/eventBus'
 import VaccineSuccess from './VaccineSuccess.vue'
+import EmoticonRating from '@/components/EmoticonRating'
+import JDSButton from '@/components/Base/JDSButton'
 
 export default {
   name: 'TahapKonfirmasi',
   components: {
-    VaccineSuccess
+    VaccineSuccess,
+    EmoticonRating,
+    JDSButton
   },
   props: {
     formApplicant: {
@@ -647,7 +656,8 @@ export default {
       isLoading: false,
       isDone: false,
       requestId: null,
-      hotlinePikobar: process.env.VUE_APP_HOTLINE_PIKOBAR_ALKES
+      hotlinePikobar: process.env.VUE_APP_HOTLINE_PIKOBAR_ALKES,
+      rateValue: null
     }
   },
   computed: {
@@ -791,6 +801,20 @@ export default {
     },
     refreshPage() {
       window.location.reload()
+    },
+    async onBack() {
+      await this.submitFeedbackRating()
+      this.$router.push('/landing-page')
+    },
+    submitFeedbackRating() {
+      if (this.rateValue) {
+        const payload = {
+          phase: 'request',
+          score: this.rateValue,
+          agency_id: this.requestId
+        }
+        this.$store.dispatch('logistics/giveRating', payload)
+      }
     }
   }
 }
