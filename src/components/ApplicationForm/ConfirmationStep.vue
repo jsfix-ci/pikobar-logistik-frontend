@@ -381,6 +381,10 @@
         </v-row>
         <v-row class="text-center mr-1 ml-1 mt-3">{{ $t('label.loading_step_one') + $t('label.loading_step_two') }}</v-row>
       </div>
+      <VaccineSuccess
+        v-else-if="showVaccineSuccessPage"
+        :request-id="requestId"
+      />
       <div v-else-if="isDone" class="mt-n12">
         <v-row align="center" justify="center">
           <img height="200" src="../../static/berhasil.svg">
