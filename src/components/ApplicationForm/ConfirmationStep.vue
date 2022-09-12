@@ -381,6 +381,10 @@
         </v-row>
         <v-row class="text-center mr-1 ml-1 mt-3">{{ $t('label.loading_step_one') + $t('label.loading_step_two') }}</v-row>
       </div>
+      <VaccineSuccess
+        v-else-if="showVaccineSuccessPage"
+        :request-id="requestId"
+      />
       <div v-else-if="isDone" class="mt-n12">
         <v-row align="center" justify="center">
           <img height="200" src="../../static/berhasil.svg">
@@ -392,9 +396,14 @@
         <v-row class="text-center mr-1 ml-1 mt-3">
           Jika Anda memiliki pertanyaan lebih lanjut, silahkan hubungi Hotline PIKOBAR pada nomor {{ hotlinePikobar }} atau melalui e-mail kami di digital.service@jabarprov.go.id.
         </v-row>
-        <br>
-        <v-row align="center" justify="center" class="mt-3">
-          <v-btn href="/#/landing-page">{{ $t('label.back') }}</v-btn>
+        <EmoticonRating
+          class="ma-10"
+          @rated="(score) => { rateValue = score }"
+        />
+        <v-row justify="center" class="mt-3 mb-15">
+          <JDSButton inverted height="38px" @click="onBack">
+            {{ $t('label.back') }}
+          </JDSButton>
         </v-row>
       </div>
       <div v-else>
