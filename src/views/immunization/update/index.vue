@@ -65,6 +65,7 @@ import RealizationSection from './RealizationSection'
 import StockSection from './StockSection'
 import JDSButton from '@/components/Base/JDSButton'
 import StockDialog from './StockDialog'
+import { formatDatetime } from '@/utils/parseDatetime'
 export default {
   components: {
     RequestSection,
@@ -140,6 +141,7 @@ export default {
     this.listVaccine = vaccineResponse.data
   },
   methods: {
+    formatDatetime,
     onCancel() {
       this.$router.go(-1)
     },
@@ -160,7 +162,7 @@ export default {
         payload.recommendation_UoM = this.requestData.unit
         payload.recommendation_product_name = this.requestData.product_name
         payload.recommendation_note = 'Barang Belum Tersedia'
-        payload.recommendation_date = this.requestData.created_at
+        payload.recommendation_date = this.formatDatetime(this.requestData.created_at, 'YYYY-MM-DD')
         payload.recommendation_quantity = '0'
         payload.finalized_status = 'not_available'
       }
