@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex flex-column align-center">
-    <span class="success__title mb-6">
+  <div class="d-flex flex-column align-center text-center px-4 mt-n12">
+    <span class="success__title my-6">
       {{ $t('label.vaccine_save_success') }}
     </span>
     <img height="200" src="../../static/berhasil.svg" alt="success-icon">
@@ -58,7 +58,7 @@
       Akses Hotline PIKOBAR pada nomor {{ anykWaNumber }} (Bu Anyk), {{ tikaWaNumber }} (Bu Tika), atau digital.service@jabarprov.go.id.
     </p>
     <EmoticonRating
-      class="my-5"
+      class="ma-10"
       @rated="(score) => { rateValue = score }"
     />
     <JDSButton height="38px" class="my-6" @click="goWhatsapp">
