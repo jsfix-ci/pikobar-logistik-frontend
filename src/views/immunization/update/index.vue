@@ -11,6 +11,7 @@
           class="mb-6"
         />
         <RecommendationSection
+          v-if="isAvailableStatus"
           ref="recommendation"
           :data="recommendationData"
           :stage="stage"
@@ -119,6 +120,9 @@ export default {
     },
     listItem() {
       return this.isVaccineSupport ? this.listVaccineSupport : this.listVaccine
+    },
+    isAvailableStatus() {
+      return this.recommendationForm.recommendation_status !== 'not_available'
     }
   },
   async mounted() {
@@ -139,30 +143,44 @@ export default {
     onCancel() {
       this.$router.go(-1)
     },
+    async updateRecommendation() {
+      const isRequestValid = await this.$refs.request.validate()
+      const isRecommendationValid = this.isAvailableStatus ? await this.$refs.recommendation.validate() : true
+      const isValid = isRequestValid && isRecommendationValid
+
+      if (!isValid) return
+
+      const payload = this.recommendationForm
+      payload.recommendation_product_id = this.recommendationForm.recommendation_product_name.material_id
+      payload.recommendation_UoM = this.recommendationForm.recommendation_product_name.UoM
+      payload.recommendation_product_name = this.recommendationForm.recommendation_product_name.material_name
+
+      if (!this.isAvailableStatus) {
+        payload.recommendation_product_id = this.requestData.product_id
+        payload.recommendation_UoM = this.requestData.unit
+        payload.recommendation_product_name = this.requestData.product_name
+        payload.recommendation_note = 'Barang Belum Tersedia'
+        payload.recommendation_date = this.requestData.created_at
+        payload.recommendation_quantity = '0'
+        payload.finalized_status = 'not_available'
+      }
+
+      return payload
+    },
+    async updateRealization() {
+      const isValid = await this.$refs.realization.validate()
+
+      if (!isValid) return
+
+      const payload = this.realizationForm
+      payload.finalized_product_id = this.realizationForm.finalized_product_name.material_id
+      payload.finalized_UoM = this.realizationForm.finalized_product_name.UoM
+      payload.finalized_product_name = this.realizationForm.finalized_product_name.material_name
+
+      return payload
+    },
     async onUpdate() {
-      let isValid
-      if (this.stage === 'recommendation') {
-        const isRequestValid = await this.$refs.request.validate()
-        const isRecommendationValid = await this.$refs.recommendation.validate()
-        isValid = isRequestValid && isRecommendationValid
-      } else {
-        isValid = await this.$refs.realization.validate()
-      }
-      if (!isValid) {
-        return
-      }
-      let payload
-      if (this.stage === 'recommendation') {
-        payload = this.recommendationForm
-        payload.recommendation_product_id = this.recommendationForm.recommendation_product_name.material_id
-        payload.recommendation_UoM = this.recommendationForm.recommendation_product_name.UoM
-        payload.recommendation_product_name = this.recommendationForm.recommendation_product_name.material_name
-      } else {
-        payload = this.realizationForm
-        payload.finalized_product_id = this.realizationForm.finalized_product_name.material_id
-        payload.finalized_UoM = this.realizationForm.finalized_product_name.UoM
-        payload.finalized_product_name = this.realizationForm.finalized_product_name.material_name
-      }
+      const payload = this.stage === 'recommendation' ? await this.updateRecommendation() : await this.updateRealization()
       const res = await this.$store.dispatch('vaccine/updateVaccineProductRequest', payload)
       if (res.status === 200 || res.status === 201) {
         // @todo: add dialog success

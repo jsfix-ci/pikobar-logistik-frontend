@@ -62,12 +62,12 @@ export default {
         {
           text: 'Barang Diganti',
           value: 'replaced'
+        },
+        {
+          text: 'Barang Belum Tersedia',
+          value: 'not_available'
         }
         // TEMPORARILY HIDDEN
-        // {
-        //   text: 'Barang belum tersedia',
-        //   value: 'not_available'
-        // },
         // {
         //   text: 'Barang belum bisa dipenuhi',
         //   value: 'not_yet_fulfilled'
