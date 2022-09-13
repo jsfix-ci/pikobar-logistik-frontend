@@ -45,6 +45,7 @@
       v-model="showDialog"
       :type="dialogType"
       :instance-lead="instanceLead"
+      :stage="stage"
       @close="showDialog = false"
       @verify="onVerify"
       @reject="onReject"

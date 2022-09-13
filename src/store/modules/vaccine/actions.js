@@ -130,5 +130,13 @@ export default {
     } catch (e) {
       // silent error
     }
+  },
+  async giveRating({ commit }, payload) {
+    try {
+      const response = await doPostUpdate('/api/v1/vaccine-rating', 'POST', payload)
+      return response
+    } catch (e) {
+      // silent error
+    }
   }
 }

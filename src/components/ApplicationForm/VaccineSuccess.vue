@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex flex-column align-center">
-    <span class="success__title mb-6">
+  <div class="d-flex flex-column align-center text-center px-4 mt-n12">
+    <span class="success__title my-6">
       {{ $t('label.vaccine_save_success') }}
     </span>
     <img height="200" src="../../static/berhasil.svg" alt="success-icon">
@@ -57,10 +57,14 @@
     <p class="success__section-content">
       Akses Hotline PIKOBAR pada nomor {{ anykWaNumber }} (Bu Anyk), {{ tikaWaNumber }} (Bu Tika), atau digital.service@jabarprov.go.id.
     </p>
-    <JDSButton height="38px" class="mb-6" @click="goWhatsapp">
+    <EmoticonRating
+      class="ma-10"
+      @rated="(score) => { rateValue = score }"
+    />
+    <JDSButton height="38px" class="my-6" @click="goWhatsapp">
       {{ $t('label.admin_greeting') }}
     </JDSButton>
-    <JDSButton inverted height="38px" @click="$router.push('/landing-page-vaccine')">
+    <JDSButton inverted height="38px" @click="onBack">
       {{ $t('label.go_to_home_page') }}
     </JDSButton>
   </div>
@@ -68,9 +72,11 @@
 
 <script>
 import JDSButton from '@/components/Base/JDSButton'
+import EmoticonRating from '@/components/EmoticonRating'
 export default {
   components: {
-    JDSButton
+    JDSButton,
+    EmoticonRating
   },
   props: {
     requestId: {
@@ -82,7 +88,8 @@ export default {
     return {
       showTooltip: false,
       anykWaNumber: process.env.VUE_APP_HOTLINE_PIKOBAR_VAKSIN_ANYK,
-      tikaWaNumber: process.env.VUE_APP_HOTLINE_PIKOBAR_VAKSIN_TIKA
+      tikaWaNumber: process.env.VUE_APP_HOTLINE_PIKOBAR_VAKSIN_TIKA,
+      rateValue: null
     }
   },
   methods: {
@@ -96,6 +103,20 @@ export default {
     },
     goWhatsapp() {
       window.open(`https://wa.me/${process.env.VUE_APP_HOTLINE_PIKOBAR_VAKSIN_ANYK}`, '_blank')
+    },
+    async onBack() {
+      await this.submitFeedbackRating()
+      this.$router.push('/landing-page-vaccine')
+    },
+    submitFeedbackRating() {
+      if (this.rateValue) {
+        const payload = {
+          phase: 'request',
+          score: this.rateValue,
+          vaccine_request_id: this.requestId
+        }
+        this.$store.dispatch('vaccine/giveRating', payload)
+      }
     }
   }
 }
