@@ -11,7 +11,7 @@
           class="mb-6"
         />
         <RecommendationSection
-          v-if="isAvailableStatus"
+          v-if="isAvailableRecommendationStatus"
           ref="recommendation"
           :data="recommendationData"
           :stage="stage"
@@ -122,8 +122,11 @@ export default {
     listItem() {
       return this.isVaccineSupport ? this.listVaccineSupport : this.listVaccine
     },
-    isAvailableStatus() {
+    isAvailableRecommendationStatus() {
       return this.recommendationForm.recommendation_status !== 'not_available'
+    },
+    isAvailableRealizationStatus() {
+      return this.realizationForm.finalized_status !== 'not_available'
     }
   },
   async mounted() {
@@ -147,7 +150,7 @@ export default {
     },
     async updateRecommendation() {
       const isRequestValid = await this.$refs.request.validate()
-      const isRecommendationValid = this.isAvailableStatus ? await this.$refs.recommendation.validate() : true
+      const isRecommendationValid = this.isAvailableRecommendationStatus ? await this.$refs.recommendation.validate() : true
       const isValid = isRequestValid && isRecommendationValid
 
       if (!isValid) return
@@ -157,14 +160,15 @@ export default {
       payload.recommendation_UoM = this.recommendationForm.recommendation_product_name.UoM
       payload.recommendation_product_name = this.recommendationForm.recommendation_product_name.material_name
 
-      if (!this.isAvailableStatus) {
-        payload.recommendation_product_id = this.requestData.product_id
-        payload.recommendation_UoM = this.requestData.unit
-        payload.recommendation_product_name = this.requestData.product_name
+      if (!this.isAvailableRecommendationStatus) {
+        payload.recommendation_product_id = null
+        payload.recommendation_UoM = null
+        payload.recommendation_product_name = null
         payload.recommendation_note = 'Barang Belum Tersedia'
-        payload.recommendation_date = this.formatDatetime(this.requestData.created_at, 'YYYY-MM-DD')
-        payload.recommendation_quantity = '0'
+        payload.recommendation_date = this.formatDatetime(new Date(), 'YYYY-MM-DD')
+        payload.recommendation_quantity = 0
         payload.finalized_status = 'not_available'
+        payload.finalized_date = this.formatDatetime(new Date(), 'YYYY-MM-DD')
       }
 
       return payload

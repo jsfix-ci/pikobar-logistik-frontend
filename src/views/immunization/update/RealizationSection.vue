@@ -130,6 +130,10 @@ export default {
         {
           text: 'Barang Diganti',
           value: 'replaced'
+        },
+        {
+          text: 'Barang Belum Tersedia',
+          value: 'not_available'
         }
       ]
     }
@@ -173,6 +177,12 @@ export default {
           : item.material_id === this.recommendation.product_id
       })
       this.$emit('update:name', this.name)
+    },
+    data(val) {
+      if (val.product_status) {
+        this.status = val.product_status
+        this.$emit('update:statusChange', this.status)
+      }
     }
   },
   methods: {
