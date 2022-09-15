@@ -156,6 +156,7 @@ export default {
       if (!isValid) return
 
       const payload = this.recommendationForm
+
       payload.recommendation_product_id = this.recommendationForm.recommendation_product_name.material_id
       payload.recommendation_UoM = this.recommendationForm.recommendation_product_name.UoM
       payload.recommendation_product_name = this.recommendationForm.recommendation_product_name.material_name
@@ -179,15 +180,16 @@ export default {
       if (!isValid) return
 
       const payload = this.realizationForm
-      payload.finalized_product_id = this.realizationForm.finalized_product_name.material_id
-      payload.finalized_UoM = this.realizationForm.finalized_product_name.UoM
-      payload.finalized_product_name = this.realizationForm.finalized_product_name.material_name
 
       if (!this.isAvailableRealizationStatus) {
         payload.finalized_product_name = null
         payload.finalized_product_id = null
         payload.finalized_UoM = null
         payload.finalized_quantity = 0
+      } else {
+        payload.finalized_product_id = this.realizationForm.finalized_product_name.material_id
+        payload.finalized_UoM = this.realizationForm.finalized_product_name.UoM
+        payload.finalized_product_name = this.realizationForm.finalized_product_name.material_name
       }
 
       return payload
