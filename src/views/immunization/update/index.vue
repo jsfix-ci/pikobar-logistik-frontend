@@ -157,10 +157,6 @@ export default {
 
       const payload = this.recommendationForm
 
-      payload.recommendation_product_id = this.recommendationForm.recommendation_product_name.material_id
-      payload.recommendation_UoM = this.recommendationForm.recommendation_product_name.UoM
-      payload.recommendation_product_name = this.recommendationForm.recommendation_product_name.material_name
-
       if (!this.isAvailableRecommendationStatus) {
         payload.recommendation_product_id = null
         payload.recommendation_UoM = null
@@ -170,6 +166,10 @@ export default {
         payload.recommendation_quantity = 0
         payload.finalized_status = 'not_available'
         payload.finalized_date = this.formatDatetime(new Date(), 'YYYY-MM-DD')
+      } else {
+        payload.recommendation_product_id = this.recommendationForm.recommendation_product_name.material_id
+        payload.recommendation_UoM = this.recommendationForm.recommendation_product_name.UoM
+        payload.recommendation_product_name = this.recommendationForm.recommendation_product_name.material_name
       }
 
       return payload
