@@ -174,7 +174,7 @@ export default {
       return payload
     },
     async updateRealization() {
-      const isValid = await this.$refs.realization.validate()
+      const isValid = this.isAvailableRealizationStatus ? await this.$refs.realization.validate() : true
 
       if (!isValid) return
 
@@ -182,6 +182,13 @@ export default {
       payload.finalized_product_id = this.realizationForm.finalized_product_name.material_id
       payload.finalized_UoM = this.realizationForm.finalized_product_name.UoM
       payload.finalized_product_name = this.realizationForm.finalized_product_name.material_name
+
+      if (!this.isAvailableRealizationStatus) {
+        payload.finalized_product_name = null
+        payload.finalized_product_id = null
+        payload.finalized_UoM = null
+        payload.finalized_quantity = 0
+      }
 
       return payload
     },
