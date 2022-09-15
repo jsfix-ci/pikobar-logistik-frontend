@@ -11,7 +11,7 @@
           class="mb-6"
         />
         <RecommendationSection
-          v-if="isAvailableRecommendationStatus"
+          v-if="isAvailableRecommendationStatus || stage === 'realization'"
           ref="recommendation"
           :data="recommendationData"
           :stage="stage"
