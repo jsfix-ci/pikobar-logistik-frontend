@@ -11,6 +11,7 @@
           class="mb-6"
         />
         <RecommendationSection
+          v-if="isAvailableRecommendationStatus || stage === 'realization'"
           ref="recommendation"
           :data="recommendationData"
           :stage="stage"
@@ -64,6 +65,7 @@ import RealizationSection from './RealizationSection'
 import StockSection from './StockSection'
 import JDSButton from '@/components/Base/JDSButton'
 import StockDialog from './StockDialog'
+import { formatDatetime } from '@/utils/parseDatetime'
 export default {
   components: {
     RequestSection,
@@ -119,6 +121,12 @@ export default {
     },
     listItem() {
       return this.isVaccineSupport ? this.listVaccineSupport : this.listVaccine
+    },
+    isAvailableRecommendationStatus() {
+      return this.recommendationForm.recommendation_status !== 'not_available'
+    },
+    isAvailableRealizationStatus() {
+      return this.realizationForm.finalized_status !== 'not_available'
     }
   },
   async mounted() {
@@ -136,33 +144,58 @@ export default {
     this.listVaccine = vaccineResponse.data
   },
   methods: {
+    formatDatetime,
     onCancel() {
       this.$router.go(-1)
     },
-    async onUpdate() {
-      let isValid
-      if (this.stage === 'recommendation') {
-        const isRequestValid = await this.$refs.request.validate()
-        const isRecommendationValid = await this.$refs.recommendation.validate()
-        isValid = isRequestValid && isRecommendationValid
+    async updateRecommendation() {
+      const isRequestValid = await this.$refs.request.validate()
+      const isRecommendationValid = this.isAvailableRecommendationStatus ? await this.$refs.recommendation.validate() : true
+      const isValid = isRequestValid && isRecommendationValid
+
+      if (!isValid) return
+
+      const payload = this.recommendationForm
+
+      if (!this.isAvailableRecommendationStatus) {
+        payload.recommendation_product_id = null
+        payload.recommendation_UoM = null
+        payload.recommendation_product_name = null
+        payload.recommendation_note = 'Barang Belum Tersedia'
+        payload.recommendation_date = this.formatDatetime(new Date(), 'YYYY-MM-DD')
+        payload.recommendation_quantity = 0
+        payload.finalized_status = 'not_available'
+        payload.finalized_date = this.formatDatetime(new Date(), 'YYYY-MM-DD')
       } else {
-        isValid = await this.$refs.realization.validate()
-      }
-      if (!isValid) {
-        return
-      }
-      let payload
-      if (this.stage === 'recommendation') {
-        payload = this.recommendationForm
         payload.recommendation_product_id = this.recommendationForm.recommendation_product_name.material_id
         payload.recommendation_UoM = this.recommendationForm.recommendation_product_name.UoM
         payload.recommendation_product_name = this.recommendationForm.recommendation_product_name.material_name
+      }
+
+      return payload
+    },
+    async updateRealization() {
+      const isValid = this.isAvailableRealizationStatus ? await this.$refs.realization.validate() : true
+
+      if (!isValid) return
+
+      const payload = this.realizationForm
+
+      if (!this.isAvailableRealizationStatus) {
+        payload.finalized_product_name = null
+        payload.finalized_product_id = null
+        payload.finalized_UoM = null
+        payload.finalized_quantity = 0
       } else {
-        payload = this.realizationForm
         payload.finalized_product_id = this.realizationForm.finalized_product_name.material_id
         payload.finalized_UoM = this.realizationForm.finalized_product_name.UoM
         payload.finalized_product_name = this.realizationForm.finalized_product_name.material_name
       }
+
+      return payload
+    },
+    async onUpdate() {
+      const payload = this.stage === 'recommendation' ? await this.updateRecommendation() : await this.updateRealization()
       const res = await this.$store.dispatch('vaccine/updateVaccineProductRequest', payload)
       if (res.status === 200 || res.status === 201) {
         // @todo: add dialog success
