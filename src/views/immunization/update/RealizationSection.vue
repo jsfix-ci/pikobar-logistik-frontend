@@ -17,8 +17,6 @@
           @change="$emit('update:status', status)"
         />
       </ValidationProvider>
-    </div>
-    <div v-if="status !== 'not_available'">
       <ValidationProvider
         v-slot="{ errors }"
         rules="required"
@@ -34,6 +32,8 @@
           @change="$emit('update:date', date)"
         />
       </ValidationProvider>
+    </div>
+    <div v-if="status !== 'not_available'">
       <ValidationProvider
         v-slot="{ errors }"
         rules="required"
