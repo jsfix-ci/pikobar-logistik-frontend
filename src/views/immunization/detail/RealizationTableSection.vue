@@ -37,7 +37,7 @@
             <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.quantity || '-' }}</td>
             <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.unit || '-' }}</td>
             <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.usage || '-' }}</td>
-            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.note || '-' }}</td>
+            <td :class="{ 'detail-table__not-update': notUpdated(item) }">{{ item.recommendation_note || item.note || '-' }}</td>
             <td>
               <span
                 :class="{

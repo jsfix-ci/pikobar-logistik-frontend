@@ -1,84 +1,88 @@
 <template>
   <ValidationObserver ref="form" class="realization d-flex flex-column">
     <span class="realization__title mb-6">{{ $t('label.realization') }}</span>
-    <ValidationProvider
-      v-slot="{ errors }"
-      rules="required"
-      :name="$t('label.date')"
-    >
-      <JDSDatePicker
-        v-model="date"
-        :label="$t('label.date')"
-        :placeholder="$t('label.input_date')"
-        :error-messages="errors"
-        :hide-details="errors.length === 0"
-        @clear="date = null"
-        @change="$emit('update:date', date)"
-      />
-    </ValidationProvider>
-    <ValidationProvider
-      v-slot="{ errors }"
-      rules="required"
-      :name="$t('label.status')"
-    >
-      <JDSRadio
-        v-model="status"
-        :label="$t('label.status')"
-        :items="radioOptions"
-        :error-messages="errors"
-        :hide-details="errors.length === 0"
-        class="mb-3"
-        @change="$emit('update:status', status)"
-      />
-    </ValidationProvider>
-    <ValidationProvider
-      v-slot="{ errors }"
-      rules="required"
-      :name="$t('label.apd_name_spec')"
-    >
-      <JDSSelect
-        v-model="name"
-        :label="$t('label.apd_name_spec')"
-        :items="itemList"
-        item-text="material_name"
-        return-object
-        :placeholder="$t('label.apd_name_spec_placeholder')"
-        :error-messages="errors"
-        :hide-details="errors.length === 0"
-        class="mb-3"
-        @change="onItemSelected"
-        @clear="onClear"
-      />
-    </ValidationProvider>
-    <JDSTextField
-      v-model="currentStock"
-      label="Stok Terkini"
-      placeholder="Stok terkini"
-      :suffix="unitDisplay"
-      :clearable="false"
-      disabled
-      hide-details
-    />
-    <span class="realization__stock" @click="$emit('showStock')">
-      Detail Info Stok
-    </span>
-    <ValidationProvider
-      v-slot="{ errors }"
-      :rules="quantityValidation"
-      name="Jumlah Barang"
-    >
+    <div>
+      <ValidationProvider
+        v-slot="{ errors }"
+        rules="required"
+        :name="$t('label.status')"
+      >
+        <JDSRadio
+          v-model="status"
+          :label="$t('label.status')"
+          :items="radioOptions"
+          :error-messages="errors"
+          :hide-details="errors.length === 0"
+          class="mb-3"
+          @change="$emit('update:status', status)"
+        />
+      </ValidationProvider>
+      <ValidationProvider
+        v-slot="{ errors }"
+        rules="required"
+        :name="$t('label.date')"
+      >
+        <JDSDatePicker
+          v-model="date"
+          :label="$t('label.date')"
+          :placeholder="$t('label.input_date')"
+          :error-messages="errors"
+          :hide-details="errors.length === 0"
+          @clear="date = null"
+          @change="$emit('update:date', date)"
+        />
+      </ValidationProvider>
+    </div>
+    <div v-if="status !== 'not_available'">
+      <ValidationProvider
+        v-slot="{ errors }"
+        rules="required"
+        :name="$t('label.apd_name_spec')"
+      >
+        <JDSSelect
+          v-model="name"
+          :label="$t('label.apd_name_spec')"
+          :items="itemList"
+          item-text="material_name"
+          return-object
+          :placeholder="$t('label.apd_name_spec_placeholder')"
+          :error-messages="errors"
+          :hide-details="errors.length === 0"
+          class="mb-3"
+          @change="onItemSelected"
+          @clear="onClear"
+        />
+      </ValidationProvider>
       <JDSTextField
-        v-model="quantity"
-        label="Jumlah Barang"
-        placeholder="Tulis jumlah barang"
+        v-model="currentStock"
+        label="Stok Terkini"
+        placeholder="Stok terkini"
         :suffix="unitDisplay"
         :clearable="false"
-        :error-messages="errors"
-        :hide-details="errors.length === 0"
-        class="mt-6"
-        @change="$emit('update:quantity', quantity)"
+        disabled
+        hide-details
       />
-    </ValidationProvider>
+      <span class="realization__stock" @click="$emit('showStock')">
+        Detail Info Stok
+      </span>
+      <ValidationProvider
+        v-slot="{ errors }"
+        :rules="quantityValidation"
+        name="Jumlah Barang"
+      >
+        <JDSTextField
+          v-model="quantity"
+          label="Jumlah Barang"
+          placeholder="Tulis jumlah barang"
+          :suffix="unitDisplay"
+          :clearable="false"
+          :error-messages="errors"
+          :hide-details="errors.length === 0"
+          class="mt-6"
+          @change="$emit('update:quantity', quantity)"
+        />
+      </ValidationProvider>
+    </div>
   </ValidationObserver>
 </template>
 
@@ -130,6 +134,10 @@ export default {
         {
           text: 'Barang Diganti',
           value: 'replaced'
+        },
+        {
+          text: 'Barang Belum Tersedia',
+          value: 'not_available'
         }
       ]
     }
@@ -173,6 +181,12 @@ export default {
           : item.material_id === this.recommendation.product_id
       })
       this.$emit('update:name', this.name)
+    },
+    data(val) {
+      if (val.product_status) {
+        this.status = val.product_status
+        this.$emit('update:status', this.status)
+      }
     }
   },
   methods: {
