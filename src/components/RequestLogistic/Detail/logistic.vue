@@ -7,25 +7,18 @@
         <JDSTable
           :headers="data.headers"
           :items="data.items"
+          :loading="false"
         >
           <template v-slot:item-prop="{ item, index }">
             <tr>
               <td>{{ index }}</td>
-              <td>{{ item.approved_at ? $moment(item.approved_at).format('D MMMM YYYY') : '-' }}</td>
-              <td>{{ item.agency_name || '-' }}</td>
-              <td>{{ item.id || '-' }}</td>
-              <td>
-                <span
-                  :class="{
-                    'urgency': true,
-                    'urgency--red': item.is_urgency || item.is_cito
-                  }"
-                >
-                  {{ item.is_cito ? 'Mendesak' : item.is_urgency ? 'Segera' : 'Biasa' }}
-                </span>
-              </td>
-              <td>{{ item.is_letter_file_final ? 'Final' : 'Draft' }}</td>
-              <td>
+              <td>{{ item.product.name }}</td>
+              <td>{{ item.brand || '-' }}</td>
+              <td>{{ item.quantity || '-' }}</td>
+              <td>{{ item.unit.unit }}</td>
+              <td>{{ item.product.category }}</td>
+              <!-- <td>{{ item.is_letter_file_final ? 'Final' : 'Draft' }}</td> -->
+              <td v-if="false">
                 <JDSButton inverted height="25px" @click="onDetail(item.id)">
                   {{ $t('label.update') }}
                 </JDSButton>
@@ -33,6 +26,11 @@
             </tr>
           </template>
         </JDSTable>
+        <v-pagination
+          v-model="page"
+          :length="6"
+          :total-visible="3"
+        />
       </div>
     </div>
   </div>
@@ -63,6 +61,11 @@ export default {
     items: {
       type: Array,
       default: () => []
+    }
+  },
+  data() {
+    return {
+      page: 2
     }
   },
   methods: {

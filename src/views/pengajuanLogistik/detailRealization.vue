@@ -32,12 +32,15 @@
         title="Surat Permohonan"
         :letter="letterUrl"
         :name="letterName"
+        @update="updateLetter"
       />
     </div>
+
     <!-- Instance -->
-    <div class="mt-5">
-      <CardIdentity :items="data.instance" />
+    <div v-for="item in data.identity" :key="item.title" class="mt-5">
+      <CardIdentity :items="item" />
     </div>
+
     <!-- Logistic request -->
     <div class="mt-5">
       <CardLogistic
@@ -82,14 +85,31 @@ export default {
     return {
       data,
       updateLetterForm: false,
-      headers: [
+      listQuery: {},
+      headersRequest: [
         { text: this.$t('label.print_mail_no'), sortable: false },
         { text: 'Nama Barang', sortable: false },
         { text: 'Deskripsi', sortable: false },
         { text: 'Jumlah', sortable: false },
         { text: 'Satuan', sortable: false },
+        { text: 'Jenis Barang', sortable: false }
+      ],
+      headersRecommendation: [
+        { text: this.$t('label.print_mail_no'), sortable: false },
+        { text: 'Nama Barang', sortable: false },
+        { text: 'Deskripsi', sortable: false },
+        { text: 'Jumlah', sortable: false },
         { text: 'Satuan', sortable: false },
-        { text: 'Aksi', sortable: false }
+        { text: 'Status', sortable: false }
+      ],
+      headersRealization: [
+        { text: this.$t('label.print_mail_no'), sortable: false },
+        { text: 'Nama Barang', sortable: false },
+        { text: 'Deskripsi', sortable: false },
+        { text: 'Jumlah', sortable: false },
+        { text: 'Satuan', sortable: false },
+        { text: 'Status', sortable: false }
+        // { text: 'Aksi', sortable: false }
       ]
     }
   },
@@ -112,14 +132,24 @@ export default {
       return [
         {
           subtitle: 'Permohonan Masuk',
-          headers: this.headers,
-          items: this.listRequest
+          headers: this.headersRequest,
+          items: this.listLogisticNeeds
+        },
+        {
+          subtitle: 'Realisasi Salur',
+          headers: this.headersRealization,
+          items: this.listRealization
         },
         {
           subtitle: 'Rekomendasi Salur',
-          headers: this.headers,
-          items: this.listRequest
+          headers: this.headersRecommendation,
+          items: this.listRealization
         }
+        // {
+        //   subtitle: 'Realisasi Salur',
+        //   headers: this.headersRealization,
+        //   items: this.listRequest
+        // }
       ]
     },
     letterUrl() {
@@ -130,6 +160,7 @@ export default {
     }
   },
   created() {
+    this.listQuery.agency_id = this.$route.params.id
     EventBus.$on('hideUpdateLetter', (value) => {
       this.updateLetterForm = false
       if (value) {
@@ -138,8 +169,9 @@ export default {
     })
   },
   mounted() {
-    this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
+    // this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
     this.getDetail()
+    this.getLogisticRequest()
   },
   methods: {
     updateLetter() {
@@ -158,6 +190,9 @@ export default {
         this.$router.push('/dashboard')
         return
       }
+    },
+    async getLogisticRequest() {
+      await this.$store.dispatch('logistics/getListDetailLogisticNeeds', this.listQuery)
     }
   }
 }
