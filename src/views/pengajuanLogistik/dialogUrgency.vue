@@ -21,7 +21,7 @@
         <div class="col-sm-12">
           <span><b>{{ $t('label.applicant_agency_name') }}</b></span>
           <br>
-          <span class="green--text">{{ dataDialog.agency_name }}</span>
+          <span class="green--text">{{ dataDialog.agency.agency_name }}</span>
         </div>
 
         <div class="col-sm-12">
@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     async setData(id, value, dataDialog) {
+      console.log(value)
       this.id = id
       this.isUrgency = value
       this.dataDialog = dataDialog
@@ -89,7 +90,7 @@ export default {
     },
     async updateUrgency(value) {
       const param = {
-        agency_id: this.dataDialog.id,
+        agency_id: this.dataDialog.applicant.agency_id,
         applicant_id: this.dataDialog.applicant.id,
         is_urgency: this.isUrgency
       }

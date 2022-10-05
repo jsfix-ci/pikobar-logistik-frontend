@@ -11,7 +11,7 @@
           <v-icon left large dark>mdi-backup-restore</v-icon>
           <span style=" white-space: normal; word-wrap: break-word;" class="text-left pl-2">{{ buttonLabel }}</span>
         </JDSButton>
-        <JDSButton v-else inverted danger height="50">
+        <JDSButton v-else inverted danger height="50" @click="changeUrgency()">
           <v-icon left medium dark>mdi-alert-octagram</v-icon>
           <span>{{ buttonLabel }}</span>
         </JDSButton>
@@ -46,6 +46,11 @@ export default {
     strong: {
       type: String,
       default: ''
+    }
+  },
+  methods: {
+    changeUrgency() {
+      this.$emit('change-urgency')
     }
   }
 }
