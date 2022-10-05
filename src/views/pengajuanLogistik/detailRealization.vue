@@ -18,6 +18,7 @@
         :strong="item.strong"
         :button-label="item.button_label"
         :class="{ 'ml-auto': index === 1 }"
+        @change-urgency="urgencyChange(detailLogisticRequest.applicant.id, !detailLogisticRequest.is_urgency)"
       />
       <!-- <CardStatus /> -->
     </div>
@@ -56,6 +57,7 @@
       />
     </div>
     <updateLetter ref="dialogUpdateLetterForm" :show="updateLetterForm" />
+    <dialogUrgency ref="dialogUrgencyForm" :show="showUrgencyForm" />
   </div>
 </template>
 <script>
@@ -67,6 +69,7 @@ import CardLogistic from '@/components/RequestLogistic/Detail/logistic.vue'
 import { data } from '@/components/RequestLogistic/Detail/response.js'
 import ActionButton from '@/views/immunization/detail/ActionButton'
 import updateLetter from '@/views/pengajuanLogistik/updateLetter'
+import dialogUrgency from '@/views/pengajuanLogistik/dialogUrgency'
 import { mapState, mapGetters } from 'vuex'
 import EventBus from '@/utils/eventBus'
 import { formatDatetime } from '@/utils/parseDatetime'
@@ -79,12 +82,14 @@ export default {
     CardIdentity,
     CardLogistic,
     ActionButton,
-    updateLetter
+    updateLetter,
+    dialogUrgency
   },
   data() {
     return {
       data,
       updateLetterForm: false,
+      showUrgencyForm: false,
       listQuery: {},
       headersRequest: [
         { text: this.$t('label.print_mail_no'), sortable: false },
@@ -111,6 +116,14 @@ export default {
         { text: 'Status', sortable: false }
         // { text: 'Aksi', sortable: false }
       ],
+      dataUrgencyConfirmation: {
+        id: null,
+        agency_name: '-',
+        applicant: {
+          application_letter_number: '-',
+          applicant_name: '-'
+        }
+      },
       info_terbaru: [],
       status_terbaru: [],
       identity_terbaru: []
@@ -166,9 +179,15 @@ export default {
     this.listQuery.agency_id = this.$route.params.id
     EventBus.$on('hideUpdateLetter', (value) => {
       this.updateLetterForm = false
-      if (value) {
-        this.getDetail()
-      }
+      // if (value) {
+      //   this.getDetail()
+      // }
+    })
+    EventBus.$on('dialogUrgencyConfirmation', (value) => {
+      this.showUrgencyForm = false
+      // if (value) {
+      //   this.getListDetail()
+      // }
     })
   },
   mounted() {
@@ -178,6 +197,11 @@ export default {
   },
   methods: {
     formatDatetime,
+    urgencyChange(id, value) {
+      this.showUrgencyForm = true
+      this.dataUrgencyConfirmation = this.detailLogisticRequest
+      this.$refs.dialogUrgencyForm.setData(id, Number(value), this.dataUrgencyConfirmation)
+    },
     updateLetter() {
       this.$refs.dialogUpdateLetterForm.setData(this.detailLogisticRequest.letter.agency_id, this.detailLogisticRequest)
       this.updateLetterForm = true
