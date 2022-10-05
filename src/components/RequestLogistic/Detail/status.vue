@@ -2,7 +2,7 @@
   <div class="container-urgency">
     <p class="text-label mb-1">{{ title }}</p>
     <div class="urgency">
-      <span class="text-content align-self-center" :class="{ 'text-content--danger': type !== 'status-request' }">
+      <span class="text-content align-self-center mr-2" :class="{ 'text-content--danger': type !== 'status-request' }">
         {{ content }}
         <strong>{{ strong }}</strong>
       </span>

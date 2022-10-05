@@ -5,13 +5,12 @@
       {{ 'Detail Realisasi' }}
     </div>
     <!-- Detail info -->
-    <DetailInfo :items="data.info" />
+    <DetailInfo :items="info_terbaru" />
 
     <div class="mt-10 d-flex flex-row flex-wrap" style="min-width: 100%;">
       <!-- Request Urgency -->
-      <!-- type ada 3: urgent, regular, status-request -->
       <CardStatus
-        v-for="(item, index) in data.status"
+        v-for="(item, index) in status_terbaru"
         :key="item.type"
         :type="item.type"
         :title="item.title"
@@ -20,6 +19,7 @@
         :button-label="item.button_label"
         :class="{ 'ml-auto': index === 1 }"
       />
+      <!-- <CardStatus /> -->
     </div>
     <!-- Letter -->
     <!--
@@ -30,14 +30,13 @@
     <div class="mt-5">
       <CardLetter
         title="Surat Permohonan"
-        :letter="letterUrl"
-        :name="letterName"
+        :letter="detailLogisticRequest.letter"
         @update="updateLetter"
       />
     </div>
 
     <!-- Instance -->
-    <div v-for="item in data.identity" :key="item.title" class="mt-5">
+    <div v-for="item in identity_terbaru" :key="item.title" class="mt-5">
       <CardIdentity :items="item" />
     </div>
 
@@ -70,6 +69,7 @@ import ActionButton from '@/views/immunization/detail/ActionButton'
 import updateLetter from '@/views/pengajuanLogistik/updateLetter'
 import { mapState, mapGetters } from 'vuex'
 import EventBus from '@/utils/eventBus'
+import { formatDatetime } from '@/utils/parseDatetime'
 export default {
   name: 'DetailRealization',
   components: {
@@ -110,7 +110,10 @@ export default {
         { text: 'Satuan', sortable: false },
         { text: 'Status', sortable: false }
         // { text: 'Aksi', sortable: false }
-      ]
+      ],
+      info_terbaru: [],
+      status_terbaru: [],
+      identity_terbaru: []
     }
   },
   computed: {
@@ -159,7 +162,7 @@ export default {
       return this.detailLogisticRequest?.applicant?.application_letter_number || '-'
     }
   },
-  created() {
+  async created() {
     this.listQuery.agency_id = this.$route.params.id
     EventBus.$on('hideUpdateLetter', (value) => {
       this.updateLetterForm = false
@@ -174,8 +177,9 @@ export default {
     this.getLogisticRequest()
   },
   methods: {
+    formatDatetime,
     updateLetter() {
-      this.$refs.dialogUpdateLetterForm.setData(this.detailLogisticRequest.id, this.detailLogisticRequest)
+      this.$refs.dialogUpdateLetterForm.setData(this.detailLogisticRequest.letter.agency_id, this.detailLogisticRequest)
       this.updateLetterForm = true
     },
     onReturnValidation() {
@@ -185,11 +189,143 @@ export default {
       console.log('terpanggil')
     },
     async getDetail() {
-      const res = await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
+      const res = await this.$store.dispatch('logistics/getListDetailLogisticRequestUpdate', this.$route.params.id)
       if (!res.data) {
         this.$router.push('/dashboard')
         return
       }
+      // Info
+      this.info_terbaru.push({
+        title: 'Tanggal Pengajuan',
+        value: this.formatDatetime(this.detailLogisticRequest?.created_at, 'DD MMMM YYYY')
+      },
+      {
+        title: 'Status',
+        value: this.setStatusLabel(this.detailLogisticRequest?.status)
+      },
+      {
+        title: 'Disetujui oleh',
+        value: this.detailLogisticRequest?.info.approved_by || '-'
+      },
+      {
+        title: 'Nomor ID',
+        value: this.detailLogisticRequest?.info.id || '-'
+      })
+      // Status
+      if (res.data.is_urgency) {
+        this.status_terbaru.push({
+          type: 'urgent',
+          title: 'Urgensi Permohonan',
+          content: 'Permohonan ini adalah',
+          strong: 'Permohonan Darurat',
+          button_label: 'DARURAT!'
+        })
+      } else {
+        this.status_terbaru.push({
+          type: 'regular',
+          title: 'Urgensi Permohonan',
+          content: 'Tandai permohonan sebagai darurat',
+          strong: 'darurat',
+          button_label: 'TANDAI DARURAT'
+        })
+      }
+
+      this.status_terbaru.push({
+        type: 'status-request',
+        title: 'Status Permohonan',
+        content: 'Permohonan ini berada pada tahapan',
+        strong: this.setStatusLabel(res.data.status),
+        button_label: 'KEMBALIKAN KE STATUS SEBELUMNYA'
+      })
+
+      // identitas instansi
+      this.identity_terbaru.push({
+        title: 'Identitas Instansi',
+        data: [
+          {
+            title: 'Jenis Instansi',
+            value: res.data.agency.agency_type_name
+          },
+          {
+            title: 'Nomor Telepon',
+            value: res.data.agency.phone_number
+          },
+          {
+            title: 'Kelurahan',
+            value: res.data.agency.village_name
+          },
+          {
+            title: 'Nama Instansi',
+            value: res.data.agency.agency_name
+          },
+          {
+            title: 'Kota/Kab.',
+            value: res.data.agency.city_name
+          },
+          {
+            title: 'Alamat lengkap',
+            value: res.data.agency.address
+          },
+          {
+            title: 'Tipe Instansi',
+            value: res.data.agency.is_reference === 1 ? 'RS Rujukan' : 'RS Bukan Rujukan'
+          },
+          {
+            title: 'Kecamatan',
+            value: res.data.agency.district_name
+          },
+          {
+            title: 'Status Rujukan',
+            value: res.data.agency.is_reference === 1 ? 'Rujukan' : 'Bukan Rujukan'
+          }
+        ]
+      },
+      {
+        title: 'Identitas Pemohon',
+        data: [
+          {
+            title: 'Nama Pemohon',
+            value: res.data.applicant.applicant_name
+          },
+          {
+            title: 'Email Pemohon',
+            value: res.data.applicant.email
+          },
+          {
+            type: this.setTypeFile(res.data.applicant.file),
+            title: 'KTP/Kartu Pegawai/Surat Tugas',
+            value: res.data.applicant.file
+          },
+          {
+            title: 'Jabatan Pemohon',
+            value: res.data.applicant.applicants_office
+          },
+          {
+            title: 'Nomor Handphone Pemohon',
+            value: res.data.applicant.primary_phone_number
+          },
+          {
+            title: 'Nomor Handphone Pengganti',
+            value: res.data.applicant.secondary_phone_number
+          }
+        ]
+      })
+    },
+    setStatusLabel(payload) {
+      switch (payload) {
+        case 'APPROVED':
+          return this.$t('label.approved')
+        case 'not_delivered':
+          return this.$t('label.not_delivered')
+        case 'delivered':
+          return this.$t('label.delivered')
+        case 'not_available':
+          return this.$t('label.not_available')
+        default: 'Status tidak terdefinisikan'
+      }
+    },
+    setTypeFile(payload) {
+      return payload.split('.').pop() === 'pdf' ? 'link' : 'image'
     },
     async getLogisticRequest() {
       await this.$store.dispatch('logistics/getListDetailLogisticNeeds', this.listQuery)

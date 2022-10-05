@@ -14,12 +14,15 @@ export default {
     items: {
       type: Array,
       default: () => []
+    },
+    status: {
+      type: String,
+      default: ''
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-// Long content masih belum bisa
 .detail-info {
   display: flex;
   flex-direction: row;

@@ -7,10 +7,10 @@
         target="_blank"
         class="letter-class blue--text align-self-center"
       >
-        {{ name }}
+        {{ letter.application_letter_number }}
       </a>
       <span class="ml-auto">
-        <JDSButton inverted height="40" class="mx-1" @click="downloadFile(letter)">
+        <JDSButton inverted height="40" class="mx-1" @click="downloadFile(letter.letter)">
           <v-icon left dark>mdi-download</v-icon>
           {{ 'UNDUH' }}
         </JDSButton>
@@ -35,12 +35,8 @@ export default {
       default: ''
     },
     letter: {
-      type: String,
-      default: ''
-    },
-    name: {
-      type: String,
-      default: ''
+      type: Object,
+      default: () => {}
     }
   },
   methods: {

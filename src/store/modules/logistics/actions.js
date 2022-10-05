@@ -174,6 +174,15 @@ export default {
       return e
     }
   },
+  async getListDetailLogisticRequestUpdate({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/logistic-request/detail/' + params, 'GET')
+      commit('SET_DETAIL_LOGISTIC_REQUEST', response.data)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getListDetailLogisticNeeds({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/logistic-request/need/list', 'GET', params)
