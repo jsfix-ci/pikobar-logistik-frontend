@@ -3,7 +3,7 @@
     <p class="text-label mb-1">{{ title }}</p>
     <div class="letter">
       <a
-        :href="letter"
+        :href="letter.letter"
         target="_blank"
         class="letter-class blue--text align-self-center"
       >

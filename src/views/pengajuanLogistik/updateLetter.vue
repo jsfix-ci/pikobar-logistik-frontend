@@ -214,17 +214,19 @@ export default {
     },
     // Default Method
     setData(id, value) {
+      console.log('id', id)
+      console.log('data', value)
       this.resetDialog()
       this.id = id
       this.defaultFile = value.letter.letter
       this.queryUpdateData = {
-        id: value.id,
-        agency_id: value.id,
-        applicant_id: value.applicant.id,
-        application_letter_number: value.applicant.application_letter_number,
+        id: value.letter.id,
+        agency_id: value.letter.agency_id,
+        applicant_id: value.letter.applicant_id,
+        application_letter_number: value.letter.application_letter_number,
         update_type: 3
       }
-      this.selectedFileName = value.applicant.application_letter_number + '.pdf'
+      this.selectedFileName = value.letter.application_letter_number + '.pdf'
       if (value.letter !== null) this.isLetterExists = true
     },
     closeDialog() {
