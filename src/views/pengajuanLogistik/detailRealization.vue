@@ -179,15 +179,15 @@ export default {
     this.listQuery.agency_id = this.$route.params.id
     EventBus.$on('hideUpdateLetter', (value) => {
       this.updateLetterForm = false
-      // if (value) {
-      //   this.getDetail()
-      // }
+      if (value) {
+        this.getDetail()
+      }
     })
     EventBus.$on('dialogUrgencyConfirmation', (value) => {
       this.showUrgencyForm = false
-      // if (value) {
-      //   this.getListDetail()
-      // }
+      if (value) {
+        this.getDetail()
+      }
     })
   },
   mounted() {
@@ -213,6 +213,9 @@ export default {
       console.log('terpanggil')
     },
     async getDetail() {
+      this.info_terbaru = []
+      this.status_terbaru = []
+      this.identity_terbaru = []
       const res = await this.$store.dispatch('logistics/getListDetailLogisticRequestUpdate', this.$route.params.id)
       if (!res.data) {
         this.$router.push('/dashboard')
