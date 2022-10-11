@@ -128,6 +128,8 @@
               </ValidationProvider>
               <ValidationProvider
                 v-slot="{ errors }"
+                rules="max:250"
+                :name="$t('label.full_address')"
               >
                 <v-label class="title"><b>{{ $t('label.full_address') }}</b></v-label>
                 <v-textarea
@@ -320,8 +322,7 @@ export default {
         id: value.agency.id,
         agency_id: value.agency.id,
         applicant_id: value.applicant.id,
-        // master_faskes_id: value.master_faskes_id, // ini belum ada master fasyankes di response
-        master_fasyankes_id: 8,
+        master_faskes_id: value.agency.master_faskes_id,
         agency_name: value.agency.agency_name,
         phone_number: value.agency.phone_number,
         location_district_code: value.agency.city_id,
@@ -341,15 +342,20 @@ export default {
     },
     async updateForm() {
       this.isLoading = true
-      const valid = await this.$refs.observer.validate()
-      if (!valid) {
-        return
+      try {
+        const valid = await this.$refs.observer.validate()
+        if (!valid) {
+          return
+        }
+        const response = await this.$store.dispatch('logistics/updateAgency', this.queryUpdateData)
+        if (response.status === 200) {
+          EventBus.$emit('hideAgencyIdentity', true)
+        }
+      } catch (error) {
+        return error
+      } finally {
+        this.isLoading = false
       }
-      const response = await this.$store.dispatch('logistics/updateAgency', this.queryUpdateData)
-      if (response.status === 200) {
-        EventBus.$emit('hideAgencyIdentity', true)
-      }
-      this.isLoading = false
     }
   }
 }
