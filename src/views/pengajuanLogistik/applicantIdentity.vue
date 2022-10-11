@@ -294,8 +294,8 @@ export default {
       this.id = id
       this.defaultIdentity = value.applicant.file
       this.queryUpdateData = {
-        id: value.id,
-        agency_id: value.id,
+        id: value.agency.id,
+        agency_id: value.agency.id,
         applicant_id: value.applicant.id,
         applicant_name: value.applicant.applicant_name,
         applicants_office: value.applicant.applicants_office,

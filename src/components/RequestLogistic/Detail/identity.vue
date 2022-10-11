@@ -22,7 +22,7 @@
           </a>
         </div>
       </div>
-      <div class="edit-button justify-end ml-auto">
+      <div class="edit-button justify-end ml-auto" @click="updateIdentity(items.title)">
         <JDSButton inverted height="40" class="mx-1">
           <v-icon left dark>mdi-pencil</v-icon>
           <span>{{ 'UBAH' }}</span>
@@ -43,11 +43,19 @@ export default {
       type: Object,
       default: () => {}
     }
+  },
+  methods: {
+    updateIdentity(title) {
+      if (title === 'Identitas Instansi') {
+        this.$emit('update-agency')
+      } else {
+        this.$emit('update-applicant')
+      }
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
-// PR long content dan dinamic kolom untuk identitas pemohon
 // Tambahkan hide and show dibagian identitas pemohon
 .instance-identity {
   display: grid;

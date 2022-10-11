@@ -315,19 +315,20 @@ export default {
       this.$store.dispatch('faskesType/getListFaskesType')
       this.getListCity()
       this.id = id
-      this.agency_type = parseInt(value.agency_type)
+      this.agency_type = parseInt(value.agency.agency_type_id)
       this.queryUpdateData = {
-        id: value.id,
-        agency_id: value.id,
+        id: value.agency.id,
+        agency_id: value.agency.id,
         applicant_id: value.applicant.id,
-        master_faskes_id: value.master_faskes_id,
-        agency_name: value.agency_name,
-        phone_number: value.phone_number,
-        location_district_code: value.location_district_code,
-        location_subdistrict_code: value.location_subdistrict_code,
-        location_village_code: value.location_village_code,
-        location_address: value.location_address,
-        agency_type: parseInt(value.agency_type),
+        // master_faskes_id: value.master_faskes_id, // ini belum ada master fasyankes di response
+        master_fasyankes_id: 8,
+        agency_name: value.agency.agency_name,
+        phone_number: value.agency.phone_number,
+        location_district_code: value.agency.city_id,
+        location_subdistrict_code: value.agency.district_id,
+        location_village_code: value.agency.village_id,
+        location_address: value.agency.address,
+        agency_type: parseInt(value.agency.agency_type_id),
         update_type: 1
       }
       this.onSelectFaskesType(this.queryUpdateData.agency_type)
@@ -344,7 +345,7 @@ export default {
       if (!valid) {
         return
       }
-      const response = await this.$store.dispatch('logistics/updateApplicant', this.queryUpdateData)
+      const response = await this.$store.dispatch('logistics/updateAgency', this.queryUpdateData)
       if (response.status === 200) {
         EventBus.$emit('hideAgencyIdentity', true)
       }

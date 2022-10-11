@@ -91,7 +91,7 @@ export default {
       return e
     }
   },
-  async updateApplicant({ commit }, params) {
+  async updateAgency({ commit }, params) {
     try {
       const response = await doPostUpdate('/api/v1/logistic-request/' + params.id, 'PUT', params)
       return response

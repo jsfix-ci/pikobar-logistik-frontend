@@ -19,6 +19,7 @@
         :button-label="item.button_label"
         :class="{ 'ml-auto': index === 1 }"
         @change-urgency="urgencyChange(detailLogisticRequest.applicant.id, !detailLogisticRequest.is_urgency)"
+        @restore-status="restoreStatus(detailLogisticRequest.applicant.agency_id)"
       />
       <!-- <CardStatus /> -->
     </div>
@@ -38,7 +39,11 @@
 
     <!-- Instance -->
     <div v-for="item in identity_terbaru" :key="item.title" class="mt-5">
-      <CardIdentity :items="item" />
+      <CardIdentity
+        :items="item"
+        @update-agency="showAgencyIdentityDialog"
+        @update-applicant="showApplicantIdentityDialog"
+      />
     </div>
 
     <!-- Logistic request -->
@@ -58,6 +63,9 @@
     </div>
     <updateLetter ref="dialogUpdateLetterForm" :show="updateLetterForm" />
     <dialogUrgency ref="dialogUrgencyForm" :show="showUrgencyForm" />
+    <dialogReturn ref="dialogReturnForm" :show="showReturnForm" />
+    <agencyIdentity ref="agencyIdentityForm" :show="showAgencyIdentity" />
+    <applicantIdentity ref="dialogApplicantIdentityForm" :show="showApplicantIdentity" />
   </div>
 </template>
 <script>
@@ -70,6 +78,9 @@ import { data } from '@/components/RequestLogistic/Detail/response.js'
 import ActionButton from '@/views/immunization/detail/ActionButton'
 import updateLetter from '@/views/pengajuanLogistik/updateLetter'
 import dialogUrgency from '@/views/pengajuanLogistik/dialogUrgency'
+import dialogReturn from '@/views/pengajuanLogistik/dialogReturn'
+import agencyIdentity from './agencyIdentity'
+import applicantIdentity from './applicantIdentity'
 import { mapState, mapGetters } from 'vuex'
 import EventBus from '@/utils/eventBus'
 import { formatDatetime } from '@/utils/parseDatetime'
@@ -83,13 +94,19 @@ export default {
     CardLogistic,
     ActionButton,
     updateLetter,
-    dialogUrgency
+    dialogUrgency,
+    dialogReturn,
+    agencyIdentity,
+    applicantIdentity
   },
   data() {
     return {
       data,
       updateLetterForm: false,
       showUrgencyForm: false,
+      showReturnForm: false,
+      showAgencyIdentity: false,
+      showApplicantIdentity: false,
       listQuery: {},
       headersRequest: [
         { text: this.$t('label.print_mail_no'), sortable: false },
@@ -189,6 +206,24 @@ export default {
         this.getDetail()
       }
     })
+    EventBus.$on('dialogReturnConfirmation', (value) => {
+      this.showReturnForm = false
+      if (value) {
+        this.getDetail()
+      }
+    })
+    EventBus.$on('hideAgencyIdentity', (value) => {
+      this.showAgencyIdentity = false
+      if (value) {
+        this.getDetail()
+      }
+    })
+    EventBus.$on('hideApplicantIdentity', (value) => {
+      this.showApplicantIdentity = false
+      if (value) {
+        this.getDetail()
+      }
+    })
   },
   mounted() {
     // this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
@@ -197,6 +232,19 @@ export default {
   },
   methods: {
     formatDatetime,
+    showApplicantIdentityDialog() {
+      this.$refs.dialogApplicantIdentityForm.setData(this.detailLogisticRequest.agency.id, this.detailLogisticRequest)
+      this.showApplicantIdentity = true
+    },
+    showAgencyIdentityDialog() {
+      this.$refs.agencyIdentityForm.setData(this.detailLogisticRequest.agency.id, this.detailLogisticRequest)
+      this.showAgencyIdentity = true
+    },
+    restoreStatus(id) {
+      this.showReturnForm = true
+      this.dataReturnConfirmation = this.detailLogisticRequest
+      this.$refs.dialogReturnForm.setData(id, this.dataReturnConfirmation)
+    },
     urgencyChange(id, value) {
       this.showUrgencyForm = true
       this.dataUrgencyConfirmation = this.detailLogisticRequest
@@ -340,14 +388,18 @@ export default {
     },
     setStatusLabel(payload) {
       switch (payload) {
+        case 'NOT_VERIFIED':
+          return this.$t('label.not_verified')
+        case 'VERIFIED':
+          return this.$t('label.verified')
         case 'APPROVED':
           return this.$t('label.approved')
-        case 'not_delivered':
-          return this.$t('label.not_delivered')
-        case 'delivered':
-          return this.$t('label.delivered')
-        case 'not_available':
-          return this.$t('label.not_available')
+        case 'FINALIZED':
+          return this.$t('label.finalized')
+        case 'VERIFICATION_REJECTED':
+          return this.$t('label.verification_rejected')
+        case 'APPROVAL_REJECTED':
+          return this.$t('label.approval_rejected')
         default: 'Status tidak terdefinisikan'
       }
     },
