@@ -7,7 +7,7 @@
         <strong>{{ strong }}</strong>
       </span>
       <div class="ml-auto flex-shrink-1 flex-grow-0 align-self-center">
-        <JDSButton v-if="type === 'status-request'" inverted width="14rem" class="button-status">
+        <JDSButton v-if="type === 'status-request'" inverted width="14rem" class="button-status" @click="restoreStatus()">
           <v-icon left large dark>mdi-backup-restore</v-icon>
           <span style=" white-space: normal; word-wrap: break-word;" class="text-left pl-2">{{ buttonLabel }}</span>
         </JDSButton>
@@ -51,6 +51,9 @@ export default {
   methods: {
     changeUrgency() {
       this.$emit('change-urgency')
+    },
+    restoreStatus() {
+      this.$emit('restore-status')
     }
   }
 }

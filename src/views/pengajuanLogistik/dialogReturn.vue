@@ -20,7 +20,7 @@
         <div class="col-sm-12">
           <span><b>{{ $t('label.applicant_agency_name') }}</b></span>
           <br>
-          <span class="green--text">{{ dataDialog.agency_name }}</span>
+          <span class="green--text">{{ dataDialog.agency.agency_name }}</span>
         </div>
 
         <div class="col-sm-12">
@@ -85,6 +85,7 @@ export default {
       this.getUndoStepTitle()
     },
     getUndoStepTitle() {
+      console.log(this.dataDialog.step)
       switch (this.dataDialog.step) {
         case 'ditolak rekomendasi':
           this.titleReturn = this.$t('label.return_to_recommendation_step_dialog')
@@ -108,7 +109,7 @@ export default {
     },
     async updateReturn(value) {
       const param = {
-        agency_id: this.id,
+        agency_id: this.dataDialog.agency.id,
         applicant_id: this.dataDialog.applicant.id,
         step: this.dataDialog.step,
         url: location.host + '/#'

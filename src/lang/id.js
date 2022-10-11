@@ -464,6 +464,8 @@ export default {
     input_upper_name: 'Masukkan Nama Atasan',
     faskes_location: 'Lokasi Faskes',
     input_faskes_location: 'Masukkan link koordinat lokasi dari google maps',
+    approval_rejected: 'Permohonan Ditolak',
+    verification_rejected: 'Administrasi Ditolak',
     verification: 'Verifikasi',
     verification_fakes_title: 'Verifikasi Fasilitas Kesehatan',
     pic_detail_title: 'Detail PIC (Person In Charge)',
