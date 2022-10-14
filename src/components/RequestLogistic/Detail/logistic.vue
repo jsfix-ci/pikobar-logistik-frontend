@@ -3,34 +3,45 @@
     <p class="text-label mb-1">{{ title }}</p>
     <div class="list-logistic">
       <div v-for="data in items" :key="data.subtitle" class="mb-5">
-        <p class="text-label mb-1">{{ data.subtitle }}</p>
+        <div>
+          <p class="d-inline-block text-label mb-2">{{ data.subtitle }}</p>
+          <v-icon v-if="data.isOpen">mdi-chevron-up</v-icon>
+          <v-icon v-else>mdi-chevron-down</v-icon>
+        </div>
         <JDSTable
+          v-show="data.isOpen"
           :headers="data.headers"
-          :items="data.items"
+          :items="data.items.data"
           :loading="false"
         >
           <template v-slot:item-prop="{ item, index }">
             <tr>
-              <td>{{ index }}</td>
-              <td>{{ item.product.name }}</td>
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.product_name || '-' }}</td>
               <td>{{ item.brand || '-' }}</td>
               <td>{{ item.quantity || '-' }}</td>
-              <td>{{ item.unit.unit }}</td>
-              <td>{{ item.product.category }}</td>
-              <!-- <td>{{ item.is_letter_file_final ? 'Final' : 'Draft' }}</td> -->
-              <td v-if="false">
-                <JDSButton inverted height="25px" @click="onDetail(item.id)">
+              <td>{{ item.unit || '-' }}</td>
+              <td v-if="data.type === 'request'">{{ item.category }}</td>
+              <td
+                v-if="data.type === 'recommendation'"
+                class="font-weight-bold red--text"
+                :class="{ 'green--text': item.status !== 'not_approved' }"
+              >
+                {{ setStatus(item.status) }}
+              </td>
+              <td v-if="data.type !== 'request'">
+                <JDSButton inverted height="25px" @click="updateItem(item, data.type)">
                   {{ $t('label.update') }}
                 </JDSButton>
               </td>
             </tr>
           </template>
         </JDSTable>
-        <v-pagination
+        <!-- <v-pagination
           v-model="page"
           :length="6"
           :total-visible="3"
-        />
+        /> -->
       </div>
     </div>
   </div>
@@ -61,6 +72,10 @@ export default {
     items: {
       type: Array,
       default: () => []
+    },
+    dataTable: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -69,7 +84,28 @@ export default {
     }
   },
   methods: {
-    getTableRowNumbering
+    getTableRowNumbering,
+    updateItem(item, type) {
+      this.$emit('update', item, type)
+    },
+    setStatus(status) {
+      switch (status) {
+        case 'approved':
+          return this.$t('label.approved')
+        case 'not_delivered':
+          return this.$t('label.not_delivered')
+        case 'delivered':
+          return this.$t('label.delivered')
+        case 'not_available':
+          return this.$t('label.not_available') // tidak akan ngisi nama barang
+        case 'replaced':
+          return this.$t('label.replaced')
+        case 'not_yet_fulfilled':
+          return this.$t('label.not_yet_fulfilled') // tidak akan ngisi nama barang
+        default:
+          return this.$t('label.not_approved')
+      }
+    }
   }
 }
 </script>

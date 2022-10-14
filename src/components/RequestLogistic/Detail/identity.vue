@@ -1,6 +1,11 @@
 <template>
   <div>
-    <p class="text-label mb-1">{{ items.title }}</p>
+    <span>
+      <!-- Bikin kondisi hide and show -->
+      <p class="text-label mb-1 mr-1" style="display: inline-block">{{ items.title }}</p>
+      <v-icon v-if="false">mdi-chevron-down</v-icon>
+      <v-icon>mdi-chevron-up</v-icon>
+    </span>
     <div class="instance-identity">
       <div v-for="item in items.data" :key="item.title" :class="{ 'nomor-handphone': item.title === 'Nomor Handphone Pengganti', 'image': item.type }">
         <p class="text-label-green mb-0">{{ item.title }}</p>

@@ -21,7 +21,8 @@
           <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
           <span v-else class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name_recommended') }}</span>
           <br>
-          <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
+          <!-- <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span> -->
+          <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ data.product_name }}</span>
           <span v-else class="value-sub-title-update-logistic-needs">{{ item.recommendation_product_name || '-' }}</span>
         </v-col>
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
@@ -51,6 +52,8 @@
             <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_item') }}</span>
             <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_item') }}</span>
             <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_item') }}</span>
+            <!-- {{ data.product_id }}
+            {{ listAPD }} -->
             <v-autocomplete
               v-model="data.product_id"
               :placeholder="$t('label.choose_apd')"
@@ -69,7 +72,8 @@
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
           <span class="sub-title-update-logistic-needs">{{ $t('label.total_needs') }}</span>
           <br>
-          <span class="value-sub-title-update-logistic-needs">{{ item ? item.quantity : '-' }}</span>
+          <!-- <span class="value-sub-title-update-logistic-needs">{{ item ? item.quantity : '-' }}</span> -->
+          <span class="value-sub-title-update-logistic-needs">{{ data.quantity }}</span>
         </v-col>
         <v-col v-if="!hideException" class="margin-top-min-20-update-logistic-needs">
           <v-row>
@@ -138,6 +142,7 @@
           <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_date') }}</span>
           <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
+          {{ data.recommendation_date }}
           <date-picker-input
             v-if="isVerified && !isApproved"
             :value="data.recommendation_date"
@@ -241,7 +246,7 @@ export default {
           value: 'not_yet_fulfilled'
         }
       ],
-      isLoading: false
+      isLoading: true
     }
   },
   computed: {
@@ -311,6 +316,26 @@ export default {
       this.listQueryAPD.id = null
       this.listQueryAPD.poslog_id = null
     },
+    async setDataUpdateItem(item, type, detailData) {
+      this.isLoading = true
+      console.log('komponent update', type, detailData)
+      this.isVerified = true
+      this.isApproved = false
+      this.data.status = item.status
+      this.setUnit(item.product_id)
+      this.data.product_id = item.product_id
+      this.data.product_name = item.product_name
+      this.listQueryAPD.material_name = item.product_name
+      this.data.recommendation_unit = item.unit
+      this.data.recommendation_date = item.date
+      this.data.recommendation_quantity = item.quantity
+      this.data.quantity = item.quantity
+      this.data.need_id = item.need_id
+      this.data.agency_id = detailData.agency.id
+      this.data.applicant_id = detailData.applicant.id
+      await this.getListAPD()
+      // this.isLoading = false
+    },
     async setDialog(type, data, value, recommendation, realization) {
       this.isLoading = true
       this.listQueryAPD.material_name = null
@@ -374,37 +399,45 @@ export default {
       this.isLoading = false
     },
     async submitData(value) {
+      console.log(value)
       this.isLoading = true
-      this.data.store_type = 'recommendation'
-      if (this.isApproved) {
-        this.data.store_type = 'realization'
-      }
-      const valid = await this.$refs.observer.validate()
-      if (!valid) {
-        this.isLoading = false
-        return
-      }
-      if (this.isUpdate) {
-        this.data.status = 'approved'
-        await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
-        this.$parent.getListRealizationAdmin()
-      } else {
-        if (value === true) {
+      try {
+        this.data.store_type = 'recommendation'
+        if (this.isApproved) {
+          this.data.store_type = 'realization'
+        }
+        const valid = await this.$refs.observer.validate()
+        if (!valid) {
+          this.isLoading = false
+          return
+        }
+        if (this.isUpdate) {
           this.data.status = 'approved'
-          this.data.agency_id = this.agency_id
-          await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
+          await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
           this.$parent.getListRealizationAdmin()
         } else {
-          this.data.need_id = this.item.id
-          this.data.product_id = this.data.product_id || this.item.product_id
-          this.data.agency_id = this.item.agency_id
-          delete this.data.id
-          await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
-          this.$parent.getListDetailNeeds()
+          if (value === true) {
+            this.data.status = 'approved'
+            this.data.agency_id = this.agency_id
+            await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
+            this.$parent.getListRealizationAdmin()
+          } else {
+            // this.data.need_id = this.item.id
+            // this.data.product_id = this.data.product_id || this.item.product_id
+            // this.data.agency_id = this.item.agency_id
+            delete this.data.id
+            await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
+            console.log('hallo apakah ini terpanggil')
+            this.getLogisticRequest()
+            this.$parent.getListDetailNeeds()
+          }
         }
+      } catch (error) {
+        return error
+      } finally {
+        this.isLoading = false
+        this.hideDialog()
       }
-      await this.hideDialog()
-      this.isLoading = false
     },
     hideDialog() {
       this.$refs.observer.reset()

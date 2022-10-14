@@ -50,7 +50,8 @@
     <div class="mt-5">
       <CardLogistic
         title="Daftar Kebutuhan Logistik"
-        :items="logistic"
+        :items="filteredLogisticItems"
+        @update="updateItem"
       />
     </div>
     <!-- Footer -->
@@ -66,6 +67,7 @@
     <dialogReturn ref="dialogReturnForm" :show="showReturnForm" />
     <agencyIdentity ref="agencyIdentityForm" :show="showAgencyIdentity" />
     <applicantIdentity ref="dialogApplicantIdentityForm" :show="showApplicantIdentity" />
+    <updateKebutuhanLogistik ref="updateForm" :show="showForm" />
   </div>
 </template>
 <script>
@@ -81,6 +83,7 @@ import dialogUrgency from '@/views/pengajuanLogistik/dialogUrgency'
 import dialogReturn from '@/views/pengajuanLogistik/dialogReturn'
 import agencyIdentity from './agencyIdentity'
 import applicantIdentity from './applicantIdentity'
+import updateKebutuhanLogistik from './update'
 import { mapState, mapGetters } from 'vuex'
 import EventBus from '@/utils/eventBus'
 import { formatDatetime } from '@/utils/parseDatetime'
@@ -97,16 +100,22 @@ export default {
     dialogUrgency,
     dialogReturn,
     agencyIdentity,
-    applicantIdentity
+    applicantIdentity,
+    updateKebutuhanLogistik
   },
   data() {
     return {
       data,
-      updateLetterForm: false,
-      showUrgencyForm: false,
+      isCreate: false,
+      showForm: false,
       showReturnForm: false,
+      showUrgencyForm: false,
+      updateLetterForm: false,
       showAgencyIdentity: false,
       showApplicantIdentity: false,
+      itemsRequest: [],
+      itemsRecommendation: [],
+      itemsRealization: [],
       listQuery: {},
       headersRequest: [
         { text: this.$t('label.print_mail_no'), sortable: false },
@@ -122,7 +131,8 @@ export default {
         { text: 'Deskripsi', sortable: false },
         { text: 'Jumlah', sortable: false },
         { text: 'Satuan', sortable: false },
-        { text: 'Status', sortable: false }
+        { text: 'Status', sortable: false },
+        { text: 'Aksi', sortable: false }
       ],
       headersRealization: [
         { text: this.$t('label.print_mail_no'), sortable: false },
@@ -130,9 +140,10 @@ export default {
         { text: 'Deskripsi', sortable: false },
         { text: 'Jumlah', sortable: false },
         { text: 'Satuan', sortable: false },
-        { text: 'Status', sortable: false }
-        // { text: 'Aksi', sortable: false }
+        { text: 'Status', sortable: false },
+        { text: 'Aksi', sortable: false }
       ],
+      // Ini perbaiki nanti
       dataUrgencyConfirmation: {
         id: null,
         agency_name: '-',
@@ -162,28 +173,39 @@ export default {
       totalData: 'totalDataVaccineRequest'
     }),
     logistic() {
+      console.log('logistic terpanggil ketika ada perubahan')
       return [
         {
+          type: 'request',
           subtitle: 'Permohonan Masuk',
           headers: this.headersRequest,
-          items: this.listLogisticNeeds
+          items: this.itemsRequest,
+          isOpen: true
         },
         {
-          subtitle: 'Realisasi Salur',
-          headers: this.headersRealization,
-          items: this.listRealization
-        },
-        {
+          type: 'recommendation',
           subtitle: 'Rekomendasi Salur',
           headers: this.headersRecommendation,
-          items: this.listRealization
+          items: this.itemsRecommendation,
+          isOpen: true
+        },
+        {
+          type: 'realization',
+          subtitle: 'Realisasi Salur',
+          headers: this.headersRealization,
+          items: this.itemsRealization,
+          isOpen: true
         }
-        // {
-        //   subtitle: 'Realisasi Salur',
-        //   headers: this.headersRealization,
-        //   items: this.listRequest
-        // }
       ]
+    },
+    filteredLogisticItems() {
+      if (this.detailLogisticRequest.status === 'NOT_VERIFIED') {
+        return this.logistic.filter((el) => el.type === 'request')
+      } else if (this.detailLogisticRequest.status === 'VERIFIED') {
+        return this.logistic.filter((el) => el.type !== 'realization')
+      } else {
+        return this.logistic
+      }
     },
     letterUrl() {
       return this.detailLogisticRequest?.letter?.letter ?? '-'
@@ -224,9 +246,12 @@ export default {
         this.getDetail()
       }
     })
+    EventBus.$on('dialogHide', (value) => {
+      this.showForm = value
+      // this.getLogisticRequest()
+    })
   },
   mounted() {
-    // this.$store.dispatch('vaccine/getListVaccineRequest', this.listQuery)
     this.getDetail()
     this.getLogisticRequest()
   },
@@ -253,12 +278,6 @@ export default {
     updateLetter() {
       this.$refs.dialogUpdateLetterForm.setData(this.detailLogisticRequest.letter.agency_id, this.detailLogisticRequest)
       this.updateLetterForm = true
-    },
-    onReturnValidation() {
-      console.log('terpanggil return')
-    },
-    async onRealizeValidation() {
-      console.log('terpanggil')
     },
     async getDetail() {
       this.info_terbaru = []
@@ -407,7 +426,34 @@ export default {
       return payload.split('.').pop() === 'pdf' ? 'link' : 'image'
     },
     async getLogisticRequest() {
-      await this.$store.dispatch('logistics/getListDetailLogisticNeeds', this.listQuery)
+      console.log('terpanggil loh ini')
+      const res = await this.$store.dispatch('logistics/getListDetailLogisticNeedsNew', this.listQuery)
+      // Ini perlu di refactor
+      this.itemsRequest = res.data[0]
+      this.itemsRecommendation = res.data[1]
+      this.itemsRealization = res.data[2]
+    },
+    updateItem(item, type) {
+      // console.log(item, type)
+      this.showForm = true
+      this.$refs.updateForm.setDataUpdateItem(item, type, this.detailLogisticRequest)
+    },
+    updateItem1(type, value, index, isRecommendation, isRealization) {
+      this.showForm = true
+      this.isCreate = type
+      if (type === true) {
+        this.$refs.updateForm.setDialog(type, this.listQuery.agency_id, null, isRecommendation, isRealization)
+      } else if (type === false) {
+        this.$refs.updateForm.setDialog(type, this.listLogisticNeeds[index], value.id, isRecommendation, isRealization)
+      } else {
+        this.$refs.updateForm.setDialog(null, this.listRealization[value], null, isRecommendation, isRealization)
+      }
+    },
+    onReturnValidation() {
+      console.log('terpanggil return')
+    },
+    onRealizeValidation() {
+      console.log('terpanggil')
     }
   }
 }
