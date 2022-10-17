@@ -43,6 +43,8 @@
         :items="item"
         @update-agency="showAgencyIdentityDialog"
         @update-applicant="showApplicantIdentityDialog"
+        @hide="hideIdentity"
+        @show="showIdentity"
       />
     </div>
 
@@ -111,6 +113,7 @@ export default {
       isRequestOpen: true,
       isRecommendationOpen: true,
       isRealizationOpen: false,
+      isIdentityApplicantOpen: false,
       isCreate: false,
       showForm: false,
       showReturnForm: false,
@@ -346,77 +349,83 @@ export default {
       })
 
       // identitas instansi
-      this.identity_terbaru.push({
+      this.setDataIdentity()
+    },
+    setDataIdentity() {
+      console.log(this.detailLogisticRequest)
+      this.identity_terbaru = [{
         title: 'Identitas Instansi',
+        isOpen: true,
         data: [
           {
             title: 'Jenis Instansi',
-            value: res.data.agency.agency_type_name
+            value: this.detailLogisticRequest.agency.agency_type_name
           },
           {
             title: 'Nomor Telepon',
-            value: res.data.agency.phone_number
+            value: this.detailLogisticRequest.agency.phone_number
           },
           {
             title: 'Kelurahan',
-            value: res.data.agency.village_name
+            value: this.detailLogisticRequest.agency.village_name
           },
           {
             title: 'Nama Instansi',
-            value: res.data.agency.agency_name
+            value: this.detailLogisticRequest.agency.agency_name
           },
           {
             title: 'Kota/Kab.',
-            value: res.data.agency.city_name
+            value: this.detailLogisticRequest.agency.city_name
           },
           {
             title: 'Alamat lengkap',
-            value: res.data.agency.address
+            value: this.detailLogisticRequest.agency.address
           },
           {
             title: 'Tipe Instansi',
-            value: res.data.agency.is_reference === 1 ? 'RS Rujukan' : 'RS Bukan Rujukan'
+            value: this.detailLogisticRequest.agency.is_reference === 1 ? 'RS Rujukan' : 'RS Bukan Rujukan'
           },
           {
             title: 'Kecamatan',
-            value: res.data.agency.district_name
+            value: this.detailLogisticRequest.agency.district_name
           },
           {
             title: 'Status Rujukan',
-            value: res.data.agency.is_reference === 1 ? 'Rujukan' : 'Bukan Rujukan'
+            value: this.detailLogisticRequest.agency.is_reference === 1 ? 'Rujukan' : 'Bukan Rujukan'
           }
         ]
       },
       {
         title: 'Identitas Pemohon',
+        isOpen: this.isIdentityApplicantOpen,
         data: [
           {
             title: 'Nama Pemohon',
-            value: res.data.applicant.applicant_name
+            value: this.detailLogisticRequest.applicant.applicant_name
           },
           {
             title: 'Email Pemohon',
-            value: res.data.applicant.email
+            value: this.detailLogisticRequest.applicant.email
           },
           {
-            type: this.setTypeFile(res.data.applicant.file),
+            type: this.setTypeFile(this.detailLogisticRequest.applicant.file),
             title: 'KTP/Kartu Pegawai/Surat Tugas',
-            value: res.data.applicant.file
+            value: this.detailLogisticRequest.applicant.file
           },
           {
             title: 'Jabatan Pemohon',
-            value: res.data.applicant.applicants_office
+            value: this.detailLogisticRequest.applicant.applicants_office
           },
           {
             title: 'Nomor Handphone Pemohon',
-            value: res.data.applicant.primary_phone_number
+            value: this.detailLogisticRequest.applicant.primary_phone_number
           },
           {
             title: 'Nomor Handphone Pengganti',
-            value: res.data.applicant.secondary_phone_number
+            value: this.detailLogisticRequest.applicant.secondary_phone_number
           }
         ]
-      })
+      }]
     },
     setStatusLabel(payload) {
       switch (payload) {
@@ -512,6 +521,16 @@ export default {
       } else {
         this.$refs.updateForm.setDialog(null, this.listRealization[value], null, isRecommendation, isRealization)
       }
+    },
+    hideIdentity() {
+      console.log('terpanggil guys')
+      this.isIdentityApplicantOpen = false
+      this.setDataIdentity()
+    },
+    showIdentity() {
+      console.log('terpanggil show di detail')
+      this.isIdentityApplicantOpen = true
+      this.setDataIdentity()
     },
     onReturnValidation() {
       console.log('terpanggil return')

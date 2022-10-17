@@ -3,10 +3,12 @@
     <span>
       <!-- Bikin kondisi hide and show -->
       <p class="text-label mb-1 mr-1" style="display: inline-block">{{ items.title }}</p>
-      <v-icon v-if="false">mdi-chevron-down</v-icon>
-      <v-icon>mdi-chevron-up</v-icon>
+      <span v-if="items.title === 'Identitas Pemohon'">
+        <v-icon v-if="items.isOpen" @click="hide">mdi-chevron-up</v-icon>
+        <v-icon v-else @click="show">mdi-chevron-down</v-icon>
+      </span>
     </span>
-    <div class="instance-identity">
+    <div v-if="items.isOpen" class="instance-identity">
       <div v-for="item in items.data" :key="item.title" :class="{ 'nomor-handphone': item.title === 'Nomor Handphone Pengganti', 'image': item.type }">
         <p class="text-label-green mb-0">{{ item.title }}</p>
         <p v-if="!item.type" class="text-value">{{ item.value }}</p>
@@ -56,6 +58,14 @@ export default {
       } else {
         this.$emit('update-applicant')
       }
+    },
+    hide() {
+      console.log('terpanggil dari identity')
+      this.$emit('hide')
+    },
+    show() {
+      console.log('terpanggil dari identity show')
+      this.$emit('show')
     }
   }
 }
