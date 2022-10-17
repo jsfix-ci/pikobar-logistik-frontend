@@ -23,7 +23,8 @@
           <br>
           <!-- <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span> -->
           <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ data.product_name }}</span>
-          <span v-else class="value-sub-title-update-logistic-needs">{{ item.recommendation_product_name || '-' }}</span>
+          <!-- <span v-else class="value-sub-title-update-logistic-needs">{{ item.recommendation_product_name || '-' }}</span> -->
+          <span v-else class="value-sub-title-update-logistic-needs">{{ data.product_name || '-' }}</span>
         </v-col>
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
           <ValidationProvider
@@ -64,7 +65,7 @@
               solo-inverted
               item-text="name"
               item-value="material_id"
-              @input.native="querySearchPoslogItems"
+              @input="querySearchPoslogItems"
               @change="setUnit(data.product_id)"
             />
           </ValidationProvider>
@@ -120,7 +121,7 @@
                 />
                 <v-autocomplete
                   v-else
-                  v-model="data.realization_unit_id"
+                  v-model="data.realization_unit"
                   :items="listApdUnit"
                   outlined
                   solo-inverted
@@ -142,7 +143,6 @@
           <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_date') }}</span>
           <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
           <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_date') }}</span>
-          {{ data.recommendation_date }}
           <date-picker-input
             v-if="isVerified && !isApproved"
             :value="data.recommendation_date"
@@ -246,7 +246,7 @@ export default {
           value: 'not_yet_fulfilled'
         }
       ],
-      isLoading: true
+      isLoading: false
     }
   },
   computed: {
@@ -277,6 +277,7 @@ export default {
       await this.getListAPD()
     },
     async getListAPD() {
+      this.isLoading = true
       this.hideException = false
       this.resetQueryAPD()
       if (this.data.status === 'approved') {
@@ -297,13 +298,19 @@ export default {
         this.listQueryAPD.poslog_id = this.data.realization_product_id
         this.data.realization_unit_id === null ? this.data.realization_unit : 'PCS'
       }
-      await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
-      this.listAPD.forEach(element => {
-        element.value = {
-          id: element.material_id,
-          name: element.name
-        }
-      })
+      try {
+        await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
+        this.listAPD.forEach(element => {
+          element.value = {
+            id: element.material_id,
+            name: element.name
+          }
+        })
+      } catch (err) {
+        return err
+      } finally {
+        this.isLoading = false
+      }
     },
     setTotalAPD() {
       this.totalLogistic = 0
@@ -317,22 +324,38 @@ export default {
       this.listQueryAPD.poslog_id = null
     },
     async setDataUpdateItem(item, type, detailData) {
-      this.isLoading = true
-      console.log('komponent update', type, detailData)
-      this.isVerified = true
-      this.isApproved = false
-      this.data.status = item.status
+      // this.isLoading = true
+
+      // this.data.status = item.status
+      // this.data.product_id = item.product_id
+      // this.data.product_name = item.product_name
+      // this.data.need_id = item.need_id
+
+      this.data = item
+
       this.setUnit(item.product_id)
-      this.data.product_id = item.product_id
-      this.data.product_name = item.product_name
       this.listQueryAPD.material_name = item.product_name
-      this.data.recommendation_unit = item.unit
-      this.data.recommendation_date = item.date
-      this.data.recommendation_quantity = item.quantity
-      this.data.quantity = item.quantity
-      this.data.need_id = item.need_id
+
+      this.data.quantity = item.request_quantity
       this.data.agency_id = detailData.agency.id
       this.data.applicant_id = detailData.applicant.id
+
+      if (type === 'recommendation') {
+        this.isVerified = true
+        this.isApproved = false
+
+        this.data.recommendation_unit = item.unit
+        this.data.recommendation_date = item.date
+        this.data.recommendation_quantity = item.quantity
+      } else {
+        this.isVerified = false
+        this.isApproved = true
+
+        this.data.realization_unit = item.unit
+        this.data.realization_date = item.date
+        this.data.realization_quantity = item.quantity
+      }
+
       await this.getListAPD()
       // this.isLoading = false
     },
@@ -388,7 +411,6 @@ export default {
       this.isLoading = false
     },
     async setUnit(id) {
-      this.isLoading = true
       await this.$store.dispatch('logistics/getListApdUnit', id)
       this.listApdUnit.forEach(element => {
         element.value = {
@@ -396,10 +418,8 @@ export default {
           name: element.name
         }
       })
-      this.isLoading = false
     },
     async submitData(value) {
-      console.log(value)
       this.isLoading = true
       try {
         this.data.store_type = 'recommendation'
@@ -428,7 +448,7 @@ export default {
             delete this.data.id
             await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
             console.log('hallo apakah ini terpanggil')
-            this.getLogisticRequest()
+            this.$parent.getLogisticRequest()
             this.$parent.getListDetailNeeds()
           }
         }

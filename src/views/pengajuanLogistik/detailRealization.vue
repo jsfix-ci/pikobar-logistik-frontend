@@ -50,8 +50,10 @@
     <div class="mt-5">
       <CardLogistic
         title="Daftar Kebutuhan Logistik"
-        :items="filteredLogisticItems"
+        :items="logisticItems"
         @update="updateItem"
+        @hide="hide"
+        @show="show"
       />
     </div>
     <!-- Footer -->
@@ -106,6 +108,9 @@ export default {
   data() {
     return {
       data,
+      isRequestOpen: true,
+      isRecommendationOpen: true,
+      isRealizationOpen: false,
       isCreate: false,
       showForm: false,
       showReturnForm: false,
@@ -116,6 +121,7 @@ export default {
       itemsRequest: [],
       itemsRecommendation: [],
       itemsRealization: [],
+      logisticItems: [],
       listQuery: {},
       headersRequest: [
         { text: this.$t('label.print_mail_no'), sortable: false },
@@ -173,7 +179,6 @@ export default {
       totalData: 'totalDataVaccineRequest'
     }),
     logistic() {
-      console.log('logistic terpanggil ketika ada perubahan')
       return [
         {
           type: 'request',
@@ -198,15 +203,23 @@ export default {
         }
       ]
     },
-    filteredLogisticItems() {
-      if (this.detailLogisticRequest.status === 'NOT_VERIFIED') {
-        return this.logistic.filter((el) => el.type === 'request')
-      } else if (this.detailLogisticRequest.status === 'VERIFIED') {
-        return this.logistic.filter((el) => el.type !== 'realization')
-      } else {
-        return this.logistic
-      }
-    },
+    // filteredLogisticItems() {
+    //   // if (this.detailLogisticRequest.status === 'NOT_VERIFIED') {
+    //   //   return this.logistic.filter((el) => el.type === 'request')
+    //   // } else if (this.detailLogisticRequest.status === 'VERIFIED') {
+    //   //   return this.logistic.filter((el) => el.type !== 'realization')
+    //   // } else {
+    //   //   return this.logistic
+    //   // }
+
+    //   if (this.detailLogisticRequest.status === 'NOT_VERIFIED') {
+    //     return this.logisticItems.filter((el) => el.type === 'request')
+    //   } else if (this.detailLogisticRequest.status === 'VERIFIED') {
+    //     return this.logisticItems.filter((el) => el.type !== 'realization')
+    //   } else {
+    //     return this.logisticItems
+    //   }
+    // },
     letterUrl() {
       return this.detailLogisticRequest?.letter?.letter ?? '-'
     },
@@ -426,15 +439,66 @@ export default {
       return payload.split('.').pop() === 'pdf' ? 'link' : 'image'
     },
     async getLogisticRequest() {
-      console.log('terpanggil loh ini')
       const res = await this.$store.dispatch('logistics/getListDetailLogisticNeedsNew', this.listQuery)
       // Ini perlu di refactor
       this.itemsRequest = res.data[0]
       this.itemsRecommendation = res.data[1]
       this.itemsRealization = res.data[2]
+      this.setLogisticItem()
+    },
+    setLogisticItem() {
+      this.logisticItems = [
+        {
+          type: 'request',
+          subtitle: 'Permohonan Masuk',
+          headers: this.headersRequest,
+          items: this.itemsRequest,
+          isOpen: this.isRequestOpen
+        },
+        {
+          type: 'recommendation',
+          subtitle: 'Rekomendasi Salur',
+          headers: this.headersRecommendation,
+          items: this.itemsRecommendation,
+          isOpen: this.isRecommendationOpen
+        },
+        {
+          type: 'realization',
+          subtitle: 'Realisasi Salur',
+          headers: this.headersRealization,
+          items: this.itemsRealization,
+          isOpen: this.isRealizationOpen
+        }
+      ]
+      if (this.detailLogisticRequest.status === 'NOT_VERIFIED') {
+        return this.logisticItems.filter((el) => el.type === 'request')
+      } else if (this.detailLogisticRequest.status === 'VERIFIED') {
+        return this.logisticItems.filter((el) => el.type !== 'realization')
+      } else {
+        return this.logisticItems
+      }
+    },
+    hide(type) {
+      if (type === 'request') {
+        this.isRequestOpen = false
+      } else if (type === 'recommendation') {
+        this.isRecommendationOpen = false
+      } else {
+        this.isRealizationOpen = false
+      }
+      this.setLogisticItem()
+    },
+    show(type) {
+      if (type === 'request') {
+        this.isRequestOpen = true
+      } else if (type === 'recommendation') {
+        this.isRecommendationOpen = true
+      } else {
+        this.isRealizationOpen = true
+      }
+      this.setLogisticItem()
     },
     updateItem(item, type) {
-      // console.log(item, type)
       this.showForm = true
       this.$refs.updateForm.setDataUpdateItem(item, type, this.detailLogisticRequest)
     },

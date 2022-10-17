@@ -5,8 +5,8 @@
       <div v-for="data in items" :key="data.subtitle" class="mb-5">
         <div>
           <p class="d-inline-block text-label mb-2">{{ data.subtitle }}</p>
-          <v-icon v-if="data.isOpen">mdi-chevron-up</v-icon>
-          <v-icon v-else>mdi-chevron-down</v-icon>
+          <v-icon v-if="data.isOpen" @click="hide(data.type)">mdi-chevron-up</v-icon>
+          <v-icon v-else @click="show(data.type)">mdi-chevron-down</v-icon>
         </div>
         <JDSTable
           v-show="data.isOpen"
@@ -23,7 +23,7 @@
               <td>{{ item.unit || '-' }}</td>
               <td v-if="data.type === 'request'">{{ item.category }}</td>
               <td
-                v-if="data.type === 'recommendation'"
+                v-if="data.type !== 'request'"
                 class="font-weight-bold red--text"
                 :class="{ 'green--text': item.status !== 'not_approved' }"
               >
@@ -87,6 +87,12 @@ export default {
     getTableRowNumbering,
     updateItem(item, type) {
       this.$emit('update', item, type)
+    },
+    hide(type) {
+      this.$emit('hide', type)
+    },
+    show(type) {
+      this.$emit('show', type)
     },
     setStatus(status) {
       switch (status) {
