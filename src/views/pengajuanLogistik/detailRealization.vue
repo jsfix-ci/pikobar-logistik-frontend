@@ -53,6 +53,7 @@
       <CardLogistic
         title="Daftar Kebutuhan Logistik"
         :items="logisticItems"
+        :status="detailLogisticRequest.status"
         @update="updateItem"
         @hide="hide"
         @show="show"
@@ -264,7 +265,7 @@ export default {
     })
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
-      // this.getLogisticRequest()
+      this.getLogisticRequest()
     })
   },
   mounted() {
@@ -352,7 +353,6 @@ export default {
       this.setDataIdentity()
     },
     setDataIdentity() {
-      console.log(this.detailLogisticRequest)
       this.identity_terbaru = [{
         title: 'Identitas Instansi',
         isOpen: true,
@@ -456,7 +456,13 @@ export default {
       this.setLogisticItem()
     },
     setLogisticItem() {
-      this.logisticItems = [
+      let filteredHeaderRecommendation = null
+      if (this.detailLogisticRequest.status === 'VERIFIED') {
+        filteredHeaderRecommendation = this.headersRecommendation
+      } else {
+        filteredHeaderRecommendation = this.headersRecommendation.filter(el => el.text !== 'Aksi')
+      }
+      const dataLogistic = [
         {
           type: 'request',
           subtitle: 'Permohonan Masuk',
@@ -467,7 +473,7 @@ export default {
         {
           type: 'recommendation',
           subtitle: 'Rekomendasi Salur',
-          headers: this.headersRecommendation,
+          headers: filteredHeaderRecommendation,
           items: this.itemsRecommendation,
           isOpen: this.isRecommendationOpen
         },
@@ -480,11 +486,11 @@ export default {
         }
       ]
       if (this.detailLogisticRequest.status === 'NOT_VERIFIED') {
-        return this.logisticItems.filter((el) => el.type === 'request')
+        this.logisticItems = dataLogistic.filter((el) => el.type === 'request')
       } else if (this.detailLogisticRequest.status === 'VERIFIED') {
-        return this.logisticItems.filter((el) => el.type !== 'realization')
+        this.logisticItems = dataLogistic.filter((el) => el.type !== 'realization')
       } else {
-        return this.logisticItems
+        this.logisticItems = dataLogistic
       }
     },
     hide(type) {
@@ -510,17 +516,6 @@ export default {
     updateItem(item, type) {
       this.showForm = true
       this.$refs.updateForm.setDataUpdateItem(item, type, this.detailLogisticRequest)
-    },
-    updateItem1(type, value, index, isRecommendation, isRealization) {
-      this.showForm = true
-      this.isCreate = type
-      if (type === true) {
-        this.$refs.updateForm.setDialog(type, this.listQuery.agency_id, null, isRecommendation, isRealization)
-      } else if (type === false) {
-        this.$refs.updateForm.setDialog(type, this.listLogisticNeeds[index], value.id, isRecommendation, isRealization)
-      } else {
-        this.$refs.updateForm.setDialog(null, this.listRealization[value], null, isRecommendation, isRealization)
-      }
     },
     hideIdentity() {
       console.log('terpanggil guys')

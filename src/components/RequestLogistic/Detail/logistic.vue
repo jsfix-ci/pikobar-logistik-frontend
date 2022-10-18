@@ -15,7 +15,7 @@
           :loading="false"
         >
           <template v-slot:item-prop="{ item, index }">
-            <tr>
+            <tr :class="{'text-grey': item.status === 'not_approved'}">
               <td>{{ index + 1 }}</td>
               <td>{{ item.product_name || '-' }}</td>
               <td>{{ item.brand || '-' }}</td>
@@ -29,7 +29,7 @@
               >
                 {{ setStatus(item.status) }}
               </td>
-              <td v-if="data.type !== 'request'">
+              <td v-if="(status === 'VERIFIED' && data.type === 'recommendation') || (status === 'APPROVED' && data.type === 'realization')">
                 <JDSButton inverted height="25px" @click="updateItem(item, data.type)">
                   {{ $t('label.update') }}
                 </JDSButton>
@@ -37,11 +37,6 @@
             </tr>
           </template>
         </JDSTable>
-        <!-- <v-pagination
-          v-model="page"
-          :length="6"
-          :total-visible="3"
-        /> -->
       </div>
     </div>
   </div>
@@ -49,11 +44,6 @@
 <script>
 /*
   PR numbering table
-  apakah table ada pagination?
-  Button bisa update
-  tambahkan icon hide and show pada setiap section
-  sesuaikan value dari table
-  action dibikin dinamis
 */
 import JDSTable from '@/components/Base/JDSTable'
 import JDSButton from '@/components/Base/JDSButton'
@@ -72,6 +62,10 @@ export default {
     items: {
       type: Array,
       default: () => []
+    },
+    status: {
+      type: String,
+      default: ''
     },
     dataTable: {
       type: Array,
@@ -128,5 +122,8 @@ export default {
   font-size: 14px;
   line-height: 27px;
   color: #757575;
+}
+.text-grey {
+  color: #E0E0E0;
 }
 </style>
