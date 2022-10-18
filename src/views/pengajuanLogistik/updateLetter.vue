@@ -258,25 +258,30 @@ export default {
     },
     async updateForm() {
       this.isLoading = true
-      const valid = await this.$refs.observer.validate()
-      this.uploadAlert = !this.isUpload && !this.isLetterExists
-      if (!valid || (!this.isUpload && !this.isLetterExists)) {
-        this.processRequest = true
-        this.uploadFileMaxSizeAlert = false
-        return
+      try {
+        const valid = await this.$refs.observer.validate()
+        this.uploadAlert = !this.isUpload && !this.isLetterExists
+        if (!valid || (!this.isUpload && !this.isLetterExists)) {
+          this.processRequest = true
+          this.uploadFileMaxSizeAlert = false
+          return
+        }
+        const formData = new FormData()
+        formData.append('letter_file', this.selectedFile)
+        formData.append('id', this.queryUpdateData.id)
+        formData.append('agency_id', this.queryUpdateData.agency_id)
+        formData.append('applicant_id', this.queryUpdateData.applicant_id)
+        formData.append('application_letter_number', this.queryUpdateData.application_letter_number)
+        formData.append('update_type', this.queryUpdateData.update_type)
+        const response = await this.$store.dispatch('logistics/updateApplicantLetter', formData)
+        if (response.status === 200) {
+          EventBus.$emit('hideUpdateLetter', true)
+        }
+      } catch (err) {
+        return err
+      } finally {
+        this.isLoading = false
       }
-      const formData = new FormData()
-      formData.append('letter_file', this.selectedFile)
-      formData.append('id', this.queryUpdateData.id)
-      formData.append('agency_id', this.queryUpdateData.agency_id)
-      formData.append('applicant_id', this.queryUpdateData.applicant_id)
-      formData.append('application_letter_number', this.queryUpdateData.application_letter_number)
-      formData.append('update_type', this.queryUpdateData.update_type)
-      const response = await this.$store.dispatch('logistics/updateApplicantLetter', formData)
-      if (response.status === 200) {
-        EventBus.$emit('hideUpdateLetter', true)
-      }
-      this.isLoading = false
     }
   }
 }

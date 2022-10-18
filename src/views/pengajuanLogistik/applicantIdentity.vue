@@ -313,27 +313,32 @@ export default {
     },
     async updateForm() {
       this.isLoading = true
-      const valid = await this.$refs.observer.validate()
-      if (!valid) {
-        return
+      try {
+        const valid = await this.$refs.observer.validate()
+        if (!valid) {
+          return
+        }
+        const formData = new FormData()
+        formData.append('applicant_file', this.selectedFile)
+        formData.append('id', this.queryUpdateData.id)
+        formData.append('agency_id', this.queryUpdateData.agency_id)
+        formData.append('applicant_id', this.queryUpdateData.applicant_id)
+        formData.append('applicant_name', this.queryUpdateData.applicant_name)
+        formData.append('applicants_office', this.queryUpdateData.applicants_office)
+        formData.append('email', this.queryUpdateData.email)
+        formData.append('primary_phone_number', this.queryUpdateData.primary_phone_number)
+        const secondaryNumber = this.queryUpdateData.secondary_phone_number ? this.queryUpdateData.secondary_phone_number : '-'
+        formData.append('secondary_phone_number', secondaryNumber)
+        formData.append('update_type', this.queryUpdateData.update_type)
+        const response = await this.$store.dispatch('logistics/updateApplicantIdentity', formData)
+        if (response.status === 200) {
+          EventBus.$emit('hideApplicantIdentity', true)
+        }
+      } catch (err) {
+        return err
+      } finally {
+        this.isLoading = false
       }
-      const formData = new FormData()
-      formData.append('applicant_file', this.selectedFile)
-      formData.append('id', this.queryUpdateData.id)
-      formData.append('agency_id', this.queryUpdateData.agency_id)
-      formData.append('applicant_id', this.queryUpdateData.applicant_id)
-      formData.append('applicant_name', this.queryUpdateData.applicant_name)
-      formData.append('applicants_office', this.queryUpdateData.applicants_office)
-      formData.append('email', this.queryUpdateData.email)
-      formData.append('primary_phone_number', this.queryUpdateData.primary_phone_number)
-      const secondaryNumber = this.queryUpdateData.secondary_phone_number ? this.queryUpdateData.secondary_phone_number : '-'
-      formData.append('secondary_phone_number', secondaryNumber)
-      formData.append('update_type', this.queryUpdateData.update_type)
-      const response = await this.$store.dispatch('logistics/updateApplicantIdentity', formData)
-      if (response.status === 200) {
-        EventBus.$emit('hideApplicantIdentity', true)
-      }
-      this.isLoading = false
     }
   }
 }
