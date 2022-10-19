@@ -3,7 +3,7 @@
     <div v-for="item in items" :key="item.title" class="detail-info">
       <span class="text-label detail-info__label detail-info__text--gray">{{ item.title }}</span>
       <span class="mr-1">:</span>
-      <span class="ml-1 text-label detail-info__text--green">{{ item.value }}</span>
+      <span class="ml-1 text-label detail-info__text--green" :class="{'detail-info__text--red': checkStatusDanger(item.value)}">{{ item.value }}</span>
     </div>
   </div>
 </template>
@@ -18,6 +18,17 @@ export default {
     status: {
       type: String,
       default: ''
+    }
+  },
+  methods: {
+    checkStatusDanger(status) {
+      switch (status) {
+        case 'Belum Diverifikasi':
+        case 'Administrasi Ditolak':
+        case 'Permohonan Ditolak':
+          return true
+        default: false
+      }
     }
   }
 }
@@ -37,6 +48,11 @@ export default {
 
     &--green {
       color: #1FB767;
+    }
+
+    &--red {
+      color: #F44336;
+;
     }
 
     &--gray {
