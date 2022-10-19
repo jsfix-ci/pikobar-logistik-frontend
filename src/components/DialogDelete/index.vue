@@ -84,7 +84,7 @@ export default {
       if (this.type === 'letter') {
         await this.$parent.getDetailApplication()
       } else {
-        this.$parent.getListRealizationAdmin()
+        this.$parent.getLogisticAdditionalRealization()
       }
     }
   }

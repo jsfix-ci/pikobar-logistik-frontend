@@ -323,14 +323,20 @@ export default {
       this.listQueryAPD.id = null
       this.listQueryAPD.poslog_id = null
     },
+    async setDataAddRealizationAdmin(detailData) {
+      this.isCreate = true
+      this.updateName = true
+      this.agency_id = detailData.agency.id
+      if (detailData.status === 'APPROVED') {
+        this.isVerified = true
+        this.isApproved = true
+      } else {
+        this.isVerified = true
+        this.isApproved = false
+      }
+      await this.getListAPD()
+    },
     async setDataUpdateItem(item, type, detailData) {
-      // this.isLoading = true
-
-      // this.data.status = item.status
-      // this.data.product_id = item.product_id
-      // this.data.product_name = item.product_name
-      // this.data.need_id = item.need_id
-
       this.data = item
 
       this.setUnit(item.product_id)
@@ -357,7 +363,6 @@ export default {
       }
 
       await this.getListAPD()
-      // this.isLoading = false
     },
     async setDialog(type, data, value, recommendation, realization) {
       this.isLoading = true
@@ -440,16 +445,12 @@ export default {
             this.data.status = 'approved'
             this.data.agency_id = this.agency_id
             await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
-            this.$parent.getListRealizationAdmin()
+            this.data = {}
+            this.$parent.getLogisticAdditionalRealization()
           } else {
-            // this.data.need_id = this.item.id
-            // this.data.product_id = this.data.product_id || this.item.product_id
-            // this.data.agency_id = this.item.agency_id
             delete this.data.id
             await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
-            console.log('hallo apakah ini terpanggil')
             this.$parent.getLogisticRequest()
-            this.$parent.getListDetailNeeds()
           }
         }
       } catch (error) {

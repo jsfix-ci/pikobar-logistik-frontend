@@ -59,6 +59,30 @@
         @show="show"
       />
     </div>
+    <div class="mt-5">
+      <CardLogistic
+        title="Daftar Barang Rekomendasi Salur Lainnya"
+        :items="logisticItemsRealization"
+        :status="detailLogisticRequest.status"
+        @update="updateItem"
+        @hide="hide"
+        @show="show"
+      >
+        <template v-slot:item-prop="{ item }">
+          <span class="mx-1">
+            <JDSButton inverted danger height="25px" width="75px" @click="deleteRealization(item)">
+              <span>{{ 'Hapus' }}</span>
+            </JDSButton>
+          </span>
+        </template>
+        <div class="d-flex justify-end ml-auto mt-7">
+          <JDSButton inverted height="42px" @click="addRealizationAdmin()">
+            <v-icon left dark>mdi-archive-plus-outline</v-icon>
+            <span>{{ 'Tambah Barang' }}</span>
+          </JDSButton>
+        </div>
+      </CardLogistic>
+    </div>
     <!-- Footer -->
     <div>
       <ActionButton
@@ -73,6 +97,13 @@
     <agencyIdentity ref="agencyIdentityForm" :show="showAgencyIdentity" />
     <applicantIdentity ref="dialogApplicantIdentityForm" :show="showApplicantIdentity" />
     <updateKebutuhanLogistik ref="updateForm" :show="showForm" />
+    <DialogDelete
+      :dialog="dialogDelete"
+      :data-deleted="dataDelete"
+      :dialog-delete.sync="dialogDelete"
+      :delete-date.sync="dataDelete"
+      :store-path-delete="`logistics/deleteRealization`"
+    />
   </div>
 </template>
 <script>
@@ -92,9 +123,13 @@ import updateKebutuhanLogistik from './update'
 import { mapState, mapGetters } from 'vuex'
 import EventBus from '@/utils/eventBus'
 import { formatDatetime } from '@/utils/parseDatetime'
+import JDSButton from '@/components/Base/JDSButton'
+import DialogDelete from '@/components/DialogDelete'
 export default {
   name: 'DetailRealization',
   components: {
+    DialogDelete,
+    JDSButton,
     DetailInfo,
     CardStatus,
     CardLetter,
@@ -111,12 +146,14 @@ export default {
   data() {
     return {
       data,
+      dataDelete: null,
       isRequestOpen: true,
+      isRealizationOpen: true,
       isRecommendationOpen: true,
-      isRealizationOpen: false,
       isIdentityApplicantOpen: false,
       isCreate: false,
       showForm: false,
+      dialogDelete: false,
       showReturnForm: false,
       showUrgencyForm: false,
       updateLetterForm: false,
@@ -126,6 +163,9 @@ export default {
       itemsRecommendation: [],
       itemsRealization: [],
       logisticItems: [],
+      itemsRecommendationAdmin: [],
+      itemsRealizationAdmin: [],
+      logisticItemsRealization: [],
       listQuery: {},
       headersRequest: [
         { text: this.$t('label.print_mail_no'), sortable: false },
@@ -271,6 +311,7 @@ export default {
   mounted() {
     this.getDetail()
     this.getLogisticRequest()
+    this.getLogisticAdditionalRealization()
   },
   methods: {
     formatDatetime,
@@ -447,6 +488,48 @@ export default {
     setTypeFile(payload) {
       return payload.split('.').pop() === 'pdf' ? 'link' : 'image'
     },
+    async deleteRealization(item) {
+      this.dialogDelete = true
+      this.dataDelete = await item
+    },
+    async getLogisticAdditionalRealization() {
+      const res = await this.$store.dispatch('logistics/getLogisticAdditionalRealization', this.listQuery)
+      this.itemsRecommendationAdmin = res.data[0]
+      this.itemsRealizationAdmin = res.data[1]
+      this.setLogisticRealizationAdmin()
+    },
+    setLogisticRealizationAdmin() {
+      let filteredHeaderRecommendation = null
+      if (this.detailLogisticRequest.status === 'VERIFIED') {
+        filteredHeaderRecommendation = this.headersRecommendation
+        // ini harus dibikin function terpisah, karena jika disini akan terpanggil terus
+        // this.isRequestOpen = false
+        // this.isRecommendationOpen = true
+      } else {
+        filteredHeaderRecommendation = this.headersRecommendation.filter(el => el.text !== 'Aksi')
+      }
+      const dataLogistic = [
+        {
+          type: 'recommendation',
+          subtitle: 'Rekomendasi Salur',
+          headers: filteredHeaderRecommendation,
+          items: this.itemsRecommendationAdmin,
+          isOpen: this.isRecommendationOpen
+        },
+        {
+          type: 'realization',
+          subtitle: 'Realisasi Salur',
+          headers: this.headersRealization,
+          items: this.itemsRealizationAdmin,
+          isOpen: this.isRealizationOpen
+        }
+      ]
+      if (this.detailLogisticRequest.status === 'VERIFIED') {
+        this.logisticItemsRealization = dataLogistic.filter((el) => el.type !== 'realization')
+      } else {
+        this.logisticItemsRealization = dataLogistic
+      }
+    },
     async getLogisticRequest() {
       const res = await this.$store.dispatch('logistics/getListDetailLogisticNeedsNew', this.listQuery)
       // Ini perlu di refactor
@@ -455,10 +538,14 @@ export default {
       this.itemsRealization = res.data[2]
       this.setLogisticItem()
     },
+    // function ini dibikin modular
     setLogisticItem() {
       let filteredHeaderRecommendation = null
       if (this.detailLogisticRequest.status === 'VERIFIED') {
         filteredHeaderRecommendation = this.headersRecommendation
+        // ini harus dibikin function terpisah, karena jika disini akan terpanggil terus
+        // this.isRequestOpen = false
+        // this.isRecommendationOpen = true
       } else {
         filteredHeaderRecommendation = this.headersRecommendation.filter(el => el.text !== 'Aksi')
       }
@@ -516,6 +603,10 @@ export default {
     updateItem(item, type) {
       this.showForm = true
       this.$refs.updateForm.setDataUpdateItem(item, type, this.detailLogisticRequest)
+    },
+    addRealizationAdmin() {
+      this.showForm = true
+      this.$refs.updateForm.setDataAddRealizationAdmin(this.detailLogisticRequest)
     },
     hideIdentity() {
       console.log('terpanggil guys')

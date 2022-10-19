@@ -30,14 +30,16 @@
                 {{ setStatus(item.status) }}
               </td>
               <td v-if="(status === 'VERIFIED' && data.type === 'recommendation') || (status === 'APPROVED' && data.type === 'realization')">
-                <JDSButton inverted height="25px" @click="updateItem(item, data.type)">
+                <JDSButton height="25px" width="75px" @click="updateItem(item, data.type)">
                   {{ $t('label.update') }}
                 </JDSButton>
+                <slot name="item-prop" :item="item" :type="data.type" />
               </td>
             </tr>
           </template>
         </JDSTable>
       </div>
+      <slot />
     </div>
   </div>
 </template>

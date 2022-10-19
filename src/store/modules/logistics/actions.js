@@ -254,6 +254,17 @@ export default {
       return error.response
     }
   },
+  async getLogisticAdditionalRealization({ commit }, params) {
+    try {
+      const response = await fetchList('/api/v1/logistic-admin-realization/list', 'GET', params)
+      commit('SET_LIST_REALIZATION', response.data)
+      commit('SET_TOTAL_LIST_REALIZATION', response.data.last_page)
+      commit('SET_TOTAL_DATA_REALIZATION', response.data.total)
+      return response
+    } catch (e) {
+      return e
+    }
+  },
   async getLogisticNeedsAdmin({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/logistic-admin-realization', 'GET', params)
