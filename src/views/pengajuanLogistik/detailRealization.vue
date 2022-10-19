@@ -38,11 +38,6 @@
       />
     </div>
     <!-- Letter -->
-    <!--
-      Done,
-      refactor
-      event bus?
-    -->
     <div class="mt-5">
       <CardLetter
         title="Surat Permohonan"
@@ -104,16 +99,10 @@
         @verif-confirmation="submitVerification"
         @recommend="submitRecommendation"
         @realize="submitRealization"
-        @reject-verification="postRejectVerification"
-        @reject-approval="postRejectVerification"
+        @reject-approval="showDialogReject = true"
+        @reject-verification="showDialogReject = true"
       />
     </div>
-    <updateLetter ref="dialogUpdateLetterForm" :show="updateLetterForm" />
-    <dialogUrgency ref="dialogUrgencyForm" :show="showUrgencyForm" />
-    <dialogReturn ref="dialogReturnForm" :show="showReturnForm" />
-    <agencyIdentity ref="agencyIdentityForm" :show="showAgencyIdentity" />
-    <applicantIdentity ref="dialogApplicantIdentityForm" :show="showApplicantIdentity" />
-    <updateKebutuhanLogistik ref="updateForm" :show="showForm" />
     <DialogDelete
       :dialog="dialogDelete"
       :data-deleted="dataDelete"
@@ -121,27 +110,39 @@
       :delete-date.sync="dataDelete"
       :store-path-delete="`logistics/deleteRealization`"
     />
+    <rejectKebutuhanLogistik
+      :show="showDialogReject"
+      :item="detailLogisticRequest"
+      :total="itemsRequest.total"
+      @submitReject="rejectData"
+    />
+    <updateKebutuhanLogistik ref="updateForm" :show="showForm" />
+    <dialogReturn ref="dialogReturnForm" :show="showReturnForm" />
+    <dialogUrgency ref="dialogUrgencyForm" :show="showUrgencyForm" />
+    <updateLetter ref="dialogUpdateLetterForm" :show="updateLetterForm" />
+    <agencyIdentity ref="agencyIdentityForm" :show="showAgencyIdentity" />
+    <applicantIdentity ref="dialogApplicantIdentityForm" :show="showApplicantIdentity" />
   </div>
 </template>
 <script>
+import EventBus from '@/utils/eventBus'
+import { mapState, mapGetters } from 'vuex'
+import agencyIdentity from './agencyIdentity'
+import updateKebutuhanLogistik from './update'
+import rejectKebutuhanLogistik from './reject'
+import applicantIdentity from './applicantIdentity'
+import JDSButton from '@/components/Base/JDSButton'
+import DialogDelete from '@/components/DialogDelete'
+import { formatDatetime } from '@/utils/parseDatetime'
+import updateLetter from '@/views/pengajuanLogistik/updateLetter'
+import dialogReturn from '@/views/pengajuanLogistik/dialogReturn'
+import dialogUrgency from '@/views/pengajuanLogistik/dialogUrgency'
 import DetailInfo from '@/components/RequestLogistic/Detail/info.vue'
 import CardStatus from '@/components/RequestLogistic/Detail/status.vue'
 import CardLetter from '@/components/RequestLogistic/Detail/letter.vue'
 import CardIdentity from '@/components/RequestLogistic/Detail/identity.vue'
 import CardLogistic from '@/components/RequestLogistic/Detail/logistic.vue'
-import { data } from '@/components/RequestLogistic/Detail/response.js'
 import ActionButton from '@/components/RequestLogistic/Detail/ActionButton.vue'
-import updateLetter from '@/views/pengajuanLogistik/updateLetter'
-import dialogUrgency from '@/views/pengajuanLogistik/dialogUrgency'
-import dialogReturn from '@/views/pengajuanLogistik/dialogReturn'
-import agencyIdentity from './agencyIdentity'
-import applicantIdentity from './applicantIdentity'
-import updateKebutuhanLogistik from './update'
-import { mapState, mapGetters } from 'vuex'
-import EventBus from '@/utils/eventBus'
-import { formatDatetime } from '@/utils/parseDatetime'
-import JDSButton from '@/components/Base/JDSButton'
-import DialogDelete from '@/components/DialogDelete'
 export default {
   name: 'DetailRealization',
   components: {
@@ -158,11 +159,12 @@ export default {
     dialogReturn,
     agencyIdentity,
     applicantIdentity,
-    updateKebutuhanLogistik
+    updateKebutuhanLogistik,
+    rejectKebutuhanLogistik
   },
   data() {
     return {
-      data,
+      showDialogReject: false,
       detailTitle: null,
       dataDelete: null,
       isRequestOpen: false,
@@ -213,7 +215,6 @@ export default {
         { text: 'Status', sortable: false },
         { text: 'Aksi', sortable: false }
       ],
-      // Ini perbaiki nanti
       dataUrgencyConfirmation: {
         id: null,
         agency_name: '-',
@@ -288,6 +289,9 @@ export default {
       this.getLogisticRequest()
       this.getLogisticAdditionalRealization()
     })
+    EventBus.$on('dialogHideReject', (value) => {
+      this.showDialogReject = value
+    })
   },
   methods: {
     formatDatetime,
@@ -329,6 +333,29 @@ export default {
       } catch (err) {
         return err
       }
+    },
+    rejectData(value) {
+      const formData = new FormData()
+      this.showDialogReject = false
+      formData.append('agency_id', this.detailLogisticRequest.agency.id)
+      formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
+      if (this.detailLogisticRequest.status === 'VERIFIED') {
+        formData.append('approval_status', 'rejected')
+        formData.append('approval_note', value)
+        this.postRejectApproval(formData)
+      } else {
+        formData.append('verification_status', 'rejected')
+        formData.append('note', value)
+        this.postReject(formData)
+      }
+    },
+    async postRejectApproval(formData) {
+      await this.$store.dispatch('logistics/postApprovalStatus', formData)
+      await this.getDetail()
+    },
+    async postReject(formData) {
+      await this.$store.dispatch('logistics/postVerificationStatus', formData)
+      await this.getDetail()
     },
     showApplicantIdentityDialog() {
       this.$refs.dialogApplicantIdentityForm.setData(this.detailLogisticRequest.agency.id, this.detailLogisticRequest)
@@ -696,5 +723,4 @@ export default {
   line-height: 27px;
   color: #757575;
 }
-// hapus dari sini
 </style>
