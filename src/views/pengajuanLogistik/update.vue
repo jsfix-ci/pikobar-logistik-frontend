@@ -430,17 +430,18 @@ export default {
       })
     },
     async submitData(value) {
-      this.isLoading = true
+      const valid = await this.$refs.observer.validate()
+      if (!valid) {
+        return
+      }
+
       try {
+        this.isLoading = true
         this.data.store_type = 'recommendation'
         if (this.isApproved) {
           this.data.store_type = 'realization'
         }
-        const valid = await this.$refs.observer.validate()
-        if (!valid) {
-          this.isLoading = false
-          return
-        }
+
         if (this.isUpdate) {
           this.data.status = 'approved'
           await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
