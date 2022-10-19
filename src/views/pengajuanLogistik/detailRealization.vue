@@ -306,6 +306,7 @@ export default {
     EventBus.$on('dialogHide', (value) => {
       this.showForm = value
       this.getLogisticRequest()
+      this.getLogisticAdditionalRealization()
     })
   },
   mounted() {
@@ -600,9 +601,9 @@ export default {
       }
       this.setLogisticItem()
     },
-    updateItem(item, type) {
+    updateItem(item, type, isAdminRealization) {
       this.showForm = true
-      this.$refs.updateForm.setDataUpdateItem(item, type, this.detailLogisticRequest)
+      this.$refs.updateForm.setDataUpdateItem(item, type, isAdminRealization, this.detailLogisticRequest)
     },
     addRealizationAdmin() {
       this.showForm = true

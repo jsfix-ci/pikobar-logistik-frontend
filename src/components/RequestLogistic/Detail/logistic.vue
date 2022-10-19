@@ -82,7 +82,11 @@ export default {
   methods: {
     getTableRowNumbering,
     updateItem(item, type) {
-      this.$emit('update', item, type)
+      let isAdminRealization = false
+      if (this.items.length === 2) {
+        isAdminRealization = true
+      }
+      this.$emit('update', item, type, isAdminRealization)
     },
     hide(type) {
       this.$emit('hide', type)

@@ -336,15 +336,16 @@ export default {
       }
       await this.getListAPD()
     },
-    async setDataUpdateItem(item, type, detailData) {
+    async setDataUpdateItem(item, type, isAdminRealization, detailData) {
+      if (isAdminRealization) {
+        this.isUpdate = true
+        this.isCreate = true
+        this.updateName = true
+      }
+
       this.data = item
 
       this.setUnit(item.product_id)
-      this.listQueryAPD.material_name = item.product_name
-
-      this.data.quantity = item.request_quantity
-      this.data.agency_id = detailData.agency.id
-      this.data.applicant_id = detailData.applicant.id
 
       if (type === 'recommendation') {
         this.isVerified = true
@@ -354,13 +355,17 @@ export default {
         this.data.recommendation_date = item.date
         this.data.recommendation_quantity = item.quantity
       } else {
-        this.isVerified = false
+        this.isVerified = true
         this.isApproved = true
 
         this.data.realization_unit = item.unit
         this.data.realization_date = item.date
         this.data.realization_quantity = item.quantity
       }
+
+      this.data.quantity = item.request_quantity
+      this.data.agency_id = detailData.agency.id
+      this.data.applicant_id = detailData.applicant.id
 
       await this.getListAPD()
     },
@@ -439,7 +444,7 @@ export default {
         if (this.isUpdate) {
           this.data.status = 'approved'
           await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
-          this.$parent.getListRealizationAdmin()
+          this.$parent.getLogisticAdditionalRealization()
         } else {
           if (value === true) {
             this.data.status = 'approved'
