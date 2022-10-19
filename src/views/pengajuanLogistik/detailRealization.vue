@@ -2,7 +2,7 @@
   <div class="container mb-10">
     <!-- Detail title -->
     <div class="table-title mb-8">
-      {{ 'Detail Realisasi' }}
+      {{ detailTitle }}
     </div>
     <!-- Detail info -->
     <DetailInfo :items="info_terbaru" />
@@ -59,14 +59,14 @@
         @show="show"
       />
     </div>
-    <div class="mt-5">
+    <div v-if="detailLogisticRequest.status !== 'NOT_VERIFIED'" class="mt-5">
       <CardLogistic
         title="Daftar Barang Rekomendasi Salur Lainnya"
         :items="logisticItemsRealization"
         :status="detailLogisticRequest.status"
         @update="updateItem"
-        @hide="hide"
-        @show="show"
+        @hide="hideAdminRealization"
+        @show="showAdminRealization"
       >
         <template v-slot:item-prop="{ item }">
           <span class="mx-1">
@@ -146,11 +146,14 @@ export default {
   data() {
     return {
       data,
+      detailTitle: null,
       dataDelete: null,
-      isRequestOpen: true,
-      isRealizationOpen: true,
-      isRecommendationOpen: true,
+      isRequestOpen: false,
+      isRealizationOpen: false,
+      isRecommendationOpen: false,
       isIdentityApplicantOpen: false,
+      isAdminRealizationOpen: false,
+      isAdminRecommendationOpen: false,
       isCreate: false,
       showForm: false,
       dialogDelete: false,
@@ -222,48 +225,6 @@ export default {
       totalPage: 'totalListVaccineRequest',
       totalData: 'totalDataVaccineRequest'
     }),
-    logistic() {
-      return [
-        {
-          type: 'request',
-          subtitle: 'Permohonan Masuk',
-          headers: this.headersRequest,
-          items: this.itemsRequest,
-          isOpen: true
-        },
-        {
-          type: 'recommendation',
-          subtitle: 'Rekomendasi Salur',
-          headers: this.headersRecommendation,
-          items: this.itemsRecommendation,
-          isOpen: true
-        },
-        {
-          type: 'realization',
-          subtitle: 'Realisasi Salur',
-          headers: this.headersRealization,
-          items: this.itemsRealization,
-          isOpen: true
-        }
-      ]
-    },
-    // filteredLogisticItems() {
-    //   // if (this.detailLogisticRequest.status === 'NOT_VERIFIED') {
-    //   //   return this.logistic.filter((el) => el.type === 'request')
-    //   // } else if (this.detailLogisticRequest.status === 'VERIFIED') {
-    //   //   return this.logistic.filter((el) => el.type !== 'realization')
-    //   // } else {
-    //   //   return this.logistic
-    //   // }
-
-    //   if (this.detailLogisticRequest.status === 'NOT_VERIFIED') {
-    //     return this.logisticItems.filter((el) => el.type === 'request')
-    //   } else if (this.detailLogisticRequest.status === 'VERIFIED') {
-    //     return this.logisticItems.filter((el) => el.type !== 'realization')
-    //   } else {
-    //     return this.logisticItems
-    //   }
-    // },
     letterUrl() {
       return this.detailLogisticRequest?.letter?.letter ?? '-'
     },
@@ -272,6 +233,8 @@ export default {
     }
   },
   async created() {
+    await this.getDetail()
+    await this.setDefaultDisplayTable(this.detailLogisticRequest.status)
     this.listQuery.agency_id = this.$route.params.id
     EventBus.$on('hideUpdateLetter', (value) => {
       this.updateLetterForm = false
@@ -308,11 +271,6 @@ export default {
       this.getLogisticRequest()
       this.getLogisticAdditionalRealization()
     })
-  },
-  mounted() {
-    this.getDetail()
-    this.getLogisticRequest()
-    this.getLogisticAdditionalRealization()
   },
   methods: {
     formatDatetime,
@@ -503,26 +461,23 @@ export default {
       let filteredHeaderRecommendation = null
       if (this.detailLogisticRequest.status === 'VERIFIED') {
         filteredHeaderRecommendation = this.headersRecommendation
-        // ini harus dibikin function terpisah, karena jika disini akan terpanggil terus
-        // this.isRequestOpen = false
-        // this.isRecommendationOpen = true
       } else {
         filteredHeaderRecommendation = this.headersRecommendation.filter(el => el.text !== 'Aksi')
       }
       const dataLogistic = [
         {
           type: 'recommendation',
-          subtitle: 'Rekomendasi Salur',
+          subtitle: 'Rekomendasi Salur Lainnya',
           headers: filteredHeaderRecommendation,
           items: this.itemsRecommendationAdmin,
-          isOpen: this.isRecommendationOpen
+          isOpen: this.isAdminRecommendationOpen
         },
         {
           type: 'realization',
-          subtitle: 'Realisasi Salur',
+          subtitle: 'Realisasi Salur Lainnya',
           headers: this.headersRealization,
           items: this.itemsRealizationAdmin,
-          isOpen: this.isRealizationOpen
+          isOpen: this.isAdminRealizationOpen
         }
       ]
       if (this.detailLogisticRequest.status === 'VERIFIED') {
@@ -539,14 +494,39 @@ export default {
       this.itemsRealization = res.data[2]
       this.setLogisticItem()
     },
+    setDefaultDisplayTable(status) {
+      switch (status) {
+        case 'NOT_VERIFIED':
+        case 'VERIFICATION_REJECTED':
+          this.isRequestOpen = true
+          this.detailTitle = 'Detail Administrasi'
+          break
+        case 'VERIFIED':
+        case 'APPROVAL_REJECTED':
+          this.isRequestOpen = false
+          this.isRecommendationOpen = true
+          this.isAdminRecommendationOpen = true
+          this.detailTitle = 'Detail Rekomendasi'
+          break
+        case 'APPROVED':
+        case 'FINALIZED':
+          this.isRealizationOpen = true
+          this.isAdminRealizationOpen = true
+          this.isRequestOpen = false
+          this.isRecommendationOpen = false
+          this.isAdminRecommendationOpen = false
+          this.detailTitle = 'Detail Realisasi'
+          break
+        default: null
+      }
+      this.getLogisticRequest()
+      this.getLogisticAdditionalRealization()
+    },
     // function ini dibikin modular
     setLogisticItem() {
       let filteredHeaderRecommendation = null
       if (this.detailLogisticRequest.status === 'VERIFIED') {
         filteredHeaderRecommendation = this.headersRecommendation
-        // ini harus dibikin function terpisah, karena jika disini akan terpanggil terus
-        // this.isRequestOpen = false
-        // this.isRecommendationOpen = true
       } else {
         filteredHeaderRecommendation = this.headersRecommendation.filter(el => el.text !== 'Aksi')
       }
@@ -581,25 +561,43 @@ export default {
         this.logisticItems = dataLogistic
       }
     },
+    hideAdminRealization(type) {
+      if (type === 'recommendation') {
+        this.isAdminRecommendationOpen = false
+      } else {
+        this.isAdminRealizationOpen = false
+      }
+      this.setLogisticRealizationAdmin()
+    },
+    showAdminRealization(type) {
+      if (type === 'recommendation') {
+        this.isAdminRecommendationOpen = true
+      } else {
+        this.isAdminRealizationOpen = true
+      }
+      this.setLogisticRealizationAdmin()
+    },
     hide(type) {
       if (type === 'request') {
         this.isRequestOpen = false
       } else if (type === 'recommendation') {
-        this.isRecommendationOpen = false
+        this.isRecommendationOpen = this.isAdminRecommendationOpen = false
       } else {
-        this.isRealizationOpen = false
+        this.isRealizationOpen = this.isAdminRealizationOpen = false
       }
       this.setLogisticItem()
+      this.setLogisticRealizationAdmin()
     },
     show(type) {
       if (type === 'request') {
         this.isRequestOpen = true
       } else if (type === 'recommendation') {
-        this.isRecommendationOpen = true
+        this.isRecommendationOpen = this.isAdminRecommendationOpen = true
       } else {
-        this.isRealizationOpen = true
+        this.isRealizationOpen = this.isAdminRealizationOpen = true
       }
       this.setLogisticItem()
+      this.setLogisticRealizationAdmin()
     },
     updateItem(item, type, isAdminRealization) {
       this.showForm = true
@@ -610,12 +608,10 @@ export default {
       this.$refs.updateForm.setDataAddRealizationAdmin(this.detailLogisticRequest)
     },
     hideIdentity() {
-      console.log('terpanggil guys')
       this.isIdentityApplicantOpen = false
       this.setDataIdentity()
     },
     showIdentity() {
-      console.log('terpanggil show di detail')
       this.isIdentityApplicantOpen = true
       this.setDataIdentity()
     },

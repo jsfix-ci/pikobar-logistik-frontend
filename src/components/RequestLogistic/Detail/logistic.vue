@@ -5,8 +5,8 @@
       <div v-for="data in items" :key="data.subtitle" class="mb-5">
         <div>
           <p class="d-inline-block text-label mb-2">{{ data.subtitle }}</p>
-          <v-icon v-if="data.isOpen" @click="hide(data.type)">mdi-chevron-up</v-icon>
-          <v-icon v-else @click="show(data.type)">mdi-chevron-down</v-icon>
+          <v-icon v-if="data.isOpen" @click.passive="hide(data.type)">mdi-chevron-up</v-icon>
+          <v-icon v-else @click.passive="show(data.type)">mdi-chevron-down</v-icon>
         </div>
         <JDSTable
           v-show="data.isOpen"
