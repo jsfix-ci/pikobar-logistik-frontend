@@ -1,9 +1,23 @@
 <template>
   <div class="container mb-10">
     <!-- Detail title -->
-    <div class="table-title mb-8">
+    <div class="table-title mb-4">
       {{ detailTitle }}
     </div>
+    <!-- Need Refactor -->
+    <v-card
+      v-if="detailLogisticRequest.status === 'NOT_VERIFIED'"
+      class="mx-auto mb-4"
+      color="#219653"
+    >
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>
+            <span class="text-wrap" style="color: white">{{ $t('label.verify_text_alert_1') }}<b>{{ $t('label.verify_text_alert_2') }}</b> {{ $t('label.verify_text_alert_3') }}</span>
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-card>
     <!-- Detail info -->
     <DetailInfo :items="info_terbaru" />
 
@@ -16,12 +30,12 @@
         :title="item.title"
         :content="item.content"
         :strong="item.strong"
+        :length="status_terbaru.length"
         :button-label="item.button_label"
         :class="{ 'ml-auto': index === 1 }"
         @change-urgency="urgencyChange(detailLogisticRequest.applicant.id, !detailLogisticRequest.is_urgency)"
         @restore-status="restoreStatus(detailLogisticRequest.applicant.agency_id)"
       />
-      <!-- <CardStatus /> -->
     </div>
     <!-- Letter -->
     <!--
@@ -86,9 +100,12 @@
     <!-- Footer -->
     <div>
       <ActionButton
-        :stage="'realization'"
-        @realize="onRealizeValidation"
-        @return="onReturnValidation"
+        :stage="detailLogisticRequest.status"
+        @verif-confirmation="submitVerification"
+        @recommend="submitRecommendation"
+        @realize="submitRealization"
+        @reject-verification="postRejectVerification"
+        @reject-approval="postRejectVerification"
       />
     </div>
     <updateLetter ref="dialogUpdateLetterForm" :show="updateLetterForm" />
@@ -113,7 +130,7 @@ import CardLetter from '@/components/RequestLogistic/Detail/letter.vue'
 import CardIdentity from '@/components/RequestLogistic/Detail/identity.vue'
 import CardLogistic from '@/components/RequestLogistic/Detail/logistic.vue'
 import { data } from '@/components/RequestLogistic/Detail/response.js'
-import ActionButton from '@/views/immunization/detail/ActionButton'
+import ActionButton from '@/components/RequestLogistic/Detail/ActionButton.vue'
 import updateLetter from '@/views/pengajuanLogistik/updateLetter'
 import dialogUrgency from '@/views/pengajuanLogistik/dialogUrgency'
 import dialogReturn from '@/views/pengajuanLogistik/dialogReturn'
@@ -274,6 +291,45 @@ export default {
   },
   methods: {
     formatDatetime,
+    async submitRealization() {
+      try {
+        const formData = new FormData()
+        formData.append('agency_id', this.detailLogisticRequest.agency.id)
+        formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
+        formData.append('approval_status', 'approved')
+        formData.append('url', location.host + '/#')
+        await this.$store.dispatch('logistics/postFinalStatus', formData)
+        await this.getDetail()
+      } catch (err) {
+        return err
+      }
+    },
+    async submitRecommendation() {
+      try {
+        const formData = new FormData()
+        formData.append('agency_id', this.detailLogisticRequest.agency.id)
+        formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
+        formData.append('approval_status', 'approved')
+        formData.append('url', location.host + '/#')
+        await this.$store.dispatch('logistics/postApprovalStatus', formData)
+        await this.getDetail()
+      } catch (err) {
+        return err
+      }
+    },
+    async submitVerification() {
+      try {
+        const formData = new FormData()
+        formData.append('agency_id', this.detailLogisticRequest.agency.id)
+        formData.append('applicant_id', this.detailLogisticRequest.applicant.id)
+        formData.append('verification_status', 'verified')
+        formData.append('url', location.host + '/#')
+        await this.$store.dispatch('logistics/postVerificationStatus', formData)
+        await this.getDetail()
+      } catch (err) {
+        return err
+      }
+    },
     showApplicantIdentityDialog() {
       this.$refs.dialogApplicantIdentityForm.setData(this.detailLogisticRequest.agency.id, this.detailLogisticRequest)
       this.showApplicantIdentity = true
@@ -341,13 +397,15 @@ export default {
         })
       }
 
-      this.status_terbaru.push({
-        type: 'status-request',
-        title: 'Status Permohonan',
-        content: 'Permohonan ini berada pada tahapan',
-        strong: this.setStatusLabel(res.data.status),
-        button_label: 'KEMBALIKAN KE STATUS SEBELUMNYA'
-      })
+      if (this.detailLogisticRequest.status !== 'NOT_VERIFIED') {
+        this.status_terbaru.push({
+          type: 'status-request',
+          title: 'Status Permohonan',
+          content: 'Permohonan ini berada pada tahapan',
+          strong: this.setStatusLabel(res.data.status),
+          button_label: 'KEMBALIKAN KE STATUS SEBELUMNYA'
+        })
+      }
 
       // identitas instansi
       this.setDataIdentity()
@@ -614,12 +672,6 @@ export default {
     showIdentity() {
       this.isIdentityApplicantOpen = true
       this.setDataIdentity()
-    },
-    onReturnValidation() {
-      console.log('terpanggil return')
-    },
-    onRealizeValidation() {
-      console.log('terpanggil')
     }
   }
 }

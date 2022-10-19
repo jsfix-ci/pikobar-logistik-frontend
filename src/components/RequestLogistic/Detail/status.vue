@@ -1,5 +1,5 @@
 <template>
-  <div class="container-urgency">
+  <div :class="[length === 1 ? 'container-urgency-full': 'container-urgency']">
     <p class="text-label mb-1">{{ title }}</p>
     <div class="urgency">
       <span class="text-content align-self-center mr-2" :class="{ 'text-content--danger': type !== 'status-request' }">
@@ -46,6 +46,10 @@ export default {
     strong: {
       type: String,
       default: ''
+    },
+    length: {
+      type: Number,
+      default: 2
     }
   },
   methods: {
@@ -85,13 +89,16 @@ export default {
 .container-urgency {
   width: 49.5%;
 }
+.container-urgency-full {
+  width: 100%;
+}
 .urgency {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   border: 1px solid #E0E0E0;
-  padding: 2rem 1.2rem;
+  padding: 1rem 1.2rem;
   border-radius: 0.3rem;
-  height: 8.5rem;
+  height: 7rem;
 }
 </style>
