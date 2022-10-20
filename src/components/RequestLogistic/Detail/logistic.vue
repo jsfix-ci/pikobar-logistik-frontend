@@ -82,9 +82,9 @@ export default {
   methods: {
     getTableRowNumbering,
     updateItem(item, type) {
-      let isAdminRealization = false
-      if (this.items.length === 2) {
-        isAdminRealization = true
+      let isAdminRealization = true
+      if (this.title === 'Daftar Kebutuhan Logistik') {
+        isAdminRealization = false
       }
       this.$emit('update', item, type, isAdminRealization)
     },
