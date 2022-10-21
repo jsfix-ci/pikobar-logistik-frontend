@@ -15,7 +15,7 @@
           :loading="false"
         >
           <template v-slot:item-prop="{ item, index }">
-            <tr :class="{'text-grey': item.status === 'not_approved'}">
+            <tr :class="{'text-grey': item.status === 'not_approved' && data.type !== 'request'}">
               <td>{{ index + 1 }}</td>
               <td>{{ item.product_name || '-' }}</td>
               <td>{{ item.brand || '-' }}</td>
@@ -68,10 +68,6 @@ export default {
     status: {
       type: String,
       default: ''
-    },
-    dataTable: {
-      type: Array,
-      default: () => []
     }
   },
   data() {
