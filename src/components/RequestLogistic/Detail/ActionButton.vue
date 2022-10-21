@@ -54,7 +54,7 @@
       <JDSButton inverted height="42px" class="mr-3" @click="onBack()">
         {{ $t('label.back') }}
       </JDSButton>
-      <JDSButton height="42px" @click="$emit('realize')">
+      <JDSButton height="42px" @click="$emit('show-note')">
         {{ 'Alasan Ditolak' }}
       </JDSButton>
     </div>

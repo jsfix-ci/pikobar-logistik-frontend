@@ -99,6 +99,7 @@
         @verif-confirmation="submitVerification"
         @recommend="submitRecommendation"
         @realize="submitRealization"
+        @show-note="showDialogReasonReject = true"
         @reject-approval="showDialogReject = true"
         @reject-verification="showDialogReject = true"
       />
@@ -115,6 +116,11 @@
       :item="detailLogisticRequest"
       :total="itemsRequest.total"
       @submitReject="rejectData"
+    />
+    <reasonDeniedLogisticNeeds
+      :show="showDialogReasonReject"
+      :item="detailLogisticRequest"
+      :total="itemsRequest.total"
     />
     <updateKebutuhanLogistik ref="updateForm" :show="showForm" />
     <dialogReturn ref="dialogReturnForm" :show="showReturnForm" />
@@ -134,6 +140,7 @@ import applicantIdentity from './applicantIdentity'
 import JDSButton from '@/components/Base/JDSButton'
 import DialogDelete from '@/components/DialogDelete'
 import { formatDatetime } from '@/utils/parseDatetime'
+import reasonDeniedLogisticNeeds from './reasonReject'
 import updateLetter from '@/views/pengajuanLogistik/updateLetter'
 import dialogReturn from '@/views/pengajuanLogistik/dialogReturn'
 import dialogUrgency from '@/views/pengajuanLogistik/dialogUrgency'
@@ -160,10 +167,12 @@ export default {
     agencyIdentity,
     applicantIdentity,
     updateKebutuhanLogistik,
-    rejectKebutuhanLogistik
+    rejectKebutuhanLogistik,
+    reasonDeniedLogisticNeeds
   },
   data() {
     return {
+      showDialogReasonReject: false,
       showDialogReject: false,
       detailTitle: null,
       dataDelete: null,
@@ -291,6 +300,7 @@ export default {
     })
     EventBus.$on('dialogHideReject', (value) => {
       this.showDialogReject = value
+      this.showDialogReasonReject = value
     })
   },
   methods: {
