@@ -85,7 +85,6 @@ export default {
       this.getUndoStepTitle()
     },
     getUndoStepTitle() {
-      console.log(this.dataDialog.step)
       switch (this.dataDialog.step) {
         case 'ditolak rekomendasi':
           this.titleReturn = this.$t('label.return_to_recommendation_step_dialog')
