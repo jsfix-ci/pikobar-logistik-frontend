@@ -207,16 +207,7 @@ export default {
         { text: 'Satuan', sortable: false },
         { text: 'Jenis Barang', sortable: false }
       ],
-      headersRecommendation: [
-        { text: 'No', sortable: false },
-        { text: 'Nama Barang', sortable: false },
-        { text: 'Deskripsi', sortable: false },
-        { text: 'Jumlah', sortable: false },
-        { text: 'Satuan', sortable: false },
-        { text: 'Status', sortable: false },
-        { text: 'Aksi', sortable: false }
-      ],
-      headersRealization: [
+      headersRecommendationRealization: [
         { text: 'No', sortable: false },
         { text: 'Nama Barang', sortable: false },
         { text: 'Deskripsi', sortable: false },
@@ -550,8 +541,8 @@ export default {
       this.setLogisticRealizationAdmin()
     },
     setLogisticRealizationAdmin() {
-      const filteredHeaderRecommendation = this.filteredHeaderLogisticTable('VERIFIED', this.headersRecommendation)
-      const filteredHeaderRealization = this.filteredHeaderLogisticTable('APPROVED', this.headersRealization)
+      const filteredHeaderRecommendation = this.filteredHeaderLogisticTable('VERIFIED')
+      const filteredHeaderRealization = this.filteredHeaderLogisticTable('APPROVED')
       const dataLogistic = [
         {
           type: 'recommendation',
@@ -579,8 +570,8 @@ export default {
       this.setLogisticItem()
     },
     setLogisticItem() {
-      const filteredHeaderRecommendation = this.filteredHeaderLogisticTable('VERIFIED', this.headersRecommendation)
-      const filterHeaderRealization = this.filteredHeaderLogisticTable('APPROVED', this.headersRealization)
+      const filteredHeaderRecommendation = this.filteredHeaderLogisticTable('VERIFIED')
+      const filterHeaderRealization = this.filteredHeaderLogisticTable('APPROVED')
       const dataLogistic = [
         {
           type: 'request',
@@ -606,11 +597,11 @@ export default {
       ]
       this.logisticItems = this.filteredLogisticItems(dataLogistic)
     },
-    filteredHeaderLogisticTable(status, header) {
+    filteredHeaderLogisticTable(status) {
       if (this.detailLogisticRequest.status === status) {
-        return header
+        return this.headersRecommendationRealization
       } else {
-        return header.filter(el => el.text !== 'Aksi')
+        return this.headersRecommendationRealization.filter(el => el.text !== 'Aksi')
       }
     },
     filteredLogisticItems(item) {
