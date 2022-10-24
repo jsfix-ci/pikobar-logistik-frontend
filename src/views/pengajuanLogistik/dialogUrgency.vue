@@ -80,7 +80,6 @@ export default {
   },
   methods: {
     async setData(id, value, dataDialog) {
-      console.log(value)
       this.id = id
       this.isUrgency = value
       this.dataDialog = dataDialog

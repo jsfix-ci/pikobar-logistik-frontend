@@ -214,8 +214,6 @@ export default {
     },
     // Default Method
     setData(id, value) {
-      console.log('id', id)
-      console.log('data', value)
       this.resetDialog()
       this.id = id
       this.defaultFile = value.letter.letter
