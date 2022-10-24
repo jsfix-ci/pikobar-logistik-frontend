@@ -111,6 +111,7 @@
       :dialog-delete.sync="dialogDelete"
       :delete-date.sync="dataDelete"
       :store-path-delete="`logistics/deleteRealization`"
+      @get-logistic-realization="getLogisticAdditionalRealization"
     />
     <rejectKebutuhanLogistik
       :show="showDialogReject"

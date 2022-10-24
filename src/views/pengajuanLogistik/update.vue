@@ -445,18 +445,15 @@ export default {
         if (this.isUpdate) {
           this.data.status = 'approved'
           await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
-          this.$parent.getLogisticAdditionalRealization()
         } else {
           if (value === true) {
             this.data.status = 'approved'
             this.data.agency_id = this.agency_id
             await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
             this.data = {}
-            this.$parent.getLogisticAdditionalRealization()
           } else {
             delete this.data.id
             await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
-            this.$parent.getLogisticRequest()
           }
         }
       } catch (error) {
