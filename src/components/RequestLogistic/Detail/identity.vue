@@ -4,8 +4,8 @@
       <!-- Bikin kondisi hide and show -->
       <p class="text-label mb-1 mr-1" style="display: inline-block">{{ items.title }}</p>
       <span v-if="items.title === 'Identitas Pemohon'">
-        <v-icon v-if="items.isOpen" @click="hide">mdi-chevron-up</v-icon>
-        <v-icon v-else @click="show">mdi-chevron-down</v-icon>
+        <v-icon v-if="items.isOpen" @click.passive="hide">mdi-chevron-up</v-icon>
+        <v-icon v-else @click.passive="show">mdi-chevron-down</v-icon>
       </span>
     </span>
     <div v-if="items.isOpen" class="instance-identity">

@@ -12,20 +12,6 @@
         {{ $t('label.verification') }}
       </JDSButton>
     </div>
-    <!-- Verification versi space between -->
-    <!-- <div v-if="stage === 'NOT_VERIFIED'" class="d-flex flex-row justify-space-between mt-8">
-      <JDSButton inverted height="42px" @click="onBack()">
-        {{ $t('label.back') }}
-      </JDSButton>
-      <div>
-        <JDSButton inverted danger height="42px" class="mr-4" @click="$emit('confirm', 'reject')">
-          {{ $t('label.reject_request') }}
-        </JDSButton>
-        <JDSButton height="42px" @click="$emit('confirm', 'verifConfirmation')">
-          {{ $t('label.verification') }}
-        </JDSButton>
-      </div>
-    </div> -->
 
     <!-- Recommendation -->
     <div v-if="stage === 'VERIFIED'" class="d-flex flex-row justify-end mt-8">
