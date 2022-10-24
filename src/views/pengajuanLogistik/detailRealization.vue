@@ -563,7 +563,7 @@ export default {
       this.logisticItemsRealization = this.filteredLogisticItems(dataLogistic)
     },
     async getLogisticRequest() {
-      const res = await this.$store.dispatch('logistics/getListDetailLogisticNeedsNew', this.listQuery)
+      const res = await this.$store.dispatch('logistics/getListDetailLogisticRequestNeed', this.listQuery)
       const [request, recommendation, realization] = res.data
       this.itemsRequest = request
       this.itemsRecommendation = recommendation

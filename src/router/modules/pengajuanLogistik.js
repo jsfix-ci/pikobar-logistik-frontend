@@ -66,7 +66,7 @@ const pengajuanLogistik = {
       component: () => import('@/views/pengajuanLogistik/detailRealization'),
       hidden: true,
       meta: {
-        title: 'applicant_medical_tools_list_title',
+        title: 'request_detail',
         icon: 'library_books',
         noCache: true,
         roles: ['superadmin', 'dinkesprov', 'dinkeskota']
