@@ -1,7 +1,6 @@
 <template>
   <div>
     <span>
-      <!-- Bikin kondisi hide and show -->
       <p class="text-label mb-1 mr-1" style="display: inline-block">{{ items.title }}</p>
       <span v-if="items.title === 'Identitas Pemohon'">
         <v-icon v-if="items.isOpen" @click.passive="hide">mdi-chevron-up</v-icon>
@@ -48,7 +47,7 @@ export default {
   props: {
     items: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     }
   },
   methods: {
@@ -60,18 +59,15 @@ export default {
       }
     },
     hide() {
-      console.log('terpanggil dari identity')
       this.$emit('hide')
     },
     show() {
-      console.log('terpanggil dari identity show')
       this.$emit('show')
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-// Tambahkan hide and show dibagian identitas pemohon
 .instance-identity {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 10rem;
