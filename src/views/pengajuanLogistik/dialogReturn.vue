@@ -110,7 +110,7 @@ export default {
       const param = {
         agency_id: this.dataDialog.agency.id,
         applicant_id: this.dataDialog.applicant.id,
-        step: this.dataDialog.previous_status,
+        step: this.dataDialog.step,
         url: location.host + '/#'
       }
       const response = await this.$store.dispatch('logistics/postReturnChange', param)

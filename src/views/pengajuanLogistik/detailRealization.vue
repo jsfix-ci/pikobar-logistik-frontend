@@ -258,11 +258,11 @@ export default {
         this.getDetail()
       }
     })
-    EventBus.$on('dialogReturnConfirmation', (value) => {
+    EventBus.$on('dialogReturnConfirmation', async(value) => {
       this.showReturnForm = false
       if (value) {
-        this.getDetail()
-        this.setDefaultDisplayTable(this.detailLogisticRequest.status)
+        await this.getDetail()
+        await this.setDefaultDisplayTable(this.detailLogisticRequest.status)
       }
     })
     EventBus.$on('hideAgencyIdentity', (value) => {
