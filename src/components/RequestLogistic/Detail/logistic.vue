@@ -29,7 +29,7 @@
               >
                 {{ setStatus(item.status) }}
               </td>
-              <td v-if="(status === 'VERIFIED' && data.type === 'recommendation') || (status === 'APPROVED' && data.type === 'realization')" :class="{'action-width': isAdminRealization}">
+              <td v-if="displayAction(data.type)" :class="{'action-width': isAdminRealization}">
                 <JDSButton height="25px" width="75px" @click="updateItem(item, data.type)">
                   {{ $t('label.update') }}
                 </JDSButton>
@@ -86,6 +86,9 @@ export default {
     },
     show(type) {
       this.$emit('show', type)
+    },
+    displayAction(type) {
+      return (this.status === 'VERIFIED' && type === 'recommendation') || (this.status === 'APPROVED' && type === 'realization')
     },
     setStatus(status) {
       switch (status) {
