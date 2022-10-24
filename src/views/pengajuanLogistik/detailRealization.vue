@@ -262,6 +262,7 @@ export default {
       this.showReturnForm = false
       if (value) {
         this.getDetail()
+        this.setDefaultDisplayTable(this.detailLogisticRequest.status)
       }
     })
     EventBus.$on('hideAgencyIdentity', (value) => {
@@ -301,6 +302,7 @@ export default {
         formData.append('approval_status', 'approved')
         await this.$store.dispatch('logistics/postFinalStatus', formData)
         await this.getDetail()
+        await this.setDefaultDisplayTable(this.detailLogisticRequest.status)
       } catch (err) {
         return err
       }
@@ -311,6 +313,7 @@ export default {
         formData.append('approval_status', 'approved')
         await this.$store.dispatch('logistics/postApprovalStatus', formData)
         await this.getDetail()
+        await this.setDefaultDisplayTable(this.detailLogisticRequest.status)
       } catch (err) {
         return err
       }
@@ -321,6 +324,7 @@ export default {
         formData.append('verification_status', 'verified')
         await this.$store.dispatch('logistics/postVerificationStatus', formData)
         await this.getDetail()
+        await this.setDefaultDisplayTable(this.detailLogisticRequest.status)
       } catch (err) {
         return err
       }
@@ -345,10 +349,12 @@ export default {
     async postRejectApproval(formData) {
       await this.$store.dispatch('logistics/postApprovalStatus', formData)
       await this.getDetail()
+      await this.setDefaultDisplayTable(this.detailLogisticRequest.status)
     },
     async postReject(formData) {
       await this.$store.dispatch('logistics/postVerificationStatus', formData)
       await this.getDetail()
+      await this.setDefaultDisplayTable(this.detailLogisticRequest.status)
     },
     showApplicantIdentityDialog() {
       this.$refs.dialogApplicantIdentityForm.setData(this.detailLogisticRequest.agency.id, this.detailLogisticRequest)
