@@ -200,7 +200,7 @@ export default {
       logisticItemsRealization: [],
       listQuery: {},
       headersRequest: [
-        { text: this.$t('label.print_mail_no'), sortable: false },
+        { text: 'No', sortable: false },
         { text: 'Nama Barang', sortable: false },
         { text: 'Deskripsi', sortable: false },
         { text: 'Jumlah', sortable: false },
@@ -208,7 +208,7 @@ export default {
         { text: 'Jenis Barang', sortable: false }
       ],
       headersRecommendation: [
-        { text: this.$t('label.print_mail_no'), sortable: false },
+        { text: 'No', sortable: false },
         { text: 'Nama Barang', sortable: false },
         { text: 'Deskripsi', sortable: false },
         { text: 'Jumlah', sortable: false },
@@ -217,7 +217,7 @@ export default {
         { text: 'Aksi', sortable: false }
       ],
       headersRealization: [
-        { text: this.$t('label.print_mail_no'), sortable: false },
+        { text: 'No', sortable: false },
         { text: 'Nama Barang', sortable: false },
         { text: 'Deskripsi', sortable: false },
         { text: 'Jumlah', sortable: false },
