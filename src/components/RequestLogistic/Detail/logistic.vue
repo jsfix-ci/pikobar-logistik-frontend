@@ -129,6 +129,6 @@ export default {
   color: #E0E0E0;
 }
 .action-width {
-  width: 12rem;
+  width: 12.5rem;
 }
 </style>
