@@ -430,7 +430,7 @@ export default {
       })
     },
     toDetail(data) {
-      this.$router.push(`/alat-kesehatan/detail/realisasi/${data.id}`)
+      this.$router.push(`/alat-kesehatan/detail/${data.id}`)
     },
     async exportData() {
       const response = await this.$store.dispatch('logistics/logisticRequestExportData', this.listQuery)

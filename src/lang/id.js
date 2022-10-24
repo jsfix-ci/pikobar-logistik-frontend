@@ -10,7 +10,7 @@ export default {
     vaccine_request_title: 'Pengajuan Vaksin',
     master_data_title: 'Master Data',
     applicant_medical_tools_title: 'Permohonan',
-    applicant_medical_tools_list_title: 'Daftar Permohonan',
+    applicant_medical_tools_list_title: 'Detail Permohonan',
     vaccine_request_detail_title: 'Detail Pengajuan Vaksin',
     applicant_form: 'Form Pemohon',
     applicant_form_edit: 'Edit Permohonan',

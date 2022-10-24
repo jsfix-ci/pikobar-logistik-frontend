@@ -17,7 +17,7 @@
           <template v-slot:item-prop="{ item, index }">
             <tr :class="{'text-grey': item.status === 'not_approved' && data.type !== 'request'}">
               <td>{{ index + 1 }}</td>
-              <td>{{ item.product_name || '-' }}</td>
+              <td style="max-width: 20rem">{{ item.product_name || '-' }}</td>
               <td>{{ item.brand || '-' }}</td>
               <td>{{ item.quantity || '-' }}</td>
               <td>{{ item.unit || '-' }}</td>
@@ -29,7 +29,7 @@
               >
                 {{ setStatus(item.status) }}
               </td>
-              <td v-if="(status === 'VERIFIED' && data.type === 'recommendation') || (status === 'APPROVED' && data.type === 'realization')">
+              <td v-if="(status === 'VERIFIED' && data.type === 'recommendation') || (status === 'APPROVED' && data.type === 'realization')" :class="{'action-width': isAdminRealization}">
                 <JDSButton height="25px" width="75px" @click="updateItem(item, data.type)">
                   {{ $t('label.update') }}
                 </JDSButton>
@@ -44,9 +44,6 @@
   </div>
 </template>
 <script>
-/*
-  PR numbering table
-*/
 import JDSTable from '@/components/Base/JDSTable'
 import JDSButton from '@/components/Base/JDSButton'
 import { getTableRowNumbering } from '@/helpers/tableDisplay'
@@ -68,6 +65,10 @@ export default {
     status: {
       type: String,
       default: ''
+    },
+    isAdminRealization: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -78,11 +79,7 @@ export default {
   methods: {
     getTableRowNumbering,
     updateItem(item, type) {
-      let isAdminRealization = true
-      if (this.title === 'Daftar Kebutuhan Logistik') {
-        isAdminRealization = false
-      }
-      this.$emit('update', item, type, isAdminRealization)
+      this.$emit('update', item, type, this.isAdminRealization)
     },
     hide(type) {
       this.$emit('hide', type)
@@ -99,11 +96,11 @@ export default {
         case 'delivered':
           return this.$t('label.delivered')
         case 'not_available':
-          return this.$t('label.not_available') // tidak akan ngisi nama barang
+          return this.$t('label.not_available')
         case 'replaced':
           return this.$t('label.replaced')
         case 'not_yet_fulfilled':
-          return this.$t('label.not_yet_fulfilled') // tidak akan ngisi nama barang
+          return this.$t('label.not_yet_fulfilled')
         default:
           return this.$t('label.not_approved')
       }
@@ -127,5 +124,8 @@ export default {
 }
 .text-grey {
   color: #E0E0E0;
+}
+.action-width {
+  width: 12rem;
 }
 </style>
