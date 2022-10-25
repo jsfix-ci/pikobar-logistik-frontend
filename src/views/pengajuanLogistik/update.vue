@@ -21,9 +21,7 @@
           <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
           <span v-else class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name_recommended') }}</span>
           <br>
-          <!-- <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span> -->
           <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ data.product_name }}</span>
-          <!-- <span v-else class="value-sub-title-update-logistic-needs">{{ item.recommendation_product_name || '-' }}</span> -->
           <span v-else class="value-sub-title-update-logistic-needs">{{ data.product_name || '-' }}</span>
         </v-col>
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
@@ -53,8 +51,6 @@
             <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_item') }}</span>
             <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_item') }}</span>
             <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_item') }}</span>
-            <!-- {{ data.product_id }}
-            {{ listAPD }} -->
             <v-autocomplete
               v-model="data.product_id"
               :placeholder="$t('label.choose_apd')"
@@ -73,7 +69,6 @@
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
           <span class="sub-title-update-logistic-needs">{{ $t('label.total_needs') }}</span>
           <br>
-          <!-- <span class="value-sub-title-update-logistic-needs">{{ item ? item.quantity : '-' }}</span> -->
           <span class="value-sub-title-update-logistic-needs">{{ data.quantity }}</span>
         </v-col>
         <v-col v-if="!hideException" class="margin-top-min-20-update-logistic-needs">
@@ -282,7 +277,7 @@ export default {
       this.resetQueryAPD()
       if (this.data.status === 'approved') {
         this.listQueryAPD.status = 'approved'
-        this.listQueryAPD.id = this.item.product !== undefined ? this.item.product.id : null
+        this.listQueryAPD.poslog_id = this.data?.need_product_id
       } else if (this.data.status === 'not_available') {
         this.hideException = true
       } else if (this.data.status === 'not_yet_fulfilled') {
@@ -291,13 +286,13 @@ export default {
         this.listQueryAPD.status = null
         this.listQueryAPD.id = null
       }
-      if (this.isVerified && !this.isApproved && this.listQueryAPD.material_name === null) {
-        this.listQueryAPD.poslog_id = this.data.recommendation_product_id
-        this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
-      } else if (this.isVerified && this.isApproved && this.listQueryAPD.material_name === null) {
-        this.listQueryAPD.poslog_id = this.data.realization_product_id
-        this.data.realization_unit_id === null ? this.data.realization_unit : 'PCS'
-      }
+      // if (this.isVerified && !this.isApproved && this.listQueryAPD.material_name === null) {
+      //   this.listQueryAPD.poslog_id = this.data.recommendation_product_id
+      //   this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
+      // } else if (this.isVerified && this.isApproved && this.listQueryAPD.material_name === null) {
+      //   this.listQueryAPD.poslog_id = this.data.realization_product_id
+      //   this.data.realization_unit_id === null ? this.data.realization_unit : 'PCS'
+      // }
       try {
         await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
         this.listAPD.forEach(element => {
@@ -326,6 +321,7 @@ export default {
     async setDataAddRealizationAdmin(detailData) {
       this.isCreate = true
       this.updateName = true
+      this.isUpdate = false
       this.agency_id = detailData.agency.id
       if (detailData.status === 'APPROVED') {
         this.isVerified = true
@@ -341,6 +337,10 @@ export default {
         this.isUpdate = true
         this.isCreate = true
         this.updateName = true
+      } else {
+        this.isUpdate = false
+        this.isCreate = false
+        this.updateName = false
       }
 
       this.data = item
@@ -450,7 +450,6 @@ export default {
             this.data.status = 'approved'
             this.data.agency_id = this.agency_id
             await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
-            this.data = {}
           } else {
             delete this.data.id
             await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
@@ -465,6 +464,7 @@ export default {
     },
     hideDialog() {
       this.$refs.observer.reset()
+      this.data = {}
       EventBus.$emit('dialogHide', false)
     },
     handleSelectedDate(value) {

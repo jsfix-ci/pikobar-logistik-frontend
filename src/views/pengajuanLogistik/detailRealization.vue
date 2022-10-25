@@ -85,7 +85,7 @@
             </JDSButton>
           </span>
         </template>
-        <div class="d-flex justify-end ml-auto mt-7">
+        <div v-if="displayButtonAddItem" class="d-flex justify-end ml-auto mt-7">
           <JDSButton inverted height="42px" @click="addRealizationAdmin()">
             <v-icon left dark>mdi-archive-plus-outline</v-icon>
             <span>{{ 'Tambah Barang' }}</span>
@@ -240,6 +240,9 @@ export default {
     },
     letterName() {
       return this.detailLogisticRequest?.applicant?.application_letter_number || '-'
+    },
+    displayButtonAddItem() {
+      return this.detailLogisticRequest.status === 'VERIFIED' && this.detailLogisticRequest.status === 'APPROVED'
     }
   },
   async created() {
