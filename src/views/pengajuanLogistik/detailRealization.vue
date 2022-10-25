@@ -242,7 +242,7 @@ export default {
       return this.detailLogisticRequest?.applicant?.application_letter_number || '-'
     },
     displayButtonAddItem() {
-      return this.detailLogisticRequest.status === 'VERIFIED' && this.detailLogisticRequest.status === 'APPROVED'
+      return this.detailLogisticRequest.status === 'VERIFIED' || this.detailLogisticRequest.status === 'APPROVED'
     }
   },
   async created() {
