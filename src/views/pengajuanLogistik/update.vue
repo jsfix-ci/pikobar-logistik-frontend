@@ -322,7 +322,9 @@ export default {
       this.isCreate = true
       this.updateName = true
       this.isUpdate = false
-      this.agency_id = detailData.agency.id
+      this.data.agency_id = detailData.agency.id
+      this.data.applicant_id = detailData.applicant.id
+
       if (detailData.status === 'APPROVED') {
         this.isVerified = true
         this.isApproved = true
@@ -448,7 +450,6 @@ export default {
         } else {
           if (value === true) {
             this.data.status = 'approved'
-            this.data.agency_id = this.agency_id
             await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
           } else {
             delete this.data.id
