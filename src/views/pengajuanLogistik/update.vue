@@ -277,7 +277,7 @@ export default {
       this.resetQueryAPD()
       if (this.data.status === 'approved') {
         this.listQueryAPD.status = 'approved'
-        this.listQueryAPD.poslog_id = this.data?.need_product_id
+        this.listQueryAPD.id = this.data?.need_product_id
       } else if (this.data.status === 'not_available') {
         this.hideException = true
       } else if (this.data.status === 'not_yet_fulfilled') {
