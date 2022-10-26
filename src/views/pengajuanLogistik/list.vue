@@ -143,11 +143,9 @@
                   <th class="text-left">{{ $t('label.instance_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
-                  <div v-if="false">
-                    <th class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
-                    <th class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
-                    <th class="text-center">{{ $t('label.status').toUpperCase() }}</th>
-                  </div>
+                  <th v-if="isArchive" class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
+                  <th v-if="isArchive" class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
+                  <th v-if="isArchive" class="text-center">{{ $t('label.status').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
@@ -161,14 +159,12 @@
                     <span class="applicant-contact">{{ data.applicant.applicant_name }}</span>
                     <v-icon left small color="#2196F3">mdi-whatsapp</v-icon>
                   </td>
-                  <div v-if="false">
-                    <td style="max-width: 10rem;">{{ data.applicant.application_letter_number }}</td>
-                    <td class="text-center">
-                      <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
-                      <v-btn v-else outlined small color="error" @click="completenessDetail(data)">{{ $t('label.not_complete') }}</v-btn>
-                    </td>
-                    <td>{{ data.applicant.status }}</td>
-                  </div>
+                  <td v-if="isArchive" style="max-width: 10rem;">{{ data.applicant.application_letter_number }}</td>
+                  <td v-if="isArchive" class="text-center">
+                    <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
+                    <v-btn v-else outlined small color="error" @click="completenessDetail(data)">{{ $t('label.not_complete') }}</v-btn>
+                  </td>
+                  <td v-if="isArchive">{{ data.applicant.status }}</td>
                   <td>
                     <JDSButton height="28px" width="80px" @click="toDetail(data)">
                       <v-icon left small>mdi-alert-circle</v-icon>
@@ -389,7 +385,10 @@ export default {
       'roles',
       'district_user', // district code
       'district_name'
-    ])
+    ]),
+    isArchive() {
+      return this.$route.name === 'archive'
+    }
   },
   async created() {
     if (this.$route.name === 'verified') {
