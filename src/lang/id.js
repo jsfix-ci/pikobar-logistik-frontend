@@ -451,6 +451,7 @@ export default {
     search_data: 'Cari',
     search_placeholder: 'Masukkan kata kunci apa saja',
     search_instance_name: 'Cari Nama Instansi',
+    search_instance_applicant: 'Cari nama instansi atau nama pemohon',
     search_application_letter: 'Masukan No. Surat Permohonan',
     verif_now: 'Verifikasi Sekarang',
     capital_email: 'Email',
