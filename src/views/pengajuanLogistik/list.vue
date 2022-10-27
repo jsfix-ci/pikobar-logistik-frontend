@@ -144,7 +144,7 @@
                   <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
                   <th v-if="isArchive" class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
-                  <th v-if="isArchive" class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
+                  <th v-if="isArchive || isAdministration" class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
                   <th v-if="isArchive" class="text-center">{{ $t('label.status').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
@@ -160,7 +160,7 @@
                     <v-icon left small color="#2196F3">mdi-whatsapp</v-icon>
                   </td>
                   <td v-if="isArchive" style="max-width: 10rem;">{{ data.applicant.application_letter_number }}</td>
-                  <td v-if="isArchive" class="text-center">
+                  <td v-if="isArchive || isAdministration" class="text-center">
                     <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
                     <v-btn v-else outlined small color="error" @click="completenessDetail(data)">{{ $t('label.not_complete') }}</v-btn>
                   </td>
@@ -388,6 +388,9 @@ export default {
     ]),
     isArchive() {
       return this.$route.name === 'archive'
+    },
+    isAdministration() {
+      return this.$route.name === 'notVerified'
     }
   },
   async created() {
