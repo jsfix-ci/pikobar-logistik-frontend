@@ -18,7 +18,7 @@
             <tr :class="{'text-grey': item.status === 'not_approved' && data.type !== 'request'}">
               <td>{{ index + 1 }}</td>
               <td style="max-width: 20rem">{{ item.product_name || '-' }}</td>
-              <td>{{ item.brand || '-' }}</td>
+              <td v-if="!isAdminRealization">{{ item.brand || '-' }}</td>
               <td>{{ item.quantity || '-' }}</td>
               <td>{{ item.unit || '-' }}</td>
               <td v-if="data.type === 'request'">{{ item.category }}</td>

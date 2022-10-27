@@ -174,27 +174,9 @@ export default {
       return e
     }
   },
-  async getListDetailLogisticRequestUpdate({ commit }, params) {
-    try {
-      const response = await fetchList('/api/v1/logistic-request/detail/' + params, 'GET')
-      commit('SET_DETAIL_LOGISTIC_REQUEST', response.data)
-      return response
-    } catch (e) {
-      return e
-    }
-  },
   async getListDetailLogisticNeeds({ commit }, params) {
     try {
       const response = await fetchList('/api/v1/logistic-request/need/list', 'GET', params)
-      commit('SET_LIST_DETAIL_LOGISTIC_NEEDS', response.data.data)
-      commit('SET_TOTAL_DETAIL_LOGISTIC_NEEDS', response.data.last_page)
-    } catch (e) {
-      return e
-    }
-  },
-  async getListDetailLogisticRequestNeed({ commit }, params) {
-    try {
-      const response = await fetchList('/api/v1/logistic-request/need/new-list', 'GET', params)
       commit('SET_LIST_DETAIL_LOGISTIC_NEEDS', response.data.data)
       commit('SET_TOTAL_DETAIL_LOGISTIC_NEEDS', response.data.last_page)
       return response
@@ -252,17 +234,6 @@ export default {
       return response
     } catch (error) {
       return error.response
-    }
-  },
-  async getLogisticAdditionalRealization({ commit }, params) {
-    try {
-      const response = await fetchList('/api/v1/logistic-admin-realization/list', 'GET', params)
-      commit('SET_LIST_REALIZATION', response.data)
-      commit('SET_TOTAL_LIST_REALIZATION', response.data.last_page)
-      commit('SET_TOTAL_DATA_REALIZATION', response.data.total)
-      return response
-    } catch (e) {
-      return e
     }
   },
   async getLogisticNeedsAdmin({ commit }, params) {

@@ -68,7 +68,7 @@
         @show="showLogisticRequest"
       />
     </div>
-    <div v-if="detailLogisticRequest.status !== 'NOT_VERIFIED'" class="mt-5">
+    <div v-if="displayAdditionalItem" class="mt-5">
       <CardLogistic
         title="Daftar Barang Rekomendasi Salur Lainnya"
         :items="logisticItemsRealization"
@@ -243,6 +243,9 @@ export default {
     },
     displayButtonAddItem() {
       return this.detailLogisticRequest.status === 'VERIFIED' || this.detailLogisticRequest.status === 'APPROVED'
+    },
+    displayAdditionalItem() {
+      return this.detailLogisticRequest.status === 'VERIFIED' || this.detailLogisticRequest.status === 'APPROVED' || this.detailLogisticRequest.status === 'FINALIZED'
     }
   },
   async created() {
@@ -385,7 +388,7 @@ export default {
       this.info_terbaru = []
       this.status_terbaru = []
       this.identity_terbaru = []
-      const res = await this.$store.dispatch('logistics/getListDetailLogisticRequestUpdate', this.$route.params.id)
+      const res = await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
       if (!res.data) {
         this.$router.push('/dashboard')
         return
@@ -428,7 +431,7 @@ export default {
         this.status_terbaru.push({
           type: 'regular',
           title: 'Urgensi Permohonan',
-          content: 'Tandai permohonan sebagai darurat',
+          content: 'Tandai permohonan sebagai',
           strong: 'darurat',
           button_label: 'TANDAI DARURAT'
         })
@@ -544,15 +547,15 @@ export default {
       this.dataDelete = await item
     },
     async getLogisticAdditionalRealization() {
-      const res = await this.$store.dispatch('logistics/getLogisticAdditionalRealization', this.listQuery)
+      const res = await this.$store.dispatch('logistics/getLogisticNeedsAdmin', this.listQuery)
       const [recommendationAdmin, realizationAdmin] = res.data
       this.itemsRecommendationAdmin = recommendationAdmin
       this.itemsRealizationAdmin = realizationAdmin
       this.setLogisticRealizationAdmin()
     },
     setLogisticRealizationAdmin() {
-      const filteredHeaderRecommendation = this.filteredHeaderLogisticTable('VERIFIED')
-      const filteredHeaderRealization = this.filteredHeaderLogisticTable('APPROVED')
+      const filteredHeaderRecommendation = this.filteredHeaderLogisticTable('VERIFIED').filter(el => el.text !== 'Deskripsi')
+      const filteredHeaderRealization = this.filteredHeaderLogisticTable('APPROVED').filter(el => el.text !== 'Deskripsi')
       const dataLogistic = [
         {
           type: 'recommendation',
@@ -572,7 +575,7 @@ export default {
       this.logisticItemsRealization = this.filteredLogisticItems(dataLogistic)
     },
     async getLogisticRequest() {
-      const res = await this.$store.dispatch('logistics/getListDetailLogisticRequestNeed', this.listQuery)
+      const res = await this.$store.dispatch('logistics/getListDetailLogisticNeeds', this.listQuery)
       const [request, recommendation, realization] = res.data
       this.itemsRequest = request
       this.itemsRecommendation = recommendation
