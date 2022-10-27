@@ -6,37 +6,35 @@
       </v-card-text>
       <hr class="thin">
       <v-card-text>
-        <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
-          <v-col cols="12" sm="4" md="4">
-            <v-card
-              outlined
-              class="card-search"
-            >
-              <v-text-field
-                v-model="listQuery.agency_name"
-                solo-inverted
-                flat
-                hide-details
-                :placeholder="$t('label.search_data')"
-                prepend-inner-icon="search"
-                @change="handleSearch"
-              />
-            </v-card>
-          </v-col>
-          <v-col cols="12" offset-sm="4" offset-md="4" sm="2" md="2">
+        <div class="d-flex flex-row justify-space-between">
+          <v-card
+            outlined
+            class="card-search"
+            style="width: 40%"
+          >
+            <v-text-field
+              v-model="listQuery.agency_name"
+              solo-inverted
+              flat
+              hide-details
+              :placeholder="$t('label.search_instance_applicant')"
+              prepend-inner-icon="search"
+              @change="handleSearch"
+            />
+          </v-card>
+          <div>
             <v-btn color="green" large text outlined @click="exportData()"><v-icon left>mdi-upload</v-icon> {{ $t('label.export_data') }}</v-btn>
-          </v-col>
-          <v-col cols="12" sm="2" md="2">
-            <v-btn class="primary" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }}
+            <v-btn class="primary ml-3" large max-width="100px" @click="showFilter = !showFilter">{{ $t('label.filter') }}
               <v-icon v-if="!showFilter" right>mdi-chevron-right</v-icon>
-              <v-icon v-else right>mdi-chevron-down</v-icon></v-btn>
-          </v-col>
-        </v-row>
+              <v-icon v-else right>mdi-chevron-down</v-icon>
+            </v-btn>
+          </div>
+        </div>
       </v-card-text>
       <hr v-if="showFilter" class="thin">
       <v-card-text v-if="showFilter">
         <v-row class="margin-top-bot-min-20-list-pengajuan-logistik">
-          <v-col cols="12" sm="1">
+          <v-col cols="12" md="3">
             <v-label class="title">{{ $t('label.sort') }}</v-label>
             <v-select
               v-model="listQuery.sort"
@@ -49,7 +47,7 @@
               @change="handleSearch"
             />
           </v-col>
-          <v-col cols="12" sm="3">
+          <v-col cols="12" md="3">
             <v-label class="title">{{ $t('label.request_date') }}</v-label>
             <date-picker-dashboard
               :initial-start-date="listQuery.start_date"
@@ -57,7 +55,7 @@
               @selected="changeDate"
             />
           </v-col>
-          <v-col cols="12" sm="2">
+          <v-col cols="12" md="3">
             <v-label class="title">{{ $t('label.city_district') }}</v-label>
             <select-area-district-city
               :disabled-district="disabledDistrict"
@@ -66,7 +64,7 @@
               :on-select-district-city="onSelectDistrictCity"
             />
           </v-col>
-          <v-col cols="12" sm="3">
+          <v-col cols="12" md="3">
             <v-label class="title">{{ $t('label.instance_type') }}</v-label>
             <v-select
               v-model="listQuery.faskes_type"
@@ -79,7 +77,7 @@
               @change="handleSearch()"
             />
           </v-col>
-          <v-col cols="12" sm="3">
+          <v-col cols="12" md="3" class="mt-n8">
             <v-label class="title">{{ $t('label.applicant_origin') }}</v-label>
             <v-select
               v-model="listQuery.source_data"
@@ -92,7 +90,7 @@
               @change="handleSearch()"
             />
           </v-col>
-          <v-col cols="12" sm="3" class="mt-n8">
+          <v-col cols="12" md="3" class="mt-n8">
             <v-label class="title">{{ $t('label.instance_reference_status') }}</v-label>
             <v-select
               v-model="listQuery.is_reference"
@@ -105,7 +103,7 @@
               @change="handleSearch()"
             />
           </v-col>
-          <v-col cols="12" sm="3" class="mt-n8">
+          <v-col cols="12" md="3" class="mt-n8">
             <v-label class="title">{{ $t('label.completeness') }}</v-label>
             <v-select
               v-model="listQuery.completeness"
@@ -118,7 +116,7 @@
               @change="handleSearch()"
             />
           </v-col>
-          <v-col cols="12" sm="3" class="mt-n8">
+          <v-col cols="12" md="3" class="mt-n8">
             <v-label class="title">{{ $t('label.urgency_level') }}</v-label>
             <v-select
               v-model="listQuery.is_urgency"
@@ -139,6 +137,44 @@
           <v-simple-table>
             <template v-slot:default>
               <thead>
+                <tr>
+                  <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.instance_name').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
+                  <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
+                  <th v-if="isArchive" class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
+                  <th v-if="isArchive || isAdministration" class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
+                  <th v-if="isArchive" class="text-center">{{ $t('label.status').toUpperCase() }}</th>
+                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(data, index) in listLogisticRequest" :key="index">
+                  <td>{{ getTableRowNumbering(index) }}</td>
+                  <td style="min-width: 10.5rem">{{ data.created_at ? $moment(data.created_at).format('D MMMM YYYY') : $t('label.stripe') }}</td>
+                  <td style="max-width: 20rem; min-width: 11rem;">{{ data.agency_name }}</td>
+                  <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
+                  <td style="min-width: 8rem; max-width: 11rem" @click="sendMessage(data)">
+                    <span class="applicant-contact">{{ data.applicant.applicant_name }}</span>
+                    <v-icon left small color="#2196F3">mdi-whatsapp</v-icon>
+                  </td>
+                  <td v-if="isArchive" style="max-width: 10rem;">{{ data.applicant.application_letter_number }}</td>
+                  <td v-if="isArchive || isAdministration" class="text-center">
+                    <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
+                    <v-btn v-else outlined small color="error" @click="completenessDetail(data)">{{ $t('label.not_complete') }}</v-btn>
+                  </td>
+                  <td v-if="isArchive">{{ data.applicant.status }}</td>
+                  <td>
+                    <JDSButton height="28px" width="80px" @click="toDetail(data)">
+                      <v-icon left small>mdi-alert-circle</v-icon>
+                      <span class="ml-n1">{{ $t('label.detail') }}</span>
+                    </JDSButton>
+                  </td>
+                </tr>
+              </tbody>
+
+              <!-- <thead>
                 <tr>
                   <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
                   <th class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
@@ -199,7 +235,7 @@
                 <tr v-if="listLogisticRequest.length === 0">
                   <td colspan="10" class="text-center">{{ $t('label.no_data') }}</td>
                 </tr>
-              </tbody>
+              </tbody> -->
             </template>
           </v-simple-table>
         </v-col>
@@ -224,6 +260,7 @@
 </template>
 
 <script>
+import JDSButton from '@/components/Base/JDSButton'
 import { mapGetters, mapState } from 'vuex'
 import FileSaver from 'file-saver'
 import EventBus from '@/utils/eventBus'
@@ -234,7 +271,8 @@ export default {
   name: 'ListPengajuanLogistik',
   components: {
     completenessDetail,
-    referenceDetail
+    referenceDetail,
+    JDSButton
   },
   data() {
     const faskesType = parseInt(this.$route.query?.faskes_type)
@@ -347,7 +385,13 @@ export default {
       'roles',
       'district_user', // district code
       'district_name'
-    ])
+    ]),
+    isArchive() {
+      return this.$route.name === 'archive'
+    },
+    isAdministration() {
+      return this.$route.name === 'notVerified'
+    }
   },
   async created() {
     if (this.$route.name === 'verified') {
@@ -382,6 +426,14 @@ export default {
     }
   },
   methods: {
+    sendMessage(payload) {
+      const phoneNumber = payload.applicant.primary_phone_number
+      let convertPhoneToIntFormat = phoneNumber
+      if (phoneNumber.startsWith('0')) {
+        convertPhoneToIntFormat = phoneNumber.replace('0', '+62')
+      }
+      window.open(`https://wa.me/${convertPhoneToIntFormat}?text=testing pikobar`, '_blank')
+    },
     async changeDate(value) {
       this.listQuery.start_date = value.startDate
       this.listQuery.end_date = value.endDate
@@ -473,6 +525,11 @@ export default {
 </script>
 
 <style>
+.applicant-contact {
+  color: #2196F3;
+  margin-right: 0.2rem;
+  text-decoration: underline;
+}
 .bg-dark {
   background: linear-gradient(90deg, #4F4F4F 0%, #828282 100%);
 }
