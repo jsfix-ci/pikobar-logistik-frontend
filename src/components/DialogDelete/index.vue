@@ -82,9 +82,9 @@ export default {
       await this.$emit('update:deletedData', {})
       await this.$store.dispatch('toast/successToast', this.$t('success.data_success_delete'))
       if (this.type === 'letter') {
-        await this.$parent.getDetailApplication()
+        this.$emit('get-detail-app')
       } else {
-        this.$parent.getListRealizationAdmin()
+        this.$emit('get-logistic-realization')
       }
     }
   }

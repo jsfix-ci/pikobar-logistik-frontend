@@ -185,6 +185,7 @@
       :delete-date.sync="dataDelete"
       :store-path-delete="`letter/deleteApplicationLetter`"
       :type="'letter'"
+      @get-detail-app="getDetailApplication"
     />
   </div>
 </template>

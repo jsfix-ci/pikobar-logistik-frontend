@@ -12,12 +12,12 @@
           <v-col>
             <span>{{ $t('label.instance_type') }}</span>
             <br>
-            <span class="grey--text">{{ item.master_faskes_type ? item.master_faskes_type.name : '-' }}</span>
+            <span class="grey--text">{{ item.agency ? item.agency.agency_type_name : '-' }}</span>
           </v-col>
           <v-col>
             <span class="sub-title-reject-logistic-needs">{{ $t('label.instance_name') }}</span>
             <br>
-            <span class="grey--text">{{ item.agency_name }}</span>
+            <span class="grey--text">{{ item.agency.agency_name }}</span>
           </v-col>
           <v-col>
             <span class="sub-title-reject-logistic-needs">{{ $t('label.total_apd_needs') }}</span>

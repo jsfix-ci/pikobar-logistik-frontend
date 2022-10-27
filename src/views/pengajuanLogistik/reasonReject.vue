@@ -11,12 +11,12 @@
         <v-col>
           <span class="sub-title-reject-reason">{{ $t('label.instance_type') }}</span>
           <br>
-          <span class="grey--text">{{ item.master_faskes_type ? item.master_faskes_type.name : '-' }}</span>
+          <span class="grey--text">{{ item.agency ? item.agency.agency_type_name : '-' }}</span>
         </v-col>
         <v-col>
           <span class="sub-title-reject-reason">{{ $t('label.instance_name') }}</span>
           <br>
-          <span class="grey--text">{{ item.agency_name }}</span>
+          <span class="grey--text">{{ item.agency ? item.agency.agency_name : '-' }}</span>
         </v-col>
         <v-col>
           <span class="sub-title-reject-reason">{{ $t('label.total_apd_needs') }}</span>
@@ -26,23 +26,19 @@
         <v-col>
           <span class="sub-title-reject-reason">{{ $t('label.reason_reject') }}</span>
           <br>
-          <span v-if="item.applicant && item.applicant.approval_status === 'Permohonan Ditolak'" class="grey--text">{{ item.applicant.approval_note }}</span>
+          <span v-if="item.status === 'APPROVAL_REJECTED'" class="grey--text">{{ item.applicant.approval_note }}</span>
           <span v-else class="grey--text">{{ item.applicant ? item.applicant.note : '-' }}</span>
         </v-col>
       </div>
 
-      <v-card-actions>
-        <v-col>
-          <center>
-            <v-btn
-              text
-              outlined
-              @click="hideDialog"
-            >
-              {{ $t('label.close') }}
-            </v-btn>
-          </center>
-        </v-col>
+      <v-card-actions class="d-flex justify-center my-2">
+        <v-btn
+          text
+          outlined
+          @click="hideDialog"
+        >
+          {{ $t('label.close') }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

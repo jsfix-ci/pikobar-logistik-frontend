@@ -186,7 +186,7 @@ extend('requiredReasonReject', {
 
 extend('max', {
   ...max,
-  message: 'This field must be {length} characters or less'
+  message: (_, values) => `${values._field_} maksimal ${values.length} karakter`
 })
 
 extend('numeric', {

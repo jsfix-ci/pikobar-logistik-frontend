@@ -218,13 +218,13 @@ export default {
       this.id = id
       this.defaultFile = value.letter.letter
       this.queryUpdateData = {
-        id: value.id,
-        agency_id: value.id,
-        applicant_id: value.applicant.id,
-        application_letter_number: value.applicant.application_letter_number,
+        id: value.letter.id,
+        agency_id: value.letter.agency_id,
+        applicant_id: value.letter.applicant_id,
+        application_letter_number: value.letter.application_letter_number,
         update_type: 3
       }
-      this.selectedFileName = value.applicant.application_letter_number + '.pdf'
+      this.selectedFileName = value.letter.application_letter_number + '.pdf'
       if (value.letter !== null) this.isLetterExists = true
     },
     closeDialog() {
@@ -256,25 +256,30 @@ export default {
     },
     async updateForm() {
       this.isLoading = true
-      const valid = await this.$refs.observer.validate()
-      this.uploadAlert = !this.isUpload && !this.isLetterExists
-      if (!valid || (!this.isUpload && !this.isLetterExists)) {
-        this.processRequest = true
-        this.uploadFileMaxSizeAlert = false
-        return
+      try {
+        const valid = await this.$refs.observer.validate()
+        this.uploadAlert = !this.isUpload && !this.isLetterExists
+        if (!valid || (!this.isUpload && !this.isLetterExists)) {
+          this.processRequest = true
+          this.uploadFileMaxSizeAlert = false
+          return
+        }
+        const formData = new FormData()
+        formData.append('letter_file', this.selectedFile)
+        formData.append('id', this.queryUpdateData.id)
+        formData.append('agency_id', this.queryUpdateData.agency_id)
+        formData.append('applicant_id', this.queryUpdateData.applicant_id)
+        formData.append('application_letter_number', this.queryUpdateData.application_letter_number)
+        formData.append('update_type', this.queryUpdateData.update_type)
+        const response = await this.$store.dispatch('logistics/updateApplicantLetter', formData)
+        if (response.status === 200) {
+          EventBus.$emit('hideUpdateLetter', true)
+        }
+      } catch (err) {
+        return err
+      } finally {
+        this.isLoading = false
       }
-      const formData = new FormData()
-      formData.append('letter_file', this.selectedFile)
-      formData.append('id', this.queryUpdateData.id)
-      formData.append('agency_id', this.queryUpdateData.agency_id)
-      formData.append('applicant_id', this.queryUpdateData.applicant_id)
-      formData.append('application_letter_number', this.queryUpdateData.application_letter_number)
-      formData.append('update_type', this.queryUpdateData.update_type)
-      const response = await this.$store.dispatch('logistics/updateApplicantLetter', formData)
-      if (response.status === 200) {
-        EventBus.$emit('hideUpdateLetter', true)
-      }
-      this.isLoading = false
     }
   }
 }

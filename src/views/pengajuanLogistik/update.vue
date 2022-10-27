@@ -21,8 +21,8 @@
           <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name') }}</span>
           <span v-else class="sub-title-update-logistic-needs">{{ $t('label.apd_spec_name_recommended') }}</span>
           <br>
-          <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ item.product ? item.product.name : '-' }}</span>
-          <span v-else class="value-sub-title-update-logistic-needs">{{ item.recommendation_product_name || '-' }}</span>
+          <span v-if="isVerified && !isApproved" class="value-sub-title-update-logistic-needs">{{ data.product_name }}</span>
+          <span v-else class="value-sub-title-update-logistic-needs">{{ data.product_name || '-' }}</span>
         </v-col>
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
           <ValidationProvider
@@ -61,7 +61,7 @@
               solo-inverted
               item-text="name"
               item-value="material_id"
-              @input.native="querySearchPoslogItems"
+              @input="querySearchPoslogItems"
               @change="setUnit(data.product_id)"
             />
           </ValidationProvider>
@@ -69,7 +69,7 @@
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
           <span class="sub-title-update-logistic-needs">{{ $t('label.total_needs') }}</span>
           <br>
-          <span class="value-sub-title-update-logistic-needs">{{ item ? item.quantity : '-' }}</span>
+          <span class="value-sub-title-update-logistic-needs">{{ data.quantity }}</span>
         </v-col>
         <v-col v-if="!hideException" class="margin-top-min-20-update-logistic-needs">
           <v-row>
@@ -116,7 +116,7 @@
                 />
                 <v-autocomplete
                   v-else
-                  v-model="data.realization_unit_id"
+                  v-model="data.realization_unit"
                   :items="listApdUnit"
                   outlined
                   solo-inverted
@@ -272,11 +272,12 @@ export default {
       await this.getListAPD()
     },
     async getListAPD() {
+      this.isLoading = true
       this.hideException = false
       this.resetQueryAPD()
       if (this.data.status === 'approved') {
         this.listQueryAPD.status = 'approved'
-        this.listQueryAPD.id = this.item.product !== undefined ? this.item.product.id : null
+        this.listQueryAPD.id = this.data?.need_product_id
       } else if (this.data.status === 'not_available') {
         this.hideException = true
       } else if (this.data.status === 'not_yet_fulfilled') {
@@ -285,20 +286,26 @@ export default {
         this.listQueryAPD.status = null
         this.listQueryAPD.id = null
       }
-      if (this.isVerified && !this.isApproved && this.listQueryAPD.material_name === null) {
-        this.listQueryAPD.poslog_id = this.data.recommendation_product_id
-        this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
-      } else if (this.isVerified && this.isApproved && this.listQueryAPD.material_name === null) {
-        this.listQueryAPD.poslog_id = this.data.realization_product_id
-        this.data.realization_unit_id === null ? this.data.realization_unit : 'PCS'
+      // if (this.isVerified && !this.isApproved && this.listQueryAPD.material_name === null) {
+      //   this.listQueryAPD.poslog_id = this.data.recommendation_product_id
+      //   this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
+      // } else if (this.isVerified && this.isApproved && this.listQueryAPD.material_name === null) {
+      //   this.listQueryAPD.poslog_id = this.data.realization_product_id
+      //   this.data.realization_unit_id === null ? this.data.realization_unit : 'PCS'
+      // }
+      try {
+        await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
+        this.listAPD.forEach(element => {
+          element.value = {
+            id: element.material_id,
+            name: element.name
+          }
+        })
+      } catch (err) {
+        return err
+      } finally {
+        this.isLoading = false
       }
-      await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
-      this.listAPD.forEach(element => {
-        element.value = {
-          id: element.material_id,
-          name: element.name
-        }
-      })
     },
     setTotalAPD() {
       this.totalLogistic = 0
@@ -310,6 +317,59 @@ export default {
       this.listQueryAPD.status = null
       this.listQueryAPD.id = null
       this.listQueryAPD.poslog_id = null
+    },
+    async setDataAddRealizationAdmin(detailData) {
+      this.isCreate = true
+      this.updateName = true
+      this.isUpdate = false
+      this.data.agency_id = detailData.agency.id
+      this.data.applicant_id = detailData.applicant.id
+
+      if (detailData.status === 'APPROVED') {
+        this.isVerified = true
+        this.isApproved = true
+      } else {
+        this.isVerified = true
+        this.isApproved = false
+      }
+      await this.getListAPD()
+    },
+    async setDataUpdateItem(item, type, isAdminRealization, detailData) {
+      if (isAdminRealization) {
+        this.isUpdate = true
+        this.isCreate = true
+        this.updateName = true
+      } else {
+        this.isUpdate = false
+        this.isCreate = false
+        this.updateName = false
+      }
+
+      this.data = item
+
+      this.setUnit(item.product_id)
+
+      if (type === 'recommendation') {
+        this.isVerified = true
+        this.isApproved = false
+
+        this.data.recommendation_unit = item.unit
+        this.data.recommendation_date = item.date
+        this.data.recommendation_quantity = item.quantity
+      } else {
+        this.isVerified = true
+        this.isApproved = true
+
+        this.data.realization_unit = item.unit
+        this.data.realization_date = item.date
+        this.data.realization_quantity = item.quantity
+      }
+
+      this.data.quantity = item.request_quantity
+      this.data.agency_id = detailData.agency.id
+      this.data.applicant_id = detailData.applicant.id
+
+      await this.getListAPD()
     },
     async setDialog(type, data, value, recommendation, realization) {
       this.isLoading = true
@@ -363,7 +423,6 @@ export default {
       this.isLoading = false
     },
     async setUnit(id) {
-      this.isLoading = true
       await this.$store.dispatch('logistics/getListApdUnit', id)
       this.listApdUnit.forEach(element => {
         element.value = {
@@ -371,43 +430,42 @@ export default {
           name: element.name
         }
       })
-      this.isLoading = false
     },
     async submitData(value) {
-      this.isLoading = true
-      this.data.store_type = 'recommendation'
-      if (this.isApproved) {
-        this.data.store_type = 'realization'
-      }
       const valid = await this.$refs.observer.validate()
       if (!valid) {
-        this.isLoading = false
         return
       }
-      if (this.isUpdate) {
-        this.data.status = 'approved'
-        await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
-        this.$parent.getListRealizationAdmin()
-      } else {
-        if (value === true) {
-          this.data.status = 'approved'
-          this.data.agency_id = this.agency_id
-          await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
-          this.$parent.getListRealizationAdmin()
-        } else {
-          this.data.need_id = this.item.id
-          this.data.product_id = this.data.product_id || this.item.product_id
-          this.data.agency_id = this.item.agency_id
-          delete this.data.id
-          await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
-          this.$parent.getListDetailNeeds()
+
+      try {
+        this.isLoading = true
+        this.data.store_type = 'recommendation'
+        if (this.isApproved) {
+          this.data.store_type = 'realization'
         }
+
+        if (this.isUpdate) {
+          this.data.status = 'approved'
+          await this.$store.dispatch('logistics/updateLogisticNeedsAdmin', this.data)
+        } else {
+          if (value === true) {
+            this.data.status = 'approved'
+            await this.$store.dispatch('logistics/postUpdateLogisticNeedsAdmin', this.data)
+          } else {
+            delete this.data.id
+            await this.$store.dispatch('logistics/postUpdateLogisticNeeds', this.data)
+          }
+        }
+      } catch (error) {
+        return error
+      } finally {
+        this.isLoading = false
+        this.hideDialog()
       }
-      await this.hideDialog()
-      this.isLoading = false
     },
     hideDialog() {
       this.$refs.observer.reset()
+      this.data = {}
       EventBus.$emit('dialogHide', false)
     },
     handleSelectedDate(value) {
