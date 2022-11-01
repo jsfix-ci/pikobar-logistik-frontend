@@ -13,7 +13,7 @@
             style="width: 40%"
           >
             <v-text-field
-              v-model="listQuery.agency_name"
+              v-model="listQuery.search"
               solo-inverted
               flat
               hide-details
@@ -91,19 +91,6 @@
             />
           </v-col>
           <v-col cols="12" md="3" class="mt-n8">
-            <v-label class="title">{{ $t('label.instance_reference_status') }}</v-label>
-            <v-select
-              v-model="listQuery.is_reference"
-              :items="referenceFaskes"
-              solo
-              item-text="text"
-              item-value="value"
-              :clearable="true"
-              :placeholder="$t('label.instance_reference_status_placeholder')"
-              @change="handleSearch()"
-            />
-          </v-col>
-          <v-col cols="12" md="3" class="mt-n8">
             <v-label class="title">{{ $t('label.completeness') }}</v-label>
             <v-select
               v-model="listQuery.completeness"
@@ -129,6 +116,32 @@
               @change="handleSearch()"
             />
           </v-col>
+          <v-col v-if="isArchive" cols="12" md="3" class="mt-n8">
+            <v-label class="title">{{ 'Status Tindak Lanjut' }}</v-label>
+            <v-select
+              v-model="listQuery.status_request"
+              :items="statusOptions"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              placeholder="Pilih Status Tindak Lanjut"
+              @change="handleSearch()"
+            />
+          </v-col>
+          <v-col v-else cols="12" md="3" class="mt-n8">
+            <v-label class="title">{{ $t('label.instance_reference_status') }}</v-label>
+            <v-select
+              v-model="listQuery.is_reference"
+              :items="referenceFaskes"
+              solo
+              item-text="text"
+              item-value="value"
+              :clearable="true"
+              :placeholder="$t('label.instance_reference_status_placeholder')"
+              @change="handleSearch()"
+            />
+          </v-col>
         </v-row>
       </v-card-text>
       <hr class="thin">
@@ -145,7 +158,7 @@
                   <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
                   <th v-if="isArchive" class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
                   <th v-if="isArchive || isAdministration" class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
-                  <th v-if="isArchive" class="text-center">{{ $t('label.status').toUpperCase() }}</th>
+                  <th v-if="isArchive" class="text-center">{{ $t('label.follow_up_status').toUpperCase() }}</th>
                   <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
                 </tr>
               </thead>
@@ -164,7 +177,7 @@
                     <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
                     <v-btn v-else outlined small color="error" @click="completenessDetail(data)">{{ $t('label.not_complete') }}</v-btn>
                   </td>
-                  <td v-if="isArchive">{{ data.applicant.status }}</td>
+                  <td v-if="isArchive" style="min-width: 8rem">{{ checkStatus(data.status_request) }}</td>
                   <td>
                     <JDSButton height="28px" width="80px" @click="toDetail(data)">
                       <v-icon left small>mdi-alert-circle</v-icon>
@@ -173,69 +186,6 @@
                   </td>
                 </tr>
               </tbody>
-
-              <!-- <thead>
-                <tr>
-                  <th class="text-left">{{ $t('label.number').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.incoming_mail_number').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.instance_type').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.instance_name').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.instance_reference').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.city_name').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.contact_person').toUpperCase() }}</th>
-                  <th class="text-left">{{ $t('label.request_date').toUpperCase() }}</th>
-                  <th v-if="isApproved" class="text-center">{{ $t('label.approved_by').toUpperCase() }}</th>
-                  <th v-if="isApproved" class="text-center">{{ $t('label.finalized_by').toUpperCase() }}</th>
-                  <th v-if="isRejected" class="text-center">{{ $t('label.status').toUpperCase() }}</th>
-                  <th v-if="isVerified" class="text-center">{{ $t('label.verified_by').toUpperCase() }}</th>
-                  <th v-if="isVerified" class="text-center">{{ $t('label.verified_date').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('label.completeness').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('label.urgency').toUpperCase() }}</th>
-                  <th class="text-center">{{ $t('label.action').toUpperCase() }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(data, index) in listLogisticRequest" :key="data.index">
-                  <td>{{ getTableRowNumbering(index) }}</td>
-                  <td>{{ data.applicant.application_letter_number }}</td>
-                  <td>{{ data.master_faskes_type.name }}</td>
-                  <td>{{ data.agency_name }}</td>
-                  <td>
-                    <v-btn v-if="data.is_reference === 1" outlined small color="success" @click="referenceDetail(data)">{{ $t('label.instance_is_reference') }}</v-btn>
-                  </td>
-                  <td>{{ data.city.kemendagri_kabupaten_nama }}</td>
-                  <td>{{ data.applicant.applicant_name }}</td>
-                  <td>{{ data.created_at ? $moment(data.created_at).format('D MMMM YYYY') : $t('label.stripe') }}</td>
-                  <td v-if="isApproved" class="text-center">
-                    <span v-if="data.applicant.approved_by" class="green--text">{{ data.applicant.approved_by.name }}</span>
-                    <span v-else class="red--text">{{ 'Belum DiSetujui' }}</span>
-                  </td>
-                  <td v-if="isApproved" class="text-center">
-                    <span v-if="data.applicant.finalized_by" class="green--text">{{ data.applicant.finalized_by.name }}</span>
-                    <span v-else class="red--text">{{ 'Belum diselesaikan' }}</span>
-                  </td>
-                  <td v-if="isRejected">{{ data.applicant.status }}</td>
-                  <td v-if="isVerified" class="text-center">
-                    <span v-if="data.applicant.verified_by" class="green--text">{{ data.applicant.verified_by.name }}</span>
-                    <span v-else class="red--text">{{ 'Belum Diverifikasi' }}</span>
-                  </td>
-                  <td v-if="isVerified" class="text-center">
-                    <span v-if="data.applicant.verified_at">{{ $moment(data.applicant.verified_at).format('D MMMM YYYY') }}</span>
-                    <span v-else class="red--text">{{ $t('label.not_verified') }}</span>
-                  </td>
-                  <td class="text-center">
-                    <v-btn v-if="data.completeness" outlined small color="success">{{ $t('label.completed') }}</v-btn>
-                    <v-btn v-else outlined small color="error" @click="completenessDetail(data)">{{ $t('label.not_complete') }}</v-btn>
-                  </td>
-                  <td class="text-center">
-                    <v-btn v-if="data.applicant.is_urgency === 1" outlined small color="warning">{{ $t('label.important') }}</v-btn>
-                  </td>
-                  <td><v-btn text small color="info" @click="toDetail(data)">{{ $t('label.detail') }}</v-btn></td>
-                </tr>
-                <tr v-if="listLogisticRequest.length === 0">
-                  <td colspan="10" class="text-center">{{ $t('label.no_data') }}</td>
-                </tr>
-              </tbody> -->
             </template>
           </v-simple-table>
         </v-col>
@@ -299,7 +249,9 @@ export default {
         is_urgency: Number.isNaN(isUrgency) ? null : isUrgency,
         finalized_by: Number.isNaN(finalizedBy) ? null : finalizedBy,
         faskes_type: Number.isNaN(faskesType) ? null : faskesType,
-        source_data: this.$route.query?.source_data || null
+        source_data: this.$route.query?.source_data || null,
+        status_request: this.$route.query?.status_request || null,
+        search: this.$route.query?.search || null
       },
       status: [
         {
@@ -359,6 +311,44 @@ export default {
         {
           text: this.$t('label.done'),
           value: 1
+        }
+      ],
+      statusOptions: [
+        {
+          text: 'Verifikasi Administrasi',
+          value: 'not_approved-not_verified'
+        },
+        {
+          text: 'Ditolak',
+          value: 'rejected'
+        },
+        {
+          text: 'Rekomendasi',
+          value: 'not_approved-verified'
+        },
+        {
+          text: 'Realisasi',
+          value: 'approved-verified'
+        },
+        {
+          text: 'Menunggu Konfirmasi',
+          value: 'integrated'
+        },
+        {
+          text: 'Barang Sedang di Packing',
+          value: 'booked'
+        },
+        {
+          text: 'Siap Berangkat',
+          value: 'do'
+        },
+        {
+          text: 'Sedang dalam perjalanan',
+          value: 'intransit'
+        },
+        {
+          text: 'Barang sudah sampai tujuan',
+          value: 'delivered'
         }
       ],
       date: null,
@@ -426,6 +416,30 @@ export default {
     }
   },
   methods: {
+    checkStatus(status) {
+      switch (status) {
+        case 'not_approved-not_verified':
+          return 'Verifikasi Administrasi'
+        case 'rejected':
+          return 'Ditolak'
+        case 'not_approved-verified':
+          return 'Rekomendasi'
+        case 'approved-verified':
+          return 'Realisasi'
+        case 'integrated':
+          return 'Menunggu Konfirmasi'
+        case 'booked':
+          return 'Barang Sedang Dipacking'
+        case 'do':
+          return 'Siap Berangkat'
+        case 'intransit':
+          return 'Sedang dalam Perjalanan'
+        case 'delivered':
+          return 'Barang Sudah Sampai Tujuan'
+        default:
+          return 'Status Tidak Tersedia'
+      }
+    },
     sendMessage(payload) {
       const phoneNumber = payload.applicant.primary_phone_number
       let convertPhoneToIntFormat = phoneNumber
@@ -472,7 +486,7 @@ export default {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     },
     onSelectDistrictCity(value) {
-      this.listQuery.city_code = value ? value.kemendagri_kabupaten_kode : ''
+      this.listQuery.city_code = value ? value.kemendagri_kabupaten_kode : this.handleSearch()
       this.listQuery.page = 1
       this.$router.replace({
         query: {
@@ -529,6 +543,7 @@ export default {
   color: #2196F3;
   margin-right: 0.2rem;
   text-decoration: underline;
+  cursor: pointer;
 }
 .bg-dark {
   background: linear-gradient(90deg, #4F4F4F 0%, #828282 100%);

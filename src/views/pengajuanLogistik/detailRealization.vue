@@ -242,10 +242,12 @@ export default {
       return this.detailLogisticRequest?.applicant?.application_letter_number || '-'
     },
     displayButtonAddItem() {
-      return this.detailLogisticRequest.status === 'VERIFIED' || this.detailLogisticRequest.status === 'APPROVED'
+      const statusAllowed = ['VERIFIED', 'APPROVED']
+      return this.checkStatusAllowed(statusAllowed)
     },
     displayAdditionalItem() {
-      return this.detailLogisticRequest.status === 'VERIFIED' || this.detailLogisticRequest.status === 'APPROVED' || this.detailLogisticRequest.status === 'FINALIZED'
+      const statusAllowed = ['VERIFIED', 'APPROVED', 'FINALIZED', 'APPROVAL_REJECTED']
+      return this.checkStatusAllowed(statusAllowed)
     }
   },
   async created() {
@@ -295,6 +297,9 @@ export default {
   },
   methods: {
     formatDatetime,
+    checkStatusAllowed(status) {
+      return status.some(el => this.detailLogisticRequest.status === el)
+    },
     setFormData() {
       const formData = new FormData()
       formData.append('agency_id', this.detailLogisticRequest.agency.id)
