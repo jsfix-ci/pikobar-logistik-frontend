@@ -41,27 +41,6 @@ const pengajuanLogistik = {
         roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     },
-    // {
-    //   path: '/alat-kesehatan/selesai-realisasi',
-    //   component: () => import('@/views/pengajuanLogistik/list'),
-    //   name: 'realized',
-    //   meta: {
-    //     title: 'realized_title',
-    //     noCache: true,
-    //     roles: ['superadmin', 'dinkesprov', 'dinkeskota']
-    //   }
-    // },
-    // {
-    //   path: '/alat-kesehatan/ditolak',
-    //   component: () => import('@/views/pengajuanLogistik/list'),
-    //   name: 'rejected',
-    //   meta: {
-    //     title: 'rejected_title',
-    //     noCache: true,
-    //     roles: ['superadmin', 'dinkesprov', 'dinkeskota']
-    //   }
-    // },
-    // Arsip
     {
       path: '/alat-kesehatan/arsip',
       component: () => import('@/views/pengajuanLogistik/list'),
