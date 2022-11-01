@@ -486,7 +486,12 @@ export default {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     },
     onSelectDistrictCity(value) {
-      this.listQuery.city_code = value ? value.kemendagri_kabupaten_kode : this.handleSearch()
+      if (!value) {
+        this.listQuery.city_code = null
+        this.handleSearch()
+        return
+      }
+      this.listQuery.city_code = value ? value.kemendagri_kabupaten_kode : null
       this.listQuery.page = 1
       this.$router.replace({
         query: {
