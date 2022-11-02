@@ -32,31 +32,21 @@ const pengajuanLogistik = {
       }
     },
     {
-      path: '/alat-kesehatan/belum-realisasi',
+      path: '/alat-kesehatan/realisasi',
       component: () => import('@/views/pengajuanLogistik/list'),
       name: 'not_yet_realized',
       meta: {
-        title: 'not_yet_realized_title',
+        title: 'approved_title',
         noCache: true,
         roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
     },
     {
-      path: '/alat-kesehatan/selesai-realisasi',
+      path: '/alat-kesehatan/arsip',
       component: () => import('@/views/pengajuanLogistik/list'),
-      name: 'realized',
+      name: 'archive',
       meta: {
-        title: 'realized_title',
-        noCache: true,
-        roles: ['superadmin', 'dinkesprov', 'dinkeskota']
-      }
-    },
-    {
-      path: '/alat-kesehatan/ditolak',
-      component: () => import('@/views/pengajuanLogistik/list'),
-      name: 'rejected',
-      meta: {
-        title: 'rejected_title',
+        title: 'archive',
         noCache: true,
         roles: ['superadmin', 'dinkesprov', 'dinkeskota']
       }
