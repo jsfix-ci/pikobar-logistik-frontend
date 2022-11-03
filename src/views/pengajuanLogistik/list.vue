@@ -232,8 +232,8 @@ export default {
     const finalizedBy = parseInt(this.$route.query?.finalized_by)
     return {
       sortOption: [
-        { value: 'asc', label: 'A-Z' },
-        { value: 'desc', label: 'Z-A' }
+        { value: 'desc', label: 'Terbaru' },
+        { value: 'asc', label: 'Terlama' }
       ],
       listQuery: {
         page: parseInt(this.$route.query?.page || 1),
