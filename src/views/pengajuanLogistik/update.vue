@@ -25,13 +25,14 @@
           <span v-else class="value-sub-title-update-logistic-needs">{{ data.product_name || '-' }}</span>
         </v-col>
         <v-col v-if="!isCreate" class="margin-top-min-30-update-logistic-needs">
+          <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_status') }}</span>
+          <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_status') }}</span>
+          <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_status') }}</span>
           <ValidationProvider
             v-slot="{ errors }"
             rules="requiredStatus"
+            name="Status"
           >
-            <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_status') }}</span>
-            <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_status') }}</span>
-            <span v-else class="sub-title-update-logistic-needs">{{ $t('label.realization_status') }}</span>
             <v-autocomplete
               v-model="data.status"
               outlined
@@ -46,7 +47,7 @@
         <v-col v-if="!hideException" class="margin-top-min-30-update-logistic-needs">
           <ValidationProvider
             v-slot="{ errors }"
-            rules="requiredAPDName"
+            rules="required"
           >
             <span v-if="isVerified && !isApproved" class="sub-title-update-logistic-needs">{{ $t('label.recommendation_item') }}</span>
             <span v-else-if="isVerified && isApproved" class="sub-title-update-logistic-needs">{{ $t('label.realization_item') }}</span>
@@ -286,13 +287,6 @@ export default {
         this.listQueryAPD.status = null
         this.listQueryAPD.id = null
       }
-      // if (this.isVerified && !this.isApproved && this.listQueryAPD.material_name === null) {
-      //   this.listQueryAPD.poslog_id = this.data.recommendation_product_id
-      //   this.data.recommendation_unit === null ? this.data.recommendation_unit : 'PCS'
-      // } else if (this.isVerified && this.isApproved && this.listQueryAPD.material_name === null) {
-      //   this.listQueryAPD.poslog_id = this.data.realization_product_id
-      //   this.data.realization_unit_id === null ? this.data.realization_unit : 'PCS'
-      // }
       try {
         await this.$store.dispatch('logistics/getListAPD', this.listQueryAPD)
         this.listAPD.forEach(element => {
