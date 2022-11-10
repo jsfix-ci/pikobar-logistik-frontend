@@ -19,18 +19,18 @@
       </v-list-item>
     </v-card>
     <!-- Detail info -->
-    <DetailInfo :items="info_terbaru" />
+    <DetailInfo :items="infoDetail" />
 
     <div class="mt-10 d-flex flex-row flex-wrap min-width-full">
       <!-- Request Urgency -->
       <CardStatus
-        v-for="(item, index) in status_terbaru"
+        v-for="(item, index) in statusDetail"
         :key="item.type"
         :type="item.type"
         :title="item.title"
         :content="item.content"
         :strong="item.strong"
-        :length="status_terbaru.length"
+        :length="statusDetail.length"
         :button-label="item.button_label"
         :class="{ 'ml-auto': index === 1 }"
         @change-urgency="urgencyChange(detailLogisticRequest.applicant.id, !detailLogisticRequest.is_urgency)"
@@ -47,7 +47,7 @@
     </div>
 
     <!-- Instance -->
-    <div v-for="item in identity_terbaru" :key="item.title" class="mt-5">
+    <div v-for="item in identityDetail" :key="item.title" class="mt-5">
       <CardIdentity
         :items="item"
         @update-agency="showAgencyIdentityDialog"
@@ -225,9 +225,9 @@ export default {
           applicant_name: '-'
         }
       },
-      info_terbaru: [],
-      status_terbaru: [],
-      identity_terbaru: []
+      infoDetail: [],
+      statusDetail: [],
+      identityDetail: []
     }
   },
   computed: {
@@ -390,9 +390,9 @@ export default {
       this.updateLetterForm = true
     },
     async getDetail() {
-      this.info_terbaru = []
-      this.status_terbaru = []
-      this.identity_terbaru = []
+      this.infoDetail = []
+      this.statusDetail = []
+      this.identityDetail = []
       const res = await this.$store.dispatch('logistics/getListDetailLogisticRequest', this.$route.params.id)
       if (!res.data) {
         this.$router.push('/dashboard')
@@ -406,7 +406,7 @@ export default {
       this.setDataIdentity()
     },
     setDataInfo() {
-      this.info_terbaru.push({
+      this.infoDetail.push({
         title: 'Tanggal Pengajuan',
         value: this.formatDatetime(this.detailLogisticRequest?.created_at, 'DD MMMM YYYY') || '-'
       },
@@ -425,7 +425,7 @@ export default {
     },
     setDataStatus() {
       if (this.detailLogisticRequest.is_urgency) {
-        this.status_terbaru.push({
+        this.statusDetail.push({
           type: 'urgent',
           title: 'Urgensi Permohonan',
           content: 'Permohonan ini adalah',
@@ -433,7 +433,7 @@ export default {
           button_label: 'DARURAT!'
         })
       } else {
-        this.status_terbaru.push({
+        this.statusDetail.push({
           type: 'regular',
           title: 'Urgensi Permohonan',
           content: 'Tandai permohonan sebagai',
@@ -442,8 +442,8 @@ export default {
         })
       }
 
-      if (this.detailLogisticRequest.status !== 'NOT_VERIFIED') {
-        this.status_terbaru.push({
+      if (this.checkStatusAllowed(['VERIFIED', 'APPROVED', 'VERIFICATION_REJECTED', 'APPROVAL_REJECTED'])) {
+        this.statusDetail.push({
           type: 'status-request',
           title: 'Status Permohonan',
           content: 'Permohonan ini berada pada tahapan',
@@ -453,45 +453,45 @@ export default {
       }
     },
     setDataIdentity() {
-      this.identity_terbaru = [{
+      this.identityDetail = [{
         title: 'Identitas Instansi',
         isOpen: true,
         data: [
           {
             title: 'Jenis Instansi',
-            value: this.detailLogisticRequest.agency.agency_type_name
+            value: this.detailLogisticRequest?.agency?.agency_type_name
           },
           {
             title: 'Nomor Telepon',
-            value: this.detailLogisticRequest.agency.phone_number
+            value: this.detailLogisticRequest?.agency?.phone_number
           },
           {
             title: 'Kelurahan',
-            value: this.detailLogisticRequest.agency.village_name
+            value: this.detailLogisticRequest?.agency?.village_name
           },
           {
             title: 'Nama Instansi',
-            value: this.detailLogisticRequest.agency.agency_name
+            value: this.detailLogisticRequest?.agency?.agency_name
           },
           {
             title: 'Kota/Kab.',
-            value: this.detailLogisticRequest.agency.city_name
+            value: this.detailLogisticRequest?.agency?.city_name
           },
           {
             title: 'Alamat lengkap',
-            value: this.detailLogisticRequest.agency.address
+            value: this.detailLogisticRequest?.agency?.address
           },
           {
             title: 'Tipe Instansi',
-            value: this.detailLogisticRequest.agency.is_reference === 1 ? 'RS Rujukan' : 'RS Bukan Rujukan'
+            value: this.detailLogisticRequest?.agency?.is_reference === 1 ? 'RS Rujukan' : 'RS Bukan Rujukan'
           },
           {
             title: 'Kecamatan',
-            value: this.detailLogisticRequest.agency.district_name
+            value: this.detailLogisticRequest?.agency?.district_name
           },
           {
             title: 'Status Rujukan',
-            value: this.detailLogisticRequest.agency.is_reference === 1 ? 'Rujukan' : 'Bukan Rujukan'
+            value: this.detailLogisticRequest?.agency?.is_reference === 1 ? 'Rujukan' : 'Bukan Rujukan'
           }
         ]
       },
@@ -501,28 +501,28 @@ export default {
         data: [
           {
             title: 'Nama Pemohon',
-            value: this.detailLogisticRequest.applicant.applicant_name
+            value: this.detailLogisticRequest?.applicant?.applicant_name
           },
           {
             title: 'Email Pemohon',
-            value: this.detailLogisticRequest.applicant.email
+            value: this.detailLogisticRequest?.applicant?.email
           },
           {
-            type: this.setTypeFile(this.detailLogisticRequest.applicant.file),
+            type: this.setTypeFile(this.detailLogisticRequest?.applicant?.file),
             title: 'KTP/Kartu Pegawai/Surat Tugas',
-            value: this.detailLogisticRequest.applicant.file
+            value: this.detailLogisticRequest?.applicant?.file
           },
           {
             title: 'Jabatan Pemohon',
-            value: this.detailLogisticRequest.applicant.applicants_office
+            value: this.detailLogisticRequest?.applicant?.applicants_office
           },
           {
             title: 'Nomor Handphone Pemohon',
-            value: this.detailLogisticRequest.applicant.primary_phone_number
+            value: this.detailLogisticRequest?.applicant?.primary_phone_number
           },
           {
             title: 'Nomor Handphone Pengganti',
-            value: this.detailLogisticRequest.applicant.secondary_phone_number
+            value: this.detailLogisticRequest?.applicant?.secondary_phone_number
           }
         ]
       }]
