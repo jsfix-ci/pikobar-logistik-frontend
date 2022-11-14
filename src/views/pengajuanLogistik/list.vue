@@ -446,7 +446,19 @@ export default {
       if (phoneNumber.startsWith('0')) {
         convertPhoneToIntFormat = phoneNumber.replace('0', '+62')
       }
-      window.open(`https://wa.me/${convertPhoneToIntFormat}?text=testing pikobar`, '_blank')
+
+      const enterCodeWaMe = `%0a`
+      const content =
+      `
+      *[Pemberitahuan Pikobar-Alkes]*
+      ${enterCodeWaMe}${enterCodeWaMe}Selamat pagi/siang/sore Bapak/Ibu ${payload.applicant.applicant_name} dari ${payload.agency_name}.
+      ${enterCodeWaMe}${enterCodeWaMe}Izin menginfokan bahwa permohonan Anda, dengan ID Permohonan ${payload.id},
+      ${enterCodeWaMe}. . .
+      ${enterCodeWaMe}${enterCodeWaMe}Salam hangat,
+      ${enterCodeWaMe}Admin Dinkes Provinsi Jawa Barat
+      `
+
+      window.open(`https://wa.me/${convertPhoneToIntFormat}?text=${content}`, '_blank')
     },
     async changeDate(value) {
       this.listQuery.start_date = value.startDate
