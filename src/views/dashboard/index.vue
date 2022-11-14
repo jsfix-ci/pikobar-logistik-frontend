@@ -1,6 +1,6 @@
 <template>
   <div v-if="app === 'vaccine'">
-    <UnderDevelopment class="mt-16" />
+    <UnderDevelopment />
   </div>
   <v-container v-else fluid grid-list-xl py-0>
     <div>

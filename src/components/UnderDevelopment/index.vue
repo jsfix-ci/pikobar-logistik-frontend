@@ -1,17 +1,30 @@
 <template>
   <div class="d-flex flex-column align-center">
-    <img
-      src="/img/under-construction.svg"
-      alt="under-construction"
-      width="363px"
-      height="229px"
-      class="mb-8"
-    >
-    <h1 class="under-development__text">
-      {{ $t('label.under_development_feature') }}
-    </h1>
+    <div ref="tableau" />
   </div>
 </template>
+<script>
+/* global tableau */
+export default {
+  data() {
+    return {
+      options: {
+        hideTabs: true
+      },
+      url: 'https://tableau.jabarprov.go.id/views/Pikobar-DashboardLogistikVaksin/LogistikVaksin?:showAppBanner=false&:origin=viz_share_link&:display_count=n&:showVizHome=n'
+    }
+  },
+  mounted() {
+    this.initViz()
+  },
+  methods: {
+    initViz() {
+      const viz = new tableau.Viz(this.$refs.tableau, this.url, this.options)
+      return viz
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .under-development {
