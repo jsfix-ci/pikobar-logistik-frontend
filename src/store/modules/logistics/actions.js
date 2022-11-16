@@ -91,7 +91,7 @@ export default {
       return e
     }
   },
-  async updateApplicant({ commit }, params) {
+  async updateAgency({ commit }, params) {
     try {
       const response = await doPostUpdate('/api/v1/logistic-request/' + params.id, 'PUT', params)
       return response
@@ -179,6 +179,7 @@ export default {
       const response = await fetchList('/api/v1/logistic-request/need/list', 'GET', params)
       commit('SET_LIST_DETAIL_LOGISTIC_NEEDS', response.data.data)
       commit('SET_TOTAL_DETAIL_LOGISTIC_NEEDS', response.data.last_page)
+      return response
     } catch (e) {
       return e
     }

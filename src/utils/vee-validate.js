@@ -170,8 +170,10 @@ extend('requiredRealizationDate', {
 })
 
 extend('requiredStatus', {
-  ...required,
-  message: (_, values) => i18n.t('errors.field_must_be_filled_status', values)
+  validate: value => {
+    if (value !== 'not_approved') return true
+  },
+  message: (_, values) => `${values._field_} tidak boleh kosong`
 })
 
 extend('requiredApplicantLetterNumber', {
@@ -186,7 +188,7 @@ extend('requiredReasonReject', {
 
 extend('max', {
   ...max,
-  message: 'This field must be {length} characters or less'
+  message: (_, values) => `${values._field_} maksimal ${values.length} karakter`
 })
 
 extend('numeric', {
